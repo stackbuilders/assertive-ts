@@ -1,12 +1,61 @@
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
+interface TryResult<T> {
+  hasError: boolean;
+  instance: T;
+}
+
 export class Assertion<T> {
 
   protected readonly actual: T;
 
+  protected notError?: AssertionError;
+
+  public readonly not: this;
+
   constructor(actual: T) {
     this.actual = actual;
+
+    this.not = new Proxy(this, {
+      get(target, key) {
+        const prop = isKeyOf(target, key)
+          ? target[key]
+          : undefined;
+
+        if (typeof prop === "function") {
+          return (...args: unknown[]) => {
+            const { hasError, instance } = target.tryAssertion(prop, args);
+
+            if (!hasError) {
+              const message: string = `WARNING! No assertion error defined for ".not.${String(key)}"`;
+
+              throw instance.notError ?? new AssertionError({ message });
+            }
+
+            return instance;
+          };
+        }
+
+        return prop;
+      }
+    });
+  }
+
+  private tryAssertion(prop: this[keyof this] & Function, args: unknown[]): TryResult<this> {
+    try {
+      const instance = prop.apply(this, args);
+
+      return {
+        hasError: false,
+        instance
+      };
+    } catch (error) {
+      return {
+        hasError: true,
+        instance: this
+      };
+    }
   }
 
   /**
@@ -16,7 +65,23 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public exists(): this {
+    const notError = new AssertionError({
+      actual: this.actual,
+      message: `Expected value to NOT exist, but is was <${this.actual}>`
+    });
+
     if (this.actual !== undefined && this.actual !== null) {
+      return { ...this, notError };
+    }
+
+    throw new AssertionError({
+      actual: this.actual,
+      message: `Expected value to exist, but it was <${this.actual}>`
+    });
+  }
+
+  public notExist(): this {
+    if (this.actual === undefined || this.actual === null) {
       return this;
     }
 
@@ -172,4 +237,8 @@ function isObject(value: unknown): value is object {
 
 function isNumber(value: unknown): value is number {
   return typeof value === "number";
+}
+
+function isKeyOf<T>(target: T, key: unknown): key is keyof T {
+  return (typeof key === "string" || typeof key === "symbol") && key in target;
 }

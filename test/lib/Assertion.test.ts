@@ -45,10 +45,11 @@ function falsyAsText(value: typeof FALSY_VALUES[number]): string {
 describe("Lib.Assertion", () => {
   describe(".exists", () => {
     context("when the value is not null or undefined", () => {
-      it("returns the assertion instance", () => {
+      it.only("returns the assertion instance", () => {
         const test = new Assertion(0);
 
-        assert.deepStrictEqual(test.exists(), test);
+        assert.ok(test.not.exists());
+        // assert.deepStrictEqual(test.exists(), test);
       });
     });
 
