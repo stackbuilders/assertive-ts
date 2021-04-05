@@ -12,10 +12,6 @@
     "lint": "tslint -c tslint.json \"!(dist)/**/*.ts\"",
     "test": "cross-env NODE_ENV=test mocha"
   },
-  "engines": {
-    "node": "15.12.0",
-    "yarn": "2.4.1"
-  },
   "devDependencies": {
     "@types/mocha": "^8.2.2",
     "@types/node": "^14.14.37",
