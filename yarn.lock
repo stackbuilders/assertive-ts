@@ -214,7 +214,6 @@ __metadata:
     source-map-support: ^0.5.19
     ts-node: ^9.1.1
     tslint: ^6.1.3
-    tslint-eslint-rules: ^5.4.0
     typescript: ^4.2.3
   languageName: unknown
   linkType: soft
@@ -526,16 +525,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"doctrine@npm:0.7.2":
-  version: 0.7.2
-  resolution: "doctrine@npm:0.7.2"
-  dependencies:
-    esutils: ^1.1.6
-    isarray: 0.0.1
-  checksum: 4f07fdec5611fae244153e23ab8a2edc711b92c2db997fe716b3db48901024f0564687c1fad0c564260dc90a59ddb00094b3af2c1b18260279b7ff263ffa9eb6
-  languageName: node
-  linkType: hard
-
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
@@ -594,13 +583,6 @@ __metadata:
     esparse: ./bin/esparse.js
     esvalidate: ./bin/esvalidate.js
   checksum: 5df45a3d9c95c36800d028ba76d8d4e04e199932b58c2939f462f859fd583e7d39b4a12d3f97986cf272a28a5fe5948ee6e49e36ef63f67b5b48d82a635c5081
-  languageName: node
-  linkType: hard
-
-"esutils@npm:^1.1.6":
-  version: 1.1.6
-  resolution: "esutils@npm:1.1.6"
-  checksum: 5b03ce2ef32f85e2602d1b1540f11fb9330377139cbfc7041f91f8722e8118041d25706863d6560b9e11800b115f205363dd0a001fc8b93e969014fd93c747b0
   languageName: node
   linkType: hard
 
@@ -938,13 +920,6 @@ fsevents@~2.3.1:
   version: 2.1.0
   resolution: "is-plain-obj@npm:2.1.0"
   checksum: 2314302f9140d1e9607731d523f207d8000281aebbabe0083210342c0758976f75f0f5db405e55910bd4dc9a04baddbeab9d476290642b5a0d31431cc9bda4b3
-  languageName: node
-  linkType: hard
-
-"isarray@npm:0.0.1":
-  version: 0.0.1
-  resolution: "isarray@npm:0.0.1"
-  checksum: daeda3c23646200b0b464b7a9030d10008d7701fc6b7a1b45cafe42b4f4d2dde20835b56f19a49e04bb218245b7f7a2bcc6d0f696cff3711e4eddaa2031c611f
   languageName: node
   linkType: hard
 
@@ -1738,31 +1713,10 @@ resolve@^1.3.2:
   languageName: node
   linkType: hard
 
-"tslib@npm:1.9.0":
-  version: 1.9.0
-  resolution: "tslib@npm:1.9.0"
-  checksum: 7a06b4da9095b969e15543d02dedfab31219965a7ab766cd527245ce2c27bf2cf746250a155721613c4f8e58f5c7ad8d4e3ce8055b0be8078e45ca9b6fbd2407
-  languageName: node
-  linkType: hard
-
 "tslib@npm:^1.13.0, tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: f44fe7f216946b17d3e3074df3746372703cf24e9127b4c045511456e8e4bf25515fb0a1bb3937676cc305651c5d4fcb6377b0588a4c6a957e748c4c28905d17
-  languageName: node
-  linkType: hard
-
-"tslint-eslint-rules@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "tslint-eslint-rules@npm:5.4.0"
-  dependencies:
-    doctrine: 0.7.2
-    tslib: 1.9.0
-    tsutils: ^3.0.0
-  peerDependencies:
-    tslint: ^5.0.0
-    typescript: ^2.2.0 || ^3.0.0
-  checksum: 40a428e6af7b698f6df8aa27a10332c47d273c44fb027691b0d931ee4d5256535a08634e2840c526f2e6046c2087bafd5a35945aab1f99273fe0bca9742d5856
   languageName: node
   linkType: hard
 
@@ -1799,17 +1753,6 @@ resolve@^1.3.2:
   peerDependencies:
     typescript: ">=2.1.0 || >=2.1.0-dev || >=2.2.0-dev || >=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >= 3.0.0-dev || >= 3.1.0-dev"
   checksum: 8d0cb4f4689629a68238e794c05ffdfda0ff6823dd6de6ab5300d47fba1bfc07262a144f34f22651fd9685a31f7606cb0262aeeb78343805ccb53d56b0a4bb71
-  languageName: node
-  linkType: hard
-
-"tsutils@npm:^3.0.0":
-  version: 3.21.0
-  resolution: "tsutils@npm:3.21.0"
-  dependencies:
-    tslib: ^1.8.1
-  peerDependencies:
-    typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
-  checksum: a10e746258ca9c8e5cdd5e363259b4e353a6729b432f1b30455b9d84ff3fd2f12a44fedafd13872518b0e951fa8cdf56a5b35908bc91d5bf5e7d342548427f2e
   languageName: node
   linkType: hard
 
