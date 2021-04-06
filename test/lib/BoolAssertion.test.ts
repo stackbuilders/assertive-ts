@@ -1,4 +1,4 @@
-import assert, { AssertionError } from "assert";
+import assert from "assert";
 
 import { BoolAssertion } from "../../src/lib/BoolAssertion";
 
@@ -16,10 +16,10 @@ describe("Lib.BoolAssertion", () => {
     });
 
     context("when the value is true", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new BoolAssertion(true);
 
-        assert.doesNotThrow(() => test.isTrue(), AssertionError);
+        assert.deepStrictEqual(test.isTrue(), test);
       });
     });
   });
@@ -37,10 +37,10 @@ describe("Lib.BoolAssertion", () => {
     });
 
     context("when the value is false", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new BoolAssertion(false);
 
-        assert.doesNotThrow(() => test.isFalse(), AssertionError);
+        assert.deepStrictEqual(test.isFalse(), test);
       });
     });
   });

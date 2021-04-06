@@ -10,22 +10,28 @@ export class Assertion<T> {
   }
 
   /**
-   * Check the value exists. This means that the value should be neither
+   * Check if the value exists. This means that the value should be neither
    * `null` nor `undefined`.
+   *
+   * @returns the assertion instance
    */
-  public exists(): void {
+  public exists(): this {
     if (this.actual === undefined || this.actual === null) {
       throw new AssertionError({
         actual: this.actual,
         message: `Expected <${this.actual}> to exist`
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is `null`.
+   * Check if the value is `null`.
+   *
+   * @returns the assertion instance
    */
-  public isNull(): void {
+  public isNull(): this {
     if (this.actual !== null) {
       throw new AssertionError({
         actual: this.actual,
@@ -33,53 +39,70 @@ export class Assertion<T> {
         message: `Expected <${this.actual}> to be null`
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is present. This means that the value should not be
+   * Check if the value is present. This means that the value should not be
    * `undefined`.
+   *
+   * @returns the assertion instance
    */
-  public isPresent(): void {
+  public isPresent(): this {
     if (this.actual === undefined) {
       throw new AssertionError({
         actual: this.actual,
         message: "Expected the value to be present"
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is a truthy value. There are six falsy values in JavaScript:
-   * `null`, `undefined`, `0`, `""`, `false`, `NaN`. Everything else is truthy.
+   * Check if the value is a truthy value. There are six falsy values in
+   * JavaScript: `null`, `undefined`, `0`, `""`, `false`, `NaN`. Everything
+   * else is truthy.
+   *
+   * @returns the assertion instance
    */
-  public isTruthy(): void {
+  public isTruthy(): this {
     if (!this.actual) {
       throw new AssertionError({
         actual: this.actual,
         message: `Expected <${this.actual}> to be a truthy value`
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is a falsy value. There are six falsy values in JavaScript:
-   * `null`, `undefined`, `0`, `""`, `false`, `NaN`. Everything else is truthy.
+   * Check if the value is a falsy value. There are six falsy values in
+   * JavaScript: `null`, `undefined`, `0`, `""`, `false`, `NaN`. Everything
+   * else is truthy.
+   *
+   * @returns the assertion instance
    */
-  public isFalsy(): void {
+  public isFalsy(): this {
     if (this.actual) {
       throw new AssertionError({
         actual: this.actual,
         message: `Expected <${this.actual}> to be a falsy value`
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is deep equal to another value.
+   * Check if the value is deep equal to another value.
    *
    * @param expected the value to compare for deep equality
+   * @returns the assertion instance
    */
-  public isEqualTo(expected: T): void {
+  public isEqualTo(expected: T): this {
     if (!isDeepStrictEqual(this.actual, expected)) {
       throw new AssertionError({
         actual: this.actual,
@@ -87,34 +110,50 @@ export class Assertion<T> {
         message: "Expected both values to be deep equal"
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is shallow equal to another value.
+   * Check if the value is shallow equal to another value.
    *
    * @param expected the value to compare for shallow equality
+   * @returns the assertion instance
    */
-  public isSimilarTo<U extends T>(expected: U): void {
-    if (isNumber(this.actual) && isNumber(expected) && isNaN(this.actual) && isNaN(expected)) {
-      return;
+  public isSimilarTo(expected: T): this {
+    if (isObject(this.actual) && isObject(expected)) {
+      const actualKeys = Object.keys(this.actual) as Array<keyof T>;
+      const expectedKeys = Object.keys(expected) as Array<keyof T>;
+      const sizeMatch = actualKeys.length === expectedKeys.length;
+      const valuesMatch = actualKeys.every(key => this.actual[key] === expected[key]);
+
+      if (sizeMatch && valuesMatch) {
+        return this;
+      }
     }
 
-    // tslint:disable-next-line: triple-equals
-    if (this.actual != expected) {
-      throw new AssertionError({
-        actual: this.actual,
-        expected,
-        message: "Expected both values to be similar"
-      });
+    if (isNumber(this.actual) && isNumber(expected) && isNaN(this.actual) && isNaN(expected)) {
+      return this;
     }
+
+    if (this.actual === expected) {
+      return this;
+    }
+
+    throw new AssertionError({
+      actual: this.actual,
+      expected,
+      message: "Expected both values to be similar"
+    });
   }
 
   /**
    * Check the value is the same as another value.
    *
    * @param expected the value to compare for referential equality
+   * @returns the assertion instance
    */
-  public isSameAs(expected: T): void {
+  public isSameAs(expected: T): this {
     if (!Object.is(this.actual, expected)) {
       throw new AssertionError({
         actual: this.actual,
@@ -122,7 +161,13 @@ export class Assertion<T> {
         message: "Expected both values to be the same"
       });
     }
+
+    return this;
   }
+}
+
+function isObject(value: unknown): value is object {
+  return value !== null && typeof value === "object";
 }
 
 function isNumber(value: unknown): value is number {

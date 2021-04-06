@@ -9,9 +9,11 @@ export class BoolAssertion<T extends boolean> extends Assertion<T> {
   }
 
   /**
-   * Check the value is `true`.
+   * Check if the value is `true`.
+   *
+   * @returns the assertion instance
    */
-  public isTrue() {
+  public isTrue(): this {
     if (this.actual !== true) {
       throw new AssertionError({
         actual: this.actual,
@@ -19,12 +21,16 @@ export class BoolAssertion<T extends boolean> extends Assertion<T> {
         message: `Expected <${this.actual}> to be true`
       });
     }
+
+    return this;
   }
 
   /**
-   * Check the value is `false`.
+   * Check if the value is `false`.
+   *
+   * @returns the assertion instance
    */
-  public isFalse() {
+  public isFalse(): this {
     if (this.actual !== false) {
       throw new AssertionError({
         actual: this.actual,
@@ -32,5 +38,7 @@ export class BoolAssertion<T extends boolean> extends Assertion<T> {
         message: `Expected <${this.actual}> to be false`
       });
     }
+
+    return this;
   }
 }

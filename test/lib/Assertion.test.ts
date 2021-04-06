@@ -1,4 +1,4 @@
-import assert, { AssertionError } from "assert";
+import assert from "assert";
 
 import { Assertion } from "../../src/lib/Assertion";
 
@@ -38,10 +38,10 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is not null or undefined", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(0);
 
-        assert.doesNotThrow(() => test.exists(), AssertionError);
+        assert.deepStrictEqual(test.exists(), test);
       });
     });
   });
@@ -59,10 +59,10 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is null", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(null);
 
-        assert.doesNotThrow(() => test.isNull(), AssertionError);
+        assert.deepStrictEqual(test.isNull(), test);
       });
     });
   });
@@ -80,10 +80,10 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is undefined", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(false);
 
-        assert.doesNotThrow(() => test.isPresent(), AssertionError);
+        assert.deepStrictEqual(test.isPresent(), test);
       });
     });
   });
@@ -103,10 +103,10 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is truthy", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion({ });
 
-        assert.doesNotThrow(() => test.isTruthy(), AssertionError);
+        assert.deepStrictEqual(test.isTruthy(), test);
       });
     });
   });
@@ -125,10 +125,10 @@ describe("Lib.Assertion", () => {
 
     context("when the value is falsy", () => {
       FALSY_VALUES.forEach(value => {
-        it(`[${falsyAsText(value)}] does NOT throw an assertion error`, () => {
+        it(`[${falsyAsText(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
-          assert.doesNotThrow(() => test.isFalsy(), AssertionError);
+          assert.deepStrictEqual(test.isFalsy(), test);
         });
       });
     });
@@ -190,27 +190,27 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is referentially equal", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(HERO);
 
-        assert.doesNotThrow(() => test.isEqualTo(HERO), AssertionError);
+        assert.deepStrictEqual(test.isEqualTo(HERO), test);
       });
     });
 
     context("when the value is shallow equal", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(HERO);
         const hero2 = {
           name: "Batman",
           realName: "Bruce Wayne"
         };
 
-        assert.doesNotThrow(() => test.isEqualTo(hero2), AssertionError);
+        assert.deepStrictEqual(test.isEqualTo(hero2), test);
       });
     });
 
     context("when the value is deep equal", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const hero1 = {
           ...HERO,
           city: {
@@ -227,7 +227,7 @@ describe("Lib.Assertion", () => {
         };
         const test = new Assertion(hero1);
 
-        assert.doesNotThrow(() => test.isEqualTo(hero2), AssertionError);
+        assert.deepStrictEqual(test.isEqualTo(hero2), test);
       });
     });
   });
@@ -264,22 +264,27 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is referentially equal", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(HERO);
 
-        assert.doesNotThrow(() => test.isEqualTo(HERO), AssertionError);
+        assert.deepStrictEqual(test.isSimilarTo(HERO), test);
       });
     });
 
     context("when the value is shallow equal", () => {
-      it("does NOT throw an assertion error", () => {
-        const test = new Assertion(HERO);
-        const hero2 = {
-          name: "Batman",
-          realName: "Bruce Wayne"
-        };
+      [
+        ["object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
+        ["primitive", 5, 5],
+        ["NaN", NaN, NaN],
+        ["null", null, null],
+        ["undefined", undefined, undefined]
+      ]
+      .forEach(([valueType, val1, val2]) => {
+        it(`[${valueType}] returns the assertion instance`, () => {
+          const test = new Assertion(val1);
 
-        assert.doesNotThrow(() => test.isEqualTo(hero2), AssertionError);
+          assert.deepStrictEqual(test.isSimilarTo(val2), test);
+        });
       });
     });
   });
@@ -301,10 +306,10 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is referentially equal", () => {
-      it("does NOT throw an assertion error", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(HERO);
 
-        assert.doesNotThrow(() => test.isEqualTo(HERO), AssertionError);
+        assert.deepStrictEqual(test.isSameAs(HERO), test);
       });
     });
   });
