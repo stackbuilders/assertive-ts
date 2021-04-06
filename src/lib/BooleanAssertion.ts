@@ -2,9 +2,9 @@ import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
 
-export class BoolAssertion<T extends boolean> extends Assertion<T> {
+export class BooleanAssertion extends Assertion<boolean> {
 
-  constructor(actual: T) {
+  constructor(actual: boolean) {
     super(actual);
   }
 

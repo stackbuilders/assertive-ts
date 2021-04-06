@@ -1,11 +1,11 @@
 import { Assertion } from "./Assertion";
-import { BoolAssertion } from "./BoolAssertion";
+import { BooleanAssertion } from "./BooleanAssertion";
 
-export function expect<T extends boolean>(actual: T): BoolAssertion<T>;
+export function expect(actual: boolean): BooleanAssertion;
 export function expect<T>(actual: T): Assertion<T>;
 export function expect(actual: unknown): Assertion<unknown> {
   if (typeof actual === "boolean") {
-    return new BoolAssertion(actual);
+    return new BooleanAssertion(actual);
   }
 
   return new Assertion(actual);

@@ -2,14 +2,14 @@ import assert from "assert";
 
 import expect from "../../src";
 import { Assertion } from "../../src/lib/Assertion";
-import { BoolAssertion } from "../../src/lib/BoolAssertion";
+import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 
 describe("Lib.Expect", () => {
   context("when the actual value is a boolean", () => {
     it("returns a BoolAssertion instance", () => {
       const test = expect(true);
 
-      assert(test instanceof BoolAssertion);
+      assert(test instanceof BooleanAssertion);
     });
   });
 

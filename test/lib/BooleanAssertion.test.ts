@@ -1,12 +1,12 @@
 import assert from "assert";
 
-import { BoolAssertion } from "../../src/lib/BoolAssertion";
+import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 
 describe("Lib.BoolAssertion", () => {
   describe(".isTrue", () => {
     context("when the value is NOT true", () => {
       it("throws an assertion error", () => {
-        const test = new BoolAssertion(false);
+        const test = new BooleanAssertion(false);
 
         assert.throws(() => test.isTrue(), {
           message: "Expected <false> to be true",
@@ -17,7 +17,7 @@ describe("Lib.BoolAssertion", () => {
 
     context("when the value is true", () => {
       it("returns the assertion instance", () => {
-        const test = new BoolAssertion(true);
+        const test = new BooleanAssertion(true);
 
         assert.deepStrictEqual(test.isTrue(), test);
       });
@@ -27,7 +27,7 @@ describe("Lib.BoolAssertion", () => {
   describe(".isFlase", () => {
     context("when the value is NOT false", () => {
       it("throws an assertion error", () => {
-        const test = new BoolAssertion(true);
+        const test = new BooleanAssertion(true);
 
         assert.throws(() => test.isFalse(), {
           message: "Expected <true> to be false",
@@ -38,7 +38,7 @@ describe("Lib.BoolAssertion", () => {
 
     context("when the value is false", () => {
       it("returns the assertion instance", () => {
-        const test = new BoolAssertion(false);
+        const test = new BooleanAssertion(false);
 
         assert.deepStrictEqual(test.isFalse(), test);
       });
