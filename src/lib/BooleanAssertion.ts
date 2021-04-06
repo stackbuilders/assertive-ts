@@ -14,15 +14,15 @@ export class BooleanAssertion extends Assertion<boolean> {
    * @returns the assertion instance
    */
   public isTrue(): this {
-    if (this.actual !== true) {
-      throw new AssertionError({
-        actual: this.actual,
-        expected: true,
-        message: `Expected <${this.actual}> to be true`
-      });
+    if (this.actual === true) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      expected: true,
+      message: `Expected <${this.actual}> to be true`
+    });
   }
 
   /**
@@ -31,14 +31,14 @@ export class BooleanAssertion extends Assertion<boolean> {
    * @returns the assertion instance
    */
   public isFalse(): this {
-    if (this.actual !== false) {
-      throw new AssertionError({
-        actual: this.actual,
-        expected: false,
-        message: `Expected <${this.actual}> to be false`
-      });
+    if (this.actual === false) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      expected: false,
+      message: `Expected <${this.actual}> to be false`
+    });
   }
 }

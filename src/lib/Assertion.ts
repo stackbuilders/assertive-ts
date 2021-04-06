@@ -16,14 +16,14 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public exists(): this {
-    if (this.actual === undefined || this.actual === null) {
-      throw new AssertionError({
-        actual: this.actual,
-        message: `Expected <${this.actual}> to exist`
-      });
+    if (this.actual !== undefined && this.actual !== null) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> to exist`
+    });
   }
 
   /**
@@ -32,15 +32,15 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isNull(): this {
-    if (this.actual !== null) {
-      throw new AssertionError({
-        actual: this.actual,
-        expected: null,
-        message: `Expected <${this.actual}> to be null`
-      });
+    if (this.actual === null) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      expected: null,
+      message: `Expected <${this.actual}> to be null`
+    });
   }
 
   /**
@@ -50,14 +50,14 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isPresent(): this {
-    if (this.actual === undefined) {
-      throw new AssertionError({
-        actual: this.actual,
-        message: "Expected the value to be present"
-      });
+    if (this.actual !== undefined) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      message: "Expected the value to be present"
+    });
   }
 
   /**
@@ -68,14 +68,14 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isTruthy(): this {
-    if (!this.actual) {
-      throw new AssertionError({
-        actual: this.actual,
-        message: `Expected <${this.actual}> to be a truthy value`
-      });
+    if (this.actual) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> to be a truthy value`
+    });
   }
 
   /**
@@ -86,14 +86,14 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isFalsy(): this {
-    if (this.actual) {
-      throw new AssertionError({
-        actual: this.actual,
-        message: `Expected <${this.actual}> to be a falsy value`
-      });
+    if (!this.actual) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> to be a falsy value`
+    });
   }
 
   /**
@@ -103,15 +103,15 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isEqualTo(expected: T): this {
-    if (!isDeepStrictEqual(this.actual, expected)) {
-      throw new AssertionError({
-        actual: this.actual,
-        expected,
-        message: "Expected both values to be deep equal"
-      });
+    if (isDeepStrictEqual(this.actual, expected)) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      expected,
+      message: "Expected both values to be deep equal"
+    });
   }
 
   /**
@@ -154,15 +154,15 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isSameAs(expected: T): this {
-    if (!Object.is(this.actual, expected)) {
-      throw new AssertionError({
-        actual: this.actual,
-        expected,
-        message: "Expected both values to be the same"
-      });
+    if (this.actual === expected) {
+      return this;
     }
 
-    return this;
+    throw new AssertionError({
+      actual: this.actual,
+      expected,
+      message: "Expected both values to be the same"
+    });
   }
 }
 
