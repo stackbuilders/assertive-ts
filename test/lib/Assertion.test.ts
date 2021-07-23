@@ -38,7 +38,7 @@ describe("Lib.Assertion", () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.exists(), {
-            message: `Expected <${value}> to exist`,
+            message: `Expected value to exist, but it was <${value}>`,
             name: "AssertionError"
           });
         });
@@ -244,16 +244,17 @@ describe("Lib.Assertion", () => {
     context("when the value is shallow equal", () => {
       [
         ["object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
+        ["array", [1, 2, 3], [1, 2, 3]],
         ["primitive", 5, 5],
         ["NaN", NaN, NaN],
         ["null", null, null],
         ["undefined", undefined, undefined]
       ]
-      .forEach(([valueType, val1, val2]) => {
+      .forEach(([valueType, expected, actual]) => {
         it(`[${valueType}] returns the assertion instance`, () => {
-          const test = new Assertion(val1);
+          const test = new Assertion(expected);
 
-          assert.deepStrictEqual(test.isSimilarTo(val2), test);
+          assert.deepStrictEqual(test.isSimilarTo(actual), test);
         });
       });
     });
@@ -274,16 +275,18 @@ describe("Lib.Assertion", () => {
     });
 
     context("when the value is NOT shallow equal", () => {
-      it("throws an assertion error", () => {
-        const test = new Assertion(HERO);
-        const other = {
-          ...HERO,
-          cape: true
-        };
+      [
+        ["object", HERO, { ...HERO, cape: true }],
+        ["array", [1, 2, { hero: HERO }], [1, 2, { hero: HERO }]]
+      ]
+      .forEach(([valueType, expected, actual]) => {
+        it(`[${valueType}] throws an assertion error`, () => {
+          const test = new Assertion(expected);
 
-        assert.throws(() => test.isSimilarTo(other), {
-          message: "Expected both values to be similar",
-          name: "AssertionError"
+          assert.throws(() => test.isSimilarTo(actual), {
+            message: "Expected both values to be similar",
+            name: "AssertionError"
+          });
         });
       });
     });

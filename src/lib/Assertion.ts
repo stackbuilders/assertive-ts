@@ -22,7 +22,7 @@ export class Assertion<T> {
 
     throw new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to exist`
+      message: `Expected value to exist, but it was <${this.actual}>`
     });
   }
 

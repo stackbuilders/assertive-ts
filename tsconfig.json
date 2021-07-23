@@ -6,13 +6,15 @@
     "forceConsistentCasingInFileNames": true,
     "module": "CommonJS",
     "noImplicitAny": true,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "./dist",
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES5",
+    "target": "ES5"
   }
 }
