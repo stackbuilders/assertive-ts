@@ -4,7 +4,6 @@ dist/
 # Dependencies
 node_modules/
 .yarn/*
-!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
