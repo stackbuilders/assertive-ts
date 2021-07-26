@@ -7,6 +7,8 @@ const HERO = {
   realName: "Bruce Wayne"
 };
 
+const THINGS = [1, "foo", false];
+
 const FALSY_VALUES = [
   null,
   undefined,
@@ -14,6 +16,24 @@ const FALSY_VALUES = [
   "",
   false,
   NaN
+];
+
+const BASE_EQUALS = [
+  ["null", null, null],
+  ["undefined", undefined, undefined],
+  ["boolean", true, true],
+  ["number", 5, 5],
+  ["string", "foo", "foo"],
+  ["object-ref", HERO, HERO],
+  ["array-ref", THINGS, THINGS]
+];
+
+const BASE_DIFFS = [
+  ["null", null, undefined],
+  ["undefined", undefined, null],
+  ["boolean", true, false],
+  ["number", 5, 3],
+  ["string", "foo", "bar"]
 ];
 
 function falsyAsText(value: typeof FALSY_VALUES[number]): string {
@@ -135,120 +155,55 @@ describe("Lib.Assertion", () => {
   });
 
   describe(".isEqualTo", () => {
-    context("when the value is referentially equal", () => {
-      it("returns the assertion instance", () => {
-        const test = new Assertion(HERO);
+    context("when the value is referentially, shallow, and deep equal", () => {
+      [
+        ...BASE_EQUALS,
+        ["NaN", NaN, NaN], // Strict deep equality has a workaround for `NaN === NaN`
+        ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
+        ["shallow-array", THINGS, [1, "foo", false]],
+        ["deep-object", { ...HERO, opts: THINGS }, { ...HERO, opts: THINGS }],
+        ["deep-array", [...THINGS, { x: HERO }], [...THINGS, { x: HERO }]]
+      ]
+      .forEach(([type, actual, expected]) => {
+        it(`[${type}] returns the assertion instance`, () => {
+          const test = new Assertion(actual);
 
-        assert.deepStrictEqual(test.isEqualTo(HERO), test);
-      });
-    });
-
-    context("when the value is shallow equal", () => {
-      it("returns the assertion instance", () => {
-        const test = new Assertion(HERO);
-        const hero2 = {
-          name: "Batman",
-          realName: "Bruce Wayne"
-        };
-
-        assert.deepStrictEqual(test.isEqualTo(hero2), test);
-      });
-    });
-
-    context("when the value is deep equal", () => {
-      it("returns the assertion instance", () => {
-        const hero1 = {
-          ...HERO,
-          city: {
-            name: "Gotham City",
-            villans: 13
-          }
-        };
-        const hero2 = {
-          ...HERO,
-          city: {
-            name: "Gotham City",
-            villans: 13
-          }
-        };
-        const test = new Assertion(hero1);
-
-        assert.deepStrictEqual(test.isEqualTo(hero2), test);
-      });
-    });
-
-    context("when the value is NOT referentially equal", () => {
-      it("throws an assertion error", () => {
-        const test = new Assertion(HERO);
-        const other = {
-          name: "Superman",
-          realName: "Clark Kent"
-        };
-
-        assert.throws(() => test.isEqualTo(other), {
-          message: "Expected both values to be deep equal",
-          name: "AssertionError"
+          assert.deepStrictEqual(test.isEqualTo(expected), test);
         });
       });
     });
 
-    context("when the value is NOT shallow equal", () => {
-      it("throws an assertion error", () => {
-        const test = new Assertion(HERO);
-        const other = {
-          ...HERO,
-          cape: true
-        };
+    context("when the value is NOT referentially, NOR shallow, NOR deep equal", () => {
+      [
+        ...BASE_DIFFS,
+        ["NaN", NaN, 5],
+        ["object-ref", HERO, { ...HERO, x: 1 }],
+        ["array-ref", THINGS, [...THINGS, "banana"]],
+        ["shallow-object", { ...HERO }, { ...HERO, foo: { x: 1 } }],
+        ["shallow-array", [1, 2, 3], [1, 2, 3, { x: 4 }]],
+        ["deep-object", { ...HERO, opts: { x: 1 } }, { ...HERO, opts: { x: 2 } }],
+        ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 2 }]]
+      ]
+      .forEach(([type, actual, expected]) => {
+        it(`[${type}] throws an assertion error`, () => {
+          const test = new Assertion(actual);
 
-        assert.throws(() => test.isEqualTo(other), {
-          message: "Expected both values to be deep equal",
-          name: "AssertionError"
-        });
-      });
-    });
-
-    context("when the value is NOT deep equal", () => {
-      it("throws an assertion error", () => {
-        const hero1 = {
-          ...HERO,
-          city: {
-            name: "Gotham City"
-          }
-        };
-        const hero2 = {
-          ...HERO,
-          city: {
-            name: "Gotham City",
-            villans: 13
-          }
-        };
-        const test = new Assertion(hero1);
-
-        assert.throws(() => test.isEqualTo(hero2), {
-          message: "Expected both values to be deep equal",
-          name: "AssertionError"
+          assert.throws(() => test.isEqualTo(expected), {
+            message: "Expected both values to be deep equal",
+            name: "AssertionError"
+          });
         });
       });
     });
   });
 
   describe(".isSimilarTo", () => {
-    context("when the value is referentially equal", () => {
-      it("returns the assertion instance", () => {
-        const test = new Assertion(HERO);
-
-        assert.deepStrictEqual(test.isSimilarTo(HERO), test);
-      });
-    });
-
-    context("when the value is shallow equal", () => {
+    context("when the value is referentially and shallow equal", () => {
       [
-        ["object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
-        ["array", [1, 2, 3], [1, 2, 3]],
-        ["primitive", 5, 5],
-        ["NaN", NaN, NaN],
-        ["null", null, null],
-        ["undefined", undefined, undefined]
+        ...BASE_EQUALS,
+        ["NaN", NaN, NaN], // Shallow equality has a workaround for `NaN === NaN`
+        ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
+        ["shallow-array", THINGS, [1, "foo", false]]
       ]
       .forEach(([valueType, expected, actual]) => {
         it(`[${valueType}] returns the assertion instance`, () => {
@@ -259,31 +214,22 @@ describe("Lib.Assertion", () => {
       });
     });
 
-    context("when the value is NOT referentially equal", () => {
-      it("throws an assertion error", () => {
-        const test = new Assertion(HERO);
-        const other = {
-          name: "Superman",
-          realName: "Clark Kent"
-        };
-
-        assert.throws(() => test.isSimilarTo(other), {
-          message: "Expected both values to be similar",
-          name: "AssertionError"
-        });
-      });
-    });
-
-    context("when the value is NOT shallow equal", () => {
+    context("when the value is NOT referentially, NOR shallow equal", () => {
       [
-        ["object", HERO, { ...HERO, cape: true }],
-        ["array", [1, 2, { hero: HERO }], [1, 2, { hero: HERO }]]
+        ...BASE_DIFFS,
+        ["NaN", NaN, 5],
+        ["object-ref", HERO, { ...HERO, x: 1 }],
+        ["array-ref", THINGS, [...THINGS, "banana"]],
+        ["shallow-object", { ...HERO, opt: [...THINGS] }, { ...HERO, opt: [...THINGS] }],
+        ["shallow-array", [1, 2, { hero: HERO }], [1, 2, { hero: HERO }]],
+        ["deep-object", { ...HERO, opts: { x: THINGS } }, { ...HERO, opts: { x: THINGS } }],
+        ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 1 }]]
       ]
-      .forEach(([valueType, expected, actual]) => {
-        it(`[${valueType}] throws an assertion error`, () => {
-          const test = new Assertion(expected);
+      .forEach(([type, actual, expected]) => {
+        it(`[${type}] throws an assertion error`, () => {
+          const test = new Assertion(actual);
 
-          assert.throws(() => test.isSimilarTo(actual), {
+          assert.throws(() => test.isSimilarTo(expected), {
             message: "Expected both values to be similar",
             name: "AssertionError"
           });
@@ -294,20 +240,34 @@ describe("Lib.Assertion", () => {
 
   describe(".isSameAs", () => {
     context("when the value is referentially equal", () => {
-      it("returns the assertion instance", () => {
-        const test = new Assertion(HERO);
+      BASE_EQUALS.forEach(([type, actual, expected]) => {
+        it(`[${type}] returns the assertion instance`, () => {
+          const test = new Assertion(actual);
 
-        assert.deepStrictEqual(test.isSameAs(HERO), test);
+          assert.deepStrictEqual(test.isSameAs(expected), test);
+        });
       });
     });
 
     context("when the value is NOT referentially equal", () => {
-      it("throws an assertion error", () => {
-        const test = new Assertion(HERO);
+      [
+        ...BASE_DIFFS,
+        ["NaN", NaN, NaN], // In JavaScript `NaN === NaN` will always be `false`
+        ["object-ref", { ...HERO }, { ...HERO }],
+        ["array-ref", [...THINGS], [...THINGS]],
+        ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
+        ["shallow-array", THINGS, [1, "foo", false]],
+        ["deep-object", { ...HERO, opts: { x: THINGS } }, { ...HERO, opts: { x: THINGS } }],
+        ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 1 }]]
+      ]
+      .forEach(([type, actual, expected]) => {
+        it(`[${type}] throws an assertion error`, () => {
+          const test = new Assertion(actual);
 
-        assert.throws(() => test.isSameAs({ ...HERO }), {
-          message: "Expected both values to be the same",
-          name: "AssertionError"
+          assert.throws(() => test.isSameAs(expected), {
+            message: "Expected both values to be the same",
+            name: "AssertionError"
+          });
         });
       });
     });
