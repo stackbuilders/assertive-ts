@@ -43,13 +43,16 @@ function falsyAsText(value: typeof FALSY_VALUES[number]): string {
 }
 
 describe("Lib.Assertion", () => {
-  describe(".exists", () => {
+  describe.only(".exists", () => {
     context("when the value is not null or undefined", () => {
-      it.only("returns the assertion instance", () => {
+      it("returns the assertion instance", () => {
         const test = new Assertion(0);
 
-        assert.ok(test.not.exists());
-        // assert.deepStrictEqual(test.exists(), test);
+        assert.deepStrictEqual(test.exists(), test);
+        assert.throws(() => test.not.exists(), {
+          message: "Expected value to NOT exist, but it was <0>",
+          name: "AssertionError"
+        });
       });
     });
 
@@ -62,6 +65,7 @@ describe("Lib.Assertion", () => {
             message: `Expected value to exist, but it was <${value}>`,
             name: "AssertionError"
           });
+          assert.deepStrictEqual(test.not.exists(), test.not);
         });
       });
     });

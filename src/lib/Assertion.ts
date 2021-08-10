@@ -1,61 +1,49 @@
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
-interface TryResult<T> {
-  hasError: boolean;
-  instance: T;
+interface ExecuteOptions {
+  condition: boolean;
+  error: AssertionError;
+  invertedError: AssertionError;
 }
 
 export class Assertion<T> {
 
   protected readonly actual: T;
 
-  protected notError?: AssertionError;
+  protected readonly inverted: boolean;
 
   public readonly not: this;
 
   constructor(actual: T) {
     this.actual = actual;
+    this.inverted = false;
 
     this.not = new Proxy(this, {
-      get(target, key) {
-        const prop = isKeyOf(target, key)
-          ? target[key]
-          : undefined;
+      get(target, p) {
+        const key = isKeyOf(target, p) ? p : undefined;
 
-        if (typeof prop === "function") {
-          return (...args: unknown[]) => {
-            const { hasError, instance } = target.tryAssertion(prop, args);
-
-            if (!hasError) {
-              const message: string = `WARNING! No assertion error defined for ".not.${String(key)}"`;
-
-              throw instance.notError ?? new AssertionError({ message });
-            }
-
-            return instance;
-          };
+        if (key === "inverted") {
+          return true;
         }
 
-        return prop;
+        return key ? target[key] : undefined;
       }
     });
   }
 
-  private tryAssertion(prop: this[keyof this] & Function, args: unknown[]): TryResult<this> {
-    try {
-      const instance = prop.apply(this, args);
+  protected execute(options: ExecuteOptions): this {
+    const { condition, error, invertedError } = options;
 
-      return {
-        hasError: false,
-        instance
-      };
-    } catch (error) {
-      return {
-        hasError: true,
-        instance: this
-      };
+    if (!condition && !this.inverted) {
+      throw error;
     }
+
+    if (condition && this.inverted) {
+      throw invertedError;
+    }
+
+    return this;
   }
 
   /**
@@ -65,29 +53,19 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public exists(): this {
-    const notError = new AssertionError({
-      actual: this.actual,
-      message: `Expected value to NOT exist, but is was <${this.actual}>`
-    });
-
-    if (this.actual !== undefined && this.actual !== null) {
-      return { ...this, notError };
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       message: `Expected value to exist, but it was <${this.actual}>`
     });
-  }
-
-  public notExist(): this {
-    if (this.actual === undefined || this.actual === null) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value to exist, but it was <${this.actual}>`
+      message: `Expected value to NOT exist, but it was <${this.actual}>`
+    });
+
+    return this.execute({
+      condition: this.actual !== undefined && this.actual !== null,
+      error,
+      invertedError
     });
   }
 
