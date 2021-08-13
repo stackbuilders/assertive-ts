@@ -75,14 +75,19 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isNull(): this {
-    if (this.actual === null) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
-      expected: null,
       message: `Expected <${this.actual}> to be null`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the value NOT to be null"
+    });
+
+    return this.execute({
+      condition: this.actual === null,
+      error,
+      invertedError
     });
   }
 
@@ -93,13 +98,19 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isPresent(): this {
-    if (this.actual !== undefined) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       message: "Expected the value to be present"
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the value NOT to be present"
+    });
+
+    return this.execute({
+      condition: this.actual !== undefined,
+      error,
+      invertedError
     });
   }
 
@@ -111,13 +122,19 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isTruthy(): this {
-    if (this.actual) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be a truthy value`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> NOT to be a truthy value`
+    });
+
+    return this.execute({
+      condition: !!this.actual,
+      error,
+      invertedError
     });
   }
 
@@ -129,13 +146,19 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isFalsy(): this {
-    if (!this.actual) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be a falsy value`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> NOT to be a falsy value`
+    });
+
+    return this.execute({
+      condition: !this.actual,
+      error,
+      invertedError
     });
   }
 
@@ -146,14 +169,20 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isEqualTo(expected: T): this {
-    if (isDeepStrictEqual(this.actual, expected)) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       expected,
       message: "Expected both values to be deep equal"
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected both values to NOT be deep equal"
+    });
+
+    return this.execute({
+      condition: isDeepStrictEqual(this.actual, expected),
+      error,
+      invertedError
     });
   }
 
@@ -164,29 +193,35 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isSimilarTo(expected: T): this {
-    if (isObject(this.actual) && isObject(expected)) {
-      const actualKeys = Object.keys(this.actual) as Array<keyof T>;
-      const expectedKeys = Object.keys(expected) as Array<keyof T>;
-      const sizeMatch = actualKeys.length === expectedKeys.length;
-      const valuesMatch = actualKeys.every(key => this.actual[key] === expected[key]);
-
-      if (sizeMatch && valuesMatch) {
-        return this;
-      }
-    }
-
-    if (isNumber(this.actual) && isNumber(expected) && isNaN(this.actual) && isNaN(expected)) {
-      return this;
-    }
-
-    if (this.actual === expected) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       expected,
       message: "Expected both values to be similar"
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected both values to NOT be similar"
+    });
+
+    const areShallowEqual = (): boolean => {
+      if (isObject(this.actual) && isObject(expected)) {
+        const actualKeys = Object.keys(this.actual) as Array<keyof T>;
+        const expectedKeys = Object.keys(expected) as Array<keyof T>;
+        const sizeMatch = actualKeys.length === expectedKeys.length;
+        const valuesMatch = actualKeys.every(key => this.actual[key] === expected[key]);
+
+        return sizeMatch && valuesMatch;
+      }
+
+      return false;
+    };
+
+    const areBothNaN = isNumber(this.actual) && isNumber(expected) && isNaN(this.actual) && isNaN(expected);
+
+    return this.execute({
+      condition: areShallowEqual() || areBothNaN || this.actual === expected,
+      error,
+      invertedError
     });
   }
 
@@ -197,14 +232,20 @@ export class Assertion<T> {
    * @returns the assertion instance
    */
   public isSameAs(expected: T): this {
-    if (this.actual === expected) {
-      return this;
-    }
-
-    throw new AssertionError({
+    const error = new AssertionError({
       actual: this.actual,
       expected,
       message: "Expected both values to be the same"
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected both values to NOT be the same"
+    });
+
+    return this.execute({
+      condition: this.actual === expected,
+      error,
+      invertedError
     });
   }
 }
