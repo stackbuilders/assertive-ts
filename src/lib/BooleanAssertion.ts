@@ -25,7 +25,7 @@ export class BooleanAssertion extends Assertion<boolean> {
     });
 
     return this.execute({
-      condition: this.actual === true,
+      assertWhen: this.actual === true,
       error,
       invertedError
     });
@@ -48,7 +48,7 @@ export class BooleanAssertion extends Assertion<boolean> {
     });
 
     return this.execute({
-      condition: this.actual === false,
+      assertWhen: this.actual === false,
       error,
       invertedError
     });

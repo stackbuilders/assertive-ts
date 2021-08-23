@@ -2,8 +2,19 @@ import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
 interface ExecuteOptions {
-  condition: boolean;
+  /**
+   * The condition for when the assertion should pass. The negation of this
+   * condition is also used for the `.not` case of the assertion
+   */
+  assertWhen: boolean;
+  /**
+   * The assertion error to throw when the condition is not fullfiled
+   */
   error: AssertionError;
+  /**
+   * The assertion error to throw given the condition was inverted (`.not`),
+   * and it is also not fullfilled
+   */
   invertedError: AssertionError;
 }
 
@@ -32,14 +43,22 @@ export class Assertion<T> {
     });
   }
 
+  /**
+   * A convinince method to execute the assertion. The inversion logic for
+   * `.not` is already embedded in this method, so this should always be used
+   * in assertions to keep the negation system working
+   *
+   * @param options the execution options for the assertion
+   * @returns the Assertion instance if no error was thrown
+   */
   protected execute(options: ExecuteOptions): this {
-    const { condition, error, invertedError } = options;
+    const { assertWhen, error, invertedError } = options;
 
-    if (!condition && !this.inverted) {
+    if (!assertWhen && !this.inverted) {
       throw error;
     }
 
-    if (condition && this.inverted) {
+    if (assertWhen && this.inverted) {
       throw invertedError;
     }
 
@@ -63,7 +82,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: this.actual !== undefined && this.actual !== null,
+      assertWhen: this.actual !== undefined && this.actual !== null,
       error,
       invertedError
     });
@@ -85,7 +104,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: this.actual === null,
+      assertWhen: this.actual === null,
       error,
       invertedError
     });
@@ -108,7 +127,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: this.actual !== undefined,
+      assertWhen: this.actual !== undefined,
       error,
       invertedError
     });
@@ -132,7 +151,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: !!this.actual,
+      assertWhen: !!this.actual,
       error,
       invertedError
     });
@@ -156,7 +175,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: !this.actual,
+      assertWhen: !this.actual,
       error,
       invertedError
     });
@@ -180,7 +199,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: isDeepStrictEqual(this.actual, expected),
+      assertWhen: isDeepStrictEqual(this.actual, expected),
       error,
       invertedError
     });
@@ -219,7 +238,7 @@ export class Assertion<T> {
     const areBothNaN = isNumber(this.actual) && isNumber(expected) && isNaN(this.actual) && isNaN(expected);
 
     return this.execute({
-      condition: areShallowEqual() || areBothNaN || this.actual === expected,
+      assertWhen: areShallowEqual() || areBothNaN || this.actual === expected,
       error,
       invertedError
     });
@@ -243,7 +262,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      condition: this.actual === expected,
+      assertWhen: this.actual === expected,
       error,
       invertedError
     });
