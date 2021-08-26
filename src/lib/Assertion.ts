@@ -71,7 +71,7 @@ export class Assertion<T> {
    *
    * @returns the assertion instance
    */
-  public exists(): this {
+  public toExist(): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected value to exist, but it was <${this.actual}>`
@@ -93,7 +93,7 @@ export class Assertion<T> {
    *
    * @returns the assertion instance
    */
-  public isNull(): this {
+  public toBeNull(): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be null`
@@ -116,7 +116,7 @@ export class Assertion<T> {
    *
    * @returns the assertion instance
    */
-  public isPresent(): this {
+  public toBePresent(): this {
     const error = new AssertionError({
       actual: this.actual,
       message: "Expected the value to be present"
@@ -140,7 +140,7 @@ export class Assertion<T> {
    *
    * @returns the assertion instance
    */
-  public isTruthy(): this {
+  public toBeTruthy(): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be a truthy value`
@@ -164,7 +164,7 @@ export class Assertion<T> {
    *
    * @returns the assertion instance
    */
-  public isFalsy(): this {
+  public toBeFalsy(): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be a falsy value`
@@ -187,7 +187,7 @@ export class Assertion<T> {
    * @param expected the value to compare for deep equality
    * @returns the assertion instance
    */
-  public isEqualTo(expected: T): this {
+  public toBeEqual(expected: T): this {
     const error = new AssertionError({
       actual: this.actual,
       expected,
@@ -211,7 +211,7 @@ export class Assertion<T> {
    * @param expected the value to compare for shallow equality
    * @returns the assertion instance
    */
-  public isSimilarTo(expected: T): this {
+  public toBeSimilar(expected: T): this {
     const error = new AssertionError({
       actual: this.actual,
       expected,
@@ -245,12 +245,12 @@ export class Assertion<T> {
   }
 
   /**
-   * Check the value is the same as another value.
+   * Check if the value is the same as another value.
    *
    * @param expected the value to compare for referential equality
    * @returns the assertion instance
    */
-  public isSameAs(expected: T): this {
+  public toBeSame(expected: T): this {
     const error = new AssertionError({
       actual: this.actual,
       expected,

@@ -13,7 +13,7 @@ export class BooleanAssertion extends Assertion<boolean> {
    *
    * @returns the assertion instance
    */
-  public isTrue(): this {
+  public toBeTrue(): this {
     const error = new AssertionError({
       actual: this.actual,
       expected: true,
@@ -36,7 +36,7 @@ export class BooleanAssertion extends Assertion<boolean> {
    *
    * @returns the assertion instance
    */
-  public isFalse(): this {
+  public toBeFalse(): this {
     const error = new AssertionError({
       actual: this.actual,
       expected: false,

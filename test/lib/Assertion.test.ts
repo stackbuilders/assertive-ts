@@ -68,13 +68,13 @@ function falsyAsText(value: typeof FALSY_VALUES[number]): string {
 }
 
 describe("[Unit] Assertion.test.ts", () => {
-  describe(".exists", () => {
+  describe(".toExist", () => {
     context("when the value is not null or undefined", () => {
       it("returns the assertion instance", () => {
         const test = new Assertion(0);
 
-        assert.deepStrictEqual(test.exists(), test);
-        assert.throws(() => test.not.exists(), {
+        assert.deepStrictEqual(test.toExist(), test);
+        assert.throws(() => test.not.toExist(), {
           message: "Expected value to NOT exist, but it was <0>",
           name: "AssertionError"
         });
@@ -86,23 +86,23 @@ describe("[Unit] Assertion.test.ts", () => {
         it("throws an assertion error", () => {
           const test = new Assertion(value);
 
-          assert.throws(() => test.exists(), {
+          assert.throws(() => test.toExist(), {
             message: `Expected value to exist, but it was <${value}>`,
             name: "AssertionError"
           });
-          assert.deepStrictEqual(test.not.exists(), test.not);
+          assert.deepStrictEqual(test.not.toExist(), test.not);
         });
       });
     });
   });
 
-  describe(".isNull", () => {
+  describe(".toBeNull", () => {
     context("when the value is null", () => {
       it("returns the assertion instance", () => {
         const test = new Assertion(null);
 
-        assert.deepStrictEqual(test.isNull(), test);
-        assert.throws(() => test.not.isNull(), {
+        assert.deepStrictEqual(test.toBeNull(), test);
+        assert.throws(() => test.not.toBeNull(), {
           message: "Expected the value NOT to be null",
           name: "AssertionError"
         });
@@ -113,22 +113,22 @@ describe("[Unit] Assertion.test.ts", () => {
       it("throws an assertion error", () => {
         const test = new Assertion("foo");
 
-        assert.throws(() => test.isNull(), {
+        assert.throws(() => test.toBeNull(), {
           message: "Expected <foo> to be null",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.isNull(), test.not);
+        assert.deepStrictEqual(test.not.toBeNull(), test.not);
       });
     });
   });
 
-  describe(".isPresent", () => {
+  describe(".toBePresent", () => {
     context("when the value is undefined", () => {
       it("returns the assertion instance", () => {
         const test = new Assertion(false);
 
-        assert.deepStrictEqual(test.isPresent(), test);
-        assert.throws(() => test.not.isPresent(), {
+        assert.deepStrictEqual(test.toBePresent(), test);
+        assert.throws(() => test.not.toBePresent(), {
           message: "Expected the value NOT to be present",
           name: "AssertionError"
         });
@@ -139,23 +139,23 @@ describe("[Unit] Assertion.test.ts", () => {
       it("throws an assertion error", () => {
         const test = new Assertion(undefined);
 
-        assert.throws(() => test.isPresent(), {
+        assert.throws(() => test.toBePresent(), {
           message: "Expected the value to be present",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.isPresent(), test.not);
+        assert.deepStrictEqual(test.not.toBePresent(), test.not);
       });
     });
   });
 
-  describe(".isTruthy", () => {
+  describe(".toBeTruthy", () => {
     context("when the value is truthy", () => {
       TRUTHY_VALUES.forEach(value => {
         it(`[${truthyAsText(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
-          assert.deepStrictEqual(test.isTruthy(), test);
-          assert.throws(() => test.not.isTruthy(), {
+          assert.deepStrictEqual(test.toBeTruthy(), test);
+          assert.throws(() => test.not.toBeTruthy(), {
             message: `Expected <${value}> NOT to be a truthy value`,
             name: "AssertionError"
           });
@@ -168,24 +168,24 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${falsyAsText(value)}] throws an assertion error`, () => {
           const test = new Assertion(value);
 
-          assert.throws(() => test.isTruthy(), {
+          assert.throws(() => test.toBeTruthy(), {
             message: `Expected <${value}> to be a truthy value`,
             name: "AssertionError"
           });
-          assert.deepStrictEqual(test.not.isTruthy(), test.not);
+          assert.deepStrictEqual(test.not.toBeTruthy(), test.not);
         });
       });
     });
   });
 
-  describe(".isFalsy", () => {
+  describe(".toBeFalsy", () => {
     context("when the value is falsy", () => {
       FALSY_VALUES.forEach(value => {
         it(`[${falsyAsText(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
-          assert.deepStrictEqual(test.isFalsy(), test);
-          assert.throws(() => test.not.isFalsy(), {
+          assert.deepStrictEqual(test.toBeFalsy(), test);
+          assert.throws(() => test.not.toBeFalsy(), {
             message: `Expected <${value}> NOT to be a falsy value`,
             name: "AssertionError"
           });
@@ -198,17 +198,17 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${truthyAsText(value)}] throws an assertion error`, () => {
           const test = new Assertion(value);
 
-          assert.throws(() => test.isFalsy(), {
+          assert.throws(() => test.toBeFalsy(), {
             message: `Expected <${value}> to be a falsy value`,
             name: "AssertionError"
           });
-          assert.deepStrictEqual(test.not.isFalsy(), test.not);
+          assert.deepStrictEqual(test.not.toBeFalsy(), test.not);
         });
       });
     });
   });
 
-  describe(".isEqualTo", () => {
+  describe(".toBeEqual", () => {
     context("when the value is referentially, shallow, and deep equal", () => {
       [
         ...BASE_EQUALS,
@@ -222,8 +222,8 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${type}] returns the assertion instance`, () => {
           const test = new Assertion(actual);
 
-          assert.deepStrictEqual(test.isEqualTo(expected), test);
-          assert.throws(() => test.not.isEqualTo(expected), {
+          assert.deepStrictEqual(test.toBeEqual(expected), test);
+          assert.throws(() => test.not.toBeEqual(expected), {
             message: "Expected both values to NOT be deep equal",
             name: "AssertionError"
           });
@@ -246,17 +246,17 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${type}] throws an assertion error`, () => {
           const test = new Assertion(actual);
 
-          assert.throws(() => test.isEqualTo(expected), {
+          assert.throws(() => test.toBeEqual(expected), {
             message: "Expected both values to be deep equal",
             name: "AssertionError"
           });
-          assert.deepStrictEqual(test.not.isEqualTo(expected), test.not);
+          assert.deepStrictEqual(test.not.toBeEqual(expected), test.not);
         });
       });
     });
   });
 
-  describe(".isSimilarTo", () => {
+  describe(".toBeSimilar", () => {
     context("when the value is referentially and shallow equal", () => {
       [
         ...BASE_EQUALS,
@@ -268,8 +268,8 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${valueType}] returns the assertion instance`, () => {
           const test = new Assertion(actual);
 
-          assert.deepStrictEqual(test.isSimilarTo(expected), test);
-          assert.throws(() => test.not.isSimilarTo(expected), {
+          assert.deepStrictEqual(test.toBeSimilar(expected), test);
+          assert.throws(() => test.not.toBeSimilar(expected), {
             message: "Expected both values to NOT be similar",
             name: "AssertionError"
           });
@@ -292,24 +292,24 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${type}] throws an assertion error`, () => {
           const test = new Assertion(actual);
 
-          assert.throws(() => test.isSimilarTo(expected), {
+          assert.throws(() => test.toBeSimilar(expected), {
             message: "Expected both values to be similar",
             name: "AssertionError"
           });
-          assert.deepStrictEqual(test.not.isSimilarTo(expected), test.not);
+          assert.deepStrictEqual(test.not.toBeSimilar(expected), test.not);
         });
       });
     });
   });
 
-  describe(".isSameAs", () => {
+  describe(".toBeSame", () => {
     context("when the value is referentially equal", () => {
       BASE_EQUALS.forEach(([type, actual, expected]) => {
         it(`[${type}] returns the assertion instance`, () => {
           const test = new Assertion(actual);
 
-          assert.deepStrictEqual(test.isSameAs(expected), test);
-          assert.throws(() => test.not.isSameAs(expected), {
+          assert.deepStrictEqual(test.toBeSame(expected), test);
+          assert.throws(() => test.not.toBeSame(expected), {
             message: "Expected both values to NOT be the same",
             name: "AssertionError"
           });
@@ -332,11 +332,11 @@ describe("[Unit] Assertion.test.ts", () => {
         it(`[${type}] throws an assertion error`, () => {
           const test = new Assertion(actual);
 
-          assert.throws(() => test.isSameAs(expected), {
+          assert.throws(() => test.toBeSame(expected), {
             message: "Expected both values to be the same",
             name: "AssertionError"
           });
-          assert.deepStrictEqual(test.not.isSameAs(expected), test.not);
+          assert.deepStrictEqual(test.not.toBeSame(expected), test.not);
         });
       });
     });
