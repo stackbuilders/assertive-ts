@@ -2,14 +2,14 @@ import assert from "assert";
 
 import expect, { assertThat } from "../src";
 
-describe("index", () => {
-  context("#expect", () => {
+describe("[Unit] index.test.ts", () => {
+  context("expect", () => {
     it("is exposed to the API", () => {
       assert.ok(expect);
     });
   });
 
-  context("#assertThat", () => {
+  context("assertThat", () => {
     it("is an alias of expect", () => {
       assert.deepStrictEqual(assertThat, expect);
     });

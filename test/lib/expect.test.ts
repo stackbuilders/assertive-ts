@@ -4,7 +4,7 @@ import expect from "../../src";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 
-describe("Lib.Expect", () => {
+describe("[Unit] expect.test.ts", () => {
   context("when the actual value is a boolean", () => {
     it("returns a BoolAssertion instance", () => {
       const test = expect(true);
@@ -13,7 +13,7 @@ describe("Lib.Expect", () => {
     });
   });
 
-  context("when actual value is non of the specific implementations", () => {
+  context("when actual value is none of the specific implementations", () => {
     it("returns am Assertion instance", () => {
       const test = expect({ name: "foo" });
 

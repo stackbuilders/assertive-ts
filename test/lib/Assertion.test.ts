@@ -9,6 +9,15 @@ const HERO = {
 
 const THINGS = [1, "foo", false];
 
+const TRUTHY_VALUES = [
+  true,
+  1,
+  "foo",
+  { },
+  [],
+  new Date()
+];
+
 const FALSY_VALUES = [
   null,
   undefined,
@@ -36,19 +45,39 @@ const BASE_DIFFS = [
   ["string", "foo", "bar"]
 ];
 
+function truthyAsText(value: typeof TRUTHY_VALUES[number]): string {
+  if (Array.isArray(value) && value.length === 0) {
+    return "Empty array";
+  }
+
+  if (value instanceof Date) {
+    return "Date";
+  }
+
+  if (typeof value === "object" && Object.keys(value).length === 0) {
+    return "{ }";
+  }
+
+  return String(value);
+}
+
 function falsyAsText(value: typeof FALSY_VALUES[number]): string {
   return value === ""
     ? '""'
     : `${value}`;
 }
 
-describe("Lib.Assertion", () => {
+describe("[Unit] Assertion.test.ts", () => {
   describe(".exists", () => {
     context("when the value is not null or undefined", () => {
       it("returns the assertion instance", () => {
         const test = new Assertion(0);
 
         assert.deepStrictEqual(test.exists(), test);
+        assert.throws(() => test.not.exists(), {
+          message: "Expected value to NOT exist, but it was <0>",
+          name: "AssertionError"
+        });
       });
     });
 
@@ -61,6 +90,7 @@ describe("Lib.Assertion", () => {
             message: `Expected value to exist, but it was <${value}>`,
             name: "AssertionError"
           });
+          assert.deepStrictEqual(test.not.exists(), test.not);
         });
       });
     });
@@ -72,6 +102,10 @@ describe("Lib.Assertion", () => {
         const test = new Assertion(null);
 
         assert.deepStrictEqual(test.isNull(), test);
+        assert.throws(() => test.not.isNull(), {
+          message: "Expected the value NOT to be null",
+          name: "AssertionError"
+        });
       });
     });
 
@@ -83,6 +117,7 @@ describe("Lib.Assertion", () => {
           message: "Expected <foo> to be null",
           name: "AssertionError"
         });
+        assert.deepStrictEqual(test.not.isNull(), test.not);
       });
     });
   });
@@ -93,6 +128,10 @@ describe("Lib.Assertion", () => {
         const test = new Assertion(false);
 
         assert.deepStrictEqual(test.isPresent(), test);
+        assert.throws(() => test.not.isPresent(), {
+          message: "Expected the value NOT to be present",
+          name: "AssertionError"
+        });
       });
     });
 
@@ -104,16 +143,23 @@ describe("Lib.Assertion", () => {
           message: "Expected the value to be present",
           name: "AssertionError"
         });
+        assert.deepStrictEqual(test.not.isPresent(), test.not);
       });
     });
   });
 
   describe(".isTruthy", () => {
     context("when the value is truthy", () => {
-      it("returns the assertion instance", () => {
-        const test = new Assertion({ });
+      TRUTHY_VALUES.forEach(value => {
+        it(`[${truthyAsText(value)}] returns the assertion instance`, () => {
+          const test = new Assertion(value);
 
-        assert.deepStrictEqual(test.isTruthy(), test);
+          assert.deepStrictEqual(test.isTruthy(), test);
+          assert.throws(() => test.not.isTruthy(), {
+            message: `Expected <${value}> NOT to be a truthy value`,
+            name: "AssertionError"
+          });
+        });
       });
     });
 
@@ -126,6 +172,7 @@ describe("Lib.Assertion", () => {
             message: `Expected <${value}> to be a truthy value`,
             name: "AssertionError"
           });
+          assert.deepStrictEqual(test.not.isTruthy(), test.not);
         });
       });
     });
@@ -138,17 +185,24 @@ describe("Lib.Assertion", () => {
           const test = new Assertion(value);
 
           assert.deepStrictEqual(test.isFalsy(), test);
+          assert.throws(() => test.not.isFalsy(), {
+            message: `Expected <${value}> NOT to be a falsy value`,
+            name: "AssertionError"
+          });
         });
       });
     });
 
     context("when the value NOT falsy", () => {
-      it("throws an assertion error", () => {
-        const test = new Assertion("foo");
+      TRUTHY_VALUES.forEach(value => {
+        it(`[${truthyAsText(value)}] throws an assertion error`, () => {
+          const test = new Assertion(value);
 
-        assert.throws(() => test.isFalsy(), {
-          message: "Expected <foo> to be a falsy value",
-          name: "AssertionError"
+          assert.throws(() => test.isFalsy(), {
+            message: `Expected <${value}> to be a falsy value`,
+            name: "AssertionError"
+          });
+          assert.deepStrictEqual(test.not.isFalsy(), test.not);
         });
       });
     });
@@ -169,6 +223,10 @@ describe("Lib.Assertion", () => {
           const test = new Assertion(actual);
 
           assert.deepStrictEqual(test.isEqualTo(expected), test);
+          assert.throws(() => test.not.isEqualTo(expected), {
+            message: "Expected both values to NOT be deep equal",
+            name: "AssertionError"
+          });
         });
       });
     });
@@ -192,6 +250,7 @@ describe("Lib.Assertion", () => {
             message: "Expected both values to be deep equal",
             name: "AssertionError"
           });
+          assert.deepStrictEqual(test.not.isEqualTo(expected), test.not);
         });
       });
     });
@@ -207,9 +266,13 @@ describe("Lib.Assertion", () => {
       ]
       .forEach(([valueType, expected, actual]) => {
         it(`[${valueType}] returns the assertion instance`, () => {
-          const test = new Assertion(expected);
+          const test = new Assertion(actual);
 
-          assert.deepStrictEqual(test.isSimilarTo(actual), test);
+          assert.deepStrictEqual(test.isSimilarTo(expected), test);
+          assert.throws(() => test.not.isSimilarTo(expected), {
+            message: "Expected both values to NOT be similar",
+            name: "AssertionError"
+          });
         });
       });
     });
@@ -233,6 +296,7 @@ describe("Lib.Assertion", () => {
             message: "Expected both values to be similar",
             name: "AssertionError"
           });
+          assert.deepStrictEqual(test.not.isSimilarTo(expected), test.not);
         });
       });
     });
@@ -245,6 +309,10 @@ describe("Lib.Assertion", () => {
           const test = new Assertion(actual);
 
           assert.deepStrictEqual(test.isSameAs(expected), test);
+          assert.throws(() => test.not.isSameAs(expected), {
+            message: "Expected both values to NOT be the same",
+            name: "AssertionError"
+          });
         });
       });
     });
@@ -268,6 +336,7 @@ describe("Lib.Assertion", () => {
             message: "Expected both values to be the same",
             name: "AssertionError"
           });
+          assert.deepStrictEqual(test.not.isSameAs(expected), test.not);
         });
       });
     });
