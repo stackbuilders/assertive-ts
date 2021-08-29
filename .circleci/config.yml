@@ -1,0 +1,68 @@
+---
+version: 2.1
+
+executors:
+  base:
+    docker:
+      - image: cimg/base:stable
+
+commands:
+  setup:
+    description: Checkout code, setup NodeJS, and install cached dependencies
+
+    steps:
+      - checkout:
+          path: ~/project
+
+      - run:
+          name: Setup NodeJS (with .nvmrc)
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --install' >> $BASH_ENV
+            source $BASH_ENV
+
+      - run:
+          name: Install Yarn Classic
+          command: npm install -g yarn
+
+      - restore_cache:
+          keys:
+            - yarn-v1-{{ checksum "yarn.lock" }}
+            - yarn-v1-
+
+      - run:
+          name: Install packages
+          command: yarn install --immutable
+
+      - save_cache:
+          paths:
+            - ~/project/.yarn/cache
+          key: yarn-v1-{{ checksum "yarn.lock" }}
+
+jobs:
+  build:
+    working_directory: ~/project
+    executor: base
+
+    steps:
+      - setup
+
+      - run:
+          name: Compile
+          command: yarn compile
+
+      - run:
+          name: Lint
+          command: yarn lint
+
+      - run:
+          name: Test
+          command: yarn test
+
+workflows:
+  main:
+    jobs:
+      - build
+
+...
