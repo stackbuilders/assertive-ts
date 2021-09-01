@@ -66,6 +66,35 @@ export class Assertion<T> {
   }
 
   /**
+   * Check if the assertion passes using a generic matcher function. That is,
+   * if the matcher function returns true, the assertion passes, otherwise it
+   * fails.
+   *
+   * As a convenience, the matcher function recieves the actual value in its
+   * first argument, and a boolean in its second which indicates it the logic
+   * was inverted by the `.not` operator
+   *
+   * @param matcher a generic matcher function
+   * @returns the assertion instance
+   */
+  public toMatch(matcher: (actual: T, inverted: boolean) => boolean): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected matcher function to return true"
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected matcher function NOT to return true"
+    });
+
+    return this.execute({
+      assertWhen: matcher(this.actual, this.inverted),
+      error,
+      invertedError
+    });
+  }
+
+  /**
    * Check if the value exists. This means that the value should be neither
    * `null` nor `undefined`.
    *
