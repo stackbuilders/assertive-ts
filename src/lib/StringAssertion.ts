@@ -9,8 +9,8 @@ export class StringAssertion extends Assertion<string> {
   }
 
   /**
-   * Check if the string is empty. That is, when the string strictly does not
-   * contain any characters.
+   * Check if the string is empty. That is, when the string does not contain
+   * any characters.
    *
    * @returns the assertion instance
    */
@@ -21,7 +21,7 @@ export class StringAssertion extends Assertion<string> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value to NOT be empty"
+      message: "Expected the value NOT to be empty"
     });
 
     return this.execute({
@@ -44,7 +44,7 @@ export class StringAssertion extends Assertion<string> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value to NOT be blank"
+      message: "Expected the value NOT to be blank"
     });
 
     return this.execute({
@@ -55,8 +55,8 @@ export class StringAssertion extends Assertion<string> {
   }
 
   /**
-   * Check if the string value is equal to another string. The compare is not
-   * case sensitive, i.e. it ignores the cases of both string values.
+   * Check if the string value is equal to another string. The comparison is
+   * not case sensitive, i.e. it ignores the cases of both string values.
    *
    * @returns the assertion instance
    */
@@ -68,7 +68,7 @@ export class StringAssertion extends Assertion<string> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected both strings to not be equal ignoring case"
+      message: "Expected both strings NOT to be equal ignoring case"
     });
 
     return this.execute({
@@ -93,7 +93,7 @@ export class StringAssertion extends Assertion<string> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to NOT contain <${text}>`
+      message: `Expected <${this.actual}> NOT to contain <${text}>`
     });
 
     return this.execute({
@@ -118,7 +118,7 @@ export class StringAssertion extends Assertion<string> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to NOT contain <${text}> (ignoring case)`
+      message: `Expected <${this.actual}> NOT to contain <${text}> (ignoring case)`
     });
 
     return this.execute({

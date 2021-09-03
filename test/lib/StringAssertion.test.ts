@@ -6,20 +6,20 @@ const ASSERTION_ERROR: string = "AssertionError";
 
 describe("[Unit] StringAssertion.test.ts", () => {
   describe(".toBeEmpty", () => {
-    context("when the values is an empty string", () => {
+    context("when the value is an empty string", () => {
       it("returns the assertion instance", () => {
         const test = new StringAssertion("");
 
         assert.deepStrictEqual(test.toBeEmpty(), test);
         assert.throws(() => test.not.toBeEmpty(), {
-          message: "Expected the value to NOT be empty",
+          message: "Expected the value NOT to be empty",
           name: ASSERTION_ERROR
         });
       });
     });
 
     context("when the value NOT an empty string", () => {
-      it("throws and assertion error", () => {
+      it("throws an assertion error", () => {
         const test = new StringAssertion("Hello World!");
 
         assert.throws(() => test.toBeEmpty(), {
@@ -38,7 +38,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeBlank(), test);
         assert.throws(() => test.not.toBeBlank(), {
-          message: "Expected the value to NOT be blank",
+          message: "Expected the value NOT to be blank",
           name: ASSERTION_ERROR
         });
       });
@@ -63,7 +63,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeEqualIgnoringCase("mIxEd tExT"), test);
         assert.throws(() => test.not.toBeEqualIgnoringCase("mIxEd tExT"), {
-          message: "Expected both strings to not be equal ignoring case",
+          message: "Expected both strings NOT to be equal ignoring case",
           name: ASSERTION_ERROR
         });
       });
@@ -89,7 +89,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toContain("Hello"), test);
         assert.throws(() => test.not.toContain("Hello"), {
-          message: "Expected <Hello World!> to NOT contain <Hello>",
+          message: "Expected <Hello World!> NOT to contain <Hello>",
           name: ASSERTION_ERROR
         });
       });
@@ -115,7 +115,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toContainIgnoringCase("hello"), test);
         assert.throws(() => test.not.toContainIgnoringCase("hello"), {
-          message: "Expected <Hello World!> to NOT contain <hello> (ignoring case)",
+          message: "Expected <Hello World!> NOT to contain <hello> (ignoring case)",
           name: ASSERTION_ERROR
         });
       });
