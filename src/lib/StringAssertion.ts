@@ -79,6 +79,13 @@ export class StringAssertion extends Assertion<string> {
   }
 
   /**
+   * A convenience alias of `.toBeEqualIgnoringCase(..)` assertion.
+   *
+   * @see {@link StringAssertion.toBeEqualIgnoringCase toBeEqualIgnoringCase}
+   */
+  public toBeEqualCaseInsensitive = this.toBeEqualIgnoringCase;
+
+  /**
    * Check if the string value contains the passed string. This check compares
    * both strings in a case sensitive fashion.
    *
@@ -127,6 +134,13 @@ export class StringAssertion extends Assertion<string> {
       invertedError
     });
   }
+
+  /**
+   * A convenience alias of `.toContainIgnoringCase(..)` assertion.
+   *
+   * @see {@link StringAssertion.toContainIgnoringCase toContainIgnoringCase}
+   */
+  public toContainCaseInsensitive = this.toContainIgnoringCase;
 
   /**
    * Check if the string value starts with the passed string

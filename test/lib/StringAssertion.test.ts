@@ -82,6 +82,15 @@ describe("[Unit] StringAssertion.test.ts", () => {
     });
   });
 
+  describe(".toBeEqualCaseInsensitive", () => {
+    it("aliases .toBeEqualIgnoringCase(..) method", () => {
+      const test = new StringAssertion("foo");
+
+      assert.deepStrictEqual(test.toBeEqualCaseInsensitive, test.toBeEqualIgnoringCase);
+      assert.deepStrictEqual(test.not.toBeEqualCaseInsensitive, test.not.toBeEqualIgnoringCase);
+    });
+  });
+
   describe(".toContain", () => {
     context("when the value contains the passed string", () => {
       it("returns the assertion instance", () => {
@@ -131,6 +140,15 @@ describe("[Unit] StringAssertion.test.ts", () => {
         });
         assert.deepStrictEqual(test.not.toContainIgnoringCase("bye"), test.not);
       });
+    });
+  });
+
+  describe(".toContainCaseInsensitive", () => {
+    it("aliases the .toContainIgnoringCase(..) method", () => {
+      const test = new StringAssertion("foo");
+
+      assert.deepStrictEqual(test.toContainCaseInsensitive, test.toContainIgnoringCase);
+      assert.deepStrictEqual(test.not.toContainCaseInsensitive, test.not.toContainIgnoringCase);
     });
   });
 
