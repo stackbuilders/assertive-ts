@@ -30,17 +30,19 @@ export class Assertion<T> {
     this.actual = actual;
     this.inverted = false;
 
-    this.not = new Proxy(this, {
-      get(target, p) {
-        const key = isKeyOf(target, p) ? p : undefined;
+    this.not = new Proxy(this, { get: this.proxyInverter(true) });
+  }
 
-        if (key === "inverted") {
-          return true;
-        }
+  private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
+    return (target, p) => {
+      const key = isKeyOf(target, p) ? p : undefined;
 
-        return key ? target[key] : undefined;
+      if (key === "inverted") {
+        return isInverted;
       }
-    });
+
+      return key ? target[key] : undefined;
+    };
   }
 
   /**
@@ -62,7 +64,9 @@ export class Assertion<T> {
       throw invertedError;
     }
 
-    return this;
+    return this.inverted
+      ? new Proxy(this, { get: this.proxyInverter(false) })
+      : this;
   }
 
   /**
