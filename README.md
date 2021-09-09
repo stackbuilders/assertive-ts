@@ -6,7 +6,7 @@ A type-safe fluent assertion library inspired by [Jest](https://jestjs.io/docs/e
 
 To setup your local environment follow the next steps.
 
-### Requeirements
+### Requirements
 
 * Latest [Yarn Classic](https://classic.yarnpkg.com)
 * NodeJS (Use version set on [.nvmrc](https://github.com/stackbuilders/assertive-ts/blob/master/.nvmrc))
