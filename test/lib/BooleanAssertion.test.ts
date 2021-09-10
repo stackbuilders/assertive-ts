@@ -24,7 +24,7 @@ describe("[Unit] BooleanAssertion.test.ts", () => {
           message: "Expected value to be true",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.toBeTrue(), test.not);
+        assert.deepStrictEqual(test.not.toBeTrue(), test);
       });
     });
   });
@@ -50,7 +50,7 @@ describe("[Unit] BooleanAssertion.test.ts", () => {
           message: "Expected value to be false",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.toBeFalse(), test.not);
+        assert.deepStrictEqual(test.not.toBeFalse(), test);
       });
     });
   });

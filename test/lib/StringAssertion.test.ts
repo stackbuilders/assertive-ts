@@ -26,7 +26,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <Hello World!> to be empty",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toBeEmpty(), test.not);
+        assert.deepStrictEqual(test.not.toBeEmpty(), test);
       });
     });
   });
@@ -51,7 +51,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <  x y z  > to be blank",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toBeBlank(), test.not);
+        assert.deepStrictEqual(test.not.toBeBlank(), test);
       });
     });
   });
@@ -77,7 +77,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected both string to be equal ignoring case",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toBeEqualIgnoringCase("mIxEd sTrInG"), test.not);
+        assert.deepStrictEqual(test.not.toBeEqualIgnoringCase("mIxEd sTrInG"), test);
       });
     });
   });
@@ -112,7 +112,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <Hello World!> to contain <Bye>",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toContain("Bye"), test.not);
+        assert.deepStrictEqual(test.not.toContain("Bye"), test);
       });
     });
   });
@@ -138,7 +138,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <Hello World!> to contain <bye> (ignoring case)",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toContainIgnoringCase("bye"), test.not);
+        assert.deepStrictEqual(test.not.toContainIgnoringCase("bye"), test);
       });
     });
   });
@@ -173,7 +173,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <Hello World!> to start with <Goodbye>",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toStartWith("Goodbye"), test.not);
+        assert.deepStrictEqual(test.not.toStartWith("Goodbye"), test);
       });
     });
   });
@@ -199,7 +199,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <Hello World!> to end with <Moon!>",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toStartWith("Moon!"), test.not);
+        assert.deepStrictEqual(test.not.toStartWith("Moon!"), test);
       });
     });
   });
@@ -225,7 +225,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
           message: "Expected <1234567890x> to match the regular expression </^[0-9]+$/>",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toMatchRegex(/^[0-9]+$/), test.not);
+        assert.deepStrictEqual(test.not.toMatchRegex(/^[0-9]+$/), test);
       });
     });
   });
