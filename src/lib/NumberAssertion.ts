@@ -1,5 +1,4 @@
 import { AssertionError } from "assert";
-import { RmOptions } from "fs";
 
 import { Assertion } from "./Assertion";
 
@@ -221,14 +220,14 @@ export class NumberAssertion extends Assertion<number> {
         actual: this.actual,
         expected: options,
         message: `Expected <${this.actual}> to be ${
-          options.inclusive ? "strictly" : ""
-        } between <${options.range}>`,
+          options.inclusive ? "strictly " : ""
+        }between <${options.range}>`,
       });
       const invertedError = new AssertionError({
         actual: this.actual,
         message: `Expected <${this.actual}> NOT to be ${
-          options.inclusive ? "strictly" : ""
-        } between <${options.range}>`,
+          options.inclusive ? "strictly " : ""
+        }between <${options.range}>`,
       });
 
       return this.execute({
