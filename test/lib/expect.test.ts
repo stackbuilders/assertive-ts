@@ -3,6 +3,7 @@ import assert from "assert";
 import expect from "../../src";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
+import { NumberAssertion } from "../../src/lib/NumberAssertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 
 describe("[Unit] expect.test.ts", () => {
@@ -19,6 +20,14 @@ describe("[Unit] expect.test.ts", () => {
       const test = expect("Hello World!");
 
       assert(test instanceof StringAssertion);
+    });
+  });
+
+  context("when the actual value is a Number", () => {
+    it("returns a NumberAssertion instance", () => {
+      const test = expect(1);
+
+      assert(test instanceof NumberAssertion);
     });
   });
 
