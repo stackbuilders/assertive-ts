@@ -202,12 +202,14 @@ export class NumberAssertion extends Assertion<number> {
   }
 
   /**
-   * Check if the number value is between the range array. This checks
+   * Check if the number value is between the range array. This can or cannot check
    * both limits taking count if are inclusive or not.
    *
    * @param options the object that contains the range (min and max numbers
-   *                that value should be between) and isInclusive (value to
-   *                know if the min and max numbers are inclusive)
+   *                that value should be between), inclusive (boolean value to
+   *                know if the limits are inclusive),  lowInclusive (boolean value
+   *                to know if the low limit is inclusive), highInclusive (boolean
+   *                value to know if the high limit is inclusive)
    * @returns the assertion instance
    */
   public toBeBetween(options: BaseBetweenOptions): this;
