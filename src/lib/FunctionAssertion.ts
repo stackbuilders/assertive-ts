@@ -11,8 +11,8 @@ function functionExecution(func: Function): Error | undefined {
   }
 }
 
-function assertion(error: Error|undefined, type: ErrorConstructor, message?: string) {
-  return !!error && error instanceof type && error.message === message
+function assertion(error: Error | undefined, type: ErrorConstructor, message?: string) {
+  return !!error && error instanceof type && error.message === message;
 }
 
 export class FunctionAssertion extends Assertion<Function> {
@@ -26,20 +26,18 @@ export class FunctionAssertion extends Assertion<Function> {
    * @returns the assertion instance
    */
   public toThrowError(type?: ErrorConstructor, message?: string): this {
-    const expected = type ? new type(message) : Error;
+    const expected = type ? new type(message) : new Error ();
     const errorExecution = functionExecution(this.actual);
     const assert = type ? assertion(errorExecution, type, message) : errorExecution instanceof Error;
-  
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: "Expected to throw error"
+      message: `Expected to throw error <${expected.name}> with message <'${message || ""}'>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected value to NOT throw error"
+      message: `Expected value to NOT throw error <${expected.name}> with message <'${message || ""}'>`
     });
-
 
     return this.execute({
       assertWhen: !!assert,
