@@ -1,6 +1,6 @@
-import { AssertionError } from 'assert';
+import { AssertionError } from "assert";
 
-import { Assertion } from './Assertion';
+import { Assertion } from "./Assertion";
 
 export class DateAssertion extends Assertion<Date> {
   constructor(actual: Date) {
@@ -17,16 +17,16 @@ export class DateAssertion extends Assertion<Date> {
     const error = new AssertionError({
       actual: this.actual,
       expected: date,
-      message: `Expected <${this.actual}> to be before <${date}>`,
+      message: `Expected <${this.actual}> to be before <${date}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be before <${date}>`,
+      message: `Expected <${this.actual}> NOT to be before <${date}>`
     });
     return this.execute({
       assertWhen: this.actual < date,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -39,16 +39,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeBeforeOrEqualTo(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be before or equal to <${date}>`,
+      message: `Expected <${this.actual}> to be before or equal to <${date}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be before or equal to <${date}>`,
+      message: `Expected <${this.actual}> NOT to be before or equal to <${date}>`
     });
     return this.execute({
       assertWhen: this.actual <= date,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -61,16 +61,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeAfter(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be after <${date}>`,
+      message: `Expected <${this.actual}> to be after <${date}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be after <${date}>`,
+      message: `Expected <${this.actual}> NOT to be after <${date}>`
     });
     return this.execute({
       assertWhen: this.actual > date,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -83,16 +83,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeAfterOrEqualTo(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be after or equal to <${date}>`,
+      message: `Expected <${this.actual}> to be after or equal to <${date}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be after or equal to <${date}>`,
+      message: `Expected <${this.actual}> NOT to be after or equal to <${date}>`
     });
     return this.execute({
       assertWhen: this.actual >= date,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -105,16 +105,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameMilisecondsAs(miliseconds: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same miliseconds as <${miliseconds}>`,
+      message: `Expected <${this.actual}> to have same miliseconds as <${miliseconds}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same miliseconds as <${miliseconds}>`,
+      message: `Expected <${this.actual}> NOT to have same miliseconds as <${miliseconds}>`
     });
     return this.execute({
       assertWhen: this.actual.getMilliseconds() === miliseconds,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -127,16 +127,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameSecondsAs(seconds: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same seconds as <${seconds}>`,
+      message: `Expected <${this.actual}> to have same seconds as <${seconds}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same seconds as <${seconds}>`,
+      message: `Expected <${this.actual}> NOT to have same seconds as <${seconds}>`
     });
     return this.execute({
       assertWhen: this.actual.getSeconds() === seconds,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -149,16 +149,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameMinutesAs(minutes: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same minutes as <${minutes}>`,
+      message: `Expected <${this.actual}> to have same minutes as <${minutes}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same minutes as <${minutes}>`,
+      message: `Expected <${this.actual}> NOT to have same minutes as <${minutes}>`
     });
     return this.execute({
       assertWhen: this.actual.getMinutes() === minutes,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -171,16 +171,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameHourAs(hours: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same hours as <${hours}>`,
+      message: `Expected <${this.actual}> to have same hours as <${hours}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same hours as <${hours}>`,
+      message: `Expected <${this.actual}> NOT to have same hours as <${hours}>`
     });
     return this.execute({
       assertWhen: this.actual.getHours() === hours,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -193,16 +193,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameDayAs(day: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same day as <${day}>`,
+      message: `Expected <${this.actual}> to have same day as <${day}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same day as <${day}>`,
+      message: `Expected <${this.actual}> NOT to have same day as <${day}>`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === day,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -215,16 +215,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameMonthAs(month: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same month as <${month}>`,
+      message: `Expected <${this.actual}> to have same month as <${month}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same month as <${month}>`,
+      message: `Expected <${this.actual}> NOT to have same month as <${month}>`
     });
     return this.execute({
       assertWhen: this.actual.getMonth() === month,
       error,
-      invertedError,
+      invertedError
     });
   }
   /**
@@ -236,16 +236,16 @@ export class DateAssertion extends Assertion<Date> {
   public toHaveSameYearAs(year: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to have same year as <${year}>`,
+      message: `Expected <${this.actual}> to have same year as <${year}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to have same year as <${year}>`,
+      message: `Expected <${this.actual}> NOT to have same year as <${year}>`
     });
     return this.execute({
       assertWhen: this.actual.getFullYear() === year,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -257,16 +257,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeMonday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be monday`,
+      message: `Expected <${this.actual}> to be monday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be monday`,
+      message: `Expected <${this.actual}> NOT to be monday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 1,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -278,16 +278,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeTuesday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be tuesday`,
+      message: `Expected <${this.actual}> to be tuesday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be tuesday`,
+      message: `Expected <${this.actual}> NOT to be tuesday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 2,
       error,
-      invertedError,
+      invertedError
     });
   }
 
@@ -299,16 +299,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeWednesday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be wednesday`,
+      message: `Expected <${this.actual}> to be wednesday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be wednesday`,
+      message: `Expected <${this.actual}> NOT to be wednesday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 3,
       error,
-      invertedError,
+      invertedError
     });
   }
   /**
@@ -319,16 +319,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeThursday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be thursday`,
+      message: `Expected <${this.actual}> to be thursday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be thursday`,
+      message: `Expected <${this.actual}> NOT to be thursday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 4,
       error,
-      invertedError,
+      invertedError
     });
   }
   /**
@@ -339,16 +339,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeFriday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be friday`,
+      message: `Expected <${this.actual}> to be friday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be friday`,
+      message: `Expected <${this.actual}> NOT to be friday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 5,
       error,
-      invertedError,
+      invertedError
     });
   }
   /**
@@ -359,16 +359,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeSaturday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be saturday`,
+      message: `Expected <${this.actual}> to be saturday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be saturday`,
+      message: `Expected <${this.actual}> NOT to be saturday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 6,
       error,
-      invertedError,
+      invertedError
     });
   }
   /**
@@ -379,16 +379,16 @@ export class DateAssertion extends Assertion<Date> {
   public toBeSunday(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be sunday`,
+      message: `Expected <${this.actual}> to be sunday`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be sunday`,
+      message: `Expected <${this.actual}> NOT to be sunday`
     });
     return this.execute({
       assertWhen: this.actual.getDay() === 0,
       error,
-      invertedError,
+      invertedError
     });
   }
 }
