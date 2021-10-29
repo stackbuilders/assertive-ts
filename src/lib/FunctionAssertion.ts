@@ -2,6 +2,7 @@ import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
 
+// tslint:disable-next-line: ban-types
 function functionExecution(func: Function): Error | undefined {
   try {
     func();
@@ -15,8 +16,10 @@ function assertion(error: Error | undefined, type: ErrorConstructor, message?: s
   return !!error && error instanceof type && error.message === message;
 }
 
+// tslint:disable-next-line: ban-types
 export class FunctionAssertion extends Assertion<Function> {
 
+  // tslint:disable-next-line: ban-types
   constructor(actual: Function) {
     super(actual);
   }
