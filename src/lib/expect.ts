@@ -1,5 +1,6 @@
 import { Assertion } from "./Assertion";
 import { BooleanAssertion } from "./BooleanAssertion";
+import { isPromise } from "./helpers/guards";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 
@@ -18,11 +19,4 @@ export function expect<T>(actual: unknown): Assertion<unknown> | PromiseAssertio
 
     default: return new Assertion(actual);
   }
-}
-
-function isPromise<T>(value: unknown): value is Promise<T> {
-  return typeof value === "object"
-    && typeof Object(value)?.then === "function"
-    && typeof Object(value)?.catch === "function"
-    && typeof Object(value)?.finally === "function";
 }
