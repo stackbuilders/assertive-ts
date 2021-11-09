@@ -15,6 +15,7 @@
     "outDir": "./dist",
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES5"
+    "target": "ES5",
+    "typeRoots": ["./node_modules/@types/", "./typings/"]
   }
 }
