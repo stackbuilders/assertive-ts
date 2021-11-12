@@ -1,9 +1,9 @@
 import { Assertion } from "./Assertion";
 import { BooleanAssertion } from "./BooleanAssertion";
-import { NumberAssertion } from "./NumberAssertion";
-import { StringAssertion } from "./StringAssertion";
-import { PromiseAssertion } from "./PromiseAssertion";
 import { isPromise } from "./helpers/guards";
+import { NumberAssertion } from "./NumberAssertion";
+import { PromiseAssertion } from "./PromiseAssertion";
+import { StringAssertion } from "./StringAssertion";
 
 export function expect(actual: boolean): BooleanAssertion;
 export function expect(actual: number): NumberAssertion;

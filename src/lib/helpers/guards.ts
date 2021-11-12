@@ -2,7 +2,7 @@ import {
   BetweenOptions,
   HighInclusiveBetweenOptions,
   InclusiveBetweenOptions,
-  LowInclusiveBetweenOptions,
+  LowInclusiveBetweenOptions
 } from "../NumberAssertion";
 
 export function isPromise<T>(value: unknown): value is Promise<T> {
