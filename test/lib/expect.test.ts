@@ -4,9 +4,18 @@ import expect from "../../src";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 import { NumberAssertion } from "../../src/lib/NumberAssertion";
+import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 
 describe("[Unit] expect.test.ts", () => {
+  context("when the actual value is a promise", () => {
+    it("returns a PromiseAssertion instance", () => {
+      const test = expect(Promise.resolve("foo"));
+
+      assert(test instanceof PromiseAssertion);
+    });
+  });
+
   context("when the actual value is a boolean", () => {
     it("returns a BooleanAssertion instance", () => {
       const test = expect(true);
