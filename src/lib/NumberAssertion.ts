@@ -1,46 +1,38 @@
 import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
+import {
+  isHighInclusiveOptions,
+  isInclusiveOptions,
+  isLowInclusiveOptions,
+} from "./helpers/guards";
 
 interface BaseBetweenOptions {
   range: [number, number];
 }
 
-interface InclusiveBetweenOptions extends BaseBetweenOptions {
+interface CloseToOptions {
+  value: number;
+  withOffset: number;
+}
+
+export interface InclusiveBetweenOptions extends BaseBetweenOptions {
   inclusive: boolean;
 }
 
-interface LowInclusiveBetweenOptions extends BaseBetweenOptions {
+export interface LowInclusiveBetweenOptions extends BaseBetweenOptions {
   lowInclusive: boolean;
 }
 
-interface HighInclusiveBetweenOptions extends BaseBetweenOptions {
+export interface HighInclusiveBetweenOptions extends BaseBetweenOptions {
   highInclusive: boolean;
 }
 
-type BetweenOptions =
+export type BetweenOptions =
   | BaseBetweenOptions
   | InclusiveBetweenOptions
   | LowInclusiveBetweenOptions
   | HighInclusiveBetweenOptions;
-
-function isInclusiveOptions(
-  options: BetweenOptions
-): options is InclusiveBetweenOptions {
-  return (options as InclusiveBetweenOptions).inclusive !== undefined;
-}
-
-function isLowInclusiveOptions(
-  options: BetweenOptions
-): options is LowInclusiveBetweenOptions {
-  return (options as LowInclusiveBetweenOptions).lowInclusive !== undefined;
-}
-
-function isHighInclusiveOptions(
-  options: BetweenOptions
-): options is HighInclusiveBetweenOptions {
-  return (options as HighInclusiveBetweenOptions).highInclusive !== undefined;
-}
 
 export class NumberAssertion extends Assertion<number> {
   constructor(actual: number) {
@@ -55,6 +47,7 @@ export class NumberAssertion extends Assertion<number> {
   public toBeZero(): this {
     const error = new AssertionError({
       actual: this.actual,
+      expected: 0,
       message: `Expected <${this.actual}> to be zero`,
     });
     const invertedError = new AssertionError({
@@ -114,7 +107,9 @@ export class NumberAssertion extends Assertion<number> {
   }
 
   /**
-   * Check if the number is finite. That is, when the number has a limit or bound.
+   * Check if the number is finite. That is, when the number is not a
+   * JavaScript's {@link Infinity} value. Keep in mind that this includes
+   * positive and negative infinity.
    *
    * @returns the assertion instance
    */
@@ -136,13 +131,15 @@ export class NumberAssertion extends Assertion<number> {
   }
 
   /**
-   * Check if the number is NaN. That is, when the value is Not-A-Number.
+   * Check if the number is `NaN`. That is only when the number is JavaScript's
+   * {@link NaN} value.
    *
    * @returns the assertion instance
    */
   public toBeNaN(): this {
     const error = new AssertionError({
       actual: this.actual,
+      expected: NaN,
       message: `Expected <${this.actual}> to be NaN`,
     });
     const invertedError = new AssertionError({
@@ -202,14 +199,15 @@ export class NumberAssertion extends Assertion<number> {
   }
 
   /**
-   * Check if the number value is between the range array. This can or cannot check
-   * both limits taking count if are inclusive or not.
+   * Check if the number is between the specified bounds. By default, the
+   * bounds are exclusive, but the options allow to set the high, low, or both
+   * limits as inclusive
    *
-   * @param options the object that contains the range (min and max numbers
-   *                that value should be between), inclusive (boolean value to
-   *                know if the limits are inclusive),  lowInclusive (boolean value
-   *                to know if the low limit is inclusive), highInclusive (boolean
-   *                value to know if the high limit is inclusive)
+   * @param options an object of type {@link Between Options} where the `range`
+   *                property defines the bounds, so it's always required. Use
+   *                `inclusive: true` to make both limits inclusive. Or you can
+   *                selectively make low or high limits inclusive using
+   *                `lowInclusive: true` or `highInclusive: true`, respectively
    * @returns the assertion instance
    */
   public toBeBetween(options: BaseBetweenOptions): this;
@@ -239,7 +237,9 @@ export class NumberAssertion extends Assertion<number> {
         error,
         invertedError,
       });
-    } else if (isLowInclusiveOptions(options)) {
+    }
+
+    if (isLowInclusiveOptions(options)) {
       const error = new AssertionError({
         actual: this.actual,
         expected: options,
@@ -263,7 +263,9 @@ export class NumberAssertion extends Assertion<number> {
         error,
         invertedError,
       });
-    } else if (isHighInclusiveOptions(options)) {
+    }
+
+    if (isHighInclusiveOptions(options)) {
       const error = new AssertionError({
         actual: this.actual,
         expected: options,
@@ -288,6 +290,7 @@ export class NumberAssertion extends Assertion<number> {
         invertedError,
       });
     }
+
     const error = new AssertionError({
       actual: this.actual,
       expected: options,
@@ -313,7 +316,7 @@ export class NumberAssertion extends Assertion<number> {
    * @param options the object that contains the value (base number that value should be close) and withOffset (value of min and max offset)
    * @returns the assertion instance
    */
-  public toBeCloseTo(options: { value: number; withOffset: number }): this {
+  public toBeCloseTo(options: CloseToOptions): this {
     const error = new AssertionError({
       actual: this.actual,
       expected: options,
@@ -324,10 +327,11 @@ export class NumberAssertion extends Assertion<number> {
       message: `Expected <${this.actual}> NOT to be close to <${options.value}> with offset <${options.withOffset}>`,
     });
 
+    const { value, withOffset } = options;
+
     return this.execute({
       assertWhen:
-        this.actual <= options.value + options.withOffset &&
-        this.actual >= options.value - options.withOffset,
+        this.actual <= value + withOffset && this.actual >= value - withOffset,
       error,
       invertedError,
     });
@@ -342,7 +346,6 @@ export class NumberAssertion extends Assertion<number> {
   public toBeGreaterThan(value: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: value,
       message: `Expected <${this.actual}> to be greater than <${value}>`,
     });
     const invertedError = new AssertionError({
@@ -366,7 +369,6 @@ export class NumberAssertion extends Assertion<number> {
   public toBeGreaterThanOrEqualTo(value: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: value,
       message: `Expected <${this.actual}> to be greater than or equal to <${value}>`,
     });
     const invertedError = new AssertionError({
@@ -390,7 +392,6 @@ export class NumberAssertion extends Assertion<number> {
   public toBeLessThan(value: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: value,
       message: `Expected <${this.actual}> to be less than <${value}>`,
     });
     const invertedError = new AssertionError({
@@ -414,7 +415,6 @@ export class NumberAssertion extends Assertion<number> {
   public toBeLessThanOrEqualTo(value: number): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: value,
       message: `Expected <${this.actual}> to be less than or equal to <${value}>`,
     });
     const invertedError = new AssertionError({

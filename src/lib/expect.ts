@@ -19,14 +19,10 @@ export function expect<T>(
   }
 
   switch (typeof actual) {
-    case "boolean":
-      return new BooleanAssertion(actual);
-    case "string":
-      return new StringAssertion(actual);
-    case "number":
-      return new NumberAssertion(actual);
+    case "boolean": return new BooleanAssertion(actual);
+    case "string": return new StringAssertion(actual);
+    case "number": return new NumberAssertion(actual);
 
-    default:
-      return new Assertion(actual);
+    default: return new Assertion(actual);
   }
 }
