@@ -8,12 +8,15 @@ function functionExecution(func: Function): Error | undefined {
     func();
     return undefined;
   } catch (e) {
-    return e as Error;
+    if (e instanceof Error) {
+      return e;
+    }
+    return new Error(`The function threw something that is not an Error: ${e}`);
   }
 }
 
-function assertion(error: Error | undefined, type: ErrorConstructor, message?: string) {
-  return !!error && error instanceof type && error.message === message;
+function assertion<E extends Error>(error: E | undefined , expectedError: E) {
+  return !!error && error.name === expectedError.name && error.message === expectedError.message;
 }
 
 // tslint:disable-next-line: ban-types
@@ -28,18 +31,18 @@ export class FunctionAssertion extends Assertion<Function> {
    *
    * @returns the assertion instance
    */
-  public toThrowError(type?: ErrorConstructor, message?: string): this {
-    const expected = type ? new type(message) : new Error ();
+  public toThrowError<E extends Error>(expectedError?: E): this {
+    const expected = expectedError || new Error();
     const errorExecution = functionExecution(this.actual);
-    const assert = type ? assertion(errorExecution, type, message) : errorExecution instanceof Error;
+    const assert = expectedError ? assertion(errorExecution, expected) : errorExecution instanceof Error;
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: `Expected to throw error <${expected.name}> with message <'${message || ""}'>`
+      message: `Expected to throw error <${expected.name}> with message <'${expected.message || ""}'>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value to NOT throw error <${expected.name}> with message <'${message || ""}'>`
+      message: `Expected value to NOT throw error <${expected.name}> with message <'${expected.message || ""}'>`
     });
 
     return this.execute({
