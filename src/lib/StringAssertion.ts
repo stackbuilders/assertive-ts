@@ -3,6 +3,7 @@ import { AssertionError } from "assert";
 import { Assertion } from "./Assertion";
 
 export class StringAssertion extends Assertion<string> {
+
   constructor(actual: string) {
     super(actual);
   }

@@ -1,18 +1,18 @@
-import { DateConfOptions, DayOfWeek , Month } from "../DateAssertion.types";
+import { DateOptions, DayOfWeek, Month } from "../DateAssertion.types";
 
-export function dayOfWeekAsNumber ( day: DayOfWeek ): number {
+export function dayOfWeekAsNumber (day: DayOfWeek): number {
     switch (day) {
-      case "monday": return 0;
-      case "tuesday": return 1;
-      case "wednesday": return 2;
-      case "thursday": return 3;
-      case "friday": return 4;
-      case "saturday": return 5;
-      case "sunday": return 6;
+      case "monday": return 1;
+      case "tuesday": return 2;
+      case "wednesday": return 3;
+      case "thursday": return 4;
+      case "friday": return 5;
+      case "saturday": return 6;
+      case "sunday": return 7;
     }
   }
 
-  export function monthOfYear ( month: Month ): number {
+  export function monthOfYear (month: Month): number {
     switch (month) {
       case "january": return 0;
       case "february": return 1;
@@ -29,8 +29,8 @@ export function dayOfWeekAsNumber ( day: DayOfWeek ): number {
     }
   }
 
-  export function dateConfOptionsToDate( configurationObject: DateConfOptions ): Date {
-    const { year, month, day, hours, minutes, seconds, miliseconds} = configurationObject;
+  export function dateConfOptionsToDate(configurationObject: DateOptions): Date {
+    const { year, month, day, hours, minutes, seconds, miliseconds } = configurationObject;
     const monthAsNum = typeof month === "string"
       ? monthOfYear(month)
       : month;
@@ -48,16 +48,3 @@ export function dayOfWeekAsNumber ( day: DayOfWeek ): number {
       miliseconds ?? today.getMilliseconds()
     );
   }
-
-  export function dayOfWeekToDate( day: DayOfWeek | number ): Date {
-    const dayAsNum = typeof day === "string"
-      ? dayOfWeekAsNumber(day)
-      : day;
-    const today = new Date();
-    return new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      dayAsNum
-    );
-  }
-

@@ -10,9 +10,7 @@ export function expect(actual: string): StringAssertion;
 export function expect(actual: Date): DateAssertion;
 export function expect<T>(actual: Promise<T>): PromiseAssertion<T>;
 export function expect<T>(actual: T): Assertion<T>;
-export function expect<T>(
-  actual: unknown
-): Assertion<unknown> | PromiseAssertion<T> {
+export function expect<T>(actual: unknown): Assertion<unknown> | PromiseAssertion<T> {
   if (isPromise<T>(actual)) {
     return new PromiseAssertion(actual);
   }
@@ -22,12 +20,8 @@ export function expect<T>(
   }
 
   switch (typeof actual) {
-    case "boolean":
-      return new BooleanAssertion(actual);
-    case "string":
-      return new StringAssertion(actual);
-
-    default:
-      return new Assertion(actual);
+    case "boolean": return new BooleanAssertion(actual);
+    case "string": return new StringAssertion(actual);
+    default: return new Assertion(actual);
   }
 }

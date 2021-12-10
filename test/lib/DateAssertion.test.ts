@@ -1,20 +1,19 @@
 import assert from "assert";
 
 import { DateAssertion } from "../../src/lib/DateAssertion";
-import { dateConfOptionsToDate, dayOfWeekToDate } from "../../src/lib/helpers/dates";
+import { dateConfOptionsToDate, dayOfWeekAsNumber } from "../../src/lib/helpers/dates";
 
 const ASSERTION_ERROR: string = "AssertionError";
 
 describe("[Unit] DateAssertion.test.ts", () => {
-
   describe(".toBeDayOfWeek", () => {
     context("when the day of the actual date matches a passed day", () => {
       it("returns the assertion instance", () => {
-        const actualDate = new Date(2021, 1, 0);
+        const actualDate = new Date(2021, 0, 4);
         const test = new DateAssertion(actualDate);
         assert.deepStrictEqual(test.toBeDayOfWeek("monday"), test);
         assert.throws(() => test.not.toBeDayOfWeek("monday"), {
-          message: `Expected <${actualDate}> NOT to be equal to <${dayOfWeekToDate("monday")}>`,
+          message: `Expected <${actualDate.getDay()}> NOT to be equal to <${dayOfWeekAsNumber("monday")}>`,
           name: ASSERTION_ERROR
         });
       });
@@ -22,10 +21,10 @@ describe("[Unit] DateAssertion.test.ts", () => {
 
     context("when the day of the actual date NOT match a passed day", () => {
       it("throws an assertion error", () => {
-        const actualDate = new Date(2021, 1, 2);
+        const actualDate = new Date(2021, 0, 3);
         const test = new DateAssertion(actualDate);
         assert.throws(() => test.toBeDayOfWeek(1), {
-          message: `Expected <${actualDate}> to be equal to <${dayOfWeekToDate(1)}>`,
+          message: `Expected <${actualDate.getDay()}> to be equal to <${1}>`,
           name: ASSERTION_ERROR
         });
         assert.deepStrictEqual(test.not.toBeDayOfWeek(1), test);
@@ -33,7 +32,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
     });
   });
 
-  describe(".toBeEqualTo", () => {
+  describe(".toHaveDateParts", () => {
     context("when the actual date matches the passed date", () => {
       it("returns the assertion instance", () => {
         const actualDate = new Date(2021, 1, 1, 12, 10, 15, 25);
@@ -47,8 +46,8 @@ describe("[Unit] DateAssertion.test.ts", () => {
           year: 2021
         };
         const test = new DateAssertion(actualDate);
-        assert.deepStrictEqual(test.toBeEqualTo(options), test);
-        assert.throws(() => test.not.toBeEqualTo(options), {
+        assert.deepStrictEqual(test.toHaveDateParts(options), test);
+        assert.throws(() => test.not.toHaveDateParts(options), {
           message: `Expected <${actualDate}> NOT to be equal to <${dateConfOptionsToDate(options)}>`,
           name: ASSERTION_ERROR
         });
@@ -68,11 +67,11 @@ describe("[Unit] DateAssertion.test.ts", () => {
           year: 2021
         };
         const test = new DateAssertion(actualDate);
-        assert.throws(() => test.toBeEqualTo(options), {
+        assert.throws(() => test.toHaveDateParts(options), {
           message: `Expected <${actualDate}> to be equal to <${dateConfOptionsToDate(options)}>`,
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toBeEqualTo(options), test);
+        assert.deepStrictEqual(test.not.toHaveDateParts(options), test);
       });
     });
   });
@@ -106,9 +105,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
   });
 
   describe(".toBeBeforeOrEqualTo", () => {
-    context(
-      "when the actual date is before or equal to the passed date",
-      () => {
+    context("when the actual date is before or equal to the passed date", () => {
         it("returns the assertion instance", () => {
           const actualDate = new Date(2021, 1, 1);
           const passedDate = new Date(2021, 1, 1);
@@ -122,9 +119,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
       }
     );
 
-    context(
-      "when the actual date is NOT before or equal to the passed date",
-      () => {
+    context("when the actual date is NOT before or equal to the passed date", () => {
         it("throws an assertion error", () => {
           const actualDate = new Date(2021, 2, 1);
           const passedDate = new Date(2021, 1, 1);
@@ -184,9 +179,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
       });
     });
 
-    context(
-      "when the actual date is NOT after or equal to the passed date",
-      () => {
+    context("when the actual date is NOT after or equal to the passed date", () => {
         it("throws an assertion error", () => {
           const actualDate = new Date(2021, 1, 1);
           const passedDate = new Date(2021, 2, 1);
@@ -200,5 +193,4 @@ describe("[Unit] DateAssertion.test.ts", () => {
       }
     );
   });
-
 });

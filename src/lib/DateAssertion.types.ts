@@ -27,7 +27,7 @@ export type DateMethod = {
     : never;
 }[keyof Date];
 
-export interface DateConfOptions {
+export interface DateOptions {
   year?: number;
   month?: Month | number;
   day?: DayOfWeek | number;
