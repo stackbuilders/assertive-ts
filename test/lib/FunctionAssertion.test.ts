@@ -71,7 +71,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           message: "Expected to throw error <TypeError> with message <'Error'>",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.toThrowError(new TypeError("Error")), test.not);
+        assert.deepStrictEqual(test.not.toThrowError(new TypeError("Error")), test);
       });
     });
 
@@ -83,7 +83,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           message: "Expected to throw error <TypeError> with message <'Error 2'>",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.toThrowError(new TypeError("Error 2")), test.not);
+        assert.deepStrictEqual(test.not.toThrowError(new TypeError("Error 2")), test);
       });
     });
 
@@ -95,7 +95,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           message: "Expected to throw error <RangeError> with message <'Error'>",
           name: "AssertionError"
         });
-        assert.deepStrictEqual(test.not.toThrowError(new RangeError("Error")), test.not);
+        assert.deepStrictEqual(test.not.toThrowError(new RangeError("Error")), test);
       });
     });
   });
