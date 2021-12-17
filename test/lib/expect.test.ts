@@ -3,6 +3,7 @@ import assert from "assert";
 import expect from "../../src";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
+import { DateAssertion } from "../../src/lib/DateAssertion";
 import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 
@@ -28,6 +29,14 @@ describe("[Unit] expect.test.ts", () => {
       const test = expect("Hello World!");
 
       assert(test instanceof StringAssertion);
+    });
+  });
+
+  context("when the actual value is a Date", () => {
+    it("returns a DateAssertion instance ", () => {
+      const test = expect(new Date());
+
+      assert(test instanceof DateAssertion);
     });
   });
 

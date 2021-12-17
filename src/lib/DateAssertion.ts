@@ -2,7 +2,7 @@ import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
 import { DateMethod, DateOptions, DayOfWeek } from "./DateAssertion.types";
-import { dateConfOptionsToDate, dayOfWeekAsNumber } from "./helpers/dates";
+import { dateOptionsToDate, dayOfWeekAsNumber } from "./helpers/dates";
 
 const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
   day: "getDay",
@@ -61,7 +61,7 @@ export class DateAssertion extends Assertion<Date> {
    * @returns the assertion instance
    */
   public toHaveDateParts(options: DateOptions): this {
-    const optionsAsDate = dateConfOptionsToDate(options);
+    const optionsAsDate = dateOptionsToDate(options);
     const assertWhen = Object.keys(options).every(key => {
       const dateMethod = DATE_METHOD_MAP[key];
       return options[key] === this.actual[dateMethod]();
@@ -113,7 +113,7 @@ export class DateAssertion extends Assertion<Date> {
    * @param date the date to compare with
    * @returns the assertion instance
    */
-  public toBeBeforeOrEqualTo(date: Date): this {
+  public toBeBeforeOrEqual(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be before or equal to <${date}>`
@@ -159,7 +159,7 @@ export class DateAssertion extends Assertion<Date> {
    * @param date the date to compare with
    * @returns the assertion instance
    */
-  public toBeAfterOrEqualTo(date: Date): this {
+  public toBeAfterOrEqual(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be after or equal to <${date}>`

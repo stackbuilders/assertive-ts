@@ -1,7 +1,7 @@
 import assert from "assert";
 
 import { DateAssertion } from "../../src/lib/DateAssertion";
-import { dateConfOptionsToDate, dayOfWeekAsNumber } from "../../src/lib/helpers/dates";
+import { dateOptionsToDate, dayOfWeekAsNumber } from "../../src/lib/helpers/dates";
 
 const ASSERTION_ERROR: string = "AssertionError";
 
@@ -48,7 +48,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
         const test = new DateAssertion(actualDate);
         assert.deepStrictEqual(test.toHaveDateParts(options), test);
         assert.throws(() => test.not.toHaveDateParts(options), {
-          message: `Expected <${actualDate}> NOT to be equal to <${dateConfOptionsToDate(options)}>`,
+          message: `Expected <${actualDate}> NOT to be equal to <${dateOptionsToDate(options)}>`,
           name: ASSERTION_ERROR
         });
       });
@@ -68,7 +68,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
         };
         const test = new DateAssertion(actualDate);
         assert.throws(() => test.toHaveDateParts(options), {
-          message: `Expected <${actualDate}> to be equal to <${dateConfOptionsToDate(options)}>`,
+          message: `Expected <${actualDate}> to be equal to <${dateOptionsToDate(options)}>`,
           name: ASSERTION_ERROR
         });
         assert.deepStrictEqual(test.not.toHaveDateParts(options), test);
@@ -110,8 +110,8 @@ describe("[Unit] DateAssertion.test.ts", () => {
           const actualDate = new Date(2021, 1, 1);
           const passedDate = new Date(2021, 1, 1);
           const test = new DateAssertion(actualDate);
-          assert.deepStrictEqual(test.toBeBeforeOrEqualTo(passedDate), test);
-          assert.throws(() => test.not.toBeBeforeOrEqualTo(passedDate), {
+          assert.deepStrictEqual(test.toBeBeforeOrEqual(passedDate), test);
+          assert.throws(() => test.not.toBeBeforeOrEqual(passedDate), {
             message: `Expected <${actualDate}> NOT to be before or equal to <${passedDate}>`,
             name: ASSERTION_ERROR
           });
@@ -124,12 +124,12 @@ describe("[Unit] DateAssertion.test.ts", () => {
           const actualDate = new Date(2021, 2, 1);
           const passedDate = new Date(2021, 1, 1);
           const test = new DateAssertion(actualDate);
-          assert.throws(() => test.toBeBeforeOrEqualTo(passedDate), {
+          assert.throws(() => test.toBeBeforeOrEqual(passedDate), {
             message: `Expected <${actualDate}> to be before or equal to <${passedDate}>`,
             name: ASSERTION_ERROR
           });
           assert.deepStrictEqual(
-            test.not.toBeBeforeOrEqualTo(passedDate),
+            test.not.toBeBeforeOrEqual(passedDate),
             test
           );
         });
@@ -171,8 +171,8 @@ describe("[Unit] DateAssertion.test.ts", () => {
         const actualDate = new Date(2021, 1, 1);
         const passedDate = new Date(2021, 1, 1);
         const test = new DateAssertion(actualDate);
-        assert.deepStrictEqual(test.toBeAfterOrEqualTo(passedDate), test);
-        assert.throws(() => test.not.toBeAfterOrEqualTo(passedDate), {
+        assert.deepStrictEqual(test.toBeAfterOrEqual(passedDate), test);
+        assert.throws(() => test.not.toBeAfterOrEqual(passedDate), {
           message: `Expected <${actualDate}> NOT to be after or equal to <${passedDate}>`,
           name: ASSERTION_ERROR
         });
@@ -184,11 +184,11 @@ describe("[Unit] DateAssertion.test.ts", () => {
           const actualDate = new Date(2021, 1, 1);
           const passedDate = new Date(2021, 2, 1);
           const test = new DateAssertion(actualDate);
-          assert.throws(() => test.toBeAfterOrEqualTo(passedDate), {
+          assert.throws(() => test.toBeAfterOrEqual(passedDate), {
             message: `Expected <${actualDate}> to be after or equal to <${passedDate}>`,
             name: ASSERTION_ERROR
           });
-          assert.deepStrictEqual(test.not.toBeAfterOrEqualTo(passedDate), test);
+          assert.deepStrictEqual(test.not.toBeAfterOrEqual(passedDate), test);
         });
       }
     );

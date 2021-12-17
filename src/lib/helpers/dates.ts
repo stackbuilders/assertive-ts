@@ -29,8 +29,8 @@ export function dayOfWeekAsNumber (day: DayOfWeek): number {
     }
   }
 
-  export function dateConfOptionsToDate(configurationObject: DateOptions): Date {
-    const { year, month, day, hours, minutes, seconds, miliseconds } = configurationObject;
+  export function dateOptionsToDate(options: DateOptions): Date {
+    const { year, month, day, hours, minutes, seconds, miliseconds } = options;
     const monthAsNum = typeof month === "string"
       ? monthOfYear(month)
       : month;
