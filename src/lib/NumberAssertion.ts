@@ -31,6 +31,7 @@ export type BetweenOptions =
   | HighInclusiveBetweenOptions;
 
 export class NumberAssertion extends Assertion<number> {
+
   constructor(actual: number) {
     super(actual);
   }
@@ -359,7 +360,7 @@ public toBeBetween(options: BetweenOptions): this {
    * @param value the value that number should be greater than or equal to
    * @returns the assertion instance
    */
-  public toBeGreaterThanOrEqualTo(value: number): this {
+  public toBeGreaterThanOrEqual(value: number): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be greater than or equal to <${value}>`
@@ -405,7 +406,7 @@ public toBeBetween(options: BetweenOptions): this {
    * @param value the value that number should be less than or equal to
    * @returns the assertion instance
    */
-  public toBeLessThanOrEqualTo(value: number): this {
+  public toBeLessThanOrEqual(value: number): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected <${this.actual}> to be less than or equal to <${value}>`

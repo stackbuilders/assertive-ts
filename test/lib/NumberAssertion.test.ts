@@ -213,13 +213,13 @@ describe("[Unit] NumberAssertion.test.ts", () => {
     });
   });
 
-  describe(".toBeGreaterThanOrEqualTo", () => {
+  describe(".toBeGreaterThanOrEqual", () => {
     context("when the actual value is greater than or equal to passed argument", () => {
       it("returns the assertion instance", () => {
         const test = new NumberAssertion(2);
 
-        assert.deepStrictEqual(test.toBeGreaterThanOrEqualTo(2), test);
-        assert.throws(() => test.not.toBeGreaterThanOrEqualTo(2), {
+        assert.deepStrictEqual(test.toBeGreaterThanOrEqual(2), test);
+        assert.throws(() => test.not.toBeGreaterThanOrEqual(2), {
           message: "Expected <2> NOT to be greater than or equal to <2>",
           name: ASSERTION_ERROR
         });
@@ -230,11 +230,11 @@ describe("[Unit] NumberAssertion.test.ts", () => {
       it("throws an assertion error", () => {
         const test = new NumberAssertion(1);
 
-        assert.throws(() => test.toBeGreaterThanOrEqualTo(2), {
+        assert.throws(() => test.toBeGreaterThanOrEqual(2), {
           message: "Expected <1> to be greater than or equal to <2>",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toBeGreaterThanOrEqualTo(2), test);
+        assert.deepStrictEqual(test.not.toBeGreaterThanOrEqual(2), test);
       });
     });
   });
@@ -265,13 +265,13 @@ describe("[Unit] NumberAssertion.test.ts", () => {
     });
   });
 
-  describe(".toBeLessThanOrEqualTo", () => {
+  describe(".toBeLessThanOrEqual", () => {
     context("when the actual value is less than or equal to passed argument", () => {
       it("returns the assertion instance", () => {
         const test = new NumberAssertion(2);
 
-        assert.deepStrictEqual(test.toBeLessThanOrEqualTo(2), test);
-        assert.throws(() => test.not.toBeLessThanOrEqualTo(2), {
+        assert.deepStrictEqual(test.toBeLessThanOrEqual(2), test);
+        assert.throws(() => test.not.toBeLessThanOrEqual(2), {
           message: "Expected <2> NOT to be less than or equal to <2>",
           name: ASSERTION_ERROR
         });
@@ -282,11 +282,11 @@ describe("[Unit] NumberAssertion.test.ts", () => {
       it("throws an assertion error", () => {
         const test = new NumberAssertion(3);
 
-        assert.throws(() => test.toBeLessThanOrEqualTo(2), {
+        assert.throws(() => test.toBeLessThanOrEqual(2), {
           message: "Expected <3> to be less than or equal to <2>",
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toBeLessThanOrEqualTo(2), test);
+        assert.deepStrictEqual(test.not.toBeLessThanOrEqual(2), test);
       });
     });
   });
