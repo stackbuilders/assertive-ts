@@ -1,4 +1,5 @@
 import assert from "assert";
+
 import { dateOptionsToDate } from "../../../src/lib/helpers/dates";
 
 describe("[Unit] dates.test.ts", () => {
@@ -12,7 +13,7 @@ describe("[Unit] dates.test.ts", () => {
           minutes: 10,
           month: 1,
           seconds: 15,
-          year: 2021,
+          year: 2021
         };
         assert.equal(
           dateOptionsToDate(options).toISOString(),
@@ -26,7 +27,7 @@ describe("[Unit] dates.test.ts", () => {
           day: 2,
           month: 2,
           seconds: 30,
-          year: 2021,
+          year: 2021
         };
         const today = new Date();
         const expected = new Date(
@@ -57,7 +58,7 @@ describe("[Unit] dates.test.ts", () => {
           today.getMilliseconds()
         );
         assert.equal(
-          dateOptionsToDate({}).toISOString(),
+          dateOptionsToDate({ }).toISOString(),
           expected.toISOString()
         );
       });
