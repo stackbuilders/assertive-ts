@@ -3,7 +3,6 @@ import assert from "assert";
 import { dateOptionsToDate } from "../../../src/lib/helpers/dates";
 
 describe("[Unit] dates.test.ts", () => {
-  describe("[Unit] dates.test.ts", () => {
     context("when the object has all options", () => {
       it("returns a new date with the given options", () => {
         const options = {
@@ -21,6 +20,7 @@ describe("[Unit] dates.test.ts", () => {
         );
       });
     });
+
     context("when the object has some options", () => {
       it("returns today's date for the missing options", () => {
         const options = {
@@ -45,6 +45,7 @@ describe("[Unit] dates.test.ts", () => {
         );
       });
     });
+
     context("when the object has no options", () => {
       it("returns today's date", () => {
         const today = new Date();
@@ -63,5 +64,4 @@ describe("[Unit] dates.test.ts", () => {
         );
       });
     });
-  });
 });

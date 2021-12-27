@@ -46,8 +46,8 @@ describe("[Unit] DateAssertion.test.ts", () => {
           year: 2021
         };
         const test = new DateAssertion(actualDate);
-        assert.deepStrictEqual(test.toHaveDateParts(options), test);
-        assert.throws(() => test.not.toHaveDateParts(options), {
+        assert.deepStrictEqual(test.toMatchDateParts(options), test);
+        assert.throws(() => test.not.toMatchDateParts(options), {
           message: `Expected <${actualDate}> NOT to be equal to <${dateOptionsToDate(options)}>`,
           name: ASSERTION_ERROR
         });
@@ -67,11 +67,11 @@ describe("[Unit] DateAssertion.test.ts", () => {
           year: 2021
         };
         const test = new DateAssertion(actualDate);
-        assert.throws(() => test.toHaveDateParts(options), {
+        assert.throws(() => test.toMatchDateParts(options), {
           message: `Expected <${actualDate}> to be equal to <${dateOptionsToDate(options)}>`,
           name: ASSERTION_ERROR
         });
-        assert.deepStrictEqual(test.not.toHaveDateParts(options), test);
+        assert.deepStrictEqual(test.not.toMatchDateParts(options), test);
       });
     });
   });

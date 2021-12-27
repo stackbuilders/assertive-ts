@@ -60,7 +60,7 @@ export class DateAssertion extends Assertion<Date> {
    * @param options the option object to compare with
    * @returns the assertion instance
    */
-  public toHaveDateParts(options: DateOptions): this {
+  public toMatchDateParts(options: DateOptions): this {
     const optionsAsDate = dateOptionsToDate(options);
     const assertWhen = Object.keys(options).every(key => {
       const dateMethod = DATE_METHOD_MAP[key];
