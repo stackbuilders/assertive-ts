@@ -29,6 +29,8 @@ const FALSY_VALUES = [
   NaN
 ];
 
+const TODAY = new Date("2021-12-10T00:00:00.000Z");
+
 const BASE_EQUALS = [
   ["null", null, null],
   ["undefined", undefined, undefined],
@@ -36,7 +38,8 @@ const BASE_EQUALS = [
   ["number", 5, 5],
   ["string", "foo", "foo"],
   ["object-ref", HERO, HERO],
-  ["array-ref", THINGS, THINGS]
+  ["array-ref", THINGS, THINGS],
+  ["date", TODAY, TODAY]
 ];
 
 const BASE_DIFFS = [
@@ -44,7 +47,8 @@ const BASE_DIFFS = [
   ["undefined", undefined, null],
   ["boolean", true, false],
   ["number", 5, 3],
-  ["string", "foo", "bar"]
+  ["string", "foo", "bar"],
+  ["date", TODAY, new Date("2021-12-10T00:00:00.001Z")]
 ];
 
 function truthyAsText(value: typeof TRUTHY_VALUES[number]): string {
@@ -266,7 +270,8 @@ describe("[Unit] Assertion.test.ts", () => {
         ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
         ["shallow-array", THINGS, [1, "foo", false]],
         ["deep-object", { ...HERO, opts: THINGS }, { ...HERO, opts: THINGS }],
-        ["deep-array", [...THINGS, { x: HERO }], [...THINGS, { x: HERO }]]
+        ["deep-array", [...THINGS, { x: HERO }], [...THINGS, { x: HERO }]],
+        ["date", TODAY, new Date(TODAY.toISOString())]
       ]
       .forEach(([type, actual, expected]) => {
         it(`[${type}] returns the assertion instance`, () => {
