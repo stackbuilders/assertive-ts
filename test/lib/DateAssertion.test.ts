@@ -32,7 +32,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
     });
   });
 
-  describe(".toHaveDateParts", () => {
+  describe(".toMatchDateParts", () => {
     context("when the actual date matches the passed date", () => {
       it("returns the assertion instance", () => {
         const actualDate = new Date(2021, 1, 1, 12, 10, 15, 25);
