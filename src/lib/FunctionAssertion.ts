@@ -51,4 +51,29 @@ export class FunctionAssertion extends Assertion<Function> {
       invertedError
     });
   }
+
+  /**
+   * Check if the value throws angit error with a specific message.
+   *
+   * @returns the assertion instance
+   */
+  public toThrowErrorMessage(errorMessage: string): this {
+    const errorExecution = functionExecution(this.actual);
+    const assert =  errorExecution && errorExecution.message === errorMessage;
+    const error = new AssertionError({
+      actual: this.actual,
+      expected: errorMessage,
+      message: `Expected to throw error with message <'${errorMessage}'>`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected value to NOT throw error with message <'${errorMessage}'>`
+    });
+
+    return this.execute({
+      assertWhen: !!assert,
+      error,
+      invertedError
+    });
+  }
 }

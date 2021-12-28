@@ -9,19 +9,19 @@ class CustomError extends Error{
   }
  }
 
-const testCustomErrorFunction = () => { throw new CustomError("Custom Error"); };
-const testErrorFunction = () => { throw new TypeError("Error"); };
+const testCustomErrorFunction = () => { throw new CustomError("Custom Error Message"); };
+const testErrorFunction = () => { throw new TypeError("Error Message"); };
 const testNormalFunction = () => { return 0; };
 
 describe("[Unit] FunctionAssertion.test.ts", () => {
-  describe(".toThrowException", () => {
+  describe(".toThrowError", () => {
     context("when the value throws an exception", () => {
       it("returns the assertion instance", () => {
         const test = new FunctionAssertion(testErrorFunction);
 
-        assert.deepStrictEqual(test.toThrowError(new TypeError("Error")), test);
-        assert.throws(() => test.not.toThrowError(new TypeError("Error")), {
-          message: "Expected value to NOT throw error <TypeError> with message <'Error'>",
+        assert.deepStrictEqual(test.toThrowError(new TypeError("Error Message")), test);
+        assert.throws(() => test.not.toThrowError(new TypeError("Error Message")), {
+          message: "Expected value to NOT throw error <TypeError> with message <'Error Message'>",
           name: "AssertionError"
         });
       });
@@ -43,9 +43,9 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
       it("returns the assertion instance", () => {
         const test = new FunctionAssertion(testCustomErrorFunction);
 
-        assert.deepStrictEqual(test.toThrowError(new CustomError("Custom Error")), test);
-        assert.throws(() => test.not.toThrowError(new CustomError("Custom Error")), {
-          message: "Expected value to NOT throw error <CustomError> with message <'Custom Error'>",
+        assert.deepStrictEqual(test.toThrowError(new CustomError("Custom Error Message")), test);
+        assert.throws(() => test.not.toThrowError(new CustomError("Custom Error Message")), {
+          message: "Expected value to NOT throw error <CustomError> with message <'Custom Error Message'>",
           name: "AssertionError"
         });
       });
@@ -96,6 +96,45 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           name: "AssertionError"
         });
         assert.deepStrictEqual(test.not.toThrowError(new RangeError("Error")), test);
+      });
+    });
+  });
+
+  describe(".toThrowErrorMessage", () => {
+    context("when the value throws an error, with a specific message", () => {
+      it("returns the assertion instance", () => {
+        const test = new FunctionAssertion(testErrorFunction);
+
+        assert.deepStrictEqual(test.toThrowErrorMessage("Error Message"), test);
+        assert.throws(() => test.not.toThrowErrorMessage("Error Message"), {
+          message: "Expected value to NOT throw error with message <'Error Message'>",
+          name: "AssertionError"
+        });
+      });
+    });
+
+
+    context("when the value does NOT throw error", () => {
+      it("throws an assertion error", () => {
+        const test = new FunctionAssertion(testNormalFunction);
+
+        assert.throws(() => test.toThrowErrorMessage("Error"), {
+          message: "Expected to throw error with message <'Error'>",
+          name: "AssertionError"
+        });
+        assert.deepStrictEqual(test.not.toThrowErrorMessage("Error"), test);
+      });
+    });
+
+    context("when the value does throw error, but with a different message", () => {
+      it("throws an assertion error", () => {
+        const test = new FunctionAssertion(testCustomErrorFunction);
+
+        assert.throws(() => test.toThrowErrorMessage("Custom Error Message Diff"), {
+          message: "Expected to throw error with message <'Custom Error Message Diff'>",
+          name: "AssertionError"
+        });
+        assert.deepStrictEqual(test.not.toThrowErrorMessage("Custom Error Message Diff"), test);
       });
     });
   });
