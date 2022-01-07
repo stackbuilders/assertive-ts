@@ -15,7 +15,6 @@ const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
 };
 
 export class DateAssertion extends Assertion<Date> {
-
   constructor(actual: Date) {
     super(actual);
   }
@@ -29,9 +28,8 @@ export class DateAssertion extends Assertion<Date> {
    * @returns the assertion instance
    */
   public toBeDayOfWeek(dayOfWeek: DayOfWeek | number): this {
-    const dayAsNum = typeof dayOfWeek === "string"
-      ? dayOfWeekAsNumber(dayOfWeek)
-      : dayOfWeek;
+    const dayAsNum =
+      typeof dayOfWeek === "string" ? dayOfWeekAsNumber(dayOfWeek) : dayOfWeek;
     const error = new AssertionError({
       actual: this.actual,
       expected: dayOfWeek,
