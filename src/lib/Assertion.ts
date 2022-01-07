@@ -256,9 +256,13 @@ export class Assertion<T> {
     });
 
     const areShallowEqual = (): boolean => {
+      if (this.actual instanceof Date && expected instanceof Date) {
+        return this.actual.getTime() === expected.getTime();
+      }
+
       if (isObject(this.actual) && isObject(expected)) {
-        const actualKeys = Object.keys(this.actual) as Array<keyof T>;
-        const expectedKeys = Object.keys(expected) as Array<keyof T>;
+        const actualKeys = Object.keys(this.actual);
+        const expectedKeys = Object.keys(expected);
         const sizeMatch = actualKeys.length === expectedKeys.length;
         const valuesMatch = actualKeys.every(key => this.actual[key] === expected[key]);
 
