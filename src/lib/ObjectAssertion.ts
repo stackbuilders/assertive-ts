@@ -1,4 +1,6 @@
+import dedent from "@cometlib/dedent";
 import { AssertionError } from "assert";
+import { isDeepStrictEqual } from "util";
 
 import { Assertion } from "./Assertion";
 import { KeyOf, ValueOf } from "./ObjectAssertion.types";
@@ -120,7 +122,9 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
       message: `Expected the object NOT to contain the provided value <${value}>`
     });
     return this.execute({
-      assertWhen: Object.values(this.actual).includes(value),
+      assertWhen: Object.values(this.actual)
+        .map(actualValue => isDeepStrictEqual(actualValue, value))
+        .some(Boolean),
       error,
       invertedError
     });
@@ -144,7 +148,11 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: values
-        .map(value => Object.values(this.actual).includes(value))
+        .map(value =>
+          Object.values(this.actual)
+            .map(actualValue => isDeepStrictEqual(actualValue, value))
+            .some(Boolean)
+        )
         .every(Boolean),
       error,
       invertedError
@@ -169,7 +177,11 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: values
-        .map(value => Object.values(this.actual).includes(value))
+        .map(value =>
+          Object.values(this.actual)
+            .map(actualValue => isDeepStrictEqual(actualValue, value))
+            .some(Boolean)
+        )
         .some(Boolean),
       error,
       invertedError
@@ -185,22 +197,17 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainEntry(entry: [KeyOf<T>, ValueOf<T>]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided entry <${JSON.stringify(
-        entry
-      )}>`
+      message: `Expected the object to contain the provided entry <${JSON.stringify(entry)}>`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided entry <${JSON.stringify(
-        entry
-      )}>`
+      message: `Expected the object NOT to contain the provided entry <${JSON.stringify(entry)}>`
     });
     return this.execute({
       assertWhen:
         this.actual.hasOwnProperty(entry[0]) &&
-        Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value ===
-          entry[1],
+        isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
       error,
       invertedError
     });
@@ -215,24 +222,18 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAllEntries(entries: [KeyOf<T>, ValueOf<T>][]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided entries <${JSON.stringify(
-        entries
-      )}>`
+      message: `Expected the object to contain all the provided entries <${JSON.stringify(entries)}>`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided entries <${JSON.stringify(
-        entries
-      )}>`
+      message: `Expected the object NOT to contain all the provided entries <${JSON.stringify(entries)}>`
     });
     return this.execute({
       assertWhen: entries
-        .map(
-          entry =>
-            this.actual.hasOwnProperty(entry[0]) &&
-            Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value ===
-              entry[1]
+        .map( entry =>
+          this.actual.hasOwnProperty(entry[0]) &&
+          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
         )
         .every(Boolean),
       error,
@@ -249,23 +250,19 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAnyEntries(entries: [KeyOf<T>, ValueOf<T>][]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(
-        entries
-      )}>`
+      message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(entries)}>`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided entries <${JSON.stringify(
-        entries
-      )}>`
+      message: `Expected the object NOT to contain any of the provided entries <${JSON.stringify(entries)}>`
     });
     return this.execute({
       assertWhen: entries
         .map(
-          e =>
-            this.actual.hasOwnProperty(e[0]) &&
-            Object.getOwnPropertyDescriptor(this.actual, e[0])?.value === e[1]
+          entry =>
+            this.actual.hasOwnProperty(entry[0]) &&
+            isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
         )
         .some(Boolean),
       error,
@@ -276,30 +273,31 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   /**
    * Check if the object match the provided object.
    *
-   * @param obj the object that the object should match
+   * @param other the object that the object should match
    * @returns the assertion instance
    */
-  public toMatchObject<O extends object>(obj: O): this {
+  public toPartiallyMatch<O extends object>(other: O): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to match the provided object <${JSON.stringify(
-        obj
-      )}>`
+      message: dedent`
+        Expected the object to match the provided object:
+          ${JSON.stringify(other, undefined, 2)}
+      `
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to match the provided object <${JSON.stringify(
-        obj
-      )}>`
+      message: dedent`
+        Expected the object NOT to match the provided object:
+          ${JSON.stringify(other, undefined, 2)}
+      `
     });
     return this.execute({
-      assertWhen: Object.keys(obj)
-        .map(
-          key =>
-            this.actual.hasOwnProperty(key) &&
-            Object.getOwnPropertyDescriptor(this.actual, key)?.value ===
-              Object.getOwnPropertyDescriptor(obj, key)?.value
+      assertWhen: Object.keys(other)
+        .map(key =>
+          this.actual.hasOwnProperty(key)
+            ? isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, key)?.value, other[key])
+            : false
         )
         .every(Boolean),
       error,

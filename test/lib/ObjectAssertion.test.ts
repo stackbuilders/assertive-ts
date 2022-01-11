@@ -1,14 +1,54 @@
+import dedent from "@cometlib/dedent";
 import assert from "assert";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 
 const ASSERTION_ERROR: string = "AssertionError";
 
+const TEST_OBJ = {
+  myKey: 0,
+  2: "my value",
+  objKey: {
+    innerObjKey: 1,
+    message: "inner value"
+  }
+};
+
+const ENTRIES: [string | number | symbol, any][] = [
+  ["myKey", 0],
+  [2, "my value"],
+  ["objKey", { innerObjKey: 1, message: "inner value" }]
+];
+
+const WRONG_ENTRIES: [string | number | symbol, any][] = [
+  ["myKey", 4],
+  [3, "my value"],
+  ["objKey", { innerObjKey: 4, message: "inner wrong value" }]
+];
+
+const SOME_ENTRIES: [string | number | symbol, any][] = [
+  ["myKey", 0],
+  [3, "my value"],
+  ["objKey", { innerObjKey: 4, message: "inner wrong value" }]
+];
+
+function makeObject(): object {
+  return {
+    myKey: 0,
+    2: "my value",
+    objKey: {
+      innerObjKey: 1,
+      message: "inner value"
+    },
+    otherKey: "other value"
+  };
+}
+
 describe("[Unit] ObjectAssertion.test.ts", () => {
   describe(".toBeEmpty", () => {
     context("when the object is an empty object", () => {
       it("returns the assertion instance", () => {
-        const test = new ObjectAssertion({});
+        const test = new ObjectAssertion({ });
 
         assert.deepStrictEqual(test.toBeEmpty(), test);
         assert.throws(() => test.not.toBeEmpty(), {
@@ -19,345 +59,365 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     });
 
     context("when the object is NOT an empty object", () => {
-      it("throws an assertion error", () => {
-        const test = new ObjectAssertion({ myKey: "myValue" });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toBeEmpty(), {
-          message: "Expected the value to be an empty object",
-          name: ASSERTION_ERROR
+          assert.throws(() => test.toBeEmpty(), {
+            message: "Expected the value to be an empty object",
+            name: ASSERTION_ERROR
+          });
+          assert.deepStrictEqual(test.not.toBeEmpty(), test);
         });
-        assert.deepStrictEqual(test.not.toBeEmpty(), test);
       });
     });
   });
 
   describe(".toContainKey", () => {
     context("when the object contains the provided key", () => {
-      it("returns the assertion instance", () => {
-        const a: object = { myKey: 0, 2: "myValue" };
-        const test = new ObjectAssertion(a);
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("returns the assertion instance", () => {
+          const myKey = "objKey";
+          const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(test.toContainKey("myKey"), test);
-        assert.throws(() => test.not.toContainKey("myKey"), {
-          message:
-            "Expected the object NOT to contain the provided key <myKey>",
-          name: ASSERTION_ERROR
+          assert.deepStrictEqual(test.toContainKey(myKey), test);
+          assert.throws(() => test.not.toContainKey(myKey), {
+            message: `Expected the object NOT to contain the provided key <${myKey}>`,
+            name: ASSERTION_ERROR
+          });
         });
       });
     });
 
     context("when the object does NOT contain the provided key", () => {
-      it("throws an assertion error", () => {
-        const a: object = { myKey: 0, 2: "myValue" };
-        const test = new ObjectAssertion(a);
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const wrongKey = "wrongKey";
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toContainKey(4), {
-          message: "Expected the object to contain the provided key <4>",
-          name: ASSERTION_ERROR
+          assert.throws(() => test.toContainKey(wrongKey), {
+            message: `Expected the object to contain the provided key <${wrongKey}>`,
+            name: ASSERTION_ERROR
+          });
+          assert.deepStrictEqual(test.not.toContainKey(wrongKey), test);
         });
-        assert.deepStrictEqual(test.not.toContainKey(4), test);
       });
     });
   });
 
   describe(".toContainAllKeys", () => {
     context("when the object contains all the provided keys", () => {
-      it("returns the assertion instance", () => {
-        const a: object = { myKey: 0, 2: "myValue" };
-        const test = new ObjectAssertion(a);
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("returns the assertion instance", () => {
+          const myKeys = ["myKey", 2];
+          const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(test.toContainAllKeys(["myKey", 2]), test);
-        assert.throws(() => test.not.toContainAllKeys(["myKey", 2]), {
-          message:
-            "Expected the object NOT to contain all the provided keys <myKey,2>",
-          name: ASSERTION_ERROR
+          assert.deepStrictEqual(test.toContainAllKeys(myKeys), test);
+          assert.throws(() => test.not.toContainAllKeys(myKeys), {
+            message: `Expected the object NOT to contain all the provided keys <${myKeys}>`,
+            name: ASSERTION_ERROR
+          });
         });
       });
     });
 
     context("when the object does NOT contain all the provided keys", () => {
-      it("throws an assertion error", () => {
-        const a: object = { myKey: 0, 2: "myValue" };
-        const test = new ObjectAssertion(a);
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const someKeys = ["myKey", 3];
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toContainAllKeys(["wronKey", 2]), {
-          message:
-            "Expected the object to contain all the provided keys <wronKey,2>",
-          name: ASSERTION_ERROR
+          assert.throws(() => test.toContainAllKeys(someKeys), {
+            message: `Expected the object to contain all the provided keys <${someKeys}>`,
+            name: ASSERTION_ERROR
+          });
+          assert.deepStrictEqual(
+            test.not.toContainAllKeys(someKeys),
+            test
+          );
         });
-        assert.deepStrictEqual(test.not.toContainAllKeys(["wronKey", 2]), test);
       });
     });
   });
 
   describe(".toContainAnyKeys", () => {
-    context(
-      "when the object contains at least one of the the provided keys",
-      () => {
+    context("when the object contains at least one of the the provided keys", () => {
+      [TEST_OBJ, makeObject()].forEach(obj => {
         it("returns the assertion instance", () => {
-          const a: object = { myKey: 0, 2: "myValue" };
-          const test = new ObjectAssertion(a);
+          const someKeys = ["myKey", "objKey", 4, "randomKey"];
+          const test = new ObjectAssertion(obj);
 
-          assert.deepStrictEqual(test.toContainAnyKeys(["myKey", 1]), test);
-          assert.throws(() => test.not.toContainAnyKeys(["myKey", 1]), {
-            message:
-              "Expected the object NOT to contain any of the provided keys <myKey,1>",
+          assert.deepStrictEqual(test.toContainAnyKeys(someKeys), test);
+          assert.throws(() => test.not.toContainAnyKeys(someKeys), {
+            message: `Expected the object NOT to contain any of the provided keys <${someKeys}>`,
             name: ASSERTION_ERROR
           });
         });
-      }
-    );
+      });
+    });
 
     context("when the object does NOT contain any of the provided keys", () => {
-      it("throws an assertion error", () => {
-        const a: object = { myKey: 0, 2: "myValue" };
-        const test = new ObjectAssertion(a);
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const wrongKeys = ["notMyKey", 3, "randomKey"];
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toContainAnyKeys(["wronKey", 4]), {
-          message:
-            "Expected the object to contain at least one of the provided keys <wronKey,4>",
-          name: ASSERTION_ERROR
+          assert.throws(() => test.toContainAnyKeys(wrongKeys), {
+            message: `Expected the object to contain at least one of the provided keys <${wrongKeys}>`,
+            name: ASSERTION_ERROR
+          });
+          assert.deepStrictEqual(test.not.toContainAnyKeys(wrongKeys), test);
         });
-        assert.deepStrictEqual(test.not.toContainAnyKeys(["wronKey", 4]), test);
       });
     });
   });
 
   describe(".toContainValue", () => {
     context("when the object contains the provided value", () => {
-      it("returns the assertion instance", () => {
-        const test = new ObjectAssertion({ myKey: 0, 2: "myValue" });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        [
+          0,
+          "my value",
+          { innerObjKey: 1, message: "inner value"}
+        ]
+        .forEach(value => {
+          it("returns the assertion instance", () => {
+            const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(test.toContainValue("myValue"), test);
-        assert.throws(() => test.not.toContainValue("myValue"), {
-          message:
-            "Expected the object NOT to contain the provided value <myValue>",
-          name: ASSERTION_ERROR
+            assert.deepStrictEqual(test.toContainValue(value), test);
+            assert.throws(() => test.not.toContainValue(value), {
+              message: `Expected the object NOT to contain the provided value <${value}>`,
+              name: ASSERTION_ERROR
+            });
+          });
         });
       });
     });
 
     context("when the object does NOT contain the provided value", () => {
-      it("throws an assertion error", () => {
-        const test = new ObjectAssertion({ myKey: 0, 2: "myValue" });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        [
+          1,
+          "wrong value",
+          { innerObjKey: 1, message: "inner wrong value"}
+        ]
+        .forEach(value => {
+          it("throws an assertion error", () => {
+            const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toContainValue("wrongValue"), {
-          message:
-            "Expected the object to contain the provided value <wrongValue>",
-          name: ASSERTION_ERROR
+            assert.throws(() => test.toContainValue(value), {
+              message: `Expected the object to contain the provided value <${value}>`,
+              name: ASSERTION_ERROR
+            });
+            assert.deepStrictEqual(test.not.toContainValue(value), test);
+          });
         });
-        assert.deepStrictEqual(test.not.toContainValue("wrongValue"), test);
       });
     });
   });
 
   describe(".toContainAllValues", () => {
     context("when the object contains all the provided values", () => {
-      it("returns the assertion instance", () => {
-        const test = new ObjectAssertion({ myKey: 0, 2: "myValue" });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("returns the assertion instance", () => {
+          const myValues = [0, "my value", { innerObjKey: 1, message: "inner value" }];
+          const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(test.toContainAllValues(["myValue", 0]), test);
-        assert.throws(() => test.not.toContainAllValues(["myValue", 0]), {
-          message:
-            "Expected the object NOT to contain all the provided values <myValue,0>",
-          name: ASSERTION_ERROR
+          assert.deepStrictEqual(test.toContainAllValues(myValues), test);
+          assert.throws(() => test.not.toContainAllValues(myValues), {
+            message: `Expected the object NOT to contain all the provided values <${myValues}>`,
+            name: ASSERTION_ERROR
+          });
         });
       });
     });
 
     context("when the object does NOT contain all the provided values", () => {
-      it("throws an assertion error", () => {
-        const test = new ObjectAssertion({ myKey: 0, 2: "myValue" });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const someValues = [0, "my value", { innerObjKey: 0 }];
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toContainAllValues(["myValue", 4]), {
-          message:
-            "Expected the object to contain all the provided values <myValue,4>",
-          name: ASSERTION_ERROR
+          assert.throws(() => test.toContainAllValues(someValues), {
+            message: `Expected the object to contain all the provided values <${someValues}>`,
+            name: ASSERTION_ERROR
+          });
+          assert.deepStrictEqual(test.not.toContainAllValues(someValues), test);
         });
-        assert.deepStrictEqual(
-          test.not.toContainAllValues(["myValue", 4]),
-          test
-        );
       });
     });
   });
 
   describe(".toContainAnyValues", () => {
-    context(
-      "when the object contains at least one of the provided values",
-      () => {
+    context("when the object contains at least one of the provided values", () => {
+      [TEST_OBJ, makeObject()].forEach(obj => {
         it("returns the assertion instance", () => {
-          const test = new ObjectAssertion({ myKey: 0, 2: "myValue" });
+          const someValues = [10, "my value", { innerObjKey: 0 }];
+          const test = new ObjectAssertion(obj);
 
-          assert.deepStrictEqual(
-            test.toContainAnyValues(["myValue", "random"]),
-            test
-          );
-          assert.throws(
-            () => test.not.toContainAnyValues(["myValue", "random"]),
-            {
-              message:
-                "Expected the object NOT to contain any of the provided values <myValue,random>",
-              name: ASSERTION_ERROR
-            }
-          );
-        });
-      }
-    );
-
-    context(
-      "when the object does NOT contain any of the provided values",
-      () => {
-        it("throws an assertion error", () => {
-          const test = new ObjectAssertion({ myKey: 0, 2: "myValue" });
-
-          assert.throws(() => test.toContainAnyValues(["wrongValue"]), {
-            message:
-              "Expected the object to contain at least one of the provided values <wrongValue>",
+          assert.deepStrictEqual(test.toContainAnyValues(someValues), test);
+          assert.throws(() => test.not.toContainAnyValues(someValues), {
+            message: `Expected the object NOT to contain any of the provided values <${someValues}>`,
             name: ASSERTION_ERROR
           });
-          assert.deepStrictEqual(
-            test.not.toContainAnyValues(["wrongValue"]),
-            test
-          );
         });
-      }
-    );
+      });
+    });
+
+    context("when the object does NOT contain any of the provided values", () => {
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const wrongValues = [10, "wrong value", { innerObjKey: 0 }];
+          const test = new ObjectAssertion(obj);
+
+          assert.throws(() => test.toContainAnyValues(wrongValues), {
+            message: `Expected the object to contain at least one of the provided values <${wrongValues}>`,
+            name: ASSERTION_ERROR
+          });
+          assert.deepStrictEqual(test.not.toContainAnyValues(wrongValues), test);
+        });
+      });
+    });
   });
 
   describe(".toContainEntry", () => {
     context("when the object contains the provided entry", () => {
-      it("returns the assertion instance", () => {
-        const test = new ObjectAssertion({
-          foo: "someValue",
-          zoo: "barValue"
-        });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        ENTRIES
+        .forEach(entry => {
+          it("returns the assertion instance", () => {
+            const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(test.toContainEntry(["foo", "someValue"]), test);
-        assert.throws(() => test.not.toContainEntry(["foo", "someValue"]), {
-          message:
-            'Expected the object NOT to contain the provided entry <["foo","someValue"]>',
-          name: ASSERTION_ERROR
+            assert.deepStrictEqual(test.toContainEntry(entry), test);
+            assert.throws(() => test.not.toContainEntry(entry), {
+              message: `Expected the object NOT to contain the provided entry <${JSON.stringify(entry)}>`,
+              name: ASSERTION_ERROR
+            });
+          });
         });
       });
     });
 
     context("when the object does NOT contain the provided entry", () => {
-      it("throws an assertion error", () => {
-        const test = new ObjectAssertion({
-          foo: "someValue",
-          1: "barValue"
-        });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        WRONG_ENTRIES.forEach( wrongEntry => {
+          it("throws an assertion error", () => {
+            const test = new ObjectAssertion(obj);
 
-        assert.throws(() => test.toContainEntry([1, "wrongValue"]), {
-          message:
-            'Expected the object to contain the provided entry <[1,"wrongValue"]>',
-          name: ASSERTION_ERROR
+            assert.throws(() => test.toContainEntry(wrongEntry), {
+              message: `Expected the object to contain the provided entry <${JSON.stringify(wrongEntry)}>`,
+              name: ASSERTION_ERROR
+            });
+            assert.deepStrictEqual(test.not.toContainEntry(wrongEntry), test);
+          });
         });
-        assert.deepStrictEqual(
-          test.not.toContainEntry([1, "wrongValue"]),
-          test
-        );
       });
     });
   });
 
   describe(".toContainAllEntries", () => {
     context("when the object contains all the provided entries", () => {
-      it("returns the assertion instance", () => {
-        const test = new ObjectAssertion({
-          foo: "someValue",
-          zoo: "someValue"
-        });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("returns the assertion instance", () => {
+          const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(
-          test.toContainAllEntries([
-            ["foo", "someValue"],
-            ["zoo", "someValue"]
-          ]),
-          test
-        );
-        assert.throws(
-          () =>
-            test.not.toContainAllEntries([
-              ["foo", "someValue"],
-              ["zoo", "someValue"]
-            ]),
-          {
-            message:
-              'Expected the object NOT to contain all the provided entries <[["foo","someValue"],["zoo","someValue"]]>',
+          assert.deepStrictEqual(test.toContainAllEntries(ENTRIES), test);
+          assert.throws(() => test.not.toContainAllEntries(ENTRIES), {
+            message: `Expected the object NOT to contain all the provided entries <${JSON.stringify(ENTRIES)}>`,
             name: ASSERTION_ERROR
-          }
-        );
+          });
+        });
       });
     });
 
     context("when the object does NOT contain all the provided entries", () => {
-      it("throws an assertion error", () => {
-        const test = new ObjectAssertion({ foo: "someValue", 1: 2 });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(
-          () =>
-            test.toContainAllEntries([
-              [1, 2],
-              ["foo", "wrongValue"]
-            ]),
-          {
-            message:
-              'Expected the object to contain all the provided entries <[[1,2],["foo","wrongValue"]]>',
+          assert.throws(() => test.toContainAllEntries(SOME_ENTRIES), {
+            message: `Expected the object to contain all the provided entries <${JSON.stringify(SOME_ENTRIES)}>`,
             name: ASSERTION_ERROR
-          }
-        );
-        assert.deepStrictEqual(
-          test.not.toContainAllEntries([
-            [1, 2],
-            ["foo", "wrongValue"]
-          ]),
-          test
-        );
+          });
+          assert.deepStrictEqual(test.not.toContainAllEntries(SOME_ENTRIES), test);
+        });
       });
     });
   });
 
-  describe(".toMatchObject", () => {
-    context("when the object matches the provided object", () => {
-      it("returns the assertion instance", () => {
-        const test = new ObjectAssertion({
-          foo: "someValue",
-          zoo: "someValue"
-        });
+  describe(".toContainAnyEntries", () => {
+    context("when the object contains at least one of the provided entries", () => {
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("returns the assertion instance", () => {
+          const test = new ObjectAssertion(obj);
 
-        assert.deepStrictEqual(
-          test.toMatchObject({ foo: "someValue", zoo: "someValue" }),
-          test
-        );
-        assert.throws(
-          () => test.not.toMatchObject({ foo: "someValue", zoo: "someValue" }),
-          {
-            message:
-              'Expected the object NOT to match the provided object <{"foo":"someValue","zoo":"someValue"}>',
+          assert.deepStrictEqual(test.toContainAnyEntries(SOME_ENTRIES), test);
+          assert.throws(() => test.not.toContainAnyEntries(SOME_ENTRIES), {
+              message: `Expected the object NOT to contain any of the provided entries <${JSON.stringify(SOME_ENTRIES)}>`,
+              name: ASSERTION_ERROR
+          });
+        });
+      });
+    });
+
+    context("when the object does NOT contain any of the provided entries", () => {
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const test = new ObjectAssertion(obj);
+
+          assert.throws(() => test.toContainAnyEntries(WRONG_ENTRIES), {
+            message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(WRONG_ENTRIES)}>`,
             name: ASSERTION_ERROR
-          }
-        );
+          });
+          assert.deepStrictEqual(test.not.toContainAnyEntries(WRONG_ENTRIES), test);
+        });
+      });
+    });
+  });
+
+  describe(".toPartiallyMatch", () => {
+    context("when the object matches the provided object", () => {
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("returns the assertion instance", () => {
+          const provObj = {
+            myKey: 0,
+            objKey: {
+              innerObjKey: 1,
+              message: "inner value"
+            }
+          };
+          const test = new ObjectAssertion(obj);
+
+          assert.deepStrictEqual(test.toPartiallyMatch(provObj), test);
+          assert.throws(() => test.not.toPartiallyMatch(provObj), {
+            message: dedent`
+              Expected the object NOT to match the provided object:
+          ${JSON.stringify(provObj, undefined, 2)}
+            `,
+            name: ASSERTION_ERROR
+          });
+        });
       });
     });
 
     context("when the object does NOT match the provided object", () => {
-      it("throws an assertion error", () => {
-        const test = new ObjectAssertion({ foo: "someValue", 1: 2 });
+      [TEST_OBJ, makeObject()].forEach(obj => {
+        it("throws an assertion error", () => {
+          const provObj = {
+            myKey: 0,
+            wrongKey: "wrong value"
+          };
+          const test = new ObjectAssertion(obj);
 
-        assert.throws(
-          () => test.toMatchObject({ foo: "someValue", zoo: "someValue" }),
-          {
-            message:
-              'Expected the object to match the provided object <{"foo":"someValue","zoo":"someValue"}>',
+          assert.throws(() => test.toPartiallyMatch(provObj), {
+            message: dedent`
+            Expected the object to match the provided object:
+          ${JSON.stringify(provObj, undefined, 2)}
+            `,
             name: ASSERTION_ERROR
-          }
-        );
-        assert.deepStrictEqual(
-          test.not.toMatchObject({ foo: "someValue", zoo: "someValue" }),
-          test
-        );
+          });
+          assert.deepStrictEqual(test.not.toPartiallyMatch(provObj), test);
+        });
       });
     });
   });
