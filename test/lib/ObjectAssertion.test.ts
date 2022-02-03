@@ -1,4 +1,4 @@
-import assert, { AssertionError } from "assert";
+import assert from "assert";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 
