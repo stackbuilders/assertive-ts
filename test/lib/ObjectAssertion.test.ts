@@ -4,38 +4,35 @@ import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 
 const ASSERTION_ERROR: string = "AssertionError";
 
+type Entry = [string | number | symbol, number | object | string];
+
 const TEST_OBJ = {
   myKey: 0,
-  2: "my value",
-  objKey: {
+  2: {
     innerObjKey: 1,
     message: "inner value"
   }
 };
 
-const ENTRIES: [string | number | symbol, any][] = [
+const ENTRIES: Entry[] = [
   ["myKey", 0],
-  [2, "my value"],
-  ["objKey", { innerObjKey: 1, message: "inner value" }]
+  [2, { innerObjKey: 1, message: "inner value" }]
 ];
 
-const WRONG_ENTRIES: [string | number | symbol, any][] = [
+const WRONG_ENTRIES: Entry[] = [
   ["myKey", 4],
-  [3, "my value"],
-  ["objKey", { innerObjKey: 4, message: "inner wrong value" }]
+  [3, { innerObjKey: 4, message: "inner wrong value" }]
 ];
 
-const SOME_ENTRIES: [string | number | symbol, any][] = [
+const SOME_ENTRIES: Entry[] = [
   ["myKey", 0],
-  [3, "my value"],
-  ["objKey", { innerObjKey: 4, message: "inner wrong value" }]
+  [3, { innerObjKey: 4, message: "inner wrong value" }]
 ];
 
 function makeObject(): object {
   return {
     myKey: 0,
-    2: "my value",
-    objKey: {
+    2: {
       innerObjKey: 1,
       message: "inner value"
     },
@@ -76,7 +73,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains the provided key", () => {
       [TEST_OBJ, makeObject()].forEach(obj => {
         it("returns the assertion instance", () => {
-          const myKey = "objKey";
+          const myKey = "myKey";
           const test = new ObjectAssertion(obj);
 
           assert.deepStrictEqual(test.toContainKey(myKey), test);
@@ -176,7 +173,6 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
       [TEST_OBJ, makeObject()].forEach(obj => {
         [
           0,
-          "my value",
           { innerObjKey: 1, message: "inner value"}
         ]
         .forEach(value => {
@@ -219,7 +215,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains all the provided values", () => {
       [TEST_OBJ, makeObject()].forEach(obj => {
         it("returns the assertion instance", () => {
-          const myValues = [0, "my value", { innerObjKey: 1, message: "inner value" }];
+          const myValues = [0, { innerObjKey: 1, message: "inner value" }];
           const test = new ObjectAssertion(obj);
 
           assert.deepStrictEqual(test.toContainAllValues(myValues), test);
@@ -251,7 +247,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains at least one of the provided values", () => {
       [TEST_OBJ, makeObject()].forEach(obj => {
         it("returns the assertion instance", () => {
-          const someValues = [10, "my value", { innerObjKey: 0 }];
+          const someValues = [0, "my value", { innerObjKey: 0 }];
           const test = new ObjectAssertion(obj);
 
           assert.deepStrictEqual(test.toContainAnyValues(someValues), test);
@@ -380,7 +376,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         it("returns the assertion instance", () => {
           const provObj = {
             myKey: 0,
-            objKey: {
+            2: {
               innerObjKey: 1,
               message: "inner value"
             }

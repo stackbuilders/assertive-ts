@@ -72,9 +72,7 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
       message: `Expected the object NOT to contain all the provided keys <${keys}>`
     });
     return this.execute({
-      assertWhen: keys
-        .map(key => this.actual.hasOwnProperty(key))
-        .every(Boolean),
+      assertWhen: keys.every(key => this.actual.hasOwnProperty(key)),
       error,
       invertedError
     });
@@ -97,9 +95,7 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
       message: `Expected the object NOT to contain any of the provided keys <${keys}>`
     });
     return this.execute({
-      assertWhen: keys
-        .map(key => this.actual.hasOwnProperty(key))
-        .some(Boolean),
+      assertWhen: keys.some(key => this.actual.hasOwnProperty(key)),
       error,
       invertedError
     });
@@ -122,9 +118,7 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
       message: `Expected the object NOT to contain the provided value <${value}>`
     });
     return this.execute({
-      assertWhen: Object.values(this.actual)
-        .map(actualValue => isDeepStrictEqual(actualValue, value))
-        .some(Boolean),
+      assertWhen: Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
       error,
       invertedError
     });
@@ -148,12 +142,9 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: values
-        .map(value =>
-          Object.values(this.actual)
-            .map(actualValue => isDeepStrictEqual(actualValue, value))
-            .some(Boolean)
-        )
-        .every(Boolean),
+        .every(value =>
+          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value))
+        ),
       error,
       invertedError
     });
@@ -177,12 +168,9 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: values
-        .map(value =>
-          Object.values(this.actual)
-            .map(actualValue => isDeepStrictEqual(actualValue, value))
-            .some(Boolean)
-        )
-        .some(Boolean),
+        .some(value =>
+          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value))
+        ),
       error,
       invertedError
     });
@@ -231,11 +219,10 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: entries
-        .map( entry =>
+        .every(entry =>
           this.actual.hasOwnProperty(entry[0]) &&
           isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
-        )
-        .every(Boolean),
+        ),
       error,
       invertedError
     });
@@ -259,12 +246,10 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: entries
-        .map(
-          entry =>
-            this.actual.hasOwnProperty(entry[0]) &&
-            isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
-        )
-        .some(Boolean),
+        .some(entry =>
+          this.actual.hasOwnProperty(entry[0]) &&
+          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
+        ),
       error,
       invertedError
     });
@@ -288,12 +273,11 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
     });
     return this.execute({
       assertWhen: Object.keys(other)
-        .map(key =>
+        .every(key =>
           this.actual.hasOwnProperty(key)
             ? isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, key)?.value, other[key])
             : false
-        )
-        .every(Boolean),
+        ),
       error,
       invertedError
     });
