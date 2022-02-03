@@ -1,4 +1,3 @@
-import dedent from "@cometlib/dedent";
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
@@ -6,6 +5,7 @@ import { Assertion } from "./Assertion";
 import { KeyOf, ValueOf } from "./ObjectAssertion.types";
 
 export class ObjectAssertion<T extends object> extends Assertion<T> {
+
   constructor(actual: T) {
     super(actual);
   }
@@ -276,21 +276,15 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
    * @param other the object that the object should match
    * @returns the assertion instance
    */
-  public toPartiallyMatch<O extends object>(other: O): this {
+  public toPartiallyMatch(other: Partial<T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: dedent`
-        Expected the object to match the provided object:
-          ${JSON.stringify(other, undefined, 2)}
-      `
+      message: "Expected the object to be a partial match"
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: dedent`
-        Expected the object NOT to match the provided object:
-          ${JSON.stringify(other, undefined, 2)}
-      `
+      message: "Expected the object NOT to be a partial match"
     });
     return this.execute({
       assertWhen: Object.keys(other)

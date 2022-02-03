@@ -1,5 +1,4 @@
-import dedent from "@cometlib/dedent";
-import assert from "assert";
+import assert, { AssertionError } from "assert";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 
@@ -390,10 +389,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.deepStrictEqual(test.toPartiallyMatch(provObj), test);
           assert.throws(() => test.not.toPartiallyMatch(provObj), {
-            message: dedent`
-              Expected the object NOT to match the provided object:
-          ${JSON.stringify(provObj, undefined, 2)}
-            `,
+            message: "Expected the object NOT to be a partial match",
             name: ASSERTION_ERROR
           });
         });
@@ -410,10 +406,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           const test = new ObjectAssertion(obj);
 
           assert.throws(() => test.toPartiallyMatch(provObj), {
-            message: dedent`
-            Expected the object to match the provided object:
-          ${JSON.stringify(provObj, undefined, 2)}
-            `,
+            message: "Expected the object to be a partial match",
             name: ASSERTION_ERROR
           });
           assert.deepStrictEqual(test.not.toPartiallyMatch(provObj), test);

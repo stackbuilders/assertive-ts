@@ -53,9 +53,7 @@ describe("[Unit] expect.test.ts", () => {
 
   context("when the actual value is a function", () => {
     it("returns a FunctionAssertion instance", () => {
-      const test = expect(() => {
-        return 0;
-      });
+      const test = expect(() => 0);
 
       assert(test instanceof FunctionAssertion);
     });
