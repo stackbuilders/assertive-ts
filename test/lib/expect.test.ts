@@ -6,6 +6,7 @@ import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 import { DateAssertion } from "../../src/lib/DateAssertion";
 import { FunctionAssertion } from "../../src/lib/FunctionAssertion";
 import { NumberAssertion } from "../../src/lib/NumberAssertion";
+import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 
@@ -52,9 +53,25 @@ describe("[Unit] expect.test.ts", () => {
 
   context("when the actual value is a function", () => {
     it("returns a FunctionAssertion instance", () => {
-      const test = expect(() => { return 0; });
+      const test = expect(() => 0);
 
       assert(test instanceof FunctionAssertion);
+    });
+  });
+
+  context("when the actual value is an Object", () => {
+    it("returns an ObjectAssertion instance", () => {
+      const test = expect({ foo: "some value", bar: "other value" });
+
+      assert(test instanceof ObjectAssertion);
+    });
+  });
+
+  context("when the actual value type is null", () => {
+    it("returns an Assertion instance", () => {
+      const test = expect(null);
+
+      assert(test instanceof Assertion);
     });
   });
 
