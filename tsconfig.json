@@ -3,8 +3,11 @@
     "alwaysStrict": true,
     "declaration": true,
     "esModuleInterop": true,
+    "importHelpers": true,
+    "incremental": true,
     "forceConsistentCasingInFileNames": true,
     "module": "CommonJS",
+    "moduleResolution": "Node",
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
@@ -13,9 +16,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "./dist",
+    "removeComments": false,
     "skipLibCheck": true,
+    "sourceMap": true,
     "strict": true,
-    "target": "ES5",
+    "target": "ES6",
     "typeRoots": ["./node_modules/@types/", "./typings/"]
-  }
+  },
+  "exclude": [
+    ".yarn/*",
+    "dist/*",
+    "node_modules/*"
+  ]
 }
