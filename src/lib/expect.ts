@@ -10,7 +10,6 @@ import { StringAssertion } from "./StringAssertion";
 
 export function expect(actual: boolean): BooleanAssertion;
 export function expect(actual: number): NumberAssertion;
-export function expect(actual: boolean): BooleanAssertion;
 export function expect(actual: string): StringAssertion;
 export function expect(actual: Date): DateAssertion;
 export function expect<T extends object>(actual: T): ObjectAssertion<T>;
