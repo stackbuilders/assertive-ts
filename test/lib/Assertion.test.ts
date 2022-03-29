@@ -1,8 +1,6 @@
-import assert from "assert";
+import assert, { AssertionError } from "assert";
 
 import { Assertion } from "../../src/lib/Assertion";
-
-const ASSERTION_ERROR: string = "AssertionError";
 
 const HERO = {
   name: "Batman",
@@ -104,7 +102,7 @@ describe("[Unit] Assertion.test.ts", () => {
         assert.deepStrictEqual(test.toMatch(matcher), test);
         assert.throws(() => test.not.toMatch(matcher), {
           message: "Expected matcher function NOT to return true",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
       });
     });
@@ -115,7 +113,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
         assert.throws(() => test.toMatch(matcher), {
           message: "Expected matcher function to return true",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toMatch(matcher), test);
       });
@@ -130,7 +128,7 @@ describe("[Unit] Assertion.test.ts", () => {
         assert.deepStrictEqual(test.toExist(), test);
         assert.throws(() => test.not.toExist(), {
           message: "Expected value to NOT exist, but it was <0>",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
       });
     });
@@ -142,7 +140,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toExist(), {
             message: `Expected value to exist, but it was <${value}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toExist(), test);
         });
@@ -158,7 +156,7 @@ describe("[Unit] Assertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeNull(), test);
         assert.throws(() => test.not.toBeNull(), {
           message: "Expected the value NOT to be null",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
       });
     });
@@ -169,7 +167,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
         assert.throws(() => test.toBeNull(), {
           message: "Expected <foo> to be null",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeNull(), test);
       });
@@ -184,7 +182,7 @@ describe("[Unit] Assertion.test.ts", () => {
         assert.deepStrictEqual(test.toBePresent(), test);
         assert.throws(() => test.not.toBePresent(), {
           message: "Expected the value NOT to be present",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
       });
     });
@@ -195,7 +193,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
         assert.throws(() => test.toBePresent(), {
           message: "Expected the value to be present",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBePresent(), test);
       });
@@ -211,7 +209,7 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.toBeTruthy(), test);
           assert.throws(() => test.not.toBeTruthy(), {
             message: `Expected <${value}> NOT to be a truthy value`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -224,7 +222,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toBeTruthy(), {
             message: `Expected <${value}> to be a truthy value`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeTruthy(), test);
         });
@@ -241,7 +239,7 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.toBeFalsy(), test);
           assert.throws(() => test.not.toBeFalsy(), {
             message: `Expected <${value}> NOT to be a falsy value`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -254,7 +252,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toBeFalsy(), {
             message: `Expected <${value}> to be a falsy value`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeFalsy(), test);
         });
@@ -280,7 +278,7 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.toBeEqual(expected), test);
           assert.throws(() => test.not.toBeEqual(expected), {
             message: "Expected both values to NOT be deep equal",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -303,7 +301,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toBeEqual(expected), {
             message: "Expected both values to be deep equal",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeEqual(expected), test);
         });
@@ -326,7 +324,7 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.toBeSimilar(expected), test);
           assert.throws(() => test.not.toBeSimilar(expected), {
             message: "Expected both values to NOT be similar",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -349,7 +347,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toBeSimilar(expected), {
             message: "Expected both values to be similar",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeSimilar(expected), test);
         });
@@ -366,7 +364,7 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.toBeSame(expected), test);
           assert.throws(() => test.not.toBeSame(expected), {
             message: "Expected both values to NOT be the same",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -389,7 +387,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toBeSame(expected), {
             message: "Expected both values to be the same",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeSame(expected), test);
         });

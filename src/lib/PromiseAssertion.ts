@@ -1,12 +1,28 @@
 import { AssertionError } from "assert/strict";
 import { isDeepStrictEqual } from "util";
 
-export class PromiseAssertion<T> {
+import { Assertion } from "./Assertion";
 
-  private readonly actual: Promise<T>;
+type ValueOrUnknown<I extends boolean, T, R extends T | undefined> =
+  I extends false
+    ? T
+    : R extends T
+      ? T
+      : unknown;
+
+type ErrorOrValue<I extends boolean, T, E> = I extends true ? T : E;
+
+export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Promise<T>> {
+
+  // @ts-ignore:
+  // Needed because the `I` generic has to change in the inverted
+  // assertion so we can have better types. As we're overriding the property
+  // which expects `this` as a type, we cannot cast the type, but we know the
+  // new type is equicalent to `this`.
+  public override readonly not: PromiseAssertion<T, true>;
 
   constructor(actual: Promise<T>) {
-    this.actual = actual;
+    super(actual);
   }
 
   /**
@@ -19,31 +35,47 @@ export class PromiseAssertion<T> {
    * @param expected optional expected value to be resolved by the promise
    * @returns a promise with the resolved value
    */
-  public toBeResolved(expected?: T): Promise<T> {
+  public toBeResolved<R extends T | undefined>(expected?: R): Promise<ValueOrUnknown<I, T, R>> {
     return this.actual
       .then(value => {
         if (expected) {
-          if (isDeepStrictEqual(value, expected)) {
-            return value;
-          }
+          this.execute({
+            assertWhen: isDeepStrictEqual(value, expected),
+            error: new AssertionError({
+              actual: value,
+              expected,
+              message: `Expected promise to be resolved with [${expected}], but got [${value}] instead`
+            }),
+            invertedError: new AssertionError({
+              actual: value,
+              message: `Expected promise NOT to be resolved with [${value}]`
+            })
+          });
 
+          return value;
+        }
+
+        if (this.inverted) {
           throw new AssertionError({
-            actual: value,
-            expected,
-            message: `Expected promise to be resolved with <${expected}>, but got <${value}> instead`
+            actual: this.actual,
+            message: "Expected promise NOT to be resolved"
           });
         }
 
         return value;
       })
-      .catch((error: Error) => {
+      .catch(error => {
         if (error instanceof AssertionError) {
           throw error;
         }
 
+        if (this.inverted) {
+          return error;
+        }
+
         throw new AssertionError({
           actual: this.actual,
-          message: `Expected promise to be resolved, but it was rejected with <${error}> instead`
+          message: `Expected promise to be resolved, but it was rejected with [${error}] instead`
         });
       });
   }
@@ -58,51 +90,48 @@ export class PromiseAssertion<T> {
    * @param expected optinal expected value to be rejected by the promise
    * @returns a rejected promise with the cought error
    */
-  public toBeRejected<E = unknown>(expected?: E): Promise<E> {
+  public toBeRejected<E = unknown>(expected?: E): Promise<ErrorOrValue<I, T, E>> {
     return this.actual
       .then(value => {
+        if (this.inverted) {
+          return value;
+        }
+
         throw new AssertionError({
           actual: this.actual,
-          message: `Expected promise to be rejected, but it was resolved with <${value}> instead`
+          message: `Expected promise to be rejected, but it was resolved with [${value}] instead`
         });
       })
-      .catch((error: E) => {
-        if (expected) {
-          if (isDeepStrictEqual(error, expected)) {
-            return error;
-          }
+      .catch(error => {
+        if (error instanceof AssertionError) {
+          throw error;
+        }
 
+        if (expected) {
+          this.execute({
+            assertWhen: isDeepStrictEqual(error, expected),
+            error: new AssertionError({
+              actual: error,
+              expected,
+              message: `Expected promise to be rejected with [${expected}], but got [${error}] instead`
+            }),
+            invertedError: new AssertionError({
+              actual: error,
+              message: `Expected promise NOT to be rejected with [${error}]`
+            })
+          });
+
+          return error;
+        }
+
+        if (this.inverted) {
           throw new AssertionError({
             actual: error,
-            expected,
-            message: `Expected promise to be rejected with <${expected}>, but got <${error}> instead`
+            message: "Expeted promise NOT to be rejected"
           });
         }
 
         return error;
       });
-  }
-
-  /**
-   * Check if the promise is the same as another reference. We cannot check the
-   * value of the promise wihtout first resolving it. So this assertion checks
-   * only for referential equality.
-   *
-   * If you need to check if the value of the promise is equal to another, use
-   * {@link PromiseAssertion.toBeResolved toBeResolved} instead
-   *
-   * @param expected the promise to compare for referential equality
-   * @returns the Assertion instance if no error was thrown
-   */
-  public toBeSameAs(expected: Promise<T>): this {
-    if (this.actual === expected) {
-      return this;
-    }
-
-    throw new AssertionError({
-      actual: this.actual,
-      expected,
-      message: "Expected both promises to be the same"
-    });
   }
 }
