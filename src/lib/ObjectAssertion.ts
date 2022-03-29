@@ -41,12 +41,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainKey(key: KeyOf<T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided key <${key}>`
+      message: `Expected the object to contain the provided key [${key}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided key <${key}>`
+      message: `Expected the object NOT to contain the provided key [${key}]`
     });
     return this.execute({
       assertWhen: this.actual.hasOwnProperty(key),
@@ -64,12 +64,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAllKeys(keys: KeyOf<T>[]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided keys <${keys}>`
+      message: `Expected the object to contain all the provided keys [${keys}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided keys <${keys}>`
+      message: `Expected the object NOT to contain all the provided keys [${keys}]`
     });
     return this.execute({
       assertWhen: keys.every(key => this.actual.hasOwnProperty(key)),
@@ -87,12 +87,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAnyKeys(keys: KeyOf<T>[]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided keys <${keys}>`
+      message: `Expected the object to contain at least one of the provided keys [${keys}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided keys <${keys}>`
+      message: `Expected the object NOT to contain any of the provided keys [${keys}]`
     });
     return this.execute({
       assertWhen: keys.some(key => this.actual.hasOwnProperty(key)),
@@ -110,12 +110,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainValue(value: ValueOf<T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided value <${value}>`
+      message: `Expected the object to contain the provided value [${value}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided value <${value}>`
+      message: `Expected the object NOT to contain the provided value [${value}]`
     });
     return this.execute({
       assertWhen: Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
@@ -133,12 +133,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAllValues(values: ValueOf<T>[]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided values <${values}>`
+      message: `Expected the object to contain all the provided values [${values}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided values <${values}>`
+      message: `Expected the object NOT to contain all the provided values [${values}]`
     });
     return this.execute({
       assertWhen: values
@@ -159,12 +159,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAnyValues(values: ValueOf<T>[]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided values <${values}>`
+      message: `Expected the object to contain at least one of the provided values [${values}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided values <${values}>`
+      message: `Expected the object NOT to contain any of the provided values [${values}]`
     });
     return this.execute({
       assertWhen: values
@@ -185,12 +185,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainEntry(entry: [KeyOf<T>, ValueOf<T>]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided entry <${JSON.stringify(entry)}>`
+      message: `Expected the object to contain the provided entry [${JSON.stringify(entry)}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided entry <${JSON.stringify(entry)}>`
+      message: `Expected the object NOT to contain the provided entry [${JSON.stringify(entry)}]`
     });
     return this.execute({
       assertWhen:
@@ -210,12 +210,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAllEntries(entries: [KeyOf<T>, ValueOf<T>][]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object to contain all the provided entries [${JSON.stringify(entries)}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object NOT to contain all the provided entries [${JSON.stringify(entries)}]`
     });
     return this.execute({
       assertWhen: entries
@@ -237,12 +237,12 @@ export class ObjectAssertion<T extends object> extends Assertion<T> {
   public toContainAnyEntries(entries: [KeyOf<T>, ValueOf<T>][]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object to contain at least one of the provided entries [${JSON.stringify(entries)}]`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object NOT to contain any of the provided entries [${JSON.stringify(entries)}]`
     });
     return this.execute({
       assertWhen: entries

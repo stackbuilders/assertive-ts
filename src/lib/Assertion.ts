@@ -107,11 +107,11 @@ export class Assertion<T> {
   public toExist(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected value to exist, but it was <${this.actual}>`
+      message: `Expected value to exist, but it was [${this.actual}]`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value to NOT exist, but it was <${this.actual}>`
+      message: `Expected value to NOT exist, but it was [${this.actual}]`
     });
 
     return this.execute({
@@ -129,7 +129,7 @@ export class Assertion<T> {
   public toBeNull(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be null`
+      message: `Expected [${this.actual}] to be null`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
@@ -176,11 +176,11 @@ export class Assertion<T> {
   public toBeTruthy(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be a truthy value`
+      message: `Expected [${this.actual}] to be a truthy value`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be a truthy value`
+      message: `Expected [${this.actual}] NOT to be a truthy value`
     });
 
     return this.execute({
@@ -200,11 +200,11 @@ export class Assertion<T> {
   public toBeFalsy(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be a falsy value`
+      message: `Expected [${this.actual}] to be a falsy value`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be a falsy value`
+      message: `Expected [${this.actual}] NOT to be a falsy value`
     });
 
     return this.execute({

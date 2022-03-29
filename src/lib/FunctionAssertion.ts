@@ -38,11 +38,11 @@ export class FunctionAssertion extends Assertion<Function> {
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: `Expected to throw error <${expected.name}> with message <'${expected.message || ""}'>`
+      message: `Expected to throw error [${expected.name}] with message ['${expected.message || ""}']`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value to NOT throw error <${expected.name}> with message <'${expected.message || ""}'>`
+      message: `Expected value to NOT throw error [${expected.name}] with message ['${expected.message || ""}']`
     });
 
     return this.execute({

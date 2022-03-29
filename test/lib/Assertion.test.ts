@@ -127,7 +127,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toExist(), test);
         assert.throws(() => test.not.toExist(), {
-          message: "Expected value to NOT exist, but it was <0>",
+          message: "Expected value to NOT exist, but it was [0]",
           name: AssertionError.name
         });
       });
@@ -139,7 +139,7 @@ describe("[Unit] Assertion.test.ts", () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.toExist(), {
-            message: `Expected value to exist, but it was <${value}>`,
+            message: `Expected value to exist, but it was [${value}]`,
             name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toExist(), test);
@@ -166,7 +166,7 @@ describe("[Unit] Assertion.test.ts", () => {
         const test = new Assertion("foo");
 
         assert.throws(() => test.toBeNull(), {
-          message: "Expected <foo> to be null",
+          message: "Expected [foo] to be null",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeNull(), test);
@@ -208,7 +208,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.deepStrictEqual(test.toBeTruthy(), test);
           assert.throws(() => test.not.toBeTruthy(), {
-            message: `Expected <${value}> NOT to be a truthy value`,
+            message: `Expected [${value}] NOT to be a truthy value`,
             name: AssertionError.name
           });
         });
@@ -221,7 +221,7 @@ describe("[Unit] Assertion.test.ts", () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.toBeTruthy(), {
-            message: `Expected <${value}> to be a truthy value`,
+            message: `Expected [${value}] to be a truthy value`,
             name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeTruthy(), test);
@@ -238,7 +238,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.deepStrictEqual(test.toBeFalsy(), test);
           assert.throws(() => test.not.toBeFalsy(), {
-            message: `Expected <${value}> NOT to be a falsy value`,
+            message: `Expected [${value}] NOT to be a falsy value`,
             name: AssertionError.name
           });
         });
@@ -251,7 +251,7 @@ describe("[Unit] Assertion.test.ts", () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.toBeFalsy(), {
-            message: `Expected <${value}> to be a falsy value`,
+            message: `Expected [${value}] to be a falsy value`,
             name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeFalsy(), test);

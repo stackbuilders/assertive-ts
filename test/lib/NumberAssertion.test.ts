@@ -21,7 +21,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(1);
 
         assert.throws(() => test.toBeZero(), {
-          message: "Expected <1> to be zero",
+          message: "Expected [1] to be zero",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeZero(), test);
@@ -47,7 +47,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(-1);
 
         assert.throws(() => test.toBePositive(), {
-          message: "Expected <-1> to be positive",
+          message: "Expected [-1] to be positive",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBePositive(), test);
@@ -73,7 +73,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(1);
 
         assert.throws(() => test.toBeNegative(), {
-          message: "Expected <1> to be negative",
+          message: "Expected [1] to be negative",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeNegative(), test);
@@ -99,7 +99,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(Infinity);
 
         assert.throws(() => test.toBeFinite(), {
-          message: "Expected <Infinity> to be finite",
+          message: "Expected [Infinity] to be finite",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeFinite(), test);
@@ -125,7 +125,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(Infinity);
 
         assert.throws(() => test.toBeNaN(), {
-          message: "Expected <Infinity> to be NaN",
+          message: "Expected [Infinity] to be NaN",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeNaN(), test);
@@ -151,7 +151,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(1);
 
         assert.throws(() => test.toBeEven(), {
-          message: "Expected <1> to be even",
+          message: "Expected [1] to be even",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeEven(), test);
@@ -177,7 +177,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(2);
 
         assert.throws(() => test.toBeOdd(), {
-          message: "Expected <2> to be odd",
+          message: "Expected [2] to be odd",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeOdd(), test);
@@ -192,7 +192,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeGreaterThan(2), test);
         assert.throws(() => test.not.toBeGreaterThan(2), {
-          message: "Expected <3> NOT to be greater than <2>",
+          message: "Expected [3] NOT to be greater than [2]",
           name: AssertionError.name
         });
       });
@@ -203,7 +203,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(1);
 
         assert.throws(() => test.toBeGreaterThan(2), {
-          message: "Expected <1> to be greater than <2>",
+          message: "Expected [1] to be greater than [2]",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeGreaterThan(2), test);
@@ -218,7 +218,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeGreaterThanOrEqual(2), test);
         assert.throws(() => test.not.toBeGreaterThanOrEqual(2), {
-          message: "Expected <2> NOT to be greater than or equal to <2>",
+          message: "Expected [2] NOT to be greater than or equal to [2]",
           name: AssertionError.name
         });
       });
@@ -229,7 +229,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(1);
 
         assert.throws(() => test.toBeGreaterThanOrEqual(2), {
-          message: "Expected <1> to be greater than or equal to <2>",
+          message: "Expected [1] to be greater than or equal to [2]",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeGreaterThanOrEqual(2), test);
@@ -244,7 +244,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeLessThan(2), test);
         assert.throws(() => test.not.toBeLessThan(2), {
-          message: "Expected <1> NOT to be less than <2>",
+          message: "Expected [1] NOT to be less than [2]",
           name: AssertionError.name
         });
       });
@@ -255,7 +255,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(3);
 
         assert.throws(() => test.toBeLessThan(2), {
-          message: "Expected <3> to be less than <2>",
+          message: "Expected [3] to be less than [2]",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeLessThan(2), test);
@@ -270,7 +270,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeLessThanOrEqual(2), test);
         assert.throws(() => test.not.toBeLessThanOrEqual(2), {
-          message: "Expected <2> NOT to be less than or equal to <2>",
+          message: "Expected [2] NOT to be less than or equal to [2]",
           name: AssertionError.name
         });
       });
@@ -281,7 +281,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(3);
 
         assert.throws(() => test.toBeLessThanOrEqual(2), {
-          message: "Expected <3> to be less than or equal to <2>",
+          message: "Expected [3] to be less than or equal to [2]",
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toBeLessThanOrEqual(2), test);
@@ -296,7 +296,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         test.toBeBetween({ range: [10, 12], inclusive: true });
         assert.deepStrictEqual( test.toBeBetween({ range: [10, 12], inclusive: false }), test);
         assert.throws( () => test.not.toBeBetween({ range: [10, 12], inclusive: false }), {
-            message: "Expected <11> NOT to be between <10,12>",
+            message: "Expected [11] NOT to be between [10,12]",
             name: AssertionError.name
           }
         );
@@ -308,7 +308,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
           const test = new NumberAssertion(5);
 
           assert.throws(() => test.toBeBetween({ range: [10, 12], inclusive: false }), {
-              message: "Expected <5> to be between <10,12>",
+              message: "Expected [5] to be between [10,12]",
               name: AssertionError.name
             }
           );
@@ -323,7 +323,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeBetween({ range: [10, 12], inclusive: true }), test);
         assert.throws(() => test.not.toBeBetween({ range: [10, 12], inclusive: true }), {
-            message: "Expected <12> NOT to be strictly between <10,12>",
+            message: "Expected [12] NOT to be strictly between [10,12]",
             name: AssertionError.name
           }
         );
@@ -335,7 +335,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(5);
 
         assert.throws(() => test.toBeBetween({ range: [10, 12], inclusive: true }), {
-            message: "Expected <5> to be strictly between <10,12>",
+            message: "Expected [5] to be strictly between [10,12]",
             name: AssertionError.name
           }
         );
@@ -352,7 +352,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
           assert.deepStrictEqual(test.toBeBetween({ range: [10, 12], inclusive: true }), test);
           assert.throws(() => test.not.toBeBetween({ range: [10, 12], inclusive: false }), {
-              message: "Expected <11> NOT to be between <10,12>",
+              message: "Expected [11] NOT to be between [10,12]",
               name: AssertionError.name
             }
           );
@@ -364,7 +364,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
           const test = new NumberAssertion(10);
 
           assert.throws(() => test.toBeBetween({ range: [10, 12], inclusive: false }), {
-              message: "Expected <10> to be between <10,12>",
+              message: "Expected [10] to be between [10,12]",
               name: AssertionError.name
             }
           );
@@ -381,7 +381,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toBeBetween({ range: [10, 12], lowInclusive: false }), test);
             assert.throws(() => test.not.toBeBetween({ range: [10, 12], lowInclusive: false }),
               {
-                message: "Expected <11> NOT to be between <10,12>",
+                message: "Expected [11] NOT to be between [10,12]",
                 name: AssertionError.name
               }
             );
@@ -394,7 +394,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ range: [10, 12], lowInclusive: false }), {
-                message: "Expected <5> to be between <10,12>",
+                message: "Expected [5] to be between [10,12]",
                 name: AssertionError.name
               }
             );
@@ -409,7 +409,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
             assert.deepStrictEqual(test.toBeBetween({ range: [10, 12], lowInclusive: true }), test);
             assert.throws(() => test.not.toBeBetween({ range: [10, 12], lowInclusive: true }), {
-                message: "Expected <10> NOT to be between <10,12> with <10> inclusion",
+                message: "Expected [10] NOT to be between [10,12] with [10] inclusion",
                 name: AssertionError.name
               }
             );
@@ -422,7 +422,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ range: [10, 12], lowInclusive: true }), {
-                message: "Expected <5> to be between <10,12> with <10> inclusion",
+                message: "Expected [5] to be between [10,12] with [10] inclusion",
                 name: AssertionError.name
               }
             );
@@ -439,7 +439,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
             assert.deepStrictEqual(test.toBeBetween({ range: [10, 12], highInclusive: false }), test);
             assert.throws(() => test.not.toBeBetween({ range: [10, 12], highInclusive: false }), {
-                message: "Expected <11> NOT to be between <10,12>",
+                message: "Expected [11] NOT to be between [10,12]",
                 name: AssertionError.name
               }
             );
@@ -452,7 +452,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ range: [10, 12], highInclusive: false }), {
-                message: "Expected <5> to be between <10,12>",
+                message: "Expected [5] to be between [10,12]",
                 name: AssertionError.name
               }
             );
@@ -469,7 +469,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             assert.deepStrictEqual( test.toBeBetween({ range: [10, 12], highInclusive: true }), test);
             assert.throws(() => test.not.toBeBetween({ range: [10, 12], highInclusive: true }), {
                 message:
-                  "Expected <12> NOT to be between <10,12> with <12> inclusion",
+                  "Expected [12] NOT to be between [10,12] with [12] inclusion",
                 name: AssertionError.name
               }
             );
@@ -482,7 +482,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ range: [10, 12], highInclusive: true }), {
-                message: "Expected <5> to be between <10,12> with <12> inclusion",
+                message: "Expected [5] to be between [10,12] with [12] inclusion",
                 name: AssertionError.name
               }
             );
@@ -500,7 +500,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual( test.toBeCloseTo({ value: 10, withOffset: 2 }), test);
         assert.throws( () => test.not.toBeCloseTo({ value: 10, withOffset: 2 }), {
-            message: "Expected <9> NOT to be close to <10> with offset <2>",
+            message: "Expected [9] NOT to be close to [10] with offset [2]",
             name: AssertionError.name
           }
         );
@@ -512,7 +512,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(4);
 
         assert.throws(() => test.toBeCloseTo({ value: 10, withOffset: 2 }), {
-            message: "Expected <4> to be close to <10> with offset <2>",
+            message: "Expected [4] to be close to [10] with offset [2]",
             name: AssertionError.name
           }
         );
