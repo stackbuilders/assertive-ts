@@ -2,30 +2,31 @@ import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
 
-// tslint:disable-next-line: ban-types
-function functionExecution(func: Function): Error | undefined {
+export type AnyFunction = (...args: any[]) => any;
+
+function functionExecution<T extends AnyFunction>(func: T): Error | undefined {
   try {
     func();
     return undefined;
-  } catch (e) {
-    if (e instanceof Error) {
-      return e;
-    }
-    return new Error(`The function threw something that is not an Error: ${e}`);
+  } catch (error) {
+    return error instanceof Error
+      ? error
+      : Error(`The function threw something that is not an Error: ${error}`);
   }
 }
 
-function assertion<E extends Error>(error: E | undefined , expectedError: E) {
-  return !!error && error.name === expectedError.name && error.message === expectedError.message;
+function assertion<E extends Error>(error: E | undefined , expectedError: E): boolean {
+  return !!error
+    && error?.name === expectedError.name
+    && error?.message === expectedError.message;
 }
 
-// tslint:disable-next-line: ban-types
-export class FunctionAssertion extends Assertion<Function> {
+export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
 
-  // tslint:disable-next-line: ban-types
-  constructor(actual: Function) {
+  constructor(actual: T) {
     super(actual);
   }
+
   /**
    * Check if the value throws an error.
    *
@@ -34,7 +35,6 @@ export class FunctionAssertion extends Assertion<Function> {
   public toThrowError<E extends Error>(expectedError?: E): this {
     const expected = expectedError || new Error();
     const errorExecution = functionExecution(this.actual);
-    const assert = expectedError ? assertion(errorExecution, expected) : errorExecution instanceof Error;
     const error = new AssertionError({
       actual: this.actual,
       expected,
@@ -46,7 +46,9 @@ export class FunctionAssertion extends Assertion<Function> {
     });
 
     return this.execute({
-      assertWhen: !!assert,
+      assertWhen: expectedError
+        ? assertion(errorExecution, expected)
+        : errorExecution instanceof Error,
       error,
       invertedError
     });
