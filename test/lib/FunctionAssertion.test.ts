@@ -21,7 +21,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toThrowError(new TypeError("Error")), test);
         assert.throws(() => test.not.toThrowError(new TypeError("Error")), {
-          message: "Expected value to NOT throw error [TypeError] with message ['Error']",
+          message: "Expected value to NOT throw error <TypeError> with message <'Error'>",
           name: "AssertionError"
         });
       });
@@ -33,7 +33,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toThrowError(), test);
         assert.throws(() => test.not.toThrowError(), {
-          message: "Expected value to NOT throw error [Error] with message ['']",
+          message: "Expected value to NOT throw error <Error> with message <''>",
           name: "AssertionError"
         });
       });
@@ -45,7 +45,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toThrowError(new CustomError("Custom Error")), test);
         assert.throws(() => test.not.toThrowError(new CustomError("Custom Error")), {
-          message: "Expected value to NOT throw error [CustomError] with message ['Custom Error']",
+          message: "Expected value to NOT throw error <CustomError> with message <'Custom Error'>",
           name: "AssertionError"
         });
       });
@@ -57,7 +57,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toThrowError(), test);
         assert.throws(() => test.not.toThrowError(), {
-          message: "Expected value to NOT throw error [Error] with message ['']",
+          message: "Expected value to NOT throw error <Error> with message <''>",
           name: "AssertionError"
         });
       });
@@ -68,7 +68,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
         const test = new FunctionAssertion(testNormalFunction);
 
         assert.throws(() => test.toThrowError(new TypeError("Error")), {
-          message: "Expected to throw error [TypeError] with message ['Error']",
+          message: "Expected to throw error <TypeError> with message <'Error'>",
           name: "AssertionError"
         });
         assert.deepStrictEqual(test.not.toThrowError(new TypeError("Error")), test);
@@ -80,7 +80,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
         const test = new FunctionAssertion(testErrorFunction);
 
         assert.throws(() => test.toThrowError(new TypeError("Error 2")), {
-          message: "Expected to throw error [TypeError] with message ['Error 2']",
+          message: "Expected to throw error <TypeError> with message <'Error 2'>",
           name: "AssertionError"
         });
         assert.deepStrictEqual(test.not.toThrowError(new TypeError("Error 2")), test);
@@ -92,7 +92,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
         const test = new FunctionAssertion(testErrorFunction);
 
         assert.throws(() => test.toThrowError(new RangeError("Error")), {
-          message: "Expected to throw error [RangeError] with message ['Error']",
+          message: "Expected to throw error <RangeError> with message <'Error'>",
           name: "AssertionError"
         });
         assert.deepStrictEqual(test.not.toThrowError(new RangeError("Error")), test);

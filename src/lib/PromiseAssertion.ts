@@ -9,7 +9,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
   // Needed because the `I` generic has to change in the inverted
   // assertion so we can have better types. As we're overriding the property
   // which expects `this` as a type, we cannot cast the type, but we know the
-  // new type is equicalent to `this`.
+  // new type is equivalent to `this`.
   public override readonly not: PromiseAssertion<T, true>;
 
   constructor(actual: Promise<T>) {
@@ -47,7 +47,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
 
       throw new AssertionError({
         actual: this.actual,
-        message: `Expected promise to be resolved, but it was rejected with [${error}] instead`
+        message: `Expected promise to be resolved, but it was rejected with <${error}> instead`
       });
     });
   }
@@ -70,11 +70,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         error: new AssertionError({
           actual: value,
           expected,
-          message: `Expected promise to be resolved with [${expected}], but got [${value}] instead`
+          message: `Expected promise to be resolved with <${expected}>, but got <${value}> instead`
         }),
         invertedError: new AssertionError({
           actual: value,
-          message: `Expected promise NOT to be resolved with [${value}]`
+          message: `Expected promise NOT to be resolved with <${value}>`
         })
       });
 
@@ -89,8 +89,8 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         actual: error,
         expected: !this.inverted ? expected : undefined,
         message: this.inverted
-          ? `Expected promise to be resolved with anything but [${expected}], but was rejected with [${error}] instead`
-          : `Expected promise to be resolved with [${expected}], but it was rejected with [${error}] instead`
+          ? `Expected promise to be resolved with anything but <${expected}>, but was rejected with <${error}> instead`
+          : `Expected promise to be resolved with <${expected}>, but it was rejected with <${error}> instead`
       });
     });
   }
@@ -112,7 +112,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
 
       throw new AssertionError({
         actual: this.actual,
-        message: `Expected promise to be rejected, but it was resolved with [${value}] instead`
+        message: `Expected promise to be rejected, but it was resolved with <${value}> instead`
       });
     })
     .catch(error => {
@@ -148,8 +148,8 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         actual: this.actual,
         expected: !this.inverted ? expected : undefined,
         message: this.inverted
-          ? `Expected promise to be rejected with anything but [${expected}], but it was resolved with [${value}] instead`
-          : `Expected promise to be rejected with [${expected}], but it was resolved with [${value}] instead`
+          ? `Expected promise to be rejected with anything but <${expected}>, but it was resolved with <${value}> instead`
+          : `Expected promise to be rejected with <${expected}>, but it was resolved with <${value}> instead`
       });
     })
     .catch(error => {
@@ -162,11 +162,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         error: new AssertionError({
           actual: error,
           expected,
-          message: `Expected promise to be rejected with [${expected}], but got [${error}] instead`
+          message: `Expected promise to be rejected with <${expected}>, but got <${error}> instead`
         }),
         invertedError: new AssertionError({
           actual: error,
-          message: `Expected promise NOT to be rejected with [${error}]`
+          message: `Expected promise NOT to be rejected with <${error}>`
         })
       });
 

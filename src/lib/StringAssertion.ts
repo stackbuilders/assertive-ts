@@ -17,7 +17,7 @@ export class StringAssertion extends Assertion<string> {
   public toBeEmpty(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected [${this.actual}] to be empty`
+      message: `Expected <${this.actual}> to be empty`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
@@ -40,7 +40,7 @@ export class StringAssertion extends Assertion<string> {
   public toBeBlank(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected [${this.actual}] to be blank`
+      message: `Expected <${this.actual}> to be blank`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
@@ -96,11 +96,11 @@ export class StringAssertion extends Assertion<string> {
     const error = new AssertionError({
       actual: this.actual,
       expected: text,
-      message: `Expected [${this.actual}] to contain [${text}]`
+      message: `Expected <${this.actual}> to contain <${text}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected [${this.actual}] NOT to contain [${text}]`
+      message: `Expected <${this.actual}> NOT to contain <${text}>`
     });
 
     return this.execute({
@@ -121,11 +121,11 @@ export class StringAssertion extends Assertion<string> {
     const error = new AssertionError({
       actual: this.actual,
       expected: text,
-      message: `Expected [${this.actual}] to contain [${text}] (ignoring case)`
+      message: `Expected <${this.actual}> to contain <${text}> (ignoring case)`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected [${this.actual}] NOT to contain [${text}] (ignoring case)`
+      message: `Expected <${this.actual}> NOT to contain <${text}> (ignoring case)`
     });
 
     return this.execute({
@@ -152,12 +152,12 @@ export class StringAssertion extends Assertion<string> {
     const error = new AssertionError({
       actual: this.actual,
       expected: text,
-      message: `Expected [${this.actual}] to start with [${text}]`
+      message: `Expected <${this.actual}> to start with <${text}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
       expected: text,
-      message: `Expected [${this.actual}] NOT to start with [${text}]`
+      message: `Expected <${this.actual}> NOT to start with <${text}>`
     });
 
     return this.execute({
@@ -177,12 +177,12 @@ export class StringAssertion extends Assertion<string> {
     const error = new AssertionError({
       actual: this.actual,
       expected: text,
-      message: `Expected [${this.actual}] to end with [${text}]`
+      message: `Expected <${this.actual}> to end with <${text}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
       expected: text,
-      message: `Expected [${this.actual}] NOT to end with [${text}]`
+      message: `Expected <${this.actual}> NOT to end with <${text}>`
     });
 
     return this.execute({
@@ -201,11 +201,11 @@ export class StringAssertion extends Assertion<string> {
   public toMatchRegex(regex: RegExp): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected [${this.actual}] to match the regular expression [${regex}]`
+      message: `Expected <${this.actual}> to match the regular expression <${regex}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected [${this.actual}] NOT to match the regular expression [${regex}]`
+      message: `Expected <${this.actual}> NOT to match the regular expression <${regex}>`
     });
 
     return this.execute({
