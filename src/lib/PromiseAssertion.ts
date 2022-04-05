@@ -21,7 +21,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * promise will contain the error.
    *
    * **Important:** Remember to return or `await` for this assertion to not leave
-   * the assertion asynchronous in the test
+   * the promise asynchronous to the test
    *
    * @returns a promise with the resolved value (or an error if `.not` was prepended)
    */
@@ -100,7 +100,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * promise will contain the value.
    *
    * **Important:** Remember to return or `await` for this assertion to not leave
-   * the assertion asynchronous in the test
+   * the promise asynchronous to the test
    *
    * @returns a promise with the caught error (or the value if `.not` is prepended)
    */
@@ -123,7 +123,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
       if (this.inverted) {
         throw new AssertionError({
           actual: error,
-          message: "Expeted promise NOT to be rejected"
+          message: "Expected promise NOT to be rejected"
         });
       }
 
@@ -137,7 +137,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * rejected with anything but the passed error.
    *
    * **Important:** Remember to return or `await` for this assertion to not leave
-   * the it asynchronous in the test.
+   * the promise asynchronous to the test
    *
    * @param expected the expected error to be rejected by the promise
    * @returns a promise with the caught error

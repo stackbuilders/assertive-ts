@@ -105,7 +105,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
         return Promise.all([
           test.toBeRejected().then(error => assert.deepStrictEqual(error, Error("fail"))),
           assert.rejects(test.not.toBeRejected(), {
-            message: "Expeted promise NOT to be rejected",
+            message: "Expected promise NOT to be rejected",
             name: AssertionError.name
           })
         ]);
@@ -131,7 +131,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
       });
     });
 
-    context("when the primise is rejected", () => {
+    context("when the promise is rejected", () => {
       context("and the expected error is equal to the rejected error", () => {
         it("returns the promise with the rejected error", () => {
           const test = new PromiseAssertion(Promise.reject(Error("fail")));
@@ -146,7 +146,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
         });
       });
 
-      context("and the expected error is NOT equal to the rejecetd error", () => {
+      context("and the expected error is NOT equal to the rejected error", () => {
         it("rejects the promise with an assertion error", () => {
           const test = new PromiseAssertion(Promise.reject<number>("foo"));
 
