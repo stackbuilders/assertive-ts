@@ -1,8 +1,6 @@
-import assert from "assert";
+import assert, { AssertionError } from "assert";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
-
-const ASSERTION_ERROR: string = "AssertionError";
 
 type Entry = [string | number | symbol, number | object | string];
 
@@ -49,7 +47,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeEmpty(), test);
         assert.throws(() => test.not.toBeEmpty(), {
           message: "Expected the value NOT to be an empty object",
-          name: ASSERTION_ERROR
+          name: AssertionError.name
         });
       });
     });
@@ -61,7 +59,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toBeEmpty(), {
             message: "Expected the value to be an empty object",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeEmpty(), test);
         });
@@ -79,7 +77,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainKey(myKey), test);
           assert.throws(() => test.not.toContainKey(myKey), {
             message: `Expected the object NOT to contain the provided key <${myKey}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -93,7 +91,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainKey(wrongKey), {
             message: `Expected the object to contain the provided key <${wrongKey}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toContainKey(wrongKey), test);
         });
@@ -111,7 +109,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainAllKeys(myKeys), test);
           assert.throws(() => test.not.toContainAllKeys(myKeys), {
             message: `Expected the object NOT to contain all the provided keys <${myKeys}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -125,7 +123,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAllKeys(someKeys), {
             message: `Expected the object to contain all the provided keys <${someKeys}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(
             test.not.toContainAllKeys(someKeys),
@@ -146,7 +144,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainAnyKeys(someKeys), test);
           assert.throws(() => test.not.toContainAnyKeys(someKeys), {
             message: `Expected the object NOT to contain any of the provided keys <${someKeys}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -160,7 +158,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAnyKeys(wrongKeys), {
             message: `Expected the object to contain at least one of the provided keys <${wrongKeys}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toContainAnyKeys(wrongKeys), test);
         });
@@ -182,7 +180,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toContainValue(value), test);
             assert.throws(() => test.not.toContainValue(value), {
               message: `Expected the object NOT to contain the provided value <${value}>`,
-              name: ASSERTION_ERROR
+              name: AssertionError.name
             });
           });
         });
@@ -202,7 +200,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
             assert.throws(() => test.toContainValue(value), {
               message: `Expected the object to contain the provided value <${value}>`,
-              name: ASSERTION_ERROR
+              name: AssertionError.name
             });
             assert.deepStrictEqual(test.not.toContainValue(value), test);
           });
@@ -221,7 +219,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainAllValues(myValues), test);
           assert.throws(() => test.not.toContainAllValues(myValues), {
             message: `Expected the object NOT to contain all the provided values <${myValues}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -235,7 +233,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAllValues(someValues), {
             message: `Expected the object to contain all the provided values <${someValues}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toContainAllValues(someValues), test);
         });
@@ -253,7 +251,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainAnyValues(someValues), test);
           assert.throws(() => test.not.toContainAnyValues(someValues), {
             message: `Expected the object NOT to contain any of the provided values <${someValues}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -267,7 +265,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAnyValues(wrongValues), {
             message: `Expected the object to contain at least one of the provided values <${wrongValues}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toContainAnyValues(wrongValues), test);
         });
@@ -286,7 +284,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toContainEntry(entry), test);
             assert.throws(() => test.not.toContainEntry(entry), {
               message: `Expected the object NOT to contain the provided entry <${JSON.stringify(entry)}>`,
-              name: ASSERTION_ERROR
+              name: AssertionError.name
             });
           });
         });
@@ -301,7 +299,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
             assert.throws(() => test.toContainEntry(wrongEntry), {
               message: `Expected the object to contain the provided entry <${JSON.stringify(wrongEntry)}>`,
-              name: ASSERTION_ERROR
+              name: AssertionError.name
             });
             assert.deepStrictEqual(test.not.toContainEntry(wrongEntry), test);
           });
@@ -319,7 +317,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainAllEntries(ENTRIES), test);
           assert.throws(() => test.not.toContainAllEntries(ENTRIES), {
             message: `Expected the object NOT to contain all the provided entries <${JSON.stringify(ENTRIES)}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -332,7 +330,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAllEntries(SOME_ENTRIES), {
             message: `Expected the object to contain all the provided entries <${JSON.stringify(SOME_ENTRIES)}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toContainAllEntries(SOME_ENTRIES), test);
         });
@@ -349,7 +347,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toContainAnyEntries(SOME_ENTRIES), test);
           assert.throws(() => test.not.toContainAnyEntries(SOME_ENTRIES), {
               message: `Expected the object NOT to contain any of the provided entries <${JSON.stringify(SOME_ENTRIES)}>`,
-              name: ASSERTION_ERROR
+              name: AssertionError.name
           });
         });
       });
@@ -362,7 +360,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAnyEntries(WRONG_ENTRIES), {
             message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(WRONG_ENTRIES)}>`,
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toContainAnyEntries(WRONG_ENTRIES), test);
         });
@@ -386,7 +384,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toPartiallyMatch(provObj), test);
           assert.throws(() => test.not.toPartiallyMatch(provObj), {
             message: "Expected the object NOT to be a partial match",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
         });
       });
@@ -403,7 +401,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
           assert.throws(() => test.toPartiallyMatch(provObj), {
             message: "Expected the object to be a partial match",
-            name: ASSERTION_ERROR
+            name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toPartiallyMatch(provObj), test);
         });

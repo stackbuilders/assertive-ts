@@ -1,6 +1,8 @@
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
+import { isJSObject, isKeyOf } from "./helpers/guards";
+
 interface ExecuteOptions {
   /**
    * The condition for when the assertion should pass. The negation of this
@@ -260,7 +262,7 @@ export class Assertion<T> {
         return this.actual.getTime() === expected.getTime();
       }
 
-      if (isObject(this.actual) && isObject(expected)) {
+      if (isJSObject(this.actual) && isJSObject(expected)) {
         const actualKeys = Object.keys(this.actual);
         const expectedKeys = Object.keys(expected);
         const sizeMatch = actualKeys.length === expectedKeys.length;
@@ -272,7 +274,11 @@ export class Assertion<T> {
       return false;
     };
 
-    const areBothNaN = isNumber(this.actual) && isNumber(expected) && isNaN(this.actual) && isNaN(expected);
+    const areBothNaN = typeof this.actual === "number"
+      && typeof expected === "number"
+      && isNaN(this.actual)
+      && isNaN(expected);
+
 
     return this.execute({
       assertWhen: areShallowEqual() || areBothNaN || this.actual === expected,
@@ -304,16 +310,4 @@ export class Assertion<T> {
       invertedError
     });
   }
-}
-
-function isObject(value: unknown): value is object {
-  return value !== null && typeof value === "object";
-}
-
-function isNumber(value: unknown): value is number {
-  return typeof value === "number";
-}
-
-function isKeyOf<T>(target: T, key: unknown): key is keyof T {
-  return (typeof key === "string" || typeof key === "symbol") && key in target;
 }
