@@ -2,9 +2,9 @@ import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
 import { Assertion } from "./Assertion";
-import { KeyOf, ValueOf } from "./ObjectAssertion.types";
+import { JSObject, KeyOf, ValueOf } from "./ObjectAssertion.types";
 
-export class ObjectAssertion<T extends object> extends Assertion<T> {
+export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
 
   constructor(actual: T) {
     super(actual);

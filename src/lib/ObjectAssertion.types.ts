@@ -5,3 +5,5 @@ export type KeyOf<T extends object> = keyof T extends never
 export type ValueOf<T extends object> = keyof T extends never
   ? any
   : T[keyof T];
+
+export type JSObject = Record<keyof any, unknown>;

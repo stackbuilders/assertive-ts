@@ -1,10 +1,11 @@
 import assert, { AssertionError } from "assert";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
+import { JSObject } from "../../src/lib/ObjectAssertion.types";
 
 type Entry = [string | number | symbol, number | object | string];
 
-const TEST_OBJ = {
+const TEST_OBJ: JSObject = {
   myKey: 0,
   2: {
     innerObjKey: 1,
@@ -26,17 +27,6 @@ const SOME_ENTRIES: Entry[] = [
   ["myKey", 0],
   [3, { innerObjKey: 4, message: "inner wrong value" }]
 ];
-
-function makeObject(): object {
-  return {
-    myKey: 0,
-    2: {
-      innerObjKey: 1,
-      message: "inner value"
-    },
-    otherKey: "other value"
-  };
-}
 
 describe("[Unit] ObjectAssertion.test.ts", () => {
   describe(".toBeEmpty", () => {
@@ -69,7 +59,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains the provided key", () => {
       [2, "myKey"].forEach(key => {
         it(`[${typeof key} key] returns the assertion instance`, () => {
-          const test = new ObjectAssertion(makeObject());
+          const test = new ObjectAssertion(TEST_OBJ);
 
           assert.deepStrictEqual(test.toContainKey(key), test);
           assert.throws(() => test.not.toContainKey(key), {
@@ -83,7 +73,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object does NOT contain the provided key", () => {
       [3, "myWrongKey"].forEach(wrongKey => {
         it(`[${typeof wrongKey} key] throws an assertion error`, () => {
-          const test = new ObjectAssertion(makeObject());
+          const test = new ObjectAssertion(TEST_OBJ);
 
           assert.throws(() => test.toContainKey(wrongKey), {
             message: `Expected the object to contain the provided key <${wrongKey}>`,
@@ -99,7 +89,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains all the provided keys", () => {
       it("returns the assertion instance", () => {
         const myKeys = ["myKey", 2];
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.deepStrictEqual(test.toContainAllKeys(myKeys), test);
         assert.throws(() => test.not.toContainAllKeys(myKeys), {
@@ -112,7 +102,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object does NOT contain all the provided keys", () => {
       it("throws an assertion error", () => {
         const someKeys = ["myKey", 3];
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.throws(() => test.toContainAllKeys(someKeys), {
           message: `Expected the object to contain all the provided keys <${someKeys}>`,
@@ -130,7 +120,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains at least one of the the provided keys", () => {
       it("returns the assertion instance", () => {
         const someKeys = ["myKey", "objKey", 4, "randomKey"];
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.deepStrictEqual(test.toContainAnyKeys(someKeys), test);
         assert.throws(() => test.not.toContainAnyKeys(someKeys), {
@@ -143,7 +133,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object does NOT contain any of the provided keys", () => {
       it("throws an assertion error", () => {
         const wrongKeys = ["notMyKey", 3, "randomKey"];
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.throws(() => test.toContainAnyKeys(wrongKeys), {
           message: `Expected the object to contain at least one of the provided keys <${wrongKeys}>`,
@@ -252,7 +242,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object contains the provided entry", () => {
       ENTRIES.forEach(entry => {
         it(`[${typeof entry[0]}, ${typeof entry[1]}] entry returns the assertion instance`, () => {
-          const test = new ObjectAssertion(makeObject());
+          const test = new ObjectAssertion(TEST_OBJ);
 
           assert.deepStrictEqual(test.toContainEntry(entry), test);
           assert.throws(() => test.not.toContainEntry(entry), {
@@ -266,7 +256,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     context("when the object does NOT contain the provided entry", () => {
       WRONG_ENTRIES.forEach(wrongEntry => {
         it(`[${typeof wrongEntry[0]}, ${typeof wrongEntry[1]}] entry throws an assertion error`, () => {
-          const test = new ObjectAssertion(makeObject());
+          const test = new ObjectAssertion(TEST_OBJ);
 
           assert.throws(() => test.toContainEntry(wrongEntry), {
             message: `Expected the object to contain the provided entry <${JSON.stringify(wrongEntry)}>`,
@@ -281,7 +271,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
   describe(".toContainAllEntries", () => {
     context("when the object contains all the provided entries", () => {
       it("returns the assertion instance", () => {
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.deepStrictEqual(test.toContainAllEntries(ENTRIES), test);
         assert.throws(() => test.not.toContainAllEntries(ENTRIES), {
@@ -293,7 +283,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
     context("when the object does NOT contain all the provided entries", () => {
       it("throws an assertion error", () => {
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.throws(() => test.toContainAllEntries(SOME_ENTRIES), {
           message: `Expected the object to contain all the provided entries <${JSON.stringify(SOME_ENTRIES)}>`,
@@ -307,7 +297,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
   describe(".toContainAnyEntries", () => {
     context("when the object contains at least one of the provided entries", () => {
       it("returns the assertion instance", () => {
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.deepStrictEqual(test.toContainAnyEntries(SOME_ENTRIES), test);
         assert.throws(() => test.not.toContainAnyEntries(SOME_ENTRIES), {
@@ -319,7 +309,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
     context("when the object does NOT contain any of the provided entries", () => {
       it("throws an assertion error", () => {
-        const test = new ObjectAssertion(makeObject());
+        const test = new ObjectAssertion(TEST_OBJ);
 
         assert.throws(() => test.toContainAnyEntries(WRONG_ENTRIES), {
           message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(WRONG_ENTRIES)}>`,
