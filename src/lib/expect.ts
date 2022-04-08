@@ -4,7 +4,7 @@ import { DateAssertion } from "./DateAssertion";
 import { AnyFunction, FunctionAssertion } from "./FunctionAssertion";
 import { isAnyFunction, isJSObject, isPromise } from "./helpers/guards";
 import { NumberAssertion } from "./NumberAssertion";
-import { ObjectAssertion } from "./ObjectAssertion";
+import { JSObject, ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 
@@ -16,7 +16,7 @@ export function expect<T extends string>(actual: T): StringAssertion;
 export function expect<T extends Date>(actual: T): DateAssertion;
 export function expect<T extends Promise<any>>(actual: T): PromiseAssertion<PromiseType<T>>;
 export function expect<T extends AnyFunction>(actual: T): FunctionAssertion<T>;
-export function expect<T extends object>(actual: T): ObjectAssertion<T>;
+export function expect<T extends JSObject>(actual: T): ObjectAssertion<T>;
 export function expect<T>(actual: T): Assertion<T>;
 export function expect<T>(actual: T) {
   switch (typeof actual) {

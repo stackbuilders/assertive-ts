@@ -6,7 +6,7 @@ import {
   LowInclusiveBetweenOptions
 } from "../NumberAssertion";
 
-export function isJSObject<T>(value: T): value is T & object {
+export function isJSObject<T>(value: T): value is { [K in keyof T]: T[K] } {
   return value !== null
     && typeof value === "object"
     && typeof value !== "function";

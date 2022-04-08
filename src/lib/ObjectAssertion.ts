@@ -2,7 +2,12 @@ import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
 import { Assertion } from "./Assertion";
-import { JSObject, KeyOf, ValueOf } from "./ObjectAssertion.types";
+
+export type JSObject = Record<keyof any, unknown>;
+
+type Entry<T, K = keyof T> = K extends keyof T
+  ? [K, T[K]]
+  : never;
 
 export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
 
@@ -38,7 +43,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param key the key that the object should contain
    * @returns the assertion instance
    */
-  public toContainKey(key: KeyOf<T>): this {
+  public toContainKey(key: keyof T): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain the provided key <${key}>`
@@ -61,7 +66,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param keys the keys that the object should contain
    * @returns the assertion instance
    */
-  public toContainAllKeys(keys: KeyOf<T>[]): this {
+  public toContainAllKeys(keys: Array<keyof T>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain all the provided keys <${keys}>`
@@ -84,7 +89,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param keys the keys that the object may contain
    * @returns the assertion instance
    */
-  public toContainAnyKeys(keys: KeyOf<T>[]): this {
+  public toContainAnyKeys(keys: Array<keyof T>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain at least one of the provided keys <${keys}>`
@@ -107,7 +112,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param value the property value that the object should contain in any of its keys
    * @returns the assertion instance
    */
-  public toContainValue(value: ValueOf<T>): this {
+  public toContainValue(value: T[keyof T]): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain the provided value <${value}>`
@@ -130,7 +135,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param values the property values that the object should contain
    * @returns the assertion instance
    */
-  public toContainAllValues(values: ValueOf<T>[]): this {
+  public toContainAllValues(values: Array<T[keyof T]>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain all the provided values <${values}>`
@@ -156,7 +161,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param values the property values that the object should contain
    * @returns the assertion instance
    */
-  public toContainAnyValues(values: ValueOf<T>[]): this {
+  public toContainAnyValues(values: Array<T[keyof T]>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain at least one of the provided values <${values}>`
@@ -182,7 +187,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param entry the entry that the object should contain
    * @returns the assertion instance
    */
-  public toContainEntry(entry: [KeyOf<T>, ValueOf<T>]): this {
+  public toContainEntry(entry: Entry<T>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain the provided entry <${JSON.stringify(entry)}>`
@@ -207,7 +212,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param entries the entries that the object should contain
    * @returns the assertion instance
    */
-  public toContainAllEntries(entries: [KeyOf<T>, ValueOf<T>][]): this {
+  public toContainAllEntries(...entries: Array<Entry<T>>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain all the provided entries <${JSON.stringify(entries)}>`
@@ -234,7 +239,7 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * @param entries the entries that the object should contain
    * @returns the assertion instance
    */
-  public toContainAnyEntries(entries: [KeyOf<T>, ValueOf<T>][]): this {
+  public toContainAnyEntries(...entries: Array<Entry<T>>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(entries)}>`
