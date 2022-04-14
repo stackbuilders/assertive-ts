@@ -1,6 +1,8 @@
 import assert, { AssertionError } from "assert";
 
 import { Assertion } from "../../src/lib/Assertion";
+import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
+import { StringAssertion } from "../../src/lib/StringAssertion";
 
 const HERO = {
   name: "Batman",
@@ -390,6 +392,35 @@ describe("[Unit] Assertion.test.ts", () => {
             name: AssertionError.name
           });
           assert.deepStrictEqual(test.not.toBeSame(expected), test);
+        });
+      });
+    });
+  });
+
+  describe(".asType", () => {
+    context("when the type predicate is true", () => {
+      it("returns a new instance of the assertion passed to the type factory", () => {
+        const test = new Assertion("foo");
+
+        assert.deepStrictEqual(test.asType(TypeFactories.String), new StringAssertion("foo"));
+        assert.throws(() => test.not.asType(TypeFactories.String), {
+          message: "Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method",
+          name: Error.name
+        });
+      });
+    });
+
+    context("when the predicate is false", () => {
+      it("throws an assertion error", () => {
+        const test = new Assertion("foo");
+
+        assert.throws(() => test.asType(TypeFactories.Boolean), {
+          message: 'Expected <foo> to be of type "boolean"',
+          name: AssertionError.name
+        });
+        assert.throws(() => test.not.asType(TypeFactories.Boolean), {
+          message: "Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method",
+          name: Error.name
         });
       });
     });

@@ -2,6 +2,7 @@ import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
 import { isJSObject, isKeyOf } from "./helpers/guards";
+import { TypeFactory } from "./helpers/TypeFactories";
 
 interface ExecuteOptions {
   /**
@@ -279,7 +280,6 @@ export class Assertion<T> {
       && isNaN(this.actual)
       && isNaN(expected);
 
-
     return this.execute({
       assertWhen: areShallowEqual() || areBothNaN || this.actual === expected,
       error,
@@ -308,6 +308,49 @@ export class Assertion<T> {
       assertWhen: this.actual === expected,
       error,
       invertedError
+    });
+  }
+
+  /**
+   * Check first if the value is of some specific type, in which case returns
+   * an assertion instance for that specific type. The new assertion is built
+   * from a factory that should extend from the base {@link Assertion} class.
+   *
+   * We provide some basic factories in {@code TypeFactories}. If you need some
+   * other factory for a custom assertion for instance, you can easily create
+   * one from a Factory reference and a predicate.
+   *
+   * @example
+   * ```
+   * expect(unknownValue)
+   *   .asType(TypeFactories.STRING)
+   *   .toStartWith("/api/");
+   *
+   * expect(uuid)
+   *   .asType({
+   *     Factory: UUIDAssertion, // a custom UUID assertion
+   *     predicate: (value): value is UUID => typeof value === "string" && UUID.PATTER.test(value)
+   *   })
+   *   .isValid();
+   * ```
+   *
+   * @param typeFactory a factory to assert the type and create an assertion
+   * @returns a more specific assertion based on the factory type
+   */
+  public asType<S, A extends Assertion<S>>(typeFactory: TypeFactory<S, A>): A {
+    const { Factory, predicate, typeName } = typeFactory;
+
+    if (this.inverted) {
+      throw Error("Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method");
+    }
+
+    if (predicate(this.actual)) {
+      return new Factory(this.actual);
+    }
+
+    throw new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> to be of type "${typeName}"`
     });
   }
 }
