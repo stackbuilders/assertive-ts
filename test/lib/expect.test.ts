@@ -1,6 +1,7 @@
 import assert from "assert";
 
 import expect from "../../src";
+import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 import { DateAssertion } from "../../src/lib/DateAssertion";
@@ -56,6 +57,14 @@ describe("[Unit] expect.test.ts", () => {
       const test = expect(() => 0);
 
       assert(test instanceof FunctionAssertion);
+    });
+  });
+
+  context("when the actual value is an array", () => {
+    it("returns an ArrayAssertion instance", () => {
+      const test = expect([1, 2, 3]);
+
+      assert(test instanceof ArrayAssertion);
     });
   });
 

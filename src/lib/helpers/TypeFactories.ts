@@ -1,3 +1,4 @@
+import { ArrayAssertion } from "../ArrayAssertion";
 import { Assertion } from "../Assertion";
 import { BooleanAssertion } from "../BooleanAssertion";
 import { DateAssertion } from "../DateAssertion";
@@ -22,6 +23,7 @@ interface StaticTypeFactories {
   Function: TypeFactory<AnyFunction, FunctionAssertion<AnyFunction>>;
   Number: TypeFactory<number, NumberAssertion>;
   String: TypeFactory<string, StringAssertion>;
+  array<T>(innerType?: TypeFactory<T, Assertion<T>>): TypeFactory<T[], ArrayAssertion<T>>;
   instanceOf<T extends Function>(type: T): TypeFactory<T, Assertion<T>>; // tslint:disable-line: ban-types
   object<T extends JSObject>(): TypeFactory<T, ObjectAssertion<T>>;
 }
@@ -51,6 +53,16 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
     Factory: StringAssertion,
     predicate: (value): value is string => typeof value === "string",
     typeName: "string"
+  },
+  array<T>(innerType?: TypeFactory<T, Assertion<T>>) {
+    return {
+      Factory: ArrayAssertion,
+      predicate: (value): value is T[] =>
+        innerType !== undefined
+          ? Array.isArray(value) && value.every(innerType.predicate)
+          : Array.isArray(value),
+      typeName: "array"
+    };
   },
   instanceOf(type) {
     return {

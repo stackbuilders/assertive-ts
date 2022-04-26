@@ -98,6 +98,51 @@ describe("[Unit] TypeFactories.test.ts", () => {
       });
     });
 
+    describe(".array", () => {
+      context("when the value is an array", () => {
+        context("and the inner type factory is provided", () => {
+          context("and every value of the array matches the inner type predicate", () => {
+            it("returns true", () => {
+              const result = TypeFactories.array(TypeFactories.Number).predicate([1, 2, 3]);
+
+              assert.equal(result, true);
+            });
+          });
+
+          context("and not every value of the array matches the inner type predicate", () => {
+            it("returns false", () => {
+              const result = TypeFactories.array(TypeFactories.Number).predicate([1, "2", 3]);
+
+              assert.equal(result, false);
+            });
+          });
+        });
+
+        context("and the inner type factory is not provided", () => {
+          it("returns true", () => {
+            const result = TypeFactories.array().predicate([1, "2", 3]);
+
+            assert.equal(result, true);
+          });
+        });
+      });
+
+      context("when the value is not an array", () => {
+        const variants = [
+          ["with inner type", TypeFactories.Number],
+          ["without inner type", undefined]
+        ] as const;
+
+        variants.forEach(([desc, innerType]) => {
+          it(`[${desc}] returns false`, () => {
+            const result = TypeFactories.array(innerType).predicate(1);
+
+            assert.equal(result, false);
+          });
+        });
+      });
+    });
+
     describe(".instanceOf", () => {
       context("when the value is an instance of the passed type", () => {
         it("returns true", () => {
