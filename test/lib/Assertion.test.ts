@@ -1,10 +1,9 @@
 import assert, { AssertionError } from "assert";
 
 import { Assertion } from "../../src/lib/Assertion";
+import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
 import { StringAssertion } from "../../src/lib/StringAssertion";
-
-import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 
 const HERO = {
   name: "Batman",

@@ -1,9 +1,8 @@
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
-import { UnsupportedOperationError } from "../../test/lib/errors/UnsupportedOperationError";
-
 import { Assertion } from "./Assertion";
+import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { expect } from "./expect";
 import { TypeFactory } from "./helpers/TypeFactories";
 
@@ -110,7 +109,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
         try {
           consumer(value);
           return true;
-        } catch (error) {
+        } catch (err) {
           return false;
         }
       }),
@@ -160,6 +159,27 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
 
     return this.execute({
       assertWhen: this.actual.length === size,
+      error,
+      invertedError
+    });
+  }
+
+  public toHaveSameMembers(expected: T[]): this {
+    const prettyValues = `[${expected.map(value => JSON.stringify(value)).join(", ")}]`;
+    const error = new AssertionError({
+      actual: this.actual,
+      expected,
+      message: `Expected array to have the same members as: ${prettyValues}`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected array NOT to have the same members as: ${prettyValues}`
+    });
+
+    return this.execute({
+      assertWhen:
+        this.actual.length === expected.length
+        && this.actual.every(value => expected.includes(value)),
       error,
       invertedError
     });
@@ -220,7 +240,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    * @param value the expected value of the index in the array
    * @returns the assertion instance
    */
-  public toContainExactlyAt(index: number, value: T): this {
+  public toContainAt(index: number, value: T): this {
     const error = new AssertionError({
       actual: this.actual[index],
       expected: value,

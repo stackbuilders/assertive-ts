@@ -1,8 +1,7 @@
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
-import { UnsupportedOperationError } from "../../test/lib/errors/UnsupportedOperationError";
-
+import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { isJSObject, isKeyOf } from "./helpers/guards";
 import { TypeFactory } from "./helpers/TypeFactories";
 

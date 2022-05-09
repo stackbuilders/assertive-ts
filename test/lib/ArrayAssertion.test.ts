@@ -2,10 +2,9 @@ import assert, { AssertionError } from "assert";
 
 import expect from "../../src";
 import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
+import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
 import { NumberAssertion } from "../../src/lib/NumberAssertion";
-
-import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 
 describe("[Unit] ArrayAssertion.test.ts", () => {
   describe(".toMatchAll", () => {
@@ -178,6 +177,41 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
     });
   });
 
+  describe(".toHaveSameMembers", () => {
+    context("when the array has the same members as the passed array", () => {
+      it("returns the assertion instance", () => {
+        const test = new ArrayAssertion([1, 2, 3]);
+
+        assert.deepStrictEqual(test.toHaveSameMembers([2, 3, 1]), test);
+        assert.throws(() => test.not.toHaveSameMembers([2, 3, 1]), {
+          message: "Expected array NOT to have the same members as: [2, 3, 1]",
+          name: AssertionError.name
+        });
+      });
+    });
+
+    context("when the array does not have the same members as the passed array", () => {
+      const variants: Array<[string, number[]]> = [
+        ["[1, 2]", [1, 2]],
+        ["[1, 2, 4]", [1, 2, 4]],
+        ["[5, 6, 7]", [5, 6, 7]],
+        ["[1, 2, 3, 4]", [1, 2, 3, 4]]
+      ];
+
+      variants.forEach(([desc, expected]) => {
+        it(`[${desc}] throws an assertion error`, () => {
+          const test = new ArrayAssertion([1, 2, 3]);
+
+          assert.throws(() => test.toHaveSameMembers(expected), {
+            message: `Expected array to have the same members as: ${desc}`,
+            name: AssertionError.name
+          });
+          assert.deepStrictEqual(test.not.toHaveSameMembers(expected), test);
+        });
+      });
+    });
+  });
+
   describe(".toContainAll", () => {
     context("when the array contains the expected values", () => {
       it("returns the assertion instance", () => {
@@ -230,13 +264,13 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
     });
   });
 
-  describe(".toContainExactlyAt", () => {
+  describe(".toContainAt", () => {
     context("when the array contains the value at the index", () => {
       it("returns the assertion instance", () => {
         const test = new ArrayAssertion(["foo", "bar", "baz"]);
 
-        assert.deepStrictEqual(test.toContainExactlyAt(1, "bar"), test);
-        assert.throws(() => test.not.toContainExactlyAt(1, "bar"), {
+        assert.deepStrictEqual(test.toContainAt(1, "bar"), test);
+        assert.throws(() => test.not.toContainAt(1, "bar"), {
           message: "Expected value at index 1 of the array NOT to be <bar>",
           name: AssertionError.name
         });
@@ -254,11 +288,11 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         it(`[${desc}] throws an assertion error`, () => {
           const test = new ArrayAssertion(["foo", "bar", "baz"]);
 
-          assert.throws(() => test.toContainExactlyAt(index, "bar"), {
+          assert.throws(() => test.toContainAt(index, "bar"), {
             message: `Expected value at index ${index} of the array to be <bar>`,
             name: AssertionError.name
           });
-          assert.deepStrictEqual(test.not.toContainExactlyAt(index, "bar"), test);
+          assert.deepStrictEqual(test.not.toContainAt(index, "bar"), test);
         });
       });
     });
