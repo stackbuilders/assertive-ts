@@ -1,6 +1,7 @@
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
+import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { isJSObject, isKeyOf } from "./helpers/guards";
 import { TypeFactory } from "./helpers/TypeFactories";
 
@@ -73,29 +74,23 @@ export class Assertion<T> {
   }
 
   /**
-   * Check if the assertion passes using a generic matcher function. That is,
-   * if the matcher function returns true, the assertion passes, otherwise it
-   * fails.
+   * Check if the value matches the given predicate.
    *
-   * As a convenience, the matcher function recieves the actual value in its
-   * first argument, and a boolean in its second which indicates it the logic
-   * was inverted by the `.not` operator
-   *
-   * @param matcher a generic matcher function
+   * @param matcher a matcher predicate
    * @returns the assertion instance
    */
-  public toMatch(matcher: (actual: T, inverted: boolean) => boolean): this {
+  public toMatch(matcher: (actual: T) => boolean): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected matcher function to return true"
+      message: "Expected matcher predicate to return true"
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected matcher function NOT to return true"
+      message: "Expected matcher predicate NOT to return true"
     });
 
     return this.execute({
-      assertWhen: matcher(this.actual, this.inverted),
+      assertWhen: matcher(this.actual),
       error,
       invertedError
     });
@@ -341,7 +336,7 @@ export class Assertion<T> {
     const { Factory, predicate, typeName } = typeFactory;
 
     if (this.inverted) {
-      throw Error("Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method");
+      throw new UnsupportedOperationError("The `.not` modifier is not allowed on `.asType(..)` method");
     }
 
     if (predicate(this.actual)) {

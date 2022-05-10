@@ -1,6 +1,7 @@
 import assert, { AssertionError } from "assert";
 
 import { Assertion } from "../../src/lib/Assertion";
+import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 
@@ -95,29 +96,29 @@ describe("[Unit] Assertion.test.ts", () => {
   });
 
   describe(".toMatch", () => {
-    const matcher = (actual: string): boolean => actual.startsWith("h");
+    const startsWithH = (actual: string): boolean => actual.startsWith("h");
 
-    context("when the matcher function returns true", () => {
+    context("when the matcher predicate returns true", () => {
       it("returns the assertion instance", () => {
         const test = new Assertion("hello");
 
-        assert.deepStrictEqual(test.toMatch(matcher), test);
-        assert.throws(() => test.not.toMatch(matcher), {
-          message: "Expected matcher function NOT to return true",
+        assert.deepStrictEqual(test.toMatch(startsWithH), test);
+        assert.throws(() => test.not.toMatch(startsWithH), {
+          message: "Expected matcher predicate NOT to return true",
           name: AssertionError.name
         });
       });
     });
 
-    context("when the matcher function returns false", () => {
+    context("when the matcher predicate returns false", () => {
       it("throws an assertion error", () => {
         const test = new Assertion("bye");
 
-        assert.throws(() => test.toMatch(matcher), {
-          message: "Expected matcher function to return true",
+        assert.throws(() => test.toMatch(startsWithH), {
+          message: "Expected matcher predicate to return true",
           name: AssertionError.name
         });
-        assert.deepStrictEqual(test.not.toMatch(matcher), test);
+        assert.deepStrictEqual(test.not.toMatch(startsWithH), test);
       });
     });
   });
@@ -403,10 +404,6 @@ describe("[Unit] Assertion.test.ts", () => {
         const test = new Assertion("foo");
 
         assert.deepStrictEqual(test.asType(TypeFactories.String), new StringAssertion("foo"));
-        assert.throws(() => test.not.asType(TypeFactories.String), {
-          message: "Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method",
-          name: Error.name
-        });
       });
     });
 
@@ -418,9 +415,16 @@ describe("[Unit] Assertion.test.ts", () => {
           message: 'Expected <foo> to be of type "boolean"',
           name: AssertionError.name
         });
-        assert.throws(() => test.not.asType(TypeFactories.Boolean), {
+      });
+    });
+
+    context("when the .not modifier is used", () => {
+      it("throws an UnsupportedOperationError", () => {
+        const test = new Assertion("foo");
+
+        assert.throws(() => test.not.asType(TypeFactories.String), {
           message: "Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method",
-          name: Error.name
+          name: UnsupportedOperationError.name
         });
       });
     });
