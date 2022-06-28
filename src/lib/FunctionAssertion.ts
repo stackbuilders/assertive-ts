@@ -101,7 +101,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
   }
 
   /**
-   * Check if the function throws a specific value when called. Additionally,
+   * Check if the function throws a non-error value when called. Additionally,
    * you can pass a {@link TypeFactory} in the second argument so the returned
    * assertion is for the specific value type. Otherwise, a basic
    * {@link Assertion Assertion<unknown>} instance is returned.

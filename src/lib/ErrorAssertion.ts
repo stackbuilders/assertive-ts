@@ -9,7 +9,7 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   }
 
   /**
-   * Check if the error contains exactly the passed error.
+   * Check if the error has exactly the passed error.
    *
    * @param message the message the error should contain
    * @returns the assertion instance
@@ -18,11 +18,11 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
     const error = new AssertionError({
       actual: this.actual.message,
       expected: message,
-      message: `Expected error to contain the message: ${message}`
+      message: `Expected error to have the message: ${message}`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected error to NOT contain the message: ${message}`
+      message: `Expected error NOT to have the message: ${message}`
     });
 
     return this.execute({
@@ -33,12 +33,82 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   }
 
   /**
-   * Check if the error matches the provided regular expression.
+   * Check if the error has a message that starts with the provided fragment
+   *
+   * @param fragment the fragment the message should start with
+   * @returns the assertion instance
+   */
+  public toHaveMessageStartingWith(fragment: string): this {
+    const error = new AssertionError({
+      actual: this.actual.message,
+      message: `Expected error to have a message starting with: ${fragment}`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual.message,
+      message: `Expected error NOT to have a message starting with: ${fragment}`
+    });
+
+    return this.execute({
+      assertWhen: this.actual.message.startsWith(fragment),
+      error,
+      invertedError
+    });
+  }
+
+  /**
+   * Check if the error has a message that contains the provided fragment
+   *
+   * @param fragment the fragment the message should contain
+   * @returns the assertion instance
+   */
+   public toHaveMessageContaining(fragment: string): this {
+    const error = new AssertionError({
+      actual: this.actual.message,
+      message: `Expected error to have a message containing: ${fragment}`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual.message,
+      message: `Expected error NOT to have a message containing: ${fragment}`
+    });
+
+    return this.execute({
+      assertWhen: this.actual.message.includes(fragment),
+      error,
+      invertedError
+    });
+  }
+
+  /**
+   * Check if the error has a message that ends with the provided fragment
+   *
+   * @param fragment the fragment the message should end with
+   * @returns the assertion instance
+   */
+   public toHaveMessageEndingWith(fragment: string): this {
+    const error = new AssertionError({
+      actual: this.actual.message,
+      message: `Expected error to have a message ending with: ${fragment}`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual.message,
+      message: `Expected error NOT to have a message ending with: ${fragment}`
+    });
+
+    return this.execute({
+      assertWhen: this.actual.message.endsWith(fragment),
+      error,
+      invertedError
+    });
+  }
+
+  /**
+   * Check if the error has a message taht matches the provided regular
+   * expression.
    *
    * @param regex the regular expression to match the error message
    * @returns the assertion error
    */
-  public toMatchMessage(regex: RegExp): this {
+  public toHaveMessageMatching(regex: RegExp): this {
     const error = new AssertionError({
       actual: this.actual.message,
       message: `Expected the error message to match the regex <${regex.source}>`
