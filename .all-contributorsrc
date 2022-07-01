@@ -1,6 +1,6 @@
 {
   "projectName": "assertive-ts",
-  "projectOwner": "JoseLion",
+  "projectOwner": "stackbuilders",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -16,7 +16,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/3087228?v=4",
       "profile": "https://github.com/JoseLion",
       "contributions": [
-        "code"
+        "code",
+        "maintenance"
       ]
     },
     {
@@ -65,5 +66,6 @@
       ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
