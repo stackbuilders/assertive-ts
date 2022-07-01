@@ -2,7 +2,7 @@
   "name": "assertive-ts",
   "version": "0.0.0",
   "description": "A type-safe fluent assertion library",
-  "repository": "git@github.com:stackbuilders/assertion-library.git",
+  "repository": "git@github.com:stackbuilders/assertive-ts.git",
   "author": "Stack Builders <info@stackbuilders.com>",
   "license": "MIT",
   "main": "./dist/index.js",
