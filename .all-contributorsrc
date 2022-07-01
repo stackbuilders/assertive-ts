@@ -18,7 +18,10 @@
       "profile": "https://github.com/JoseLion",
       "contributions": [
         "code",
-        "maintenance"
+        "infra",
+        "maintenance",
+        "platform",
+        "test"
       ]
     },
     {
@@ -27,7 +30,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/37427699?v=4",
       "profile": "https://github.com/byrpatrick",
       "contributions": [
-        "code"
+        "code",
+        "test"
       ]
     },
     {
@@ -36,7 +40,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/60680371?v=4",
       "profile": "https://github.com/alejo0o",
       "contributions": [
-        "code"
+        "code",
+        "test"
       ]
     },
     {
@@ -45,7 +50,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/77456654?v=4",
       "profile": "https://github.com/dalejo96",
       "contributions": [
-        "code"
+        "code",
+        "test"
       ]
     },
     {
@@ -54,7 +60,8 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/22301755?v=4",
       "profile": "https://github.com/Alex0jk",
       "contributions": [
-        "code"
+        "code",
+        "test"
       ]
     },
     {
