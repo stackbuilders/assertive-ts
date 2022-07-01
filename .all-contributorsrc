@@ -1,0 +1,69 @@
+{
+  "projectName": "assertive-ts",
+  "projectOwner": "JoseLion",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "JoseLion",
+      "name": "Jose Luis Leon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3087228?v=4",
+      "profile": "https://github.com/JoseLion",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "byrpatrick",
+      "name": "Byron Motoche",
+      "avatar_url": "https://avatars.githubusercontent.com/u/37427699?v=4",
+      "profile": "https://github.com/byrpatrick",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "alejo0o",
+      "name": "Alejandro Vivanco",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60680371?v=4",
+      "profile": "https://github.com/alejo0o",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "dalejo96",
+      "name": "David Villamarin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77456654?v=4",
+      "profile": "https://github.com/dalejo96",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Alex0jk",
+      "name": "Alexander Mejía",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22301755?v=4",
+      "profile": "https://github.com/Alex0jk",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ChristianSama",
+      "name": "Christian Samaniego",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43491324?v=4",
+      "profile": "https://github.com/ChristianSama",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
