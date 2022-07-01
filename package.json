@@ -1,15 +1,19 @@
 {
-  "name": "assertion-library",
-  "version": "0.1.0",
-  "description": "A TypeScript type-safe assertion library",
+  "name": "assertive-ts",
+  "version": "0.0.0",
+  "description": "A type-safe fluent assertion library",
+  "repository": "git@github.com:stackbuilders/assertion-library.git",
+  "author": "Stack Builders <info@stackbuilders.com>",
+  "license": "MIT",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "repository": "git@github.com:stackbuilders/assertion-library.git",
-  "author": "Jose Luis Leon <joseluis5000l@gmail.com>",
-  "license": "MIT",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
+    "build": "tsc -p tsconfig.prod.json",
     "check": "yarn compile && yarn lint && yarn test --forbid-only",
-    "compile": "tsc",
+    "compile": "tsc -p tsconfig.json",
     "lint": "tslint -c tslint.json \"!(dist)/**/*.ts\"",
     "test": "cross-env NODE_ENV=test TS_NODE_TRANSPILE_ONLY=true mocha"
   },

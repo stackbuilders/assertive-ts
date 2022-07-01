@@ -151,12 +151,10 @@ export class StringAssertion extends Assertion<string> {
   public toStartWith(text: string): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: text,
       message: `Expected <${this.actual}> to start with <${text}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      expected: text,
       message: `Expected <${this.actual}> NOT to start with <${text}>`
     });
 
@@ -176,12 +174,10 @@ export class StringAssertion extends Assertion<string> {
   public toEndWith(text: string): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: text,
       message: `Expected <${this.actual}> to end with <${text}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      expected: text,
       message: `Expected <${this.actual}> NOT to end with <${text}>`
     });
 
