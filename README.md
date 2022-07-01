@@ -1,6 +1,6 @@
 # AssertiveTS
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A type-safe fluent assertion library inspired by [Jest](https://jestjs.io/docs/expect) assertions and the popular [AssertJ](https://assertj.github.io/doc/).
@@ -51,6 +51,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/alejo0o"><img src="https://avatars.githubusercontent.com/u/60680371?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alejandro Vivanco</b></sub></a><br /><a href="https://github.com/JoseLion/assertive-ts/commits?author=alejo0o" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/dalejo96"><img src="https://avatars.githubusercontent.com/u/77456654?v=4?s=100" width="100px;" alt=""/><br /><sub><b>David Villamarin</b></sub></a><br /><a href="https://github.com/JoseLion/assertive-ts/commits?author=dalejo96" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Alex0jk"><img src="https://avatars.githubusercontent.com/u/22301755?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexander Mejía</b></sub></a><br /><a href="https://github.com/JoseLion/assertive-ts/commits?author=Alex0jk" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ChristianSama"><img src="https://avatars.githubusercontent.com/u/43491324?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christian Samaniego</b></sub></a><br /><a href="https://github.com/JoseLion/assertive-ts/commits?author=ChristianSama" title="Documentation">📖</a></td>
   </tr>
 </table>
 

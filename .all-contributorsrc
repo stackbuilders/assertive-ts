@@ -54,6 +54,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ChristianSama",
+      "name": "Christian Samaniego",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43491324?v=4",
+      "profile": "https://github.com/ChristianSama",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
