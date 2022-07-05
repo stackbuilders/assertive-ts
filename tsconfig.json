@@ -15,7 +15,7 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./dist",
+    "outDir": "./build",
     "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -25,6 +25,7 @@
   },
   "exclude": [
     ".yarn/*",
+    "build/*",
     "dist/*",
     "node_modules/*"
   ]
