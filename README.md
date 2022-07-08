@@ -5,38 +5,46 @@
 
 A type-safe fluent assertion library inspired by [Jest](https://jestjs.io/docs/expect) assertions and the popular [AssertJ](https://assertj.github.io/doc/).
 
-## Development
-
-To setup your local environment follow the next steps.
-
-### Requirements
-
-* Latest [Yarn Classic](https://classic.yarnpkg.com)
-* NodeJS (Use version set on [.nvmrc](https://github.com/stackbuilders/assertive-ts/blob/master/.nvmrc))
-
-### Install dependencies
-
-```console
-yarn install
+## Install
+```
+npm install --save-dev @stackbuilders/assertive-ts
+```
+or
+```
+yarn add -D @stackbuilders/assertive-ts
 ```
 
-### Compile TS files
+## Usage
 
-```console
-yarn compile
+You can call `expect` on the object you wish to test. 
+```typescript
+expect(sum(1, 2)).toBeEqual(3);
 ```
 
-### Lint code
-
-```console
-yarn lint
+assertive-ts allows the use of fluent assertions, which means you can chain multiple matchers on an assertion:
+```typescript
+expect(sum(1, 2)).toBeEqual(3)
+                 .toBeTruthy()
+                 .toBeFinite();
 ```
 
-### Run tests
-
-```console
-yarn test
+To assert the opposite, just add `.not` before a matcher.
+```typescript
+expect(sum(1, 2)).not.toBeNull();
 ```
+
+The matchers will depend on the type of the object passed to the `expect` function:
+```typescript
+// Boolean assertion
+expect(isEven(2)).toBeTrue();
+
+// Number assertion
+expect(sum(1, 2)).toBePositive();
+
+// String assertion
+expect("foobar").toStartWith("foo");
+```
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
