@@ -1,15 +1,16 @@
 # Usage with Jest
 
-Let's setup a project with Jest and assertive-ts to write our first assertion.
+Let's setup a project with Jest and Assertive-ts to write our first assertion.
 
 First, let's install our dependencies
 
-Using npm:
 ```
 npm install --save-dev typescript ts-jest jest @types/jest @stackbuilders/assertive-ts
 ```
 
-This library is meant to be used with TypeScript, so to have better results we encourage you to use TypeScript in your project. Let's create a `tsconfig.json` file:
+This library is meant to be used with TypeScript, so to have better results we encourage you to use TypeScript in your project. 
+
+Let's create a `tsconfig.json` file:
 ```
 npx tsc -init
 ```
