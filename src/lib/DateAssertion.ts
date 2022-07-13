@@ -69,11 +69,11 @@ export class DateAssertion extends Assertion<Date> {
     const error = new AssertionError({
       actual: this.actual,
       expected: options,
-      message: `Expected <${this.actual}> to be equal to <${optionsAsDate}>`
+      message: `Expected <${this.actual.toISOString()}> to be equal to <${optionsAsDate.toISOString()}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be equal to <${optionsAsDate}>`
+      message: `Expected <${this.actual.toISOString()}> NOT to be equal to <${optionsAsDate.toISOString()}>`
     });
 
     return this.execute({
@@ -93,11 +93,11 @@ export class DateAssertion extends Assertion<Date> {
     const error = new AssertionError({
       actual: this.actual,
       expected: date,
-      message: `Expected <${this.actual}> to be before <${date}>`
+      message: `Expected <${this.actual.toISOString()}> to be before <${date.toISOString()}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be before <${date}>`
+      message: `Expected <${this.actual.toISOString()}> NOT to be before <${date.toISOString()}>`
     });
 
     return this.execute({
@@ -116,11 +116,11 @@ export class DateAssertion extends Assertion<Date> {
   public toBeBeforeOrEqual(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be before or equal to <${date}>`
+      message: `Expected <${this.actual.toISOString()}> to be before or equal to <${date.toISOString()}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be before or equal to <${date}>`
+      message: `Expected <${this.actual.toISOString()}> NOT to be before or equal to <${date.toISOString()}>`
     });
 
     return this.execute({
@@ -139,11 +139,11 @@ export class DateAssertion extends Assertion<Date> {
   public toBeAfter(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be after <${date}>`
+      message: `Expected <${this.actual.toISOString()}> to be after <${date.toISOString()}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be after <${date}>`
+      message: `Expected <${this.actual.toISOString()}> NOT to be after <${date.toISOString()}>`
     });
 
     return this.execute({
@@ -162,11 +162,11 @@ export class DateAssertion extends Assertion<Date> {
   public toBeAfterOrEqual(date: Date): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be after or equal to <${date}>`
+      message: `Expected <${this.actual.toISOString()}> to be after or equal to <${date.toISOString()}>`
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be after or equal to <${date}>`
+      message: `Expected <${this.actual.toISOString()}> NOT to be after or equal to <${date.toISOString()}>`
     });
 
     return this.execute({
