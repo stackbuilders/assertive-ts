@@ -56,13 +56,14 @@ there are a couple ways to achieve this:
 - Instead of importing `expect` from the `assertive-ts` module, you can import one of the available aliases: `assert` or `assertThat`.
 
 ```typescript
-import { assert } from "@stackbuilders/assertive-ts"
+import { assert } from "@stackbuilders/assertive-ts";
 ```
 
 - Using explicit imports to rename the `expect` function from Jest to something like `jestExpect`
 
 ```typescript
-import { expect as jestExpect } from "@jest/globals"
+import { expect } from "@stackbuilders/assertive-ts";
+import { expect as jestExpect } from "@jest/globals";
 ```
 
 ## Making expect global as Jest expect
