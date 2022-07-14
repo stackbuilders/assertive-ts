@@ -1,3 +1,4 @@
+import dedent from "@cometlib/dedent";
 import assert, { AssertionError } from "assert";
 
 import { DateAssertion } from "../../src/lib/DateAssertion";
@@ -66,8 +67,10 @@ describe("[Unit] DateAssertion.test.ts", () => {
         };
         const test = new DateAssertion(actualDate);
         assert.throws(() => test.toMatchDateParts(options), {
-          message: `Expected <${actualDate.toISOString()}> ` +
-           `to be equal to <${dateOptionsToDate(options).toISOString()}>`,
+          message: dedent`
+            Expected <${actualDate.toISOString()}> to be equal to \
+            <${dateOptionsToDate(options).toISOString()}>
+          `,
           name: AssertionError.name
         });
         assert.deepStrictEqual(test.not.toMatchDateParts(options), test);
@@ -111,8 +114,10 @@ describe("[Unit] DateAssertion.test.ts", () => {
           const test = new DateAssertion(actualDate);
           assert.deepStrictEqual(test.toBeBeforeOrEqual(passedDate), test);
           assert.throws(() => test.not.toBeBeforeOrEqual(passedDate), {
-            message: `Expected <${actualDate.toISOString()}> ` +
-             `NOT to be before or equal to <${passedDate.toISOString()}>`,
+            message: dedent`
+              Expected <${actualDate.toISOString()}> \
+              NOT to be before or equal to <${passedDate.toISOString()}>
+            `,
             name: AssertionError.name
           });
         });
