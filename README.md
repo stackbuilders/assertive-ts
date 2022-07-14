@@ -45,6 +45,11 @@ expect(sum(1, 2)).toBePositive();
 expect("foobar").toStartWith("foo");
 ```
 
+## Tutorials
+
+- [Jest Tutorial](docs/jest-tutorial.md)
+- [Mocha Tutorial](docs/mocha-tutorial.md)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
