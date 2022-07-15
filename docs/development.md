@@ -7,8 +7,6 @@ To setup your local environment follow the next steps.
 * Latest [Yarn Classic](https://classic.yarnpkg.com)
 * NodeJS (Use version set on [.nvmrc](https://github.com/stackbuilders/assertive-ts/blob/master/.nvmrc))
 
-
-
 ### Install dependencies
 
 ```console

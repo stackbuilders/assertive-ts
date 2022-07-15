@@ -11,21 +11,14 @@ npm install --save-dev @stackbuilders/assertive-ts
 ```
 or
 ```
-yarn add -D @stackbuilders/assertive-ts
+yarn add --dev @stackbuilders/assertive-ts
 ```
 
 ## Usage
 
-You can call `expect` on the object you wish to test. 
+Use the `expect` function on the value you want to test.
 ```typescript
 expect(sum(1, 2)).toBeEqual(3);
-```
-
-assertive-ts allows the use of fluent assertions, which means you can chain multiple matchers on an assertion:
-```typescript
-expect(sum(1, 2)).toBeEqual(3)
-                 .toBeTruthy()
-                 .toBeFinite();
 ```
 
 To assert the opposite, just add `.not` before a matcher.
@@ -33,16 +26,28 @@ To assert the opposite, just add `.not` before a matcher.
 expect(sum(1, 2)).not.toBeNull();
 ```
 
-The matchers will depend on the type of the object passed to the `expect` function:
+With `assertive-ts` you can use **fluent assertions**, which means you can chain multiple matcher functions to the same value under test:
+```typescript
+expect("assertive-ts is awesome!")
+  .toStartWith("assertive-ts")
+  .toEndWith("awesome!")
+  .not.toBeEmpty();
+```
+
+The matcher functions depend on the type of the value on the `expect`. If you're using TypeScript, the compiler will let you know if something is not available for that assertion:
 ```typescript
 // Boolean assertion
 expect(isEven(2)).toBeTrue();
 
+// String assertion
+expect("foobar").toStartWith("foo");
+
 // Number assertion
 expect(sum(1, 2)).toBePositive();
 
-// String assertion
-expect("foobar").toStartWith("foo");
+expect(14).toEndWith("4");
+           ^ ? type error: `toEndWith` does not exist in `NumberAssertion`
+
 ```
 
 ## Tutorials

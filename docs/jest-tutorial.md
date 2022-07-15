@@ -1,8 +1,8 @@
 # Usage with Jest
 
-Let's setup a project with Jest and Assertive-ts to write our first assertion.
+Let's set up a project with Jest and assertive-ts to write our first assertion.
 
-First, let's install our dependencies
+First, let's install the dependencies
 
 ```
 npm install --save-dev typescript ts-jest jest @types/jest @stackbuilders/assertive-ts
@@ -15,7 +15,7 @@ Let's create a `tsconfig.json` file:
 npx tsc -init
 ```
 
-Let's also create a jest config file at the root directory by running the following command:
+Let's also create a jest configuration file at the root directory by running the following command:
 ```
 npx ts-jest config:init
 ```
@@ -31,7 +31,7 @@ export const sum = (a: number, b: number): number => {
 }
 ```
 
-Let's write our first test inside the `tests` directory. Make sure to import the `expect` function from the assertive-ts module.
+Now let's write a test for that function. Make sure to import `expect` from the `@stackbuilders/assertive-ts` module.
 
 *tests/mathUtils.test.ts*
 ```typescript
@@ -45,25 +45,24 @@ describe("sum", () => {
 });
 ```
 
-Now you can run your tests as usual with your test script, and that's it!
+And that's it! Now you can run your tests as usual with your test script.
 
 ## Keeping Jest's `expect` function
 
-You might want to use the `expect` function from Jest along with assertive-ts assertions
-
-there are a couple ways to achieve this:
+You might want to use the `expect` function from Jest along with assertive-ts assertions. There are a couple ways to achieve this:
 
 - Instead of importing `expect` from the `assertive-ts` module, you can import one of the available aliases: `assert` or `assertThat`.
 
 ```typescript
+import { expect } from "@jest/globals";
 import { assert } from "@stackbuilders/assertive-ts";
 ```
 
-- Using explicit imports to rename the `expect` function from Jest to something like `jestExpect`
+- Or use and explicit import to rename the `expect` function from Jest to something like `jestExpect`
 
 ```typescript
-import { expect } from "@stackbuilders/assertive-ts";
 import { expect as jestExpect } from "@jest/globals";
+import { expect } from "@stackbuilders/assertive-ts";
 ```
 
 ## Making expect global as Jest expect
