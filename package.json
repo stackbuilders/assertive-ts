@@ -17,6 +17,9 @@
     "lint": "tslint -c tslint.json \"!(build|dist)/**/*.ts\"",
     "test": "cross-env NODE_ENV=test TS_NODE_TRANSPILE_ONLY=true mocha"
   },
+  "dependencies": {
+    "@cometlib/dedent": "^0.8.0-es.10"
+  },
   "devDependencies": {
     "@types/mocha": "^9.1.0",
     "@types/node": "^17.0.15",
