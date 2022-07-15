@@ -30,8 +30,8 @@ With `assertive-ts` you can use **fluent assertions**, which means you can chain
 ```typescript
 expect("assertive-ts is awesome!")
   .toStartWith("assertive-ts")
-  .toEndWith("awesome!")
-  .not.toBeEmpty();
+  .not.toContain("unsafe")
+  .toEndWith("awesome!");
 ```
 
 The matcher functions depend on the type of the value on the `expect`. If you're using TypeScript, the compiler will let you know if something is not available for that assertion:

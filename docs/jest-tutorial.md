@@ -64,5 +64,3 @@ import { assert } from "@stackbuilders/assertive-ts";
 import { expect as jestExpect } from "@jest/globals";
 import { expect } from "@stackbuilders/assertive-ts";
 ```
-
-## Making expect global as Jest expect

@@ -19,13 +19,14 @@ Let's also create a mocha configuration file:
 *.mocharc.json*
 ```json
 {
-    "extension": ["ts"],
-    "spec": "tests/**/*.test.ts",
-    "require": [
-        "ts-node/register"
-    ]
+  "extension": ["ts"],
+  "spec": "tests/**/*.test.ts",
+  "require": [
+    "ts-node/register"
+  ]
 }
 ```
+
 As the config includes the Typescript transpilation hook `ts-node/register` it does not require pre-compilation before running.
 
 >For more information about mocha configuration please refer to the [official documentation](https://mochajs.org/#configuring-mocha-nodejs)
