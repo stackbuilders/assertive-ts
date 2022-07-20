@@ -9,7 +9,7 @@ import { StringAssertion } from "../StringAssertion";
 
 import { isJSObject } from "./guards";
 
-type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
+export type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
 
 export interface TypeFactory<S, A extends Assertion<S>> {
   Factory: AssertionFactory<S, A>;
@@ -17,7 +17,7 @@ export interface TypeFactory<S, A extends Assertion<S>> {
   typeName: string;
 }
 
-interface StaticTypeFactories {
+export interface StaticTypeFactories {
   Boolean: TypeFactory<boolean, BooleanAssertion>;
   Date: TypeFactory<Date, DateAssertion>;
   Function: TypeFactory<AnyFunction, FunctionAssertion<AnyFunction>>;

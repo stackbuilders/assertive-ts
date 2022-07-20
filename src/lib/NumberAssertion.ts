@@ -3,11 +3,11 @@ import { AssertionError } from "assert";
 import { Assertion } from "./Assertion";
 import { isHighInclusiveOptions, isInclusiveOptions, isLowInclusiveOptions } from "./helpers/guards";
 
-interface BaseBetweenOptions {
+export interface BaseBetweenOptions {
   range: [number, number];
 }
 
-interface CloseToOptions {
+export interface CloseToOptions {
   value: number;
   withOffset: number;
 }
@@ -200,7 +200,7 @@ export class NumberAssertion extends Assertion<number> {
    * bounds are exclusive, but the options allow to set the high, low, or both
    * limits as inclusive
    *
-   * @param options an object of type {@link Between Options} where the `range`
+   * @param options an object of type {@link BetweenOptions} where the `range`
    *                property defines the bounds, so it's always required. Use
    *                `inclusive: true` to make both limits inclusive. Or you can
    *                selectively make low or high limits inclusive using

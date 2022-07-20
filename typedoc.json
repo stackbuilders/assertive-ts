@@ -1,0 +1,16 @@
+{
+  "entryPoints": ["src/lib"],
+  "entryPointStrategy": "expand",
+  "githubPages": true,
+  "out": "docs/pages",
+  "name": "assertive-ts",
+  "theme": "hierarchy",
+  "includeVersion": true,
+  "readme": "none",
+  "plugin": [
+    "typedoc-theme-hierarchy",
+    "typedoc-plugin-merge-modules"
+  ],
+  "mergeModulesRenameDefaults": true,
+  "mergeModulesMergeMode": "project"
+}

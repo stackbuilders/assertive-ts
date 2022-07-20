@@ -6,7 +6,7 @@ import { TypeFactory } from "./helpers/TypeFactories";
 
 export type AnyFunction = (...args: any[]) => any;
 
-interface Class<T> extends Function {
+export interface Class<T> extends Function {
   prototype: T;
 }
 
