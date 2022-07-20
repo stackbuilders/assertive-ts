@@ -9,19 +9,24 @@ A type-safe fluent assertion library inspired by [Jest](https://jestjs.io/docs/e
 ```
 npm install --save-dev @stackbuilders/assertive-ts
 ```
-or
+Or:
 ```
 yarn add --dev @stackbuilders/assertive-ts
 ```
 
 ## Usage
 
-Use the `expect` function on the value you want to test.
+Import the library in your test script:
+```typescript
+import { expect } from "@stackbuilders/assertive-ts"
+```
+
+Use the `expect` function along with a "matcher" function on the value you want to assert:
 ```typescript
 expect(sum(1, 2)).toBeEqual(3);
 ```
 
-To assert the opposite, just add `.not` before a matcher.
+To assert the opposite, just add `.not` before a matcher:
 ```typescript
 expect(sum(1, 2)).not.toBeNull();
 ```
@@ -47,13 +52,14 @@ expect(sum(1, 2)).toBePositive();
 
 expect(14).toEndWith("4");
            ^ ? type error: `toEndWith` does not exist in `NumberAssertion`
-
 ```
 
-## Tutorials
+For a list of all matchers and extended documentation, please refer to the API documentation.
 
-- [Jest Tutorial](docs/jest-tutorial.md)
-- [Mocha Tutorial](docs/mocha-tutorial.md)
+## Test Runner Integration
+
+- [Jest Integration](docs/jest-tutorial.md)
+- [Mocha Integration](docs/mocha-tutorial.md)
 
 ## Contributors ✨
 

@@ -1,10 +1,10 @@
 # Usage with Mocha
 
-Let's setup a project with Mocha and assertive-ts.
+Let's set up a project with Mocha and assertive-ts.
 
 First, let's install the dependencies:
 ```
-npm install --save-dev typescript mocha @types/mocha ts-node
+npm install --save-dev typescript mocha @types/mocha ts-node @stackbuilders/assertive-ts
 ```
 
 This library is meant to be used with TypeScript, so to have better results we encourage you to use TypeScript in your project. 
@@ -14,7 +14,7 @@ Let's create a `tsconfig.json` file:
 npx tsc -init
 ```
 
-Let's also create a mocha configuration file:
+Let's also create a Mocha configuration file:
 
 *.mocharc.json*
 ```json
@@ -27,9 +27,9 @@ Let's also create a mocha configuration file:
 }
 ```
 
-As the config includes the Typescript transpilation hook `ts-node/register` it does not require pre-compilation before running.
+As the config includes the TypeScript transpilation hook `ts-node/register` it does not require pre-compilation before running.
 
->For more information about mocha configuration please refer to the [official documentation](https://mochajs.org/#configuring-mocha-nodejs)
+**For more information about Mocha configuration please refer to the [official documentation](https://mochajs.org/#configuring-mocha-nodejs)**
 
 We are going to test a simple function:
 
