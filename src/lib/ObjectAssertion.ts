@@ -46,12 +46,12 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainKey(key: keyof T): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided key <${key}>`
+      message: `Expected the object to contain the provided key <${String(key)}>`
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided key <${key}>`
+      message: `Expected the object NOT to contain the provided key <${String(key)}>`
     });
     return this.execute({
       assertWhen: this.actual.hasOwnProperty(key),
