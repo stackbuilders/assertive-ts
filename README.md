@@ -5,38 +5,62 @@
 
 A type-safe fluent assertion library inspired by [Jest](https://jestjs.io/docs/expect) assertions and the popular [AssertJ](https://assertj.github.io/doc/).
 
-## Development
-
-To setup your local environment follow the next steps.
-
-### Requirements
-
-* Latest [Yarn Classic](https://classic.yarnpkg.com)
-* NodeJS (Use version set on [.nvmrc](https://github.com/stackbuilders/assertive-ts/blob/master/.nvmrc))
-
-### Install dependencies
-
-```console
-yarn install
+## Install
+```
+npm install --save-dev @stackbuilders/assertive-ts
+```
+Or:
+```
+yarn add --dev @stackbuilders/assertive-ts
 ```
 
-### Compile TS files
+## Usage
 
-```console
-yarn compile
+Import the library in your test script:
+```typescript
+import { expect } from "@stackbuilders/assertive-ts"
 ```
 
-### Lint code
-
-```console
-yarn lint
+Use the `expect` function along with a "matcher" function on the value you want to assert:
+```typescript
+expect(sum(1, 2)).toBeEqual(3);
 ```
 
-### Run tests
-
-```console
-yarn test
+To assert the opposite, just add `.not` before a matcher:
+```typescript
+expect(sum(1, 2)).not.toBeNull();
 ```
+
+With `assertive-ts` you can use **fluent assertions**, which means you can chain multiple matcher functions to the same value under test:
+```typescript
+expect("assertive-ts is awesome!")
+  .toStartWith("assertive-ts")
+  .not.toContain("unsafe")
+  .toEndWith("awesome!");
+```
+
+The matcher functions depend on the type of the value on the `expect`. If you're using TypeScript, the compiler will let you know if something is not available for that assertion:
+```typescript
+// Boolean assertion
+expect(isEven(2)).toBeTrue();
+
+// String assertion
+expect("foobar").toStartWith("foo");
+
+// Number assertion
+expect(sum(1, 2)).toBePositive();
+
+expect(14).toEndWith("4");
+           ^ ? type error: `toEndWith` does not exist in `NumberAssertion`
+```
+
+For a list of all matchers and extended documentation, please refer to the API documentation.
+
+## Test Runner Integration
+
+- [Jest Integration](docs/jest-tutorial.md)
+- [Mocha Integration](docs/mocha-tutorial.md)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
