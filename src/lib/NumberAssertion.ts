@@ -105,7 +105,7 @@ export class NumberAssertion extends Assertion<number> {
 
   /**
    * Check if the number is finite. That is, when the number is not a
-   * JavaScript's {@link Infinity} value. Keep in mind that this includes
+   * JavaScript's `Infinity` value. Keep in mind that this includes
    * positive and negative infinity.
    *
    * @returns the assertion instance
@@ -129,7 +129,7 @@ export class NumberAssertion extends Assertion<number> {
 
   /**
    * Check if the number is `NaN`. That is only when the number is JavaScript's
-   * {@link NaN} value.
+   * `NaN` value.
    *
    * @returns the assertion instance
    */

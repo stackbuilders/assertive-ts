@@ -51,7 +51,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
   }
 
   /**
-   * Check if the function throws an {@link Error}. If the `ErrorType` is passed,
+   * Check if the function throws an `Error`. If the `ErrorType` is passed,
    * it also checks if the error is an instance of the specific type.
    *
    * @example
@@ -66,7 +66,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    * ```
    *
    * @param ErrorType optional error type constructor to check the thrown error
-   *                  against. If is not provided, it defaults to {@link Error}
+   *                  against. If is not provided, it defaults to `Error`
    * @returns a new {@link ErrorAssertion} to assert over the error
    */
   public toThrowError(): ErrorAssertion<Error>;

@@ -61,6 +61,9 @@ For a list of all matchers and extended documentation, please refer to the API d
 - [Jest Integration](docs/jest-tutorial.md)
 - [Mocha Integration](docs/mocha-tutorial.md)
 
+## API Reference
+You can find the full API reference [here](/docs/pages/index.html)
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

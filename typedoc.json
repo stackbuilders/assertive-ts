@@ -2,15 +2,23 @@
   "entryPoints": ["src/lib"],
   "entryPointStrategy": "expand",
   "githubPages": true,
-  "out": "docs/pages",
-  "name": "assertive-ts",
-  "theme": "hierarchy",
   "includeVersion": true,
-  "readme": "none",
+  "mergeModulesMergeMode": "project",
+  "mergeModulesRenameDefaults": true,
+  "name": "assertive-ts",
+  "out": "docs/pages",
   "plugin": [
     "typedoc-theme-hierarchy",
     "typedoc-plugin-merge-modules"
   ],
-  "mergeModulesRenameDefaults": true,
-  "mergeModulesMergeMode": "project"
+  "readme": "none",
+  "theme": "hierarchy",
+  "visibilityFilters": {
+    "@alpha": false,
+    "@beta": false,
+    "external": false,
+    "inherited": true,
+    "private": false,
+    "protected": false
+  }
 }
