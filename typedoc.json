@@ -1,19 +1,21 @@
 {
-  "cleanOutputDir": false,
+  "$schema": "https://typedoc.org/schema.json",
+  "cleanOutputDir": true,
   "entryPoints": ["src/lib"],
   "entryPointStrategy": "expand",
-  "githubPages": true,
-  "includeVersion": true,
+  "gitRevision": "release",
+  "githubPages": false,
+  "hideGenerator": true,
+  "includeVersion": false,
   "mergeModulesMergeMode": "project",
   "mergeModulesRenameDefaults": true,
-  "name": "assertive-ts",
+  "name": "AssertiveTS - API Reference",
   "out": "docs/build",
   "plugin": [
-    "typedoc-theme-hierarchy",
+    "typedoc-plugin-markdown",
     "typedoc-plugin-merge-modules"
   ],
   "readme": "none",
-  "theme": "hierarchy",
   "visibilityFilters": {
     "@alpha": false,
     "@beta": false,
