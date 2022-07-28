@@ -12,6 +12,9 @@ interface Class<T> extends Function {
 
 const NoThrow = Symbol("NoThrow");
 
+/**
+ * Encapsulates assertion methods applicable to objects of type `AnyFunction`
+ */
 export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
 
   constructor(actual: T) {

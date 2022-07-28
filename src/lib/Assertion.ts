@@ -22,6 +22,10 @@ interface ExecuteOptions {
   invertedError: AssertionError;
 }
 
+/**
+ * Base class for all assertions.
+ * @param T the type of the `actual` value;
+ */
 export class Assertion<T> {
 
   protected readonly actual: T;

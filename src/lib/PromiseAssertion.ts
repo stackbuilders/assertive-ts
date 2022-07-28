@@ -3,6 +3,11 @@ import { isDeepStrictEqual } from "util";
 
 import { Assertion } from "./Assertion";
 
+/**
+ * Encapsulates assertion methods applicable to Promises
+ * @param T the type of the value inside the promise
+ * @param I 
+ */
 export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Promise<T>> {
 
   // @ts-ignore:
