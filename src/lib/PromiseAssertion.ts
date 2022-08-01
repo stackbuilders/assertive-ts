@@ -5,8 +5,9 @@ import { Assertion } from "./Assertion";
 
 /**
  * Encapsulates assertion methods applicable to Promises
- * @param T the type of the value inside the promise
- * @param I 
+ *
+ * @param T the type of the value of the promise
+ * @param I type to track the current inverted state
  */
 export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Promise<T>> {
 

@@ -15,7 +15,7 @@ const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
 };
 
 /**
- * Encapsulates assertion methods applicable to values of type `Date`
+ * Encapsulates assertion methods applicable to values of type Date
  */
 export class DateAssertion extends Assertion<Date> {
 

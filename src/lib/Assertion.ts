@@ -24,7 +24,8 @@ interface ExecuteOptions {
 
 /**
  * Base class for all assertions.
- * @param T the type of the `actual` value;
+ *
+ * @param T the type of the `actual` value
  */
 export class Assertion<T> {
 

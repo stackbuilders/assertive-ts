@@ -3,7 +3,7 @@ import { AssertionError } from "assert";
 import { Assertion } from "./Assertion";
 
 /**
- * Encapsulates assertion methods applicable to values of type `boolean`
+ * Encapsulates assertion methods applicable to values of type boolean
  */
 export class BooleanAssertion extends Assertion<boolean> {
 

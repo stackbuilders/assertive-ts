@@ -31,7 +31,7 @@ export type BetweenOptions =
   | HighInclusiveBetweenOptions;
 
 /**
- * Encapsulates assertion methods applicable to values of type `number`
+ * Encapsulates assertion methods applicable to values of type number
  */
 export class NumberAssertion extends Assertion<number> {
 

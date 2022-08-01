@@ -7,8 +7,9 @@ import { expect } from "./expect";
 import { TypeFactory } from "./helpers/TypeFactories";
 
 /**
- * Encapsulates assertion methods applicable to `Array`s.
- * @param T the type of elements inside the array.
+ * Encapsulates assertion methods applicable to arrays.
+ *
+ * @param T the type of the array
  */
 export class ArrayAssertion<T> extends Assertion<T[]> {
 

@@ -10,8 +10,9 @@ type Entry<T, K = keyof T> = K extends keyof T
   : never;
 
 /**
- * Encapsulates assertion methods applicable to `JSObject`s
- * @param T the object's type
+ * Encapsulates assertion methods applicable to objects.
+ *
+ * @param T the object's definition type
  */
 export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
 
