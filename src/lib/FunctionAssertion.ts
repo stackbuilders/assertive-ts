@@ -70,7 +70,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    *   .toHaveMessage("Something failed!");
    * ```
    *
-   * @param ErrorType optional error type constructor to check the thrown error
+   * @param ExpectedType optional error type constructor to check the thrown error
    *                  against. If is not provided, it defaults to {@link Error}
    * @returns a new {@link ErrorAssertion} to assert over the error
    */
