@@ -7,7 +7,7 @@
   "mergeModulesMergeMode": "project",
   "mergeModulesRenameDefaults": true,
   "name": "assertive-ts",
-  "out": "docs",
+  "out": "docs/build",
   "plugin": [
     "typedoc-theme-hierarchy",
     "typedoc-plugin-merge-modules"
