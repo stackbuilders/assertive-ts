@@ -334,6 +334,8 @@ export class Assertion<T> {
    *   .isValid();
    * ```
    *
+   * @typeParam S the type of the factory's value
+   * @typeParam A the type of the assertion factory
    * @param typeFactory a factory to assert the type and create an assertion
    * @returns a more specific assertion based on the factory type
    */

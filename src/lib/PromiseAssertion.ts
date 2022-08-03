@@ -145,6 +145,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * **Important:** Remember to return or `await` for this assertion to not leave
    * the promise asynchronous to the test
    *
+   * @typeParam E the type of the rejected value
    * @param expected the expected error to be rejected by the promise
    * @returns a promise with the caught error
    */

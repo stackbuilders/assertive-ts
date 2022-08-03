@@ -14,8 +14,8 @@ type AssertionFactory<S, A extends Assertion<S>> = new (actual: S) => A;
 /**
  * Used to instantiate a specific assertion type.
  *
- * @param S the type of the factory's value
- * @param A the type of the assertion factory
+ * @typeParam S the type of the factory's value
+ * @typeParam A the type of the assertion factory
  */
 export interface TypeFactory<S, A extends Assertion<S>> {
   /**
@@ -66,6 +66,7 @@ interface StaticTypeFactories {
    * TypeFactories.array(TypeFactories.String); // a `string[]` factory
    * TypeFactories.array(TypeFactories.Date); // a `Date[]` factory
    * ```
+   * @typeParam T the type of the array
    * @param innerType the TypeFactory for the array type
    */
   array<T>(innerType?: TypeFactory<T, Assertion<T>>): TypeFactory<T[], ArrayAssertion<T>>;
@@ -80,6 +81,7 @@ interface StaticTypeFactories {
    * TypeFactories.instanceOf(Error); // an `Error` instance factory
    * ```
    *
+   * @typeParam T the type of the instance constructor
    * @param Type the instance constructor
    */
   instanceOf<T extends new (...args: any[]) => any>(Type: T): TypeFactory<T, Assertion<T>>;
@@ -95,6 +97,7 @@ interface StaticTypeFactories {
    *
    * Typefactories.object<User>(); // a `User` object factory
    * ```
+   * @typeParam T the type of the object
    */
   object<T extends JSObject>(): TypeFactory<T, ObjectAssertion<T>>;
 }

@@ -70,6 +70,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    *   .toHaveMessage("Something failed!");
    * ```
    *
+   * @typeParam E the type of the `Error`
    * @param ExpectedType optional error type constructor to check the thrown error
    *                  against. If is not provided, it defaults to {@link Error}
    * @returns a new {@link ErrorAssertion} to assert over the error
@@ -122,6 +123,8 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    *   .toBeNegative();
    * ```
    *
+   * @typeParam S the type of the factory's value
+   * @typeParam A the type of the assertion factory
    * @param expected the value the function is expected to throw
    * @param typeFactory optional type factory to perform more specific
    *                    assertions over the thrown value
