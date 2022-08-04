@@ -5,7 +5,7 @@ import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { isJSObject, isKeyOf } from "./helpers/guards";
 import { TypeFactory } from "./helpers/TypeFactories";
 
-interface ExecuteOptions {
+export interface ExecuteOptions {
   /**
    * The condition for when the assertion should pass. The negation of this
    * condition is also used for the `.not` case of the assertion
@@ -311,7 +311,7 @@ export class Assertion<T> {
    * an assertion instance for that specific type. The new assertion is built
    * from a factory that should extend from the base {@link Assertion} class.
    *
-   * We provide some basic factories in {@code TypeFactories}. If you need some
+   * We provide some basic factories in `TypeFactories`. If you need some
    * other factory for a custom assertion for instance, you can easily create
    * one from a Factory reference and a predicate.
    *
