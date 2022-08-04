@@ -10,9 +10,9 @@ import { JSObject, ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 
-type PromiseType<T> = T extends Promise<infer X> ? X : never;
+export type PromiseType<T> = T extends Promise<infer X> ? X : never;
 
-type ArrayType<T> = T extends Array<infer X> ? X : never;
+export type ArrayType<T> = T extends Array<infer X> ? X : never;
 
 export function expect<T extends boolean>(actual: T): BooleanAssertion;
 export function expect<T extends number>(actual: T): NumberAssertion;

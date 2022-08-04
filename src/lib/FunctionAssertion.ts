@@ -6,7 +6,7 @@ import { TypeFactory } from "./helpers/TypeFactories";
 
 export type AnyFunction = (...args: any[]) => any;
 
-interface Class<T> extends Function {
+export interface Class<T> extends Function {
   prototype: T;
 }
 
@@ -56,7 +56,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
   }
 
   /**
-   * Check if the function throws an {@link Error}. If the `ErrorType` is passed,
+   * Check if the function throws an `Error`. If the `ErrorType` is passed,
    * it also checks if the error is an instance of the specific type.
    *
    * @example

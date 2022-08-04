@@ -9,7 +9,7 @@ import { StringAssertion } from "../StringAssertion";
 
 import { isJSObject } from "./guards";
 
-type AssertionFactory<S, A extends Assertion<S>> = new (actual: S) => A;
+export type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
 
 /**
  * Used to instantiate a specific assertion type.
@@ -37,7 +37,7 @@ export interface TypeFactory<S, A extends Assertion<S>> {
 /**
  * Encapsulates a set of predefined {@link TypeFactory} instances.
  */
-interface StaticTypeFactories {
+export interface StaticTypeFactories {
   /**
    * A `boolean` TypeFactory.
    */
