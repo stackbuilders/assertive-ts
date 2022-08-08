@@ -30,7 +30,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
           message: "Expected all values of the array to return true on the matcher predicate",
           name: AssertionError.name
         });
-        assert.deepStrictEqual(test.toMatchAll(isPositive), test);
+        assert.deepStrictEqual(test.not.toMatchAll(isPositive), test);
       });
     });
   });
