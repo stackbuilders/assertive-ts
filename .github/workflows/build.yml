@@ -26,6 +26,4 @@ jobs:
       - run: yarn install --immutable
       - run: yarn compile
       - run: yarn lint
-      - run: yarn lint
       - run: yarn test --forbid-only
-
