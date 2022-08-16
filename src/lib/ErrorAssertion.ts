@@ -2,6 +2,11 @@ import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
 
+/**
+ * Encapsulates assertion methods applicable to Error instances.
+ *
+ * @param T the Error constructor type
+ */
 export class ErrorAssertion<T extends Error> extends Assertion<T> {
 
   public constructor(actual: T) {

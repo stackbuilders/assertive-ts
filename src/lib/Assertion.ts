@@ -22,6 +22,11 @@ export interface ExecuteOptions {
   invertedError: AssertionError;
 }
 
+/**
+ * Base class for all assertions.
+ *
+ * @param T the type of the `actual` value
+ */
 export class Assertion<T> {
 
   protected readonly actual: T;
@@ -329,6 +334,8 @@ export class Assertion<T> {
    *   .isValid();
    * ```
    *
+   * @typeParam S the type of the factory's value
+   * @typeParam A the type of the assertion factory
    * @param typeFactory a factory to assert the type and create an assertion
    * @returns a more specific assertion based on the factory type
    */

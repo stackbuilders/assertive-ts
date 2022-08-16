@@ -11,20 +11,94 @@ import { isJSObject } from "./guards";
 
 export type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
 
+/**
+ * Used to instantiate a specific assertion type.
+ *
+ * @typeParam S the type of the factory's value
+ * @typeParam A the type of the assertion factory
+ */
 export interface TypeFactory<S, A extends Assertion<S>> {
+  /**
+   * Assertion constructor.
+   */
   Factory: AssertionFactory<S, A>;
+  /**
+   * A predicate function to check the type of the factory's value.
+   *
+   * @param value the factory's value
+   */
   predicate(value: unknown): value is S;
+  /**
+   * The type of this factory.
+   */
   typeName: string;
 }
 
+/**
+ * Encapsulates a set of predefined {@link TypeFactory} instances.
+ */
 export interface StaticTypeFactories {
+  /**
+   * A `boolean` TypeFactory.
+   */
   Boolean: TypeFactory<boolean, BooleanAssertion>;
+  /**
+   * A `Date` TypeFactory.
+   */
   Date: TypeFactory<Date, DateAssertion>;
+  /**
+   * A `function` TypeFactory.
+   */
   Function: TypeFactory<AnyFunction, FunctionAssertion<AnyFunction>>;
+  /**
+   * A `number` TypeFactory.
+   */
   Number: TypeFactory<number, NumberAssertion>;
+  /**
+   * A `string` TypeFactory.
+   */
   String: TypeFactory<string, StringAssertion>;
+  /**
+   * Creates an array TypeFactory of the given TypeFactory.
+   *
+   * @example
+   * ```
+   * TypeFactories.array(TypeFactories.String); // a `string[]` factory
+   * TypeFactories.array(TypeFactories.Date); // a `Date[]` factory
+   * ```
+   * @typeParam T the type of the array
+   * @param innerType the TypeFactory for the array type
+   */
   array<T>(innerType?: TypeFactory<T, Assertion<T>>): TypeFactory<T[], ArrayAssertion<T>>;
-  instanceOf<T extends Function>(type: T): TypeFactory<T, Assertion<T>>; // tslint:disable-line: ban-types
+  /**
+   * Creates a TypeFactory for an instance of the given constructor.
+   *
+   * @example
+   * ```
+   * class Person { ... }
+   *
+   * TypeFactories.instanceOf(Person); // a `Person` instance factory
+   * TypeFactories.instanceOf(Error); // an `Error` instance factory
+   * ```
+   *
+   * @typeParam T the type of the instance constructor
+   * @param Type the instance constructor
+   */
+  instanceOf<T extends new (...args: any[]) => any>(Type: T): TypeFactory<T, Assertion<T>>;
+  /**
+   * Creates a TypeFactory for a Javascript Object.
+   *
+   * @example
+   * ```
+   * interface User {
+   *   name: string;
+   *   age: number;
+   * }
+   *
+   * Typefactories.object<User>(); // a `User` object factory
+   * ```
+   * @typeParam T the type of the object
+   */
   object<T extends JSObject>(): TypeFactory<T, ObjectAssertion<T>>;
 }
 

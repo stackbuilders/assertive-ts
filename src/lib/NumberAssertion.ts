@@ -30,6 +30,9 @@ export type BetweenOptions =
   | LowInclusiveBetweenOptions
   | HighInclusiveBetweenOptions;
 
+/**
+ * Encapsulates assertion methods applicable to values of type number
+ */
 export class NumberAssertion extends Assertion<number> {
 
   constructor(actual: number) {

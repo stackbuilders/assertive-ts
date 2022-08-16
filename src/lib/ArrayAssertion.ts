@@ -6,6 +6,11 @@ import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { expect } from "./expect";
 import { TypeFactory } from "./helpers/TypeFactories";
 
+/**
+ * Encapsulates assertion methods applicable to arrays.
+ *
+ * @param T the type of the array
+ */
 export class ArrayAssertion<T> extends Assertion<T[]> {
 
   public constructor(actual: T[]) {
@@ -270,6 +275,8 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    *   .toBePositive();
    * ```
    *
+   * @typeParam S the type of the factory's value
+   * @typeParam A the type of the assertion factory
    * @param index the index of the array to extract the value
    * @param typeFactory a factory to assert the extracted value type and create
    *                    an assertion for it

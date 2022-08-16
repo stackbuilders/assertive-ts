@@ -2,6 +2,9 @@ import { AssertionError } from "assert";
 
 import { Assertion } from "./Assertion";
 
+/**
+ * Encapsulates assertion methods applicable to values of type string
+ */
 export class StringAssertion extends Assertion<string> {
 
   constructor(actual: string) {

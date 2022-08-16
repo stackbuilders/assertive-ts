@@ -14,6 +14,9 @@ const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
   year: "getFullYear"
 };
 
+/**
+ * Encapsulates assertion methods applicable to values of type Date
+ */
 export class DateAssertion extends Assertion<Date> {
 
   constructor(actual: Date) {
