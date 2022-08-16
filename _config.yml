@@ -1,0 +1,8 @@
+remote_theme: chrisrhymes/bulma-clean-theme
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      title: AssertiveTS
+      subtitle: A type-safe fluent assertion library
