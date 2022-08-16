@@ -74,6 +74,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "nieled",
+      "name": "Daniel Calle",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20074796?v=4",
+      "profile": "https://github.com/nieled",
+      "contributions": [
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7
