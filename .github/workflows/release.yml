@@ -4,7 +4,7 @@ name: Release
 on:
   workflow_run:
     workflows: [Build]
-    branches: ["release"]
+    branches: ["chore/setup-semantic-release"]
     types:
       - completed
 
@@ -28,4 +28,4 @@ jobs:
           cache: yarn
       - run: yarn install --immutable
       - run: yarn build
-      - run: yarn semantic-release
+      - run: yarn semantic-release --dry-run
