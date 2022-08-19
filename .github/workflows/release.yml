@@ -1,0 +1,31 @@
+---
+name: Release
+
+on:
+  workflow_run:
+    workflows: [Build]
+    branches: ["release"]
+    types:
+      - completed
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn build
+      - run: yarn semantic-release

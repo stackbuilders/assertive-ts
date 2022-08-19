@@ -1,9 +1,12 @@
-name: Deploy GitHub Pages
+---
+name: Pages
 
 on:
-  push:
-    branches: ["release"]
-  workflow_dispatch:
+  workflow_run:
+    workflows: [Release]
+    branches: [release]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -11,49 +14,28 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages-${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    needs: release
 
-      - name: Install NodeJS
-        uses: actions/setup-node@v3
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Cache dependencies
-        uses: actions/cache@v3
-        with:
-          path: .yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Build API Reference
-        run: yarn pages
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v1
-
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn pages
+      - uses: actions/configure-pages@v1
+      - uses: actions/jekyll-build-pages@v1
         with:
           source: ./
           destination: ./_site
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+      - uses: actions/upload-pages-artifact@v1
 
   deploy:
     environment:
@@ -61,7 +43,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+
     steps:
-      - name: Deploy to GitHub Pages
+      - uses: actions/deploy-pages@v1
         id: deployment
-        uses: actions/deploy-pages@v1
