@@ -4,7 +4,7 @@ name: Pages
 on:
   workflow_run:
     workflows: [Release]
-    branches: ["chore/setup-semantic-release"]
+    branches: [release]
     types:
       - completed
 
