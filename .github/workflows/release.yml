@@ -9,10 +9,11 @@ on:
       - completed
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 concurrency:
-  group: release-${{ github.ref_name }}
+  group: release
   cancel-in-progress: true
 
 jobs:

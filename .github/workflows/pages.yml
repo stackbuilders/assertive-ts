@@ -14,7 +14,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-${{ github.ref_name }}
+  group: pages
   cancel-in-progress: true
 
 jobs:
