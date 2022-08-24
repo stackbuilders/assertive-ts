@@ -8,6 +8,10 @@ on:
     types:
       - completed
 
+permissions:
+  contents: write
+  id-token: write
+
 concurrency:
   group: release
   cancel-in-progress: true
@@ -21,7 +25,6 @@ jobs:
       - uses: cycjimmy/semantic-release-action@v3
         with:
           branch: release
-          dry_run: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
