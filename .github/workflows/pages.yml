@@ -3,7 +3,7 @@ name: Pages
 
 on:
   workflow_run:
-    workflows: [Release]
+    workflows: [Build]
     branches: [release]
     types:
       - completed
