@@ -2,11 +2,8 @@
 name: Release
 
 on:
-  workflow_run:
-    workflows: [Build]
+  push:
     branches: [release]
-    types:
-      - completed
 
 permissions:
   contents: write
@@ -29,6 +26,9 @@ jobs:
           node-version-file: '.nvmrc'
           cache: yarn
       - run: yarn install --immutable
+      - run: yarn compile
+      - run: yarn lint
+      - run: yarn test --forbid-only
       - run: yarn build
       - run: yarn semantic-release
         env:

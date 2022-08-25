@@ -1,7 +1,9 @@
 ---
 name: Build
 
-on: push
+on:
+  push:
+    branches-ignore: [release]
 
 concurrency:
   group: build-${{ github.ref_name }}
