@@ -2,6 +2,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](https://github.com/stackbuilders/assertive-ts/actions/workflows/build.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/build.yml)
+[![npm version](https://badge.fury.io/js/@stackbuilders%2Fassertive-ts.svg)](https://badge.fury.io/js/@stackbuilders%2Fassertive-ts)
 
 # AssertiveTS
 

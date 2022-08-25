@@ -1,5 +1,5 @@
 {
-  "name": "assertive-ts",
+  "name": "@stackbuilders/assertive-ts",
   "version": "0.0.0",
   "description": "A type-safe fluent assertion library",
   "repository": "git@github.com:stackbuilders/assertive-ts.git",
@@ -46,6 +46,8 @@
     "access": "public"
   },
   "release": {
-    "branches": ["release"]
+    "branches": [
+      "release"
+    ]
   }
 }
