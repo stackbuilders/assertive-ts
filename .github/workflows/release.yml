@@ -22,6 +22,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: release
       - uses: cycjimmy/semantic-release-action@v3
         with:
           branch: release
