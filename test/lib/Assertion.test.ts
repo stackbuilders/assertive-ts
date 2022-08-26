@@ -297,7 +297,7 @@ describe("[Unit] Assertion.test.ts", () => {
       });
     });
 
-    context("when the vlaue in not an instance of the constructor", () => {
+    context("when the value in not an instance of the constructor", () => {
       it("throws an assertion error", () => {
         const test = new Assertion(new Date());
 

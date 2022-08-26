@@ -218,7 +218,7 @@ export class Assertion<T> {
   }
 
   /**
-   * Check if the value is an instance of the the provided constructor.
+   * Check if the value is an instance of the provided constructor.
    *
    * @example
    * ```
