@@ -3,7 +3,7 @@ import { isDeepStrictEqual } from "util";
 
 import { Assertion } from "./Assertion";
 
-export type JSObject = Record<keyof any, unknown>;
+export type JSObject = Record<keyof any, any>;
 
 export type Entry<T, K = keyof T> = K extends keyof T
   ? [K, T[K]]

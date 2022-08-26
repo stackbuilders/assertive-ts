@@ -52,6 +52,19 @@ const BASE_DIFFS = [
   ["date", TODAY, new Date("2021-12-10T00:00:00.001Z")]
 ];
 
+class Car {
+
+  private readonly model: string;
+
+  constructor(model: string) {
+    this.model = model;
+  }
+
+  public showModel(): string {
+    return this.model;
+  }
+}
+
 function truthyAsText(value: typeof TRUTHY_VALUES[number]): string {
   if (Array.isArray(value) && value.length === 0) {
     return "Empty array";
@@ -259,6 +272,40 @@ describe("[Unit] Assertion.test.ts", () => {
           });
           assert.deepStrictEqual(test.not.toBeFalsy(), test);
         });
+      });
+    });
+  });
+
+  describe(".toBeInstanceOf", () => {
+    context("when the value is an instance of the constructor", () => {
+      const variants = [
+        [new Date(), Date],
+        [new Error("failed!"), Error],
+        [new Car("Pontiac GT-37"), Car]
+      ] as const;
+
+      variants.forEach(([value, Constructor]) => {
+        it(`[Instance: ${Constructor.name}]: returns the assertion instance`, () => {
+          const test = new Assertion(value);
+
+          assert.deepStrictEqual(test.toBeInstanceOf(Constructor), test);
+          assert.throws(() => test.not.toBeInstanceOf(Constructor), {
+            message: `Expected value NOT to be an instance of <${Constructor.name}>`,
+            name: AssertionError.name
+          });
+        });
+      });
+    });
+
+    context("when the value in not an instance of the constructor", () => {
+      it("throws an assertion error", () => {
+        const test = new Assertion(new Date());
+
+        assert.throws(() => test.toBeInstanceOf(Car), {
+          message: "Expected value to be an instance of <Car>",
+          name: AssertionError.name
+        });
+        assert.deepStrictEqual(test.not.toBeInstanceOf(Car), test);
       });
     });
   });

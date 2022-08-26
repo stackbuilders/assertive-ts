@@ -1,14 +1,10 @@
 import { AssertionError } from "assert";
 
-import { Assertion } from "./Assertion";
+import { Assertion, Constructor } from "./Assertion";
 import { ErrorAssertion } from "./ErrorAssertion";
 import { TypeFactory } from "./helpers/TypeFactories";
 
 export type AnyFunction = (...args: any[]) => any;
-
-export interface Class<T> extends Function {
-  prototype: T;
-}
 
 const NoThrow = Symbol("NoThrow");
 
@@ -76,8 +72,8 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    * @returns a new {@link ErrorAssertion} to assert over the error
    */
   public toThrowError(): ErrorAssertion<Error>;
-  public toThrowError<E extends Error>(ExpectedType: Class<E>): ErrorAssertion<E>;
-  public toThrowError<E extends Error>(ExpectedType?: Class<E>): ErrorAssertion<E> {
+  public toThrowError<E extends Error>(Expected: Constructor<E>): ErrorAssertion<E>;
+  public toThrowError<E extends Error>(Expected?: Constructor<E>): ErrorAssertion<E> {
     const captured = this.captureError();
 
     if (captured === NoThrow) {
@@ -87,7 +83,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
       });
     }
 
-    const ErrorType = ExpectedType ?? Error;
+    const ErrorType = Expected ?? Error;
     const error = new AssertionError({
       actual: captured,
       message: `Expected the function to throw an error instance of <${ErrorType.name}>`

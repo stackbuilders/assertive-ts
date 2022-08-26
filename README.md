@@ -90,6 +90,10 @@ For a list of all matchers and extended documentation, please refer to the [API 
 
 You can find the full API reference [here](https://stackbuilders.github.io/assertive-ts/docs/build/)
 
+## Coming Soon
+
+- Extension mechanism ⚙️
+
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
