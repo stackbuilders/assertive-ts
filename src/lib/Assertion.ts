@@ -5,6 +5,10 @@ import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { isJSObject, isKeyOf } from "./helpers/guards";
 import { TypeFactory } from "./helpers/TypeFactories";
 
+export interface Constructor<T> extends Function {
+  prototype: T;
+}
+
 export interface ExecuteOptions {
   /**
    * The condition for when the assertion should pass. The negation of this
@@ -230,7 +234,7 @@ export class Assertion<T> {
    * @param Expected the constructor the value should be an instance
    * @returns the assertion instance
    */
-  public toBeInstanceOf(Expected: new (...args: any[]) => any): this {
+  public toBeInstanceOf(Expected: Constructor<any>): this {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected value to be an instance of <${Expected.name}>`
