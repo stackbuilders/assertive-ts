@@ -218,6 +218,36 @@ export class Assertion<T> {
   }
 
   /**
+   * Check if the value is an instance of the the provided constructor.
+   *
+   * @example
+   * ```
+   * expect(pontiac).toBeInstanceOf(Car);
+   *
+   * expect(today).toBeInstanceOf(Date);
+   * ```
+   *
+   * @param Expected the constructor the value should be an instance
+   * @returns the assertion instance
+   */
+  public toBeInstanceOf(Expected: new (...args: any[]) => any): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected value to be an instance of <${Expected.name}>`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected value NOT to be an instance of <${Expected.name}>`
+    });
+
+    return this.execute({
+      assertWhen: this.actual instanceof Expected,
+      error,
+      invertedError
+    });
+  }
+
+  /**
    * Check if the value is deep equal to another value.
    *
    * @param expected the value to compare for deep equality
