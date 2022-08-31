@@ -1,4 +1,5 @@
 import { AssertionError } from "assert";
+import { isDeepStrictEqual } from "util";
 
 import { Assertion, Constructor } from "./Assertion";
 import { ErrorAssertion } from "./ErrorAssertion";
@@ -29,25 +30,41 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
   }
 
   /**
-   * Check if the function throws anything when called.
+   * Check if the function throws when called. Optionally, you can check that
+   * the thrown error is strictly equal an `Error` instance by passing it as a
+   * parameter.
    *
+   * @param error the error the function should throw
    * @returns the assertion instance
    */
-  public toThrow(): this {
+  public toThrow<E extends Error>(error?: E): this {
     const captured = this.captureError();
-    const error = new AssertionError({
-      actual: captured,
-      message: "Expected the function to throw when called"
-    });
-    const invertedError = new AssertionError({
-      actual: captured,
-      message: "Expected the function NOT to throw when called"
-    });
+
+    if (error !== undefined) {
+      return this.execute({
+        assertWhen: isDeepStrictEqual(captured, error),
+        error: new AssertionError({
+          actual: captured,
+          expected: error,
+          message: `Expected the function to throw - ${error}`
+        }),
+        invertedError: new AssertionError({
+          actual: this.actual,
+          message: `Expected the function NOT to throw - ${error}`
+        })
+      });
+    }
 
     return this.execute({
       assertWhen: captured !== NoThrow,
-      error,
-      invertedError
+      error: new AssertionError({
+        actual: captured,
+        message: "Expected the function to throw when called"
+      }),
+      invertedError: new AssertionError({
+        actual: captured,
+        message: "Expected the function NOT to throw when called"
+      })
     });
   }
 
