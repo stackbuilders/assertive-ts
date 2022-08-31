@@ -164,6 +164,32 @@ describe("[Unit] Assertion.test.ts", () => {
     });
   });
 
+  describe(".toBeUndefined", () => {
+    context("when the value is undefined", () => {
+      it("returns the assertion instance", () => {
+        const test = new Assertion(undefined);
+
+        assert.deepStrictEqual(test.toBeUndefined(), test);
+        assert.throws(() => test.not.toBeUndefined(), {
+          message: "Expected the value NOT to be undefined",
+          name: AssertionError.name
+        });
+      });
+    });
+
+    context("when the value is NOT undefined", () => {
+      it("throws an assertion error", () => {
+        const test = new Assertion("foo");
+
+        assert.throws(() => test.toBeUndefined(), {
+          message: "Expected <foo> to be undefined",
+          name: AssertionError.name
+        });
+        assert.deepStrictEqual(test.not.toBeUndefined(), test);
+      });
+    });
+  });
+
   describe(".toBeNull", () => {
     context("when the value is null", () => {
       it("returns the assertion instance", () => {

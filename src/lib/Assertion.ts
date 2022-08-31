@@ -129,6 +129,28 @@ export class Assertion<T> {
   }
 
   /**
+   * Check ig the value is `undefined`
+   *
+   * @returns the assertion instance
+   */
+  public toBeUndefined(): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected <${this.actual}> to be undefined`
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the value NOT to be undefined"
+    });
+
+    return this.execute({
+      assertWhen: this.actual === undefined,
+      error,
+      invertedError
+    });
+  }
+
+  /**
    * Check if the value is `null`.
    *
    * @returns the assertion instance
