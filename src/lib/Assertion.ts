@@ -129,7 +129,7 @@ export class Assertion<T> {
   }
 
   /**
-   * Check ig the value is `undefined`
+   * Check if the value is `undefined`
    *
    * @returns the assertion instance
    */
