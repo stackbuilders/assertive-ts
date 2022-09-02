@@ -81,6 +81,75 @@ expect(14).toEndWith("4");
 
 For a list of all matchers and extended documentation, please refer to the [API documentation](https://stackbuilders.github.io/assertive-ts/docs/build/).
 
+### Type Factory 🏭
+
+A great features of AssertiveTS is the type safety across the API. But, what should you do if you want to check if the value under test is of an specific type during runtime? The answer is simple, AssertiveTS provides a `.asType(TypeFactory)` method, where the [TypeFactory](https://stackbuilders.github.io/assertive-ts/docs/build/interfaces/TypeFactory.html) parameter let's you check for the specific type and let's you cast the assertion to a more specific one. To make things simpler, AssertiveTS provides [TypeFactories](https://stackbuilders.github.io/assertive-ts/docs/build/interfaces/StaticTypeFactories.html) for the basic types:
+
+```ts
+import { expect, TypeFactories } from "@stackbuilders/assertive-ts";
+
+expect(value)
+  .asType(TypeFactories.String)
+  .toBeEmpty();
+
+expect(list)
+  .asType(TypeFactories.array(TypeFactories.Number))
+  .toHaveSameMembers([1, 2, 3, 4, 5]);
+```
+
+If the built-in type factories are not enough to assert your specific type, you can always create your own factory. A `TypeFactory<S, A>` is nothing more than an object with 3 properties:
+
+- `Factory: new(actual: S) => A` - The specific assertion constructor to return if the predicate is true. Where `S` is the actual value type, and `A` is the type of the assertion to return (`A` should extend from `Assertion<S>`).
+- `predicate(value: unknown): value is S` - A predicate function that check's if the value is of the expected type.
+- `typeName: string` - The name of the cheked type. Used to make the assertion error message clearer.
+
+So, using a custom `TypeFactory` can look like the following:
+
+```ts
+interface Point3D {
+  x: number;
+  y: number;
+  z: number;
+}
+
+expect(maybePoint).asType({
+  Factory: ObjectAssertion<Point3D>,
+  predicate: (value): value is Point3D => {
+    return typeof value === "object"
+      && value !== null
+      && "x" in value
+      && "y" in value
+      && "z" in value
+      && Object.values(value).every(v => typeof v === "number");
+  },
+  typeName: "Point3D"
+});
+```
+
+### Handling TypeScript Unions
+
+[Union types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) are a TypeScript concept that is only applicable at type level. During runtime, the value can only be one of the types. For instance, if we say `const foo: number | string = ...`, at runtime `foo` will be either a `number` or a `string`. If you want to use a more specific assertion on a union type, you can use `.asType(..)` to fisrt assert the expected type, and then move forward with more assertions:
+
+```ts
+const foo: number | string = 5;
+
+expect(foo)
+  .asType(TypeFactories.Number)
+  .toBePositive();
+```
+
+### Help! The value can also be `null` or `undefined`
+
+When a value can be also `null` or `undefined`, we're going over the same concept as [Union types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types). So if you want to make more specific assertions over a value that can be `null | undefined`, just use `.asType(..)` first:
+
+```ts
+const bar: string | null | undefined = "   ";
+
+expect(bar)
+  .asType(TypeFactories.String)
+  .toBeBlank();
+```
+
 ## Test Runner Integration
 
 - [Jest Integration](docs/jest-tutorial.md)
