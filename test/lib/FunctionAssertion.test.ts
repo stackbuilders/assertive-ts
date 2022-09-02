@@ -19,40 +19,86 @@ class CustomError extends Error {
 
 describe("[Unit] FunctionAssertion.test.ts", () => {
   describe(".toThrow", () => {
-    context("when the function throws", () => {
-      const variants = [
-        -1,
-        "foo",
-        true,
-        null,
-        Error(),
-        new CustomError("bar")
-      ] as const;
+    context("when the error param is not present", () => {
+      context("and the function throws", () => {
+        const variants = [
+          -1,
+          "foo",
+          true,
+          null,
+          Error(),
+          new CustomError("bar")
+        ] as const;
 
-      variants.forEach(error => {
-        it(`[${error}] returns the assertion instance`, () => {
-          const test = new FunctionAssertion(() => {
-            throw error;
+        variants.forEach(error => {
+          it(`[${error}] returns the assertion instance`, () => {
+            const test = new FunctionAssertion(() => {
+              throw error;
+            });
+
+            assert.deepStrictEqual(test.toThrow(), test);
+            assert.throws(() => test.not.toThrow(), {
+              message: "Expected the function NOT to throw when called",
+              name: AssertionError.name
+            });
           });
+        });
+      });
 
-          assert.deepStrictEqual(test.toThrow(), test);
-          assert.throws(() => test.not.toThrow(), {
-            message: "Expected the function NOT to throw when called",
+      context("and the function does not throw", () => {
+        it("throws an assertion error", () => {
+          const test = new FunctionAssertion(() => undefined);
+
+          assert.throws(() => test.toThrow(), {
+            message: "Expected the function to throw when called",
             name: AssertionError.name
           });
+          assert.deepStrictEqual(test.not.toThrow(), test);
         });
       });
     });
 
-    context("when the function does not throw", () => {
-      it("throws an assertion error", () => {
-        const test = new FunctionAssertion(() => undefined);
+    context("when the error param is present", () => {
+      context("and the function throws", () => {
+        context("and the thrown error is strictly equal to the param", () => {
+          it("returns the assertion instance", () => {
+            const test = new FunctionAssertion(() => {
+              throw new Error("This is expected!");
+            });
 
-        assert.throws(() => test.toThrow(), {
-          message: "Expected the function to throw when called",
-          name: AssertionError.name
+            assert.deepStrictEqual(test.toThrow(new Error("This is expected!")), test);
+            assert.throws(() => test.not.toThrow(new Error("This is expected!")), {
+              message: "Expected the function NOT to throw - Error: This is expected!",
+              name: AssertionError.name
+            });
+          });
         });
-        assert.deepStrictEqual(test.not.toThrow(), test);
+
+        context("and the error is not strictly equal to the param", () => {
+          it("throws and assertion error", () => {
+            const test = new FunctionAssertion(() => {
+              throw new Error("This is expected!");
+            });
+
+            assert.throws(() => test.toThrow(new Error("Another error here!")), {
+              message: "Expected the function to throw - Error: Another error here!",
+              name: AssertionError.name
+            });
+            assert.deepStrictEqual(test.not.toThrow(new Error("Another error here!")), test);
+          });
+        });
+      });
+
+      context("and the function does not throw", () => {
+        it("throw an assertion error", () => {
+          const test = new FunctionAssertion(() => undefined);
+
+          assert.throws(() => test.toThrow(new Error("Unreachable!")), {
+            message: "Expected the function to throw - Error: Unreachable!",
+            name: AssertionError.name
+          });
+          assert.deepStrictEqual(test.not.toThrow(new Error("Unreachable!")), test);
+        });
       });
     });
   });
