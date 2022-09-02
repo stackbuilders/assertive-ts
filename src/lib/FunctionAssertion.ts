@@ -31,8 +31,8 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
 
   /**
    * Check if the function throws when called. Optionally, you can check that
-   * the thrown error is strictly equal an `Error` instance by passing it as a
-   * parameter.
+   * the thrown error is strictly equal to an `Error` instance by passing it as
+   * a parameter.
    *
    * @param error the error the function should throw
    * @returns the assertion instance
