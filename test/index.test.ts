@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import expect, { assert as libAssert, assertThat } from "../src";
+import { assert as libAssert, assertThat, expect, TypeFactories } from "../src";
 
 describe("[Unit] index.test.ts", () => {
   context("expect", () => {
@@ -18,6 +18,12 @@ describe("[Unit] index.test.ts", () => {
   context("assertThat", () => {
     it("is an alias of expect", () => {
       assert.deepStrictEqual(assertThat, expect);
+    });
+  });
+
+  context("TypeFactories", () => {
+    it("is exposed to the API", () => {
+      assert.ok(TypeFactories);
     });
   });
 });
