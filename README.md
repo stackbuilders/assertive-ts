@@ -83,7 +83,7 @@ For a list of all matchers and extended documentation, please refer to the [API 
 
 ### Type Factory 🏭
 
-A great features of AssertiveTS is the type safety across the API. But, what should you do if you want to check if the value under test is of an specific type during runtime? The answer is simple, AssertiveTS provides a `.asType(TypeFactory)` method, where the [TypeFactory](https://stackbuilders.github.io/assertive-ts/docs/build/interfaces/TypeFactory.html) parameter let's you check for the specific type and let's you cast the assertion to a more specific one. To make things simpler, AssertiveTS provides [TypeFactories](https://stackbuilders.github.io/assertive-ts/docs/build/interfaces/StaticTypeFactories.html) for the basic types:
+A great feature of AssertiveTS is the type safety across the API. But, what should you do if you want to check the value under test is of some specific type during runtime? The answer is simple, AssertiveTS provides a `.asType(TypeFactory)` method, where the [TypeFactory](https://stackbuilders.github.io/assertive-ts/docs/build/interfaces/TypeFactory.html) parameter lets you check for the specific type and narrow the assertion instance to a more specific one. To make things simpler, AssertiveTS provides [TypeFactories](https://stackbuilders.github.io/assertive-ts/docs/build/interfaces/StaticTypeFactories.html) for the basic types:
 
 ```ts
 import { expect, TypeFactories } from "@stackbuilders/assertive-ts";
@@ -100,8 +100,8 @@ expect(list)
 If the built-in type factories are not enough to assert your specific type, you can always create your own factory. A `TypeFactory<S, A>` is nothing more than an object with 3 properties:
 
 - `Factory: new(actual: S) => A` - The specific assertion constructor to return if the predicate is true. Where `S` is the actual value type, and `A` is the type of the assertion to return (`A` should extend from `Assertion<S>`).
-- `predicate(value: unknown): value is S` - A predicate function that check's if the value is of the expected type.
-- `typeName: string` - The name of the cheked type. Used to make the assertion error message clearer.
+- `predicate(value: unknown): value is S` - A predicate function that checks if the value is of the expected type.
+- `typeName: string` - The name of the checked type. Used to make the assertion error message clearer.
 
 So, using a custom `TypeFactory` can look like the following:
 
@@ -128,7 +128,7 @@ expect(maybePoint).asType({
 
 ### Handling TypeScript Unions
 
-[Union types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) are a TypeScript concept that is only applicable at type level. During runtime, the value can only be one of the types. For instance, if we say `const foo: number | string = ...`, at runtime `foo` will be either a `number` or a `string`. If you want to use a more specific assertion on a union type, you can use `.asType(..)` to fisrt assert the expected type, and then move forward with more assertions:
+[Union types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) are a TypeScript concept that is only applicable at type level. During runtime, the value can only be one of the types. For instance, if we say `const foo: number | string = ...`, at runtime `foo` will be either a `number` or a `string`. If you want to use a more specific assertion on a union type, you can use `.asType(..)` to first assert the expected type, and then move forward with more assertions:
 
 ```ts
 const foo: number | string = 5;
