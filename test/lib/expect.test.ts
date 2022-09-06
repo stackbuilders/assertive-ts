@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import expect from "../../src";
+import { expect } from "../../src";
 import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
