@@ -3,8 +3,16 @@
   "version": "0.0.0",
   "description": "A type-safe fluent assertion library",
   "repository": "git@github.com:stackbuilders/assertive-ts.git",
+  "homepage": "https://stackbuilders.github.io/assertive-ts/",
   "author": "Stack Builders <info@stackbuilders.com>",
   "license": "MIT",
+  "keywords": [
+    "assertions",
+    "testing",
+    "testing-tools",
+    "type-safety",
+    "typescript"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
