@@ -1,6 +1,7 @@
 {
   "name": "jest",
   "packageManager": "yarn@3.2.2",
+  "private": true,
   "devDependencies": {
     "@stackbuilders/assertive-ts": "workspace:^",
     "@types/jest": "^29.0.0",
