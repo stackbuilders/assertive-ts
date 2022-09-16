@@ -1,4 +1,5 @@
 import { assert, expect } from "@stackbuilders/assertive-ts";
+
 import { sum } from "../src/mathUtils";
 
 describe("sum", () => {
