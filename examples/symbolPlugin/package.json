@@ -1,0 +1,17 @@
+{
+  "name": "@examples/symbol-plugin",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.prod.json",
+    "compile": "tsc"
+  },
+  "devDependencies": {
+    "@stackbuilders/assertive-ts": "workspace:^",
+    "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "@stackbuilders/assertive-ts": "*"
+  }
+}

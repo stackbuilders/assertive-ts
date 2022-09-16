@@ -1,6 +1,7 @@
 import { ArrayAssertion } from "./ArrayAssertion";
 import { Assertion } from "./Assertion";
 import { BooleanAssertion } from "./BooleanAssertion";
+import { config } from "./config/Config";
 import { DateAssertion } from "./DateAssertion";
 import { ErrorAssertion } from "./ErrorAssertion";
 import { AnyFunction, FunctionAssertion } from "./FunctionAssertion";
@@ -10,21 +11,26 @@ import { JSObject, ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 
-export type PromiseType<T> = T extends Promise<infer X> ? X : never;
+export interface Expect {
+  (actual: boolean): BooleanAssertion;
+  (actual: number): NumberAssertion;
+  (actual: string): StringAssertion;
+  (actual: Date): DateAssertion;
+  <T>(actual: T[]): ArrayAssertion<T>;
+  <T>(actual: Promise<T>): PromiseAssertion<T>;
+  <T extends AnyFunction>(actual: T): FunctionAssertion<T>;
+  <T extends Error>(actual: T): ErrorAssertion<T>;
+  <T extends JSObject>(actual: T): ObjectAssertion<T>;
+  <T>(actual: T): Assertion<T>;
+}
 
-export type ArrayType<T> = T extends Array<infer X> ? X : never;
+function expectMatcher<T>(actual: T): ReturnType<Expect> {
+  const plugin = config.plugins().find(({ predicate }) => predicate(actual));
 
-export function expect<T extends boolean>(actual: T): BooleanAssertion;
-export function expect<T extends number>(actual: T): NumberAssertion;
-export function expect<T extends string>(actual: T): StringAssertion;
-export function expect<T extends Date>(actual: T): DateAssertion;
-export function expect<T extends unknown[]>(actual: T): ArrayAssertion<ArrayType<T>>;
-export function expect<T extends Promise<any>>(actual: T): PromiseAssertion<PromiseType<T>>;
-export function expect<T extends AnyFunction>(actual: T): FunctionAssertion<T>;
-export function expect<T extends Error>(actual: T): ErrorAssertion<T>;
-export function expect<T extends JSObject>(actual: T): ObjectAssertion<T>;
-export function expect<T>(actual: T): Assertion<T>;
-export function expect<T>(actual: T) {
+  if (plugin?.insertAt === "top") {
+    return new plugin.Assertion(actual);
+  }
+
   switch (typeof actual) {
     case "boolean": return new BooleanAssertion(actual);
     case "number": return new NumberAssertion(actual);
@@ -51,9 +57,15 @@ export function expect<T>(actual: T) {
     return new ErrorAssertion(actual);
   }
 
+  if (plugin?.insertAt === "bottom") {
+    return new plugin.Assertion(actual);
+  }
+
   if (isJSObject(actual)) {
     return new ObjectAssertion(actual);
   }
 
   return new Assertion(actual);
 }
+
+export const expect: Expect = expectMatcher as Expect;

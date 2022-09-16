@@ -1,12 +1,12 @@
 {
   "name": "@examples/mocha",
-  "packageManager": "yarn@3.2.2",
   "private": true,
   "scripts": {
     "compile": "tsc",
     "test": "mocha"
   },
   "devDependencies": {
+    "@examples/symbol-plugin": "workspace:^",
     "@stackbuilders/assertive-ts": "workspace:^",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.7.18",
