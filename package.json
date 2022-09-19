@@ -57,5 +57,8 @@
     "branches": [
       "release"
     ]
-  }
+  },
+  "workspaces": [
+    "examples/*"
+  ]
 }

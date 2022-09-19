@@ -41,6 +41,9 @@
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"]
   },
   "linterOptions": {
-    "exclude": ["node_modules/**/*"]
+    "exclude": [
+      "node_modules/**/*",
+      "examples/*/node_modules/**/*"
+    ]
   }
 }
