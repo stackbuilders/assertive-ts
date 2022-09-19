@@ -92,6 +92,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "NeoLight1010",
+      "name": "Anthony Suárez",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58057324?v=4",
+      "profile": "https://github.com/NeoLight1010",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7
