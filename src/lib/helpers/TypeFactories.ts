@@ -95,7 +95,7 @@ export interface StaticTypeFactories {
    *   age: number;
    * }
    *
-   * Typefactories.object<User>(); // a `User` object factory
+   * TypeFactories.object<User>(); // a `User` object factory
    * ```
    * @typeParam T the type of the object
    */
