@@ -1,5 +1,7 @@
+# TurboRepo
+.turbo/
+
 # Build
-docs/build/
 build/
 dist/
 
