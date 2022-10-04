@@ -109,6 +109,11 @@ export class Assertion<T> {
    * Check if the value exists. This means that the value should be neither
    * `null` nor `undefined`.
    *
+   * @example
+   * ```
+   * expect(planetEarth).toExist();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toExist(): this {
@@ -130,6 +135,11 @@ export class Assertion<T> {
 
   /**
    * Check if the value is `undefined`
+   *
+   * @example
+   * ```
+   * expect(myUndefinedValue).toBeUndefined()
+   * ```
    *
    * @returns the assertion instance
    */
@@ -153,6 +163,11 @@ export class Assertion<T> {
   /**
    * Check if the value is `null`.
    *
+   * @example
+   * ```
+   * expect(myNullValue).toBeNull();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeNull(): this {
@@ -175,6 +190,11 @@ export class Assertion<T> {
   /**
    * Check if the value is present. This means that the value should not be
    * `undefined`.
+   *
+   * @example
+   * ```
+   * expect(PI).toBePresent();
+   * ```
    *
    * @returns the assertion instance
    */
@@ -200,6 +220,12 @@ export class Assertion<T> {
    * JavaScript: `null`, `undefined`, `0`, `""`, `false`, `NaN`. Everything
    * else is truthy.
    *
+   * @example
+   * ```
+   * expect("hello world").toBeTruthy();
+   * expect(128).toBeTruthy();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeTruthy(): this {
@@ -224,6 +250,11 @@ export class Assertion<T> {
    * JavaScript: `null`, `undefined`, `0`, `""`, `false`, `NaN`. Everything
    * else is truthy.
    *
+   * @example
+   * ```
+   * expect(0).toBeFalsy();
+   * expect("").toBeFalsy();
+   * ```
    * @returns the assertion instance
    */
   public toBeFalsy(): this {
@@ -276,6 +307,11 @@ export class Assertion<T> {
   /**
    * Check if the value is deep equal to another value.
    *
+   * @example
+   * ```
+   * expect(3 + 2).toBeEqual(5);
+   * ```
+   *
    * @param expected the value to compare for deep equality
    * @returns the assertion instance
    */
@@ -299,6 +335,13 @@ export class Assertion<T> {
 
   /**
    * Check if the value is shallow equal to another value.
+   *
+   * @example
+   * ```
+   * expect(3 + 2).toBeSimilar(5);
+   * expect({ a: 1 }).toBeSimilar({ a: 1 });
+   *
+   * expect({ a: { b: 1 } }).not.toBeSimilar({ a: {b: 1} });
    *
    * @param expected the value to compare for shallow equality
    * @returns the assertion instance
@@ -345,6 +388,16 @@ export class Assertion<T> {
 
   /**
    * Check if the value is the same as another value.
+   *
+   * @example
+   * ```
+   * const x = { a: 1 };
+   * const y = x;
+   *
+   * expect(x).toBeSame(x);
+   * expect(x).toBeSame(y);
+   *
+   * expect(x).not.toBeSame({...x});
    *
    * @param expected the value to compare for referential equality
    * @returns the assertion instance
