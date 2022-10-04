@@ -305,11 +305,13 @@ export class Assertion<T> {
   }
 
   /**
-   * Check if the value is deep equal to another value.
+   * Check if the value is deep strict equal to another value.
    *
    * @example
    * ```
    * expect(3 + 2).toBeEqual(5);
+   * expect({ a: { b: 1 } }).toBeEqual({ a: { b: 1 } });
+   * expect(today).toBeEqual(new Date(today.toISOString()));
    * ```
    *
    * @param expected the value to compare for deep equality
