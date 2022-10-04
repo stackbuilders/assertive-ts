@@ -59,7 +59,7 @@ export class Assertion<T> {
   }
 
   /**
-   * A convinince method to execute the assertion. The inversion logic for
+   * A convenience method to execute the assertion. The inversion logic for
    * `.not` is already embedded in this method, so this should always be used
    * in assertions to keep the negation system working
    *
