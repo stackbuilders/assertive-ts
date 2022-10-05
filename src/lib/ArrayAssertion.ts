@@ -203,6 +203,18 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     });
   }
 
+  /**
+   * Check if the array contains the same elements as another. This doesn't
+   * check the order of the elements.
+   *
+   * @example
+   * ```
+   * expect([1, 2, 3]).toHaveSameMembers([3, 2, 1]);
+   * ```
+   *
+   * @param expected the other array to compare its elements to
+   * @returns the assertion instance
+   */
   public toHaveSameMembers(expected: T[]): this {
     const prettyValues = `[${expected.map(value => JSON.stringify(value)).join(", ")}]`;
     const error = new AssertionError({
