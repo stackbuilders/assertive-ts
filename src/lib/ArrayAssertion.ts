@@ -20,6 +20,12 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   /**
    * Check if all the array values match the predicate
    *
+   * @example
+   * ```
+   * expect([1, 2, 3]).toMatchAll((x) => x < 5);
+   * expect([apple, orange, pear]).toMatchAll(isFruit);
+   * ```
+   *
    * @param matcher a generic matcher predicate
    * @returns the assertion instance
    */
@@ -42,6 +48,12 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
 
   /**
    * Check if any of the array values match the predicate
+   *
+   * @example
+   * ```
+   * expect([dog, apple, cat]).toMatchAny(isFruit);
+   * ```
+   *
    * @param matcher a matcher predicate
    * @returns the assertion instance
    */
@@ -64,6 +76,12 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
 
   /**
    * Check if all the values of the array satisfies a given assertion.
+   *
+   * @example
+   * ```
+   * const checkIsFruit = (x: any) => expect(x).toBeInstanceOf(Fruit);
+   * expect([apple, pear, banana]).toSatisfyAll(checkIsFruit);
+   * ```
    *
    * @param consumer a consumer of the array to assert over each value of its values
    * @returns the assertion instance
@@ -96,6 +114,12 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   /**
    * Check if any value of the array satisfies the give assertion.
    *
+   * @example
+   * ```
+   * const checkIsFruit = (x: any) => expect(x).toBeInstanceOf(Fruit);
+   * expect([dog, apple, cat]).toSatisfyAny(checkIsFruit);
+   * ```
+   *
    * @param consumer a consumer of the array to assert over each value of its values
    * @returns the assertion instance
    */
@@ -126,6 +150,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   /**
    * Check if the array is empty. That is, when its `length` property is zero.
    *
+   * @example
+   * ```
+   * expect([]).toBeEmpty();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeEmpty(): this {
@@ -147,6 +176,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
 
   /**
    * Check if the array has some specific number of elements.
+   *
+   * @example
+   * ```
+   * expect([0, 1, 2]).toHaveSize(3);
+   * ```
    *
    * @param size the expected number of elements in the array
    * @returns the assertion instance
@@ -193,6 +227,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   /**
    * Check if the array contains all the passed values.
    *
+   * @example
+   * ```
+   * expect([1, 2, 3]).toContainAll(1, 3);
+   * ```
+   *
    * @param values the values the array should contain
    * @returns the assertion instance
    */
@@ -216,6 +255,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
 
   /**
    * Check if the array contains any of the passed values.
+   *
+   * @example
+   * ```
+   * expect([1, 2, 3]).toContainAny(1, 50, 36);
+   * ```
    *
    * @param values the value the array should include (at least one)
    * @returns the assertion instance
