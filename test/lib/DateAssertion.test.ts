@@ -29,6 +29,19 @@ describe("[Unit] DateAssertion.test.ts", () => {
         assert.deepStrictEqual(test.not.toBeDayOfWeek(1), test);
       });
     });
+
+    context("when the day of the actual date is Sunday", () => {
+      context('when comparing to the "sunday" literal', () => {
+        it("does not raise an AssertionError", () => {
+          const actualDate = new Date(2022, 9, 2); // October 2nd, 2022
+          const test = new DateAssertion(actualDate);
+
+          assert.doesNotThrow(() => {
+            test.toBeDayOfWeek("sunday");
+          }, AssertionError);
+        });
+      });
+    });
   });
 
   describe(".toMatchDateParts", () => {
