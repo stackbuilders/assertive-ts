@@ -24,9 +24,9 @@ export class DateAssertion extends Assertion<Date> {
   }
 
   /**
-   * Check if a day of the week, might be string
-   * (e.g 'monday') or number (e.g 0-6), equals the
-   * day of the actual date.
+   * Check if a day of the week equals the day of the actual date. You can pass
+   * either a string (e.g. "monday"), or a number from 0 to 6, where 0 is
+   * Sunday and 6 is Saturday, as in Date.getDay().
    *
    * @param dayOfWeek the day to compare with
    * @returns the assertion instance
