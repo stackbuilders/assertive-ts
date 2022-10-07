@@ -34,6 +34,12 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    * the thrown error is strictly equal to an `Error` instance by passing it as
    * a parameter.
    *
+   * @example
+   * ```
+   * expect(throwingFunction).toThrow();
+   * expect(throwingFunction).toThrow(myErrorInstance);
+   * ```
+   *
    * @param error the error the function should throw
    * @returns the assertion instance
    */
