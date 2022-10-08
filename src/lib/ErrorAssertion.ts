@@ -16,6 +16,12 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   /**
    * Check if the error has exactly the passed error.
    *
+   * @example
+   * ```
+   * const myError = new Error("This is bad!");
+   * expect(myError).toHaveMessage("This is bad!");
+   * ```
+   *
    * @param message the message the error should contain
    * @returns the assertion instance
    */
@@ -40,6 +46,12 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   /**
    * Check if the error has a message that starts with the provided fragment
    *
+   * @example
+   * ```
+   * const myError = new Error("404: Not found");
+   * expect(myError).toHaveMessageStartingWith("404");
+   * ```
+   *
    * @param fragment the fragment the message should start with
    * @returns the assertion instance
    */
@@ -62,6 +74,12 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
 
   /**
    * Check if the error has a message that contains the provided fragment
+   *
+   * @example
+   * ```
+   * const myError = new Error("404: Page not found");
+   * expect(myError).toHaveMessageContaining("not found");
+   * ```
    *
    * @param fragment the fragment the message should contain
    * @returns the assertion instance
@@ -86,6 +104,12 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   /**
    * Check if the error has a message that ends with the provided fragment
    *
+   * @example
+   * ```
+   * const myError = new Error("502: Internal server error");
+   * expect(myError).toHaveMessageEndingWith("server error");
+   * ```
+   *
    * @param fragment the fragment the message should end with
    * @returns the assertion instance
    */
@@ -107,8 +131,14 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   }
 
   /**
-   * Check if the error has a message taht matches the provided regular
+   * Check if the error has a message that matches the provided regular
    * expression.
+   *
+   * @example
+   * ```
+   * const myError = new Error("404: Page not found");
+   * expect(myError).toHaveMessageMatching(/^\d{3}:/);
+   * ```
    *
    * @param regex the regular expression to match the error message
    * @returns the assertion error
@@ -132,6 +162,21 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
 
   /**
    * Check if the name of the error is the passed name.
+   *
+   * @example
+   * ```
+   * expect(new Error("This is an error!")).toHaveName("Error");
+   *
+   * class Error404 extends Error {
+   *   constructor(message?: string) {
+   *     super(message);
+   *
+   *     this.name = "404 Error";
+   *   }
+   * }
+   *
+   * expect(new Error404()).toHaveName("404 Error");
+   * ```
    *
    * @param name the name of the error
    * @returns the assertion instance
