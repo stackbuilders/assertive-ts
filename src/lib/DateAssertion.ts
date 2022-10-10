@@ -74,7 +74,7 @@ export class DateAssertion extends Assertion<Date> {
    *
    * expect(octoberTenth2022).toMatchDateParts({
    *   month: 8,
-   *   year:2022 ,
+   *   year:2022,
    * });
    * ```
    *

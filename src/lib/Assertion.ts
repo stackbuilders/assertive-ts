@@ -399,7 +399,8 @@ export class Assertion<T> {
    * expect(x).toBeSame(x);
    * expect(x).toBeSame(y);
    *
-   * expect(x).not.toBeSame({...x});
+   * expect(x).not.toBeSame({ ...x });
+   * ```
    *
    * @param expected the value to compare for referential equality
    * @returns the assertion instance

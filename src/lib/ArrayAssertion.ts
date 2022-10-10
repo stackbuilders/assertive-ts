@@ -22,7 +22,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    *
    * @example
    * ```
-   * expect([1, 2, 3]).toMatchAll((x) => x < 5);
+   * expect([1, 2, 3]).toMatchAll(x => x < 5);
    * expect([apple, orange, pear]).toMatchAll(isFruit);
    * ```
    *
@@ -79,7 +79,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    *
    * @example
    * ```
-   * const checkIsFruit = (x: any) => expect(x).toBeInstanceOf(Fruit);
+   * const checkIsFruit = (x: Fruit) => expect(x).toBeInstanceOf(Fruit);
    * expect([apple, pear, banana]).toSatisfyAll(checkIsFruit);
    * ```
    *
@@ -116,7 +116,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    *
    * @example
    * ```
-   * const checkIsFruit = (x: any) => expect(x).toBeInstanceOf(Fruit);
+   * const checkIsFruit = (x: Fruit) => expect(x).toBeInstanceOf(Fruit);
    * expect([dog, apple, cat]).toSatisfyAny(checkIsFruit);
    * ```
    *
