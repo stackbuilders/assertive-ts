@@ -28,6 +28,14 @@ export class DateAssertion extends Assertion<Date> {
    * either a string (e.g. "monday"), or a number from 0 to 6, where 0 is
    * Sunday and 6 is Saturday, as in Date.getDay().
    *
+   * @example
+   * ```
+   * const octoberTenth2022 = new Date(2022, 9, 10);
+   *
+   * expect(octoberTenth2022).toBeDayOfWeek("monday");
+   * expect(octoberTenth2022).toBeDayOfWeek(1);
+   * ```
+   *
    * @param dayOfWeek the day to compare with
    * @returns the assertion instance
    */
@@ -60,6 +68,16 @@ export class DateAssertion extends Assertion<Date> {
    * The test fails when the value of one of the specifications
    * doesn't match the actual date.
    *
+   * @example
+   * ```
+   * const septemberTenth2022 = new Date(2022, 8, 10);
+   *
+   * expect(octoberTenth2022).toMatchDateParts({
+   *   month: 8,
+   *   year:2022 ,
+   * });
+   * ```
+   *
    * @param options the option object to compare with
    * @returns the assertion instance
    */
@@ -89,6 +107,14 @@ export class DateAssertion extends Assertion<Date> {
   /**
    * Check if the actual date comes before the passed date.
    *
+   * @example
+   * ```
+   * const septemberFirst2022 = new Date(2022, 8, 1);
+   * const octoberFirst2022 = new Date(2022, 9, 1);
+   *
+   * expect(septemberFirst2022).toBeBefore(octoberFirst2022);
+   * ```
+   *
    * @param date the date to compare with
    * @returns the assertion instance
    */
@@ -113,6 +139,15 @@ export class DateAssertion extends Assertion<Date> {
   /**
    * Check if the actual date comes before or equals the passed date.
    *
+   * @example
+   * ```
+   * const septemberFirst2022 = new Date(2022, 8, 1);
+   * const octoberFirst2022 = new Date(2022, 9, 1);
+   *
+   * expect(septemberFirst2022).toBeBeforeOrEqual(octoberFirst2022);
+   * expect(septemberFirst2022).toBeBeforeOrEqual(octoberFirst2022);
+   * ```
+   *
    * @param date the date to compare with
    * @returns the assertion instance
    */
@@ -136,6 +171,14 @@ export class DateAssertion extends Assertion<Date> {
   /**
    * Check if the actual date comes after the passed date.
    *
+   * @example
+   * ```
+   * const septemberFirst2022 = new Date(2022, 8, 1);
+   * const octoberFirst2022 = new Date(2022, 9, 1);
+   *
+   * expect(octoberFirst2022).toBeAfter(septemberFirst2022);
+   * ```
+   *
    * @param date the date to compare with
    * @returns the assertion instance
    */
@@ -158,6 +201,15 @@ export class DateAssertion extends Assertion<Date> {
 
   /**
    * Check if the actual date comes after or equals the passed date.
+   *
+   * @example
+   * ```
+   * const septemberFirst2022 = new Date(2022, 8, 1);
+   * const octoberFirst2022 = new Date(2022, 9, 1);
+   *
+   * expect(octoberFirst2022).toBeAfterOrEqual(septemberFirst2022);
+   * expect(octoberFirst2022).toBeAfterOrEqual(octoberFirst2022);
+   * ```
    *
    * @param date the date to compare with
    * @returns the assertion instance
