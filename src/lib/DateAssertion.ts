@@ -67,7 +67,7 @@ export class DateAssertion extends Assertion<Date> {
     const optionsAsDate = dateOptionsToDate(options);
     const assertWhen = Object.keys(options).every(key => {
       const dateMethod = DATE_METHOD_MAP[key];
-      return options[key] === this.actual[dateMethod]();
+      return optionsAsDate[dateMethod]() === this.actual[dateMethod]();
     });
     const error = new AssertionError({
       actual: this.actual,
