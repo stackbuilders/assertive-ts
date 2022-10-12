@@ -64,6 +64,20 @@ describe("[Unit] DateAssertion.test.ts", () => {
           name: AssertionError.name
         });
       });
+
+      context("when passing the month as a literal", () => {
+        it("does not throw an AssertionError", () => {
+          const actualDate = new Date(2021, 1, 1, 12, 10, 15, 25);
+          const options = { month: "february" as const };
+
+          const test = new DateAssertion(actualDate);
+
+          assert.doesNotThrow(
+            () => test.toMatchDateParts(options),
+            AssertionError
+          );
+        });
+      });
     });
 
     context("when the actual date is NOT equal to the passed date", () => {
