@@ -344,6 +344,7 @@ export class Assertion<T> {
    * expect({ a: 1 }).toBeSimilar({ a: 1 });
    *
    * expect({ a: { b: 1 } }).not.toBeSimilar({ a: {b: 1} });
+   * ```
    *
    * @param expected the value to compare for shallow equality
    * @returns the assertion instance
