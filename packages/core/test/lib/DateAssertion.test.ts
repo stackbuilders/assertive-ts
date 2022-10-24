@@ -31,14 +31,12 @@ describe("[Unit] DateAssertion.test.ts", () => {
     });
 
     context("when the day of the actual date is Sunday", () => {
-      context('when comparing to the "sunday" literal', () => {
-        it("does not raise an AssertionError", () => {
+      context('and comparing to the "sunday" literal', () => {
+        it("returns the assertion instance", () => {
           const actualDate = new Date(2022, 9, 2); // October 2nd, 2022
           const test = new DateAssertion(actualDate);
 
-          assert.doesNotThrow(() => {
-            test.toBeDayOfWeek("sunday");
-          }, AssertionError);
+          assert.deepStrictEqual(test.toBeDayOfWeek("sunday"), test);
         });
       });
     });
@@ -66,16 +64,12 @@ describe("[Unit] DateAssertion.test.ts", () => {
       });
 
       context("when passing the month as a literal", () => {
-        it("does not throw an AssertionError", () => {
+        it("returns the assertion instance", () => {
           const actualDate = new Date(2021, 1, 1, 12, 10, 15, 25);
-          const options = { month: "february" as const };
 
           const test = new DateAssertion(actualDate);
 
-          assert.doesNotThrow(
-            () => test.toMatchDateParts(options),
-            AssertionError
-          );
+          assert.deepStrictEqual(test.toMatchDateParts({ month: "february" }), test);
         });
       });
     });
