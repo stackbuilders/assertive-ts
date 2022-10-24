@@ -29,6 +29,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * **Important:** Remember to return or `await` for this assertion to not leave
    * the promise asynchronous to the test
    *
+   * @example
+   * ```
+   * await expect(successfulAsyncRequest()).toBeResolved();
+   * ```
+   *
    * @returns a promise with the resolved value (or an error if `.not` was prepended)
    */
   public toBeResolved(): Promise<I extends false ? T : unknown> {
@@ -65,6 +70,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    *
    * **Important:** Remember to return or `await` for this assertion to not leave
    * the assertion asynchronous in the test
+   *
+   * @example
+   * ```
+   * await expect(requestAsyncMagicValue()).toBeResolvedWith(64);
+   * ```
    *
    * @param expected the expected value to be resolved by the promise
    * @returns a promise with the resolved value
@@ -108,6 +118,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * **Important:** Remember to return or `await` for this assertion to not leave
    * the promise asynchronous to the test
    *
+   * @example
+   * ```
+   * await expect(failingAsyncRequest()).toBeRejected();
+   * ```
+   *
    * @returns a promise with the caught error (or the value if `.not` is prepended)
    */
   public toBeRejected(): Promise<I extends false ? unknown : T> {
@@ -144,6 +159,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    *
    * **Important:** Remember to return or `await` for this assertion to not leave
    * the promise asynchronous to the test
+   *
+   * @example
+   * ```
+   * await expect(failingAsyncRequest()).toBeRejectedWith(new Error("404"));
+   * ```
    *
    * @typeParam E the type of the rejected value
    * @param expected the expected error to be rejected by the promise

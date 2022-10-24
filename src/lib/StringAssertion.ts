@@ -15,6 +15,11 @@ export class StringAssertion extends Assertion<string> {
    * Check if the string is empty. That is, when the string does not contain
    * any characters.
    *
+   * @example
+   * ```
+   * expect("").toBeEmpty();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeEmpty(): this {
@@ -37,6 +42,11 @@ export class StringAssertion extends Assertion<string> {
   /**
    * Check if the string is blank. That is, when the string consists of one or
    * more whitespaces only.
+   *
+   * @example
+   * ```
+   * expect("   ").toBeBlank();
+   * ```
    *
    * @returns the assertion instance
    */
@@ -61,6 +71,11 @@ export class StringAssertion extends Assertion<string> {
    * Check if the string value is equal to another string. The comparison is
    * not case sensitive, i.e. it ignores the cases of both string values.
    *
+   * @example
+   * ```
+   * expect("hello world").toBeEqualIgnoringCase("HELLO WORLD");
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeEqualIgnoringCase(text: string): this {
@@ -84,6 +99,11 @@ export class StringAssertion extends Assertion<string> {
   /**
    * A convenience alias of `.toBeEqualIgnoringCase(..)` assertion.
    *
+   * @example
+   * ```
+   * expect("hello world").toBeEqualCaseInsensitive("HELLO WORLD");
+   * ```
+   *
    * @see {@link StringAssertion.toBeEqualIgnoringCase toBeEqualIgnoringCase}
    */
   public toBeEqualCaseInsensitive = this.toBeEqualIgnoringCase;
@@ -91,6 +111,11 @@ export class StringAssertion extends Assertion<string> {
   /**
    * Check if the string value contains the passed string. This check compares
    * both strings in a case sensitive fashion.
+   *
+   * @example
+   * ```
+   * expect("Hello World").toContain("World");
+   * ```
    *
    * @param text the text the value should contain
    * @returns the assertion instance
@@ -117,6 +142,11 @@ export class StringAssertion extends Assertion<string> {
    * Check if the string value contains the passed string. This check compares
    * both strings ignoring their cases.
    *
+   * @example
+   * ```
+   * expect("HELLO WORLD").toContainIgnoringCase("World");
+   * ```
+   *
    * @param text the text the value should contain (ignoring case)
    * @returns the assertion instance
    */
@@ -141,12 +171,22 @@ export class StringAssertion extends Assertion<string> {
   /**
    * A convenience alias of `.toContainIgnoringCase(..)` assertion.
    *
+   * @example
+   * ```
+   * expect("HELLO WORLD").toContainCaseInsensitive("World");
+   * ```
+   *
    * @see {@link StringAssertion.toContainIgnoringCase toContainIgnoringCase}
    */
   public toContainCaseInsensitive = this.toContainIgnoringCase;
 
   /**
    * Check if the string value starts with the passed string
+   *
+   * @example
+   * ```
+   * expect("Lorem Ipsum").toStartWith("Lorem");
+   * ```
    *
    * @param text the text he value should start with
    * @returns the assertion instance
@@ -171,6 +211,11 @@ export class StringAssertion extends Assertion<string> {
   /**
    * Check if the string value ends with the passed string
    *
+   * @example
+   * ```
+   * expect("Lorem Ipsum").toEndWith("Ipsum");
+   * ```
+   *
    * @param text the text he value should end with
    * @returns the assertion instance
    */
@@ -193,6 +238,11 @@ export class StringAssertion extends Assertion<string> {
 
   /**
    * Check if the string value matches a regular expression.
+   *
+   * @example
+   * ```
+   * expect("www.helloworld.com").toMatchRegex(/www\..*\.com/);
+   * ```
    *
    * @param regex the regular expression to match
    * @returns the assertion instance

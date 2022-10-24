@@ -42,6 +42,11 @@ export class NumberAssertion extends Assertion<number> {
   /**
    * Check if the number is zero.
    *
+   * @example
+   * ```
+   * expect(0).toBeZero();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeZero(): this {
@@ -65,6 +70,11 @@ export class NumberAssertion extends Assertion<number> {
   /**
    * Check if the number is positive. That is, when the number is greater than zero.
    *
+   * @example
+   * ```
+   * expect(10).toBePositive();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBePositive(): this {
@@ -86,6 +96,11 @@ export class NumberAssertion extends Assertion<number> {
 
   /**
    * Check if the number is negative. That is, when the number is less than zero.
+   *
+   * @example
+   * ```
+   * expect(-10).toBeNegative();
+   * ```
    *
    * @returns the assertion instance
    */
@@ -111,6 +126,13 @@ export class NumberAssertion extends Assertion<number> {
    * JavaScript's `Infinity` value. Keep in mind that this includes
    * positive and negative infinity.
    *
+   * @example
+   * ```
+   * expect(0).toBeFinite();
+   * expect(-10).toBeFinite();
+   * expect(10).toBeFinite();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeFinite(): this {
@@ -133,6 +155,12 @@ export class NumberAssertion extends Assertion<number> {
   /**
    * Check if the number is `NaN`. That is only when the number is JavaScript's
    * `NaN` value.
+   *
+   * @example
+   * ```
+   * expect(NaN).toBeNaN();
+   * expect(0/0).toBeNaN();
+   * ```
    *
    * @returns the assertion instance
    */
@@ -157,6 +185,13 @@ export class NumberAssertion extends Assertion<number> {
   /**
    * Check if the number is even. That is, when the number is divisible by 2.
    *
+   * @example
+   * ```
+   * expect(50).toBeEven();
+   * expect(0).toBeEven();
+   * expect(-10).toBeEven();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeEven(): this {
@@ -178,6 +213,12 @@ export class NumberAssertion extends Assertion<number> {
 
   /**
    * Check if the number is odd. That is, when the number is not divisible by 2.
+   *
+   * @example
+   * ```
+   * expect(-13).toBeOdd();
+   * expect(17).toBeOdd();
+   * ```
    *
    * @returns the assertion instance
    */
@@ -202,6 +243,28 @@ export class NumberAssertion extends Assertion<number> {
    * Check if the number is between the specified bounds. By default, the
    * bounds are exclusive, but the options allow to set the high, low, or both
    * limits as inclusive
+   *
+   * @example
+   * ```
+   * expect(0).toBeBetween({
+   *   range: [-1, 1],
+   * });
+   *
+   * expect(-1).toBeBetween({
+   *   range: [-1, 1],
+   *   lowInclusive: true,
+   * });
+   *
+   * expect(1).toBeBetween({
+   *   range: [-1, 1],
+   *   highInclusive: true,
+   * });
+   *
+   * expect(0).toBeBetween({
+   *   range: [0, 0],
+   *   inclusive: true,
+   * });
+   * ```
    *
    * @param options an object of type {@link BetweenOptions} where the `range`
    *                property defines the bounds, so it's always required. Use
@@ -294,6 +357,19 @@ public toBeBetween(options: BetweenOptions): this {
    * Check if the number value is close to the base value with certain offset. This checks
    * both limits min and max which are inclusive.
    *
+   * @example
+   * ```
+   * expect(-1).toBeCloseTo({
+   *   value: 0,
+   *   withOffset: 1,
+   * });
+   *
+   * expect(1).toBeCloseTo({
+   *   value: 0,
+   *   withOffset: 1,
+   * });
+   * ```
+   *
    * @param options the object that contains the value (base number that value should be close)
    * and withOffset (min and max offset value)
    * @returns the assertion instance
@@ -322,6 +398,11 @@ public toBeBetween(options: BetweenOptions): this {
   /**
    * Check if the number value is greater than the defined value.
    *
+   * @example
+   * ```
+   * expect(5).toBeGreaterThan(3);
+   * ```
+   *
    * @param value the value that number should be greater than
    * @returns the assertion instance
    */
@@ -344,6 +425,12 @@ public toBeBetween(options: BetweenOptions): this {
 
   /**
    * Check if the number value is greater than or equal to the defined value.
+   *
+   * @example
+   * ```
+   * expect(5).toBeGreaterThanOrEqual(3);
+   * expect(3).toBeGreaterThanOrEqual(3);
+   * ```
    *
    * @param value the value that number should be greater than or equal to
    * @returns the assertion instance
@@ -368,6 +455,12 @@ public toBeBetween(options: BetweenOptions): this {
   /**
    * Check if the number value is less than the defined value.
    *
+   * @example
+   * ```
+   * expect(2).toBeLessThan(5);
+   * ```
+   *
+   * @example
    * @param value the value that number should be less than
    * @returns the assertion instance
    */
@@ -390,6 +483,12 @@ public toBeBetween(options: BetweenOptions): this {
 
   /**
    * Check if the number value is less than or equal to the defined value.
+   *
+   * @example
+   * ```
+   * expect(2).toBeLessThanOrEqual(5);
+   * expect(5).toBeLessThanOrEqual(5);
+   * ```
    *
    * @param value the value that number should be less than or equal to
    * @returns the assertion instance

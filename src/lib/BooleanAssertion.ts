@@ -14,6 +14,11 @@ export class BooleanAssertion extends Assertion<boolean> {
   /**
    * Check if the value is `true`.
    *
+   * @example
+   * ```
+   * expect(tsIsCool).toBeTrue();
+   * ```
+   *
    * @returns the assertion instance
    */
   public toBeTrue(): this {
@@ -36,6 +41,11 @@ export class BooleanAssertion extends Assertion<boolean> {
 
   /**
    * Check if the value is `false`.
+   *
+   * @example
+   * ```
+   * expect(pigsFly).toBeFalse();
+   * ```
    *
    * @returns the assertion instance
    */
