@@ -15,19 +15,15 @@
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./build",
     "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "ES6",
-    "typeRoots": ["./node_modules/@types/", "./typings/"]
+    "typeRoots": ["./node_modules/@types/"]
   },
   "exclude": [
-    ".yarn/*",
-    "build/*",
-    "dist/*",
-    "node_modules/*",
-    "examples/*"
+    ".yarn/**/*",
+    "node_modules/**/*"
   ]
 }

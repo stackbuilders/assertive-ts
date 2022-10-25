@@ -1,0 +1,59 @@
+{
+  "name": "@stackbuilders/assertive-ts",
+  "version": "0.0.0",
+  "description": "A type-safe fluent assertion library",
+  "repository": "git@github.com:stackbuilders/assertive-ts.git",
+  "homepage": "https://stackbuilders.github.io/assertive-ts/",
+  "author": "Stack Builders <info@stackbuilders.com>",
+  "license": "MIT",
+  "keywords": [
+    "assertions",
+    "testing",
+    "testing-tools",
+    "type-safety",
+    "typescript"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">=16 <=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.prod.json",
+    "check": "yarn compile && yarn lint && yarn test --forbid-only",
+    "compile": "tsc -p tsconfig.json",
+    "pages": "typedoc",
+    "release": "semantic-release",
+    "test": "cross-env NODE_ENV=test TS_NODE_TRANSPILE_ONLY=true mocha"
+  },
+  "dependencies": {
+    "@cometlib/dedent": "^0.8.0-es.10"
+  },
+  "devDependencies": {
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.7.11",
+    "@types/sinon": "^10.0.13",
+    "all-contributors-cli": "^6.20.0",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.0.0",
+    "semantic-release": "^19.0.5",
+    "sinon": "^14.0.0",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.23.10",
+    "typedoc-plugin-markdown": "^3.13.4",
+    "typedoc-plugin-merge-modules": "^4.0.1",
+    "typescript": "^4.8.4"
+  },
+  "packageManager": "yarn@3.2.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "release"
+    ]
+  }
+}
