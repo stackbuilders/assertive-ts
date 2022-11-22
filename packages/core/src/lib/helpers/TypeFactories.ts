@@ -1,5 +1,5 @@
 import { ArrayAssertion } from "../ArrayAssertion";
-import { Assertion } from "../Assertion";
+import { Assertion, Constructor } from "../Assertion";
 import { BooleanAssertion } from "../BooleanAssertion";
 import { DateAssertion } from "../DateAssertion";
 import { AnyFunction, FunctionAssertion } from "../FunctionAssertion";
@@ -84,7 +84,7 @@ export interface StaticTypeFactories {
    * @typeParam T the type of the instance constructor
    * @param Type the instance constructor
    */
-  instanceOf<T extends new (...args: any[]) => any>(Type: T): TypeFactory<T, Assertion<T>>;
+  instanceOf<T>(Type: Constructor<T>): TypeFactory<T, Assertion<T>>;
   /**
    * Creates a TypeFactory for a Javascript Object.
    *
@@ -138,10 +138,10 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
       typeName: "array"
     };
   },
-  instanceOf(type) {
+  instanceOf<T>(type: Constructor<T>) {
     return {
       Factory: Assertion,
-      predicate: (value): value is typeof type => value instanceof type,
+      predicate: (value): value is T => value instanceof type,
       typeName: type.name
     };
   },
