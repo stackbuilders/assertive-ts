@@ -1295,9 +1295,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stackbuilders/assertive-ts@workspace:^, @stackbuilders/assertive-ts@workspace:packages/core":
+"@stackbuilders/assertive-ts@workspace:^, @stackbuilders/assertive-ts@workspace:package":
   version: 0.0.0-use.local
-  resolution: "@stackbuilders/assertive-ts@workspace:packages/core"
+  resolution: "@stackbuilders/assertive-ts@workspace:package"
   dependencies:
     "@cometlib/dedent": ^0.8.0-es.10
     "@types/mocha": ^9.1.1

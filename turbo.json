@@ -3,6 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },
     "compile": {
@@ -10,13 +11,13 @@
       "outputs": ["build/**"]
     },
     "test": {
-      "dependsOn": [],
+      "dependsOn": ["^build"],
       "inputs": ["src/**/*.ts", "test/**/*.ts"],
       "outputs": []
     },
     "release": {
-      "dependsOn": ["build"],
-      "outputs": []
+      "cache": false,
+      "dependsOn": ["^build"]
     }
   }
 }
