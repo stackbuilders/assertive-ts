@@ -10,7 +10,7 @@
   },
   "packageManager": "yarn@3.2.2",
   "workspaces": [
-    "packages/*",
+    "package/",
     "examples/*"
   ],
   "scripts": {
@@ -22,6 +22,7 @@
     "compile:examples:jest": "turbo run compile --filter=@examples/jest",
     "compile:examples:mocha": "turbo run compile --filter=@examples/mocha",
     "lint": "tslint -c tslint.json \"**/*.ts\"",
+    "release": "turbo release",
     "test": "turbo run test",
     "test:core": "turbo run test --filter=@stackbuilders/assertive-ts",
     "test:examples": "turbo run test --filter=\"@examples/*\"",
