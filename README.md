@@ -1,8 +1,13 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![Build](https://github.com/stackbuilders/assertive-ts/actions/workflows/build.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/build.yml)
-[![npm version](https://badge.fury.io/js/@stackbuilders%2Fassertive-ts.svg)](https://badge.fury.io/js/@stackbuilders%2Fassertive-ts)
+[![NPM version](https://img.shields.io/npm/v/@stackbuilders/assertive-ts)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
+[![NPM bundle size](https://img.shields.io/bundlephobia/min/@stackbuilders/assertive-ts)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
+[![NPM downloads](https://img.shields.io/npm/dm/@stackbuilders/assertive-ts)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
+[![NPM license](https://img.shields.io/npm/l/@stackbuilders/assertive-ts)](./LICENSE)
+[![GitHub Release Date](https://img.shields.io/github/release-date/stackbuilders/assertive-ts)](https://github.com/stackbuilders/assertive-ts/releases)
+[![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@stackbuilders/assertive-ts)](https://snyk.io/)
 
 # AssertiveTS
 
@@ -159,9 +164,53 @@ expect(bar)
 
 You can find the full API reference [here](https://stackbuilders.github.io/assertive-ts/docs/build/)
 
-## Coming Soon
+## Extension mechanism ⚙️
 
-- Extension mechanism ⚙️
+This feature allows you to extend the `expect(..)` function to return additional `Assertion<T>` instances depending on the value under test. This opens the door to add additional assertion matchers for more specific cases. An `Assertion<T>` can be added in the form of a `Plugin`:
+```ts
+interface Plugin<T, A extends Assertion<T>> {
+  Assertion: new(actual: T) => A;
+  insertAt: "top" | "bottom";
+  predicate: (actual: unknown) => actual is T;
+}
+```
+
+Where `Assertion` is the class you want to add, `insertAt` determines if the logic is inserted before or after all the primitives, and `predicate` is the logical code used to determine if value matches the `Assertion` type.
+
+Once you have a plugin object, you can add it to assertive-ts with the `usePlugin(..)` helper function. Calls to this function should go on the setup file of your test runner or in a `beforeAll()` hook, so the extension is applied to all your tests.
+```ts
+// test/setup.ts
+import { usePlugin } from "@stackbuilders/assertive-ts";
+
+import { FilePlugin, HTMLElementPlugin } from "./plugins"; // your custom (or 3rd-party) plugins
+
+usePlugin(FilePlugin);
+usePlugin(HTMLElementPlugin);
+// ...
+```
+
+### What about the types?
+
+Each new plugin should add an additional overload to the `expect(..)` function to maintain type safety. To do that, you can extend the `Expect` interface to add the additional overloads. For example:
+```ts
+import { FileAssertion } from "./FileAssertion";
+import { HTMLElementAssertion } from "./HTMLElementAssertion";
+
+declare module "@stackbuilders/assertive-ts" {
+
+  export interface Expect {
+    (actual: File): FileAssertion;
+    (actual: HTMLElement): HTMLElementAssertion;
+    // ...
+  }
+}
+```
+
+> **Note:** 3rd-party libraries should do this on their types entry point (index.d.ts), this way the interface is automatically extended when their plugin is passed to the `usePlugin(..)` function.
+
+### How to...
+
+If you're looking to write a plugin, you can find a simple example [here](./examples/symbolPlugin/). The example plugin is used in the [Jest](./examples/jest/test/plugins.test.ts) and [Mocha](./examples/mocha/test/plugins.test.ts) examples too, so you can also take a look at them to see how to apply and use plugins.
 
 ## Contributors ✨
 
