@@ -19,7 +19,7 @@
     "dist/"
   ],
   "engines": {
-    "node": ">=16 <=18"
+    "node": ">=16 <=19"
   },
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
@@ -33,19 +33,18 @@
     "@cometlib/dedent": "^0.8.0-es.10"
   },
   "devDependencies": {
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^18.7.11",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.13.0",
     "@types/sinon": "^10.0.13",
-    "all-contributors-cli": "^6.20.0",
+    "all-contributors-cli": "^6.24.0",
     "cross-env": "^7.0.3",
-    "mocha": "^10.0.0",
-    "semantic-release": "^19.0.5",
-    "sinon": "^14.0.0",
+    "mocha": "^10.2.0",
+    "semantic-release": "^20.1.0",
+    "sinon": "^15.0.1",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.10",
-    "typedoc-plugin-markdown": "^3.13.4",
+    "typedoc": "^0.23.24",
+    "typedoc-plugin-markdown": "^3.14.0",
     "typedoc-plugin-merge-modules": "^4.0.1",
-    "typescript": "^4.8.4"
-  },
-  "packageManager": "yarn@3.2.2"
+    "typescript": "^4.9.5"
+  }
 }
