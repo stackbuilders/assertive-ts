@@ -1,11 +1,12 @@
+import { Assertion, Constructor } from "./Assertion";
+import { ErrorAssertion } from "./ErrorAssertion";
+import { type TypeFactory } from "./helpers/TypeFactories";
+import { prettify } from "./helpers/messages";
+
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
-import { Assertion, Constructor } from "./Assertion";
-import { ErrorAssertion } from "./ErrorAssertion";
-import { TypeFactory } from "./helpers/TypeFactories";
-
-export type AnyFunction = (...args: any[]) => any;
+export type AnyFunction = (...args: unknown[]) => unknown;
 
 const NoThrow = Symbol("NoThrow");
 
@@ -16,16 +17,16 @@ const NoThrow = Symbol("NoThrow");
  */
 export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
 
-  constructor(actual: T) {
+  public constructor(actual: T) {
     super(actual);
   }
 
-  private captureError(): unknown | typeof NoThrow {
+  private captureError<X>(): X | typeof NoThrow {
     try {
       this.actual();
       return NoThrow;
     } catch (error) {
-      return error;
+      return error as X;
     }
   }
 
@@ -52,12 +53,12 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
         error: new AssertionError({
           actual: captured,
           expected: error,
-          message: `Expected the function to throw - ${error}`
+          message: `Expected the function to throw - ${prettify(error)}`,
         }),
         invertedError: new AssertionError({
           actual: this.actual,
-          message: `Expected the function NOT to throw - ${error}`
-        })
+          message: `Expected the function NOT to throw - ${prettify(error)}`,
+        }),
       });
     }
 
@@ -65,12 +66,12 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
       assertWhen: captured !== NoThrow,
       error: new AssertionError({
         actual: captured,
-        message: "Expected the function to throw when called"
+        message: "Expected the function to throw when called",
       }),
       invertedError: new AssertionError({
         actual: captured,
-        message: "Expected the function NOT to throw when called"
-      })
+        message: "Expected the function NOT to throw when called",
+      }),
     });
   }
 
@@ -90,8 +91,9 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
    * ```
    *
    * @typeParam E the type of the `Error`
-   * @param ExpectedType optional error type constructor to check the thrown error
-   *                  against. If is not provided, it defaults to {@link Error}
+   * @param ExpectedType optional error type constructor to check the thrown
+   *                  error against. If is not provided, it defaults to
+   *                  {@link Error}
    * @returns a new {@link ErrorAssertion} to assert over the error
    */
   public toThrowError(): ErrorAssertion<Error>;
@@ -102,24 +104,24 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
     if (captured === NoThrow) {
       throw new AssertionError({
         actual: captured,
-        message: "Expected the function to throw when called"
+        message: "Expected the function to throw when called",
       });
     }
 
     const ErrorType = Expected ?? Error;
     const error = new AssertionError({
       actual: captured,
-      message: `Expected the function to throw an error instance of <${ErrorType.name}>`
+      message: `Expected the function to throw an error instance of <${ErrorType.name}>`,
     });
     const invertedError = new AssertionError({
       actual: captured,
-      message: `Expected the function NOT to throw an error instance of <${ErrorType.name}>`
+      message: `Expected the function NOT to throw an error instance of <${ErrorType.name}>`,
     });
 
     this.execute({
       assertWhen: captured instanceof ErrorType,
       error,
-      invertedError
+      invertedError,
     });
 
     return new ErrorAssertion(captured as E);
@@ -155,7 +157,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
     if (captured === NoThrow) {
       throw new AssertionError({
         actual: captured,
-        message: "Expected the function to throw a value"
+        message: "Expected the function to throw a value",
       });
     }
 
@@ -163,20 +165,20 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
       actual: captured,
       message: typeFactory
         ? `Expected the function to throw a value of type "${typeFactory.typeName}"`
-        : "Expected the function to throw a value"
+        : "Expected the function to throw a value",
     });
     const invertedError = new AssertionError({
       actual: captured,
       message: typeFactory
         ? `Expected the function NOT to throw a value of type "${typeFactory.typeName}"`
-        : "Expected the function NOT to throw a value"
+        : "Expected the function NOT to throw a value",
     });
     const isTypeMatch = typeFactory?.predicate(captured) ?? true;
 
     this.execute({
       assertWhen: captured !== NoThrow && isTypeMatch,
       error,
-      invertedError
+      invertedError,
     });
 
     return typeFactory?.predicate(captured)

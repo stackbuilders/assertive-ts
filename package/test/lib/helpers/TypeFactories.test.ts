@@ -1,6 +1,6 @@
-import assert from "assert";
-
 import { TypeFactories } from "../../../src/lib/helpers/TypeFactories";
+
+import assert from "assert";
 
 describe("[Unit] TypeFactories.test.ts", () => {
   describe(".predicate", () => {
@@ -130,7 +130,7 @@ describe("[Unit] TypeFactories.test.ts", () => {
       context("when the value is not an array", () => {
         const variants = [
           ["with inner type", TypeFactories.Number],
-          ["without inner type", undefined]
+          ["without inner type", undefined],
         ] as const;
 
         variants.forEach(([desc, innerType]) => {

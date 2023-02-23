@@ -14,26 +14,23 @@
     "examples/*"
   ],
   "scripts": {
-    "check": "yarn compile && yarn lint && yarn test",
+    "check": "turbo check && yarn lint",
     "build": "turbo run build",
-    "build:core": "turbo run build --filter=@stackbuilders/assertive-ts",
     "compile": "turbo run compile",
-    "compile:core": "turbo run compile --filter=@stackbuilders/assertive-ts",
-    "compile:examples": "turbo run compile --filter=\"@examples/*\"",
-    "compile:examples:jest": "turbo run compile --filter=@examples/jest",
-    "compile:examples:mocha": "turbo run compile --filter=@examples/mocha",
-    "lint": "tslint -c tslint.json \"**/*.ts\"",
+    "lint": "eslint .",
     "pages": "yarn workspace @stackbuilders/assertive-ts pages",
     "release": "turbo release",
-    "test": "turbo run test",
-    "test:core": "turbo run test --filter=@stackbuilders/assertive-ts",
-    "test:examples": "turbo run test --filter=\"@examples/*\"",
-    "test:examples:jest": "turbo run test --filter=@examples/jest",
-    "test:examples:mocha": "turbo run test --filter=@examples/mocha"
+    "test": "turbo run test"
   },
   "devDependencies": {
-    "tslint": "^6.1.3",
-    "turbo": "^1.7.3",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-etc": "^2.0.2",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsdoc": "^40.0.0",
+    "turbo": "^1.8.3",
     "typescript": "^4.9.5"
   }
 }

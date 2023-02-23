@@ -7,7 +7,7 @@ export {
   AssertionFactory,
   StaticTypeFactories,
   TypeFactory,
-  TypeFactories
+  TypeFactories,
 } from "./lib/helpers/TypeFactories";
 
 export {
@@ -16,7 +16,7 @@ export {
   Plugin,
   expect,
   expect as assert,
-  expect as assertThat
+  expect as assertThat,
 };
 
 /**

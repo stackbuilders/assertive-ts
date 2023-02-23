@@ -6,6 +6,6 @@ export function mochaHooks(): RootHookObject {
   return {
     beforeAll() {
       usePlugin(SymbolPlugin);
-    }
+    },
   };
 }

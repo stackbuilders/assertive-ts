@@ -1,10 +1,11 @@
-import { AssertionError } from "assert";
-import { isDeepStrictEqual } from "util";
-
 import { Assertion } from "./Assertion";
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
-import { expect } from "./expect";
-import { TypeFactory } from "./helpers/TypeFactories";
+import { type Expect } from "./expect";
+import { type TypeFactory } from "./helpers/TypeFactories";
+import { prettify } from "./helpers/messages";
+
+import { AssertionError } from "assert";
+import { isDeepStrictEqual } from "util";
 
 /**
  * Encapsulates assertion methods applicable to arrays.
@@ -32,17 +33,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   public toMatchAll(matcher: (value: T) => boolean): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected all values of the array to return true on the matcher predicate"
+      message: "Expected all values of the array to return true on the matcher predicate",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected not every value of the array to return true on the matcher predicate"
+      message: "Expected not every value of the array to return true on the matcher predicate",
     });
 
     return this.execute({
       assertWhen: this.actual.every(matcher),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -60,17 +61,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   public toMatchAny(matcher: (value: T) => boolean): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected any value of the array to return true on the matcher predicate"
+      message: "Expected any value of the array to return true on the matcher predicate",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected no value of the array to return true on the matcher predicate"
+      message: "Expected no value of the array to return true on the matcher predicate",
     });
 
     return this.execute({
       assertWhen: this.actual.some(matcher),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -83,7 +84,8 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    * expect([apple, pear, banana]).toSatisfyAll(checkIsFruit);
    * ```
    *
-   * @param consumer a consumer of the array to assert over each value of its values
+   * @param consumer a consumer of the array to assert over each value of its
+   *                 values
    * @returns the assertion instance
    */
   public toSatisfyAll(consumer: (value: T) => void): this {
@@ -103,11 +105,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
 
     return this.execute({
       assertWhen: firstError === undefined,
-      error: firstError!,
+      error: firstError ?? new AssertionError({ }),
       invertedError: new AssertionError({
         actual: this.actual,
-        message: "Expected not all values of the array to satisfy the given assertion"
-      })
+        message: "Expected not all values of the array to satisfy the given assertion",
+      }),
     });
   }
 
@@ -120,17 +122,18 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    * expect([dog, apple, cat]).toSatisfyAny(checkIsFruit);
    * ```
    *
-   * @param consumer a consumer of the array to assert over each value of its values
+   * @param consumer a consumer of the array to assert over each value of its
+   *                 values
    * @returns the assertion instance
    */
   public toSatisfyAny(consumer: (value: T) => void): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected any value of the array to satisfy the given assertion"
+      message: "Expected any value of the array to satisfy the given assertion",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected no value of the array to satisfy the given assertion"
+      message: "Expected no value of the array to satisfy the given assertion",
     });
 
     return this.execute({
@@ -143,7 +146,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
         }
       }),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -160,17 +163,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
   public toBeEmpty(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected array to be empty"
+      message: "Expected array to be empty",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected array NOT to be empty"
+      message: "Expected array NOT to be empty",
     });
 
     return this.execute({
       assertWhen: this.actual.length === 0,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -189,17 +192,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     const error = new AssertionError({
       actual: this.actual.length,
       expected: size,
-      message: `Expected array to contain ${size} elements, but it has ${this.actual.length}`
+      message: `Expected array to contain ${size} elements, but it has ${this.actual.length}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual.length,
-      message: `Expected array NOT to contain ${size} elements, but it does`
+      message: `Expected array NOT to contain ${size} elements, but it does`,
     });
 
     return this.execute({
       assertWhen: this.actual.length === size,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -220,11 +223,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: `Expected array to have the same members as: ${prettyValues}`
+      message: `Expected array to have the same members as: ${prettyValues}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected array NOT to have the same members as: ${prettyValues}`
+      message: `Expected array NOT to have the same members as: ${prettyValues}`,
     });
 
     return this.execute({
@@ -232,7 +235,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
         this.actual.length === expected.length
         && this.actual.every(value => expected.includes(value)),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -251,17 +254,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     const prettyValues = `[${values.map(value => JSON.stringify(value)).join(", ")}]`;
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected array to contain the following values: ${prettyValues}`
+      message: `Expected array to contain the following values: ${prettyValues}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected array NOT to contain the following values, but it does: ${prettyValues}`
+      message: `Expected array NOT to contain the following values, but it does: ${prettyValues}`,
     });
 
     return this.execute({
       assertWhen: values.every(value => this.actual.includes(value)),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -280,17 +283,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     const prettyValues = `[${values.map(value => JSON.stringify(value)).join(", ")}]`;
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected array to contain at least one of the following values: ${prettyValues}`
+      message: `Expected array to contain at least one of the following values: ${prettyValues}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected array NOT to contain one of the following values, but it does: ${prettyValues}`
+      message: `Expected array NOT to contain one of the following values, but it does: ${prettyValues}`,
     });
 
     return this.execute({
       assertWhen: values.some(value => this.actual.includes(value)),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -305,17 +308,17 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     const error = new AssertionError({
       actual: this.actual[index],
       expected: value,
-      message: `Expected value at index ${index} of the array to be <${value}>`
+      message: `Expected value at index ${index} of the array to be <${prettify(value)}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual[index],
-      message: `Expected value at index ${index} of the array NOT to be <${value}>`
+      message: `Expected value at index ${index} of the array NOT to be <${prettify(value)}>`,
     });
 
     return this.execute({
       assertWhen: isDeepStrictEqual(this.actual[index], value),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -346,9 +349,13 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     if (index >= this.actual.length) {
       throw new AssertionError({
         actual: this.actual,
-        message: `Out of bounds! Cannot extract index ${index} from an array of ${this.actual.length} elements`
+        message: `Out of bounds! Cannot extract index ${index} from an array of ${this.actual.length} elements`,
       });
     }
+
+    // We use `require(..)` to avoid import cycles with the `./expect` module
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { expect } = require("./expect") as { expect: Expect; };
 
     return expect(this.actual[index]).asType(typeFactory);
   }

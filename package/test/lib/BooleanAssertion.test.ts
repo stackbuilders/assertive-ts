@@ -1,6 +1,6 @@
-import assert, { AssertionError } from "assert";
-
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
+
+import assert, { AssertionError } from "assert";
 
 describe("[Unit] BooleanAssertion.test.ts", () => {
   describe(".toBeTrue", () => {
@@ -11,7 +11,7 @@ describe("[Unit] BooleanAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeTrue(), test);
         assert.throws(() => test.not.toBeTrue(), {
           message: "Expected value to NOT be true",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -22,7 +22,7 @@ describe("[Unit] BooleanAssertion.test.ts", () => {
 
         assert.throws(() => test.toBeTrue(), {
           message: "Expected value to be true",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeTrue(), test);
       });
@@ -37,7 +37,7 @@ describe("[Unit] BooleanAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeFalse(), test);
         assert.throws(() => test.not.toBeFalse(), {
           message: "Expected value to NOT be false",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -48,7 +48,7 @@ describe("[Unit] BooleanAssertion.test.ts", () => {
 
         assert.throws(() => test.toBeFalse(), {
           message: "Expected value to be false",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeFalse(), test);
       });

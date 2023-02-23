@@ -1,9 +1,10 @@
+import { Assertion } from "./Assertion";
+import { prettify } from "./helpers/messages";
+
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
 
-import { Assertion } from "./Assertion";
-
-export type JSObject = Record<keyof any, any>;
+export type JSObject = Record<keyof unknown, unknown>;
 
 export type Entry<T, K = keyof T> = K extends keyof T
   ? [K, T[K]]
@@ -16,12 +17,17 @@ export type Entry<T, K = keyof T> = K extends keyof T
  */
 export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
 
-  constructor(actual: T) {
+  public constructor(actual: T) {
     super(actual);
   }
 
+  private hasOwnProp(prop: PropertyKey): boolean {
+    return Object.prototype.hasOwnProperty.call(this.actual, prop);
+  }
+
   /**
-   * Check if the object is empty. That is, when the object doesn't have any properties.
+   * Check if the object is empty. That is, when the object doesn't have any
+   * properties.
    *
    * @example
    * ```
@@ -33,17 +39,17 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toBeEmpty(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected the value to be an empty object"
+      message: "Expected the value to be an empty object",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be an empty object"
+      message: "Expected the value NOT to be an empty object",
     });
 
     return this.execute({
       assertWhen: Object.keys(this.actual).length === 0,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -61,17 +67,17 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainKey(key: keyof T): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided key <${String(key)}>`
+      message: `Expected the object to contain the provided key <${String(key)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided key <${String(key)}>`
+      message: `Expected the object NOT to contain the provided key <${String(key)}>`,
     });
     return this.execute({
-      assertWhen: this.actual.hasOwnProperty(key),
+      assertWhen: this.hasOwnProp(key),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -89,17 +95,17 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainAllKeys(keys: Array<keyof T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided keys <${keys}>`
+      message: `Expected the object to contain all the provided keys <${prettify(keys)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided keys <${keys}>`
+      message: `Expected the object NOT to contain all the provided keys <${prettify(keys)}>`,
     });
     return this.execute({
-      assertWhen: keys.every(key => this.actual.hasOwnProperty(key)),
+      assertWhen: keys.every(key => this.hasOwnProp(key)),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -117,17 +123,17 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainAnyKeys(keys: Array<keyof T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided keys <${keys}>`
+      message: `Expected the object to contain at least one of the provided keys <${prettify(keys)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided keys <${keys}>`
+      message: `Expected the object NOT to contain any of the provided keys <${prettify(keys)}>`,
     });
     return this.execute({
-      assertWhen: keys.some(key => this.actual.hasOwnProperty(key)),
+      assertWhen: keys.some(key => this.hasOwnProp(key)),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -139,23 +145,24 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
    * expect({ a: 1, b: 2, c: 3 }).toContainValue(2);
    * ```
    *
-   * @param value the property value that the object should contain in any of its keys
+   * @param value the property value that the object should contain in any of
+   *              its keys
    * @returns the assertion instance
    */
   public toContainValue(value: T[keyof T]): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided value <${value}>`
+      message: `Expected the object to contain the provided value <${prettify(value)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided value <${value}>`
+      message: `Expected the object NOT to contain the provided value <${prettify(value)}>`,
     });
     return this.execute({
       assertWhen: Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -173,20 +180,20 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainAllValues(values: Array<T[keyof T]>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided values <${values}>`
+      message: `Expected the object to contain all the provided values <${prettify(values)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided values <${values}>`
+      message: `Expected the object NOT to contain all the provided values <${prettify(values)}>`,
     });
     return this.execute({
       assertWhen: values
         .every(value =>
-          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value))
+          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
         ),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -204,20 +211,20 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainAnyValues(values: Array<T[keyof T]>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided values <${values}>`
+      message: `Expected the object to contain at least one of the provided values <${prettify(values)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided values <${values}>`
+      message: `Expected the object NOT to contain any of the provided values <${prettify(values)}>`,
     });
     return this.execute({
       assertWhen: values
         .some(value =>
-          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value))
+          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
         ),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -235,19 +242,19 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainEntry(entry: Entry<T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided entry <${JSON.stringify(entry)}>`
+      message: `Expected the object to contain the provided entry <${prettify(entry)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided entry <${JSON.stringify(entry)}>`
+      message: `Expected the object NOT to contain the provided entry <${prettify(entry)}>`,
     });
     return this.execute({
       assertWhen:
-        this.actual.hasOwnProperty(entry[0]) &&
+        this.hasOwnProp(entry[0]) &&
         isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -265,21 +272,21 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainAllEntries(...entries: Array<Entry<T>>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain all the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object to contain all the provided entries <${prettify(entries)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain all the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object NOT to contain all the provided entries <${prettify(entries)}>`,
     });
     return this.execute({
       assertWhen: entries
         .every(entry =>
-          this.actual.hasOwnProperty(entry[0]) &&
-          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
+          this.hasOwnProp(entry[0]) &&
+          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -298,21 +305,21 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toContainAnyEntries(...entries: Array<Entry<T>>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain at least one of the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object to contain at least one of the provided entries <${prettify(entries)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain any of the provided entries <${JSON.stringify(entries)}>`
+      message: `Expected the object NOT to contain any of the provided entries <${prettify(entries)}>`,
     });
     return this.execute({
       assertWhen: entries
         .some(entry =>
-          this.actual.hasOwnProperty(entry[0]) &&
-          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1])
+          this.hasOwnProp(entry[0]) &&
+          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -330,22 +337,22 @@ export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
   public toPartiallyMatch(other: Partial<T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected the object to be a partial match"
+      message: "Expected the object to be a partial match",
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the object NOT to be a partial match"
+      message: "Expected the object NOT to be a partial match",
     });
     return this.execute({
       assertWhen: Object.keys(other)
         .every(key =>
-          this.actual.hasOwnProperty(key)
+          this.hasOwnProp(key)
             ? isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, key)?.value, other[key])
-            : false
+            : false,
         ),
       error,
-      invertedError
+      invertedError,
     });
   }
 }

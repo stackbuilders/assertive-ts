@@ -1,6 +1,6 @@
-import assert from "assert";
-
 import { assert as libAssert, assertThat, expect, TypeFactories } from "../src";
+
+import assert from "assert";
 
 describe("[Unit] index.test.ts", () => {
   context("expect", () => {

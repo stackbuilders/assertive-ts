@@ -6,6 +6,10 @@
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },
+    "check": {
+      "cache": false,
+      "dependsOn": ["^build", "^compile"]
+    },
     "compile": {
       "dependsOn": ["^build"],
       "outputs": ["build/**"]

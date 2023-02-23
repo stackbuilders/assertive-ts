@@ -4,6 +4,6 @@ export function mochaHooks(): Mocha.RootHookObject {
   return {
     afterEach() {
       Sinon.restore();
-    }
+    },
   };
 }

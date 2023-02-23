@@ -1,9 +1,9 @@
-import { AnyFunction } from "../FunctionAssertion";
-import {
+import type { AnyFunction } from "../FunctionAssertion";
+import type {
   BetweenOptions,
   HighInclusiveBetweenOptions,
   InclusiveBetweenOptions,
-  LowInclusiveBetweenOptions
+  LowInclusiveBetweenOptions,
 } from "../NumberAssertion";
 
 export function isJSObject<T>(value: T): value is { [K in keyof T]: T[K] } {

@@ -2,7 +2,7 @@ import { ArrayAssertion } from "../ArrayAssertion";
 import { Assertion, Constructor } from "../Assertion";
 import { BooleanAssertion } from "../BooleanAssertion";
 import { DateAssertion } from "../DateAssertion";
-import { AnyFunction, FunctionAssertion } from "../FunctionAssertion";
+import { type AnyFunction, FunctionAssertion } from "../FunctionAssertion";
 import { NumberAssertion } from "../NumberAssertion";
 import { JSObject, ObjectAssertion } from "../ObjectAssertion";
 import { StringAssertion } from "../StringAssertion";
@@ -27,7 +27,7 @@ export interface TypeFactory<S, A extends Assertion<S>> {
    *
    * @param value the factory's value
    */
-  predicate(value: unknown): value is S;
+  predicate: (value: unknown) => value is S;
   /**
    * The type of this factory.
    */
@@ -106,27 +106,27 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
   Boolean: {
     Factory: BooleanAssertion,
     predicate: (value): value is boolean => typeof value === "boolean",
-    typeName: "boolean"
+    typeName: "boolean",
   },
   Date: {
     Factory: DateAssertion,
     predicate: (value): value is Date => value instanceof Date,
-    typeName: Date.name
+    typeName: Date.name,
   },
   Function: {
     Factory: FunctionAssertion,
     predicate: (value): value is AnyFunction => typeof value === "function",
-    typeName: "function"
+    typeName: "function",
   },
   Number: {
     Factory: NumberAssertion,
     predicate: (value): value is number => typeof value === "number",
-    typeName: "number"
+    typeName: "number",
   },
   String: {
     Factory: StringAssertion,
     predicate: (value): value is string => typeof value === "string",
-    typeName: "string"
+    typeName: "string",
   },
   array<T>(innerType?: TypeFactory<T, Assertion<T>>) {
     return {
@@ -135,21 +135,21 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
         innerType !== undefined
           ? Array.isArray(value) && value.every(innerType.predicate)
           : Array.isArray(value),
-      typeName: "array"
+      typeName: "array",
     };
   },
   instanceOf<T>(type: Constructor<T>) {
     return {
       Factory: Assertion,
       predicate: (value): value is T => value instanceof type,
-      typeName: type.name
+      typeName: type.name,
     };
   },
   object<T extends JSObject>() {
     return {
       Factory: ObjectAssertion,
       predicate: (value): value is T => isJSObject(value),
-      typeName: "object"
+      typeName: "object",
     };
-  }
+  },
 };

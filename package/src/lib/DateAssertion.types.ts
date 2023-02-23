@@ -19,7 +19,7 @@ export type DayOfWeek =
   | "thursday"
   | "friday"
   | "saturday"
-  | "sunday" ;
+  | "sunday";
 
 export type DateMethod = {
   [K in keyof Date]: Date[K] extends () => number
@@ -28,11 +28,11 @@ export type DateMethod = {
 }[keyof Date];
 
 export interface DateOptions {
-  year?: number;
-  month?: Month | number;
   day?: DayOfWeek | number;
   hours?: number;
-  minutes?: number;
-  seconds?: number;
   miliseconds?: number;
+  minutes?: number;
+  month?: Month | number;
+  seconds?: number;
+  year?: number;
 }
