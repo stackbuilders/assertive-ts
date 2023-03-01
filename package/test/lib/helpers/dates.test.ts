@@ -1,7 +1,8 @@
-import assert from "assert";
 import Sinon from "sinon";
 
 import { dateOptionsToDate } from "../../../src/lib/helpers/dates";
+
+import assert from "assert";
 
 describe("[Unit] dates.test.ts", () => {
   context("when the object has all options", () => {
@@ -13,12 +14,12 @@ describe("[Unit] dates.test.ts", () => {
         minutes: 10,
         month: 1,
         seconds: 15,
-        year: 2021
+        year: 2021,
       };
 
       assert.deepStrictEqual(
         dateOptionsToDate(options),
-        new Date(2021, 1, 1, 12, 10, 15, 25)
+        new Date(2021, 1, 1, 12, 10, 15, 25),
       );
     });
   });
@@ -30,7 +31,7 @@ describe("[Unit] dates.test.ts", () => {
         day: 2,
         month: 2,
         seconds: 30,
-        year: 2021
+        year: 2021,
       };
       const expected = new Date(
         2021,
@@ -39,7 +40,7 @@ describe("[Unit] dates.test.ts", () => {
         today.getHours(),
         today.getMinutes(),
         30,
-        today.getMilliseconds()
+        today.getMilliseconds(),
       );
       Sinon.useFakeTimers(today);
 

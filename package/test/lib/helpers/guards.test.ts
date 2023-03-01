@@ -1,14 +1,11 @@
-import assert from "assert";
-
 import {
   isAnyFunction,
-  isHighInclusiveOptions,
-  isInclusiveOptions,
   isJSObject,
   isKeyOf,
-  isLowInclusiveOptions,
-  isPromise
+  isPromise,
 } from "../../../src/lib/helpers/guards";
+
+import assert from "assert";
 
 describe("[Unit] guards.test.ts", () => {
   describe(".isJSObject", () => {
@@ -42,15 +39,15 @@ describe("[Unit] guards.test.ts", () => {
   describe(".isKeyOf", () => {
     const s = Symbol("s");
     const target = {
-      x: "foo",
       5: "bar",
-      [s]: "baz"
+      [s]: "baz",
+      x: "foo",
     };
 
     context("when the value is a key of the target", () => {
       [
         ...Object.keys(target),
-        ...Object.getOwnPropertySymbols(target)
+        ...Object.getOwnPropertySymbols(target),
       ]
       .forEach(key => {
         it(`[${key.toString()}] return true`, () => {
@@ -93,48 +90,6 @@ describe("[Unit] guards.test.ts", () => {
     context("when the value is not a function", () => {
       it("returns false", () => {
         assert.equal(isAnyFunction({ }), false);
-      });
-    });
-  });
-
-  describe(".isInclusiveOptions", () => {
-    context("when inclusive is included", () => {
-      it("returns true", () => {
-        assert.equal(isInclusiveOptions({ range: [0, 1], inclusive: true }), true);
-      });
-    });
-
-    context("when inclusive is not included", () => {
-      it("returns false", () => {
-        assert.equal(isInclusiveOptions({ range: [0, 1], lowInclusive: true }), false);
-      });
-    });
-  });
-
-  describe(".isHighInclusiveOptions", () => {
-    context("when highInclusive is included", () => {
-      it("returns true", () => {
-        assert.equal(isHighInclusiveOptions({ range: [0, 1], highInclusive: true }), true);
-      });
-    });
-
-    context("when highInclusive is not included", () => {
-      it("returns false", () => {
-        assert.equal(isHighInclusiveOptions({ range: [0, 1], lowInclusive: true }), false);
-      });
-    });
-  });
-
-  describe(".isLowInclusiveOptions", () => {
-    context("when lowInclusive is included", () => {
-      it("returns true", () => {
-        assert.equal(isLowInclusiveOptions({ range: [0, 1], lowInclusive: true }), true);
-      });
-    });
-
-    context("when lowInclusive is not included", () => {
-      it("returns false", () => {
-        assert.equal(isLowInclusiveOptions({ range: [0, 1], highInclusive: true }), false);
       });
     });
   });

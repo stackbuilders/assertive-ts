@@ -1,6 +1,8 @@
-import assert, { AssertionError } from "assert";
+import Sinon from "sinon";
 
 import { StringAssertion } from "../../src/lib/StringAssertion";
+
+import assert, { AssertionError } from "assert";
 
 describe("[Unit] StringAssertion.test.ts", () => {
   describe(".toBeEmpty", () => {
@@ -11,7 +13,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeEmpty(), test);
         assert.throws(() => test.not.toBeEmpty(), {
           message: "Expected the value NOT to be empty",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -22,7 +24,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toBeEmpty(), {
           message: "Expected <Hello World!> to be empty",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeEmpty(), test);
       });
@@ -37,7 +39,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeBlank(), test);
         assert.throws(() => test.not.toBeBlank(), {
           message: "Expected the value NOT to be blank",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -47,7 +49,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toBeBlank(), {
           message: "Expected <  x y z  > to be blank",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeBlank(), test);
       });
@@ -62,7 +64,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeEqualIgnoringCase("mIxEd tExT"), test);
         assert.throws(() => test.not.toBeEqualIgnoringCase("mIxEd tExT"), {
           message: "Expected both strings NOT to be equal ignoring case",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -73,7 +75,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toBeEqualIgnoringCase("mIxEd sTrInG"), {
           message: "Expected both string to be equal ignoring case",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeEqualIgnoringCase("mIxEd sTrInG"), test);
       });
@@ -83,9 +85,11 @@ describe("[Unit] StringAssertion.test.ts", () => {
   describe(".toBeEqualCaseInsensitive", () => {
     it("aliases .toBeEqualIgnoringCase(..) method", () => {
       const test = new StringAssertion("foo");
+      const spy = Sinon.spy(test, "toBeEqualCaseInsensitive");
 
-      assert.deepStrictEqual(test.toBeEqualCaseInsensitive, test.toBeEqualIgnoringCase);
-      assert.deepStrictEqual(test.not.toBeEqualCaseInsensitive, test.not.toBeEqualIgnoringCase);
+      test.toBeEqualCaseInsensitive("Foo");
+
+      Sinon.assert.calledWithExactly(spy, "Foo");
     });
   });
 
@@ -97,7 +101,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toContain("Hello"), test);
         assert.throws(() => test.not.toContain("Hello"), {
           message: "Expected <Hello World!> NOT to contain <Hello>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -108,7 +112,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toContain("Bye"), {
           message: "Expected <Hello World!> to contain <Bye>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContain("Bye"), test);
       });
@@ -123,7 +127,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toContainIgnoringCase("hello"), test);
         assert.throws(() => test.not.toContainIgnoringCase("hello"), {
           message: "Expected <Hello World!> NOT to contain <hello> (ignoring case)",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -134,7 +138,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toContainIgnoringCase("bye"), {
           message: "Expected <Hello World!> to contain <bye> (ignoring case)",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainIgnoringCase("bye"), test);
       });
@@ -144,9 +148,11 @@ describe("[Unit] StringAssertion.test.ts", () => {
   describe(".toContainCaseInsensitive", () => {
     it("aliases the .toContainIgnoringCase(..) method", () => {
       const test = new StringAssertion("foo");
+      const refSpy = Sinon.spy(test, "toContainIgnoringCase");
 
-      assert.deepStrictEqual(test.toContainCaseInsensitive, test.toContainIgnoringCase);
-      assert.deepStrictEqual(test.not.toContainCaseInsensitive, test.not.toContainIgnoringCase);
+      test.toContainCaseInsensitive("f");
+
+      Sinon.assert.calledOnceWithExactly(refSpy, "f");
     });
   });
 
@@ -158,7 +164,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toStartWith("Hello"), test);
         assert.throws(() => test.not.toStartWith("Hello"), {
           message: "Expected <Hello World!> NOT to start with <Hello>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -169,7 +175,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toStartWith("Goodbye"), {
           message: "Expected <Hello World!> to start with <Goodbye>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toStartWith("Goodbye"), test);
       });
@@ -184,7 +190,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toEndWith("!"), test);
         assert.throws(() => test.not.toEndWith("!"), {
           message: "Expected <Hello World!> NOT to end with <!>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -195,7 +201,7 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.throws(() => test.toEndWith("Moon!"), {
           message: "Expected <Hello World!> to end with <Moon!>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toStartWith("Moon!"), test);
       });
@@ -209,8 +215,8 @@ describe("[Unit] StringAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toMatchRegex(/^[0-9]+$/), test);
         assert.throws(() => test.not.toMatchRegex(/^[0-9]+$/), {
-          message: "Expected <1234567890> NOT to match the regular expression </^[0-9]+$/>",
-          name: AssertionError.name
+          message: "Expected <1234567890> NOT to match the regular expression <^[0-9]+$>",
+          name: AssertionError.name,
         });
       });
     });
@@ -220,8 +226,8 @@ describe("[Unit] StringAssertion.test.ts", () => {
         const test = new StringAssertion("1234567890x");
 
         assert.throws(() => test.toMatchRegex(/^[0-9]+$/), {
-          message: "Expected <1234567890x> to match the regular expression </^[0-9]+$/>",
-          name: AssertionError.name
+          message: "Expected <1234567890x> to match the regular expression <^[0-9]+$>",
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toMatchRegex(/^[0-9]+$/), test);
       });

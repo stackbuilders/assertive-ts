@@ -1,10 +1,10 @@
-import assert, { AssertionError } from "assert";
-
 import { expect } from "../../src";
 import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
+import { NumberAssertion } from "../../src/lib/NumberAssertion";
 import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
-import { NumberAssertion } from "../../src/lib/NumberAssertion";
+
+import assert, { AssertionError } from "assert";
 
 describe("[Unit] ArrayAssertion.test.ts", () => {
   describe(".toMatchAll", () => {
@@ -17,7 +17,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toMatchAll(isPositive), test);
         assert.throws(() => test.not.toMatchAll(isPositive), {
           message: "Expected not every value of the array to return true on the matcher predicate",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -28,7 +28,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toMatchAll(isPositive), {
           message: "Expected all values of the array to return true on the matcher predicate",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toMatchAll(isPositive), test);
       });
@@ -44,7 +44,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toMatchAny(isTwo), test);
         assert.throws(() => test.not.toMatchAny(isTwo), {
           message: "Expected no value of the array to return true on the matcher predicate",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -56,7 +56,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toMatchAny(isFour), {
           message: "Expected any value of the array to return true on the matcher predicate",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toMatchAny(isFour), test);
       });
@@ -75,7 +75,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toSatisfyAll(checkPositive), test);
         assert.throws(() => test.not.toSatisfyAll(checkPositive), {
           message: "Expected not all values of the array to satisfy the given assertion",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -86,7 +86,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toSatisfyAll(checkPositive), {
           message: "Expected <-3> to be positive",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toSatisfyAll(checkPositive), test);
       });
@@ -104,7 +104,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toSatisfyAny(checkEven), test);
         assert.throws(() => test.not.toSatisfyAny(checkEven), {
           message: "Expected no value of the array to satisfy the given assertion",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -118,7 +118,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toSatisfyAny(checkNegative), {
           message: "Expected any value of the array to satisfy the given assertion",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toSatisfyAny(checkNegative), test);
       });
@@ -133,7 +133,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toBeEmpty(), test);
         assert.throws(() => test.not.toBeEmpty(), {
           message: "Expected array NOT to be empty",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -144,7 +144,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toBeEmpty(), {
           message: "Expected array to be empty",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeEmpty(), test);
       });
@@ -159,7 +159,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveSize(3), test);
         assert.throws(() => test.not.toHaveSize(3), {
           message: "Expected array NOT to contain 3 elements, but it does",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -170,7 +170,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveSize(5), {
           message: "Expected array to contain 5 elements, but it has 3",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveSize(5), test);
       });
@@ -185,7 +185,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveSameMembers([2, 3, 1]), test);
         assert.throws(() => test.not.toHaveSameMembers([2, 3, 1]), {
           message: "Expected array NOT to have the same members as: [2, 3, 1]",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -195,7 +195,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         ["[1, 2]", [1, 2]],
         ["[1, 2, 4]", [1, 2, 4]],
         ["[5, 6, 7]", [5, 6, 7]],
-        ["[1, 2, 3, 4]", [1, 2, 3, 4]]
+        ["[1, 2, 3, 4]", [1, 2, 3, 4]],
       ];
 
       variants.forEach(([desc, expected]) => {
@@ -204,7 +204,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
           assert.throws(() => test.toHaveSameMembers(expected), {
             message: `Expected array to have the same members as: ${desc}`,
-            name: AssertionError.name
+            name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toHaveSameMembers(expected), test);
         });
@@ -220,7 +220,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toContainAll(1, 3, 5), test);
         assert.throws(() => test.not.toContainAll(1, 3, 5), {
           message: "Expected array NOT to contain the following values, but it does: [1, 3, 5]",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -231,7 +231,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toContainAll(1, { x: "bar" }), {
           message: 'Expected array to contain the following values: [1, {"x":"bar"}]',
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainAll(1, { x: "bar" }), test);
       });
@@ -246,7 +246,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toContainAny(7, 3, 8), test);
         assert.throws(() => test.not.toContainAny(7, 3, 8), {
           message: "Expected array NOT to contain one of the following values, but it does: [7, 3, 8]",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -257,7 +257,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.toContainAny(7, { x: "bar" }), {
           message: 'Expected array to contain at least one of the following values: [7, {"x":"bar"}]',
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainAny(7, { x: "bar" }), test);
       });
@@ -272,7 +272,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toContainAt(1, "bar"), test);
         assert.throws(() => test.not.toContainAt(1, "bar"), {
           message: "Expected value at index 1 of the array NOT to be <bar>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -281,7 +281,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
       const variants = [
         ["Invalid index", -2],
         ["Out of bounds", 5],
-        ["Normal index", 2]
+        ["Normal index", 2],
       ] as const;
 
       variants.forEach(([desc, index]) => {
@@ -290,7 +290,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
           assert.throws(() => test.toContainAt(index, "bar"), {
             message: `Expected value at index ${index} of the array to be <bar>`,
-            name: AssertionError.name
+            name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toContainAt(index, "bar"), test);
         });
@@ -318,7 +318,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
           assert.throws(() => test.extracting(1, TypeFactories.String), {
             message: 'Expected <2> to be of type "string"',
-            name: AssertionError.name
+            name: AssertionError.name,
           });
         });
       });
@@ -330,7 +330,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.extracting(3, TypeFactories.Number), {
           message: "Out of bounds! Cannot extract index 3 from an array of 3 elements",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -341,7 +341,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.throws(() => test.not.extracting(1, TypeFactories.Number), {
           message: "Unsupported operation. The `.not` modifier is not allowed on `.extracting(..)` method",
-          name: UnsupportedOperationError.name
+          name: UnsupportedOperationError.name,
         });
       });
     });

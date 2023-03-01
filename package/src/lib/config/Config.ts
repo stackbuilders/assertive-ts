@@ -24,13 +24,14 @@ export interface Plugin<T, A extends Assertion<T>> {
  */
 export class Config {
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private pluginSet: Set<Plugin<any, Assertion<any>>>;
 
   public constructor() {
     this.pluginSet = new Set();
   }
 
-  public plugins(): ReadonlyArray<Plugin<any, Assertion<any>>> {
+  public plugins(): ReadonlyArray<Plugin<unknown, Assertion<unknown>>> {
     return Array.from(this.pluginSet.values());
   }
 

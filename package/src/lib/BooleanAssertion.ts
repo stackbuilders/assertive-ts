@@ -1,13 +1,13 @@
-import { AssertionError } from "assert";
-
 import { Assertion } from "./Assertion";
+
+import { AssertionError } from "assert";
 
 /**
  * Encapsulates assertion methods applicable to values of type boolean
  */
 export class BooleanAssertion extends Assertion<boolean> {
 
-  constructor(actual: boolean) {
+  public constructor(actual: boolean) {
     super(actual);
   }
 
@@ -25,17 +25,17 @@ export class BooleanAssertion extends Assertion<boolean> {
     const error = new AssertionError({
       actual: this.actual,
       expected: true,
-      message: "Expected value to be true"
+      message: "Expected value to be true",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected value to NOT be true"
+      message: "Expected value to NOT be true",
     });
 
     return this.execute({
       assertWhen: this.actual === true,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -53,17 +53,17 @@ export class BooleanAssertion extends Assertion<boolean> {
     const error = new AssertionError({
       actual: this.actual,
       expected: false,
-      message: "Expected value to be false"
+      message: "Expected value to be false",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected value to NOT be false"
+      message: "Expected value to NOT be false",
     });
 
     return this.execute({
       assertWhen: this.actual === false,
       error,
-      invertedError
+      invertedError,
     });
   }
 }

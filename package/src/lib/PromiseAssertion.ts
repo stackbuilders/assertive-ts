@@ -1,7 +1,10 @@
-import { AssertionError } from "assert/strict";
-import { isDeepStrictEqual } from "util";
+import dedent from "@cometlib/dedent";
 
 import { Assertion } from "./Assertion";
+import { prettify } from "./helpers/messages";
+
+import { AssertionError } from "assert/strict";
+import { isDeepStrictEqual } from "util";
 
 /**
  * Encapsulates assertion methods applicable to Promises
@@ -11,6 +14,7 @@ import { Assertion } from "./Assertion";
  */
 export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Promise<T>> {
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore:
   // Needed because the `I` generic has to change in the inverted
   // assertion so we can have better types. As we're overriding the property
@@ -18,7 +22,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
   // new type is equivalent to `this`.
   public override readonly not: PromiseAssertion<T, true>;
 
-  constructor(actual: Promise<T>) {
+  public constructor(actual: Promise<T>) {
     super(actual);
   }
 
@@ -26,39 +30,40 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * Check if a promise is resolved. If `.not` is prepended, the resulting
    * promise will contain the error.
    *
-   * **Important:** Remember to return or `await` for this assertion to not leave
-   * the promise asynchronous to the test
+   * **Important:** Remember to return or `await` for this assertion to not
+   * leave the promise asynchronous to the test
    *
    * @example
    * ```
    * await expect(successfulAsyncRequest()).toBeResolved();
    * ```
    *
-   * @returns a promise with the resolved value (or an error if `.not` was prepended)
+   * @returns a promise with the resolved value (or an error if `.not` was
+   *          prepended)
    */
   public toBeResolved(): Promise<I extends false ? T : unknown> {
     return this.actual.then(value => {
       if (this.inverted) {
         throw new AssertionError({
           actual: this.actual,
-          message: "Expected promise NOT to be resolved"
+          message: "Expected promise NOT to be resolved",
         });
       }
 
       return value;
     })
-    .catch(error => {
+    .catch((error: unknown) => {
       if (error instanceof AssertionError) {
         throw error;
       }
 
       if (this.inverted) {
-        return error;
+        return error as I extends false ? T : unknown;
       }
 
       throw new AssertionError({
         actual: this.actual,
-        message: `Expected promise to be resolved, but it was rejected with <${error}> instead`
+        message: `Expected promise to be resolved, but it was rejected with <${prettify(error)}> instead`,
       });
     });
   }
@@ -68,8 +73,8 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * passed value. If `.not` is prepended, it will check if the promise was
    * resolved with anything but the passed value.
    *
-   * **Important:** Remember to return or `await` for this assertion to not leave
-   * the assertion asynchronous in the test
+   * **Important:** Remember to return or `await` for this assertion to not
+   * leave the assertion asynchronous in the test
    *
    * @example
    * ```
@@ -86,17 +91,17 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         error: new AssertionError({
           actual: value,
           expected,
-          message: `Expected promise to be resolved with <${expected}>, but got <${value}> instead`
+          message: `Expected promise to be resolved with <${prettify(expected)}>, but got <${prettify(value)}> instead`,
         }),
         invertedError: new AssertionError({
           actual: value,
-          message: `Expected promise NOT to be resolved with <${value}>`
-        })
+          message: `Expected promise NOT to be resolved with <${prettify(value)}>`,
+        }),
       });
 
       return value;
     })
-    .catch(error => {
+    .catch((error: unknown) => {
       if (error instanceof AssertionError) {
         throw error;
       }
@@ -105,8 +110,14 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         actual: error,
         expected: !this.inverted ? expected : undefined,
         message: this.inverted
-          ? `Expected promise to be resolved with anything but <${expected}>, but was rejected with <${error}> instead`
-          : `Expected promise to be resolved with <${expected}>, but it was rejected with <${error}> instead`
+          ? dedent`
+              Expected promise to be resolved with anything but <${prettify(expected)}>, but was rejected with \
+              <${prettify(error)}> instead
+            `
+          : dedent`
+              Expected promise to be resolved with <${prettify(expected)}>, but it was rejected with \
+              <${prettify(error)}> instead
+            `,
       });
     });
   }
@@ -115,15 +126,16 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * Check if the promise was rejected. If `.not` is prepended, the resulting
    * promise will contain the value.
    *
-   * **Important:** Remember to return or `await` for this assertion to not leave
-   * the promise asynchronous to the test
+   * **Important:** Remember to return or `await` for this assertion to not
+   * leave the promise asynchronous to the test
    *
    * @example
    * ```
    * await expect(failingAsyncRequest()).toBeRejected();
    * ```
    *
-   * @returns a promise with the caught error (or the value if `.not` is prepended)
+   * @returns a promise with the caught error (or the value if `.not` is
+   *          prepended)
    */
   public toBeRejected(): Promise<I extends false ? unknown : T> {
     return this.actual.then(value => {
@@ -133,10 +145,10 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
 
       throw new AssertionError({
         actual: this.actual,
-        message: `Expected promise to be rejected, but it was resolved with <${value}> instead`
+        message: `Expected promise to be rejected, but it was resolved with <${prettify(value)}> instead`,
       });
     })
-    .catch(error => {
+    .catch((error: unknown) => {
       if (error instanceof AssertionError) {
         throw error;
       }
@@ -144,11 +156,11 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
       if (this.inverted) {
         throw new AssertionError({
           actual: error,
-          message: "Expected promise NOT to be rejected"
+          message: "Expected promise NOT to be rejected",
         });
       }
 
-      return error;
+      return error as I extends false ? unknown : T;
     });
   }
 
@@ -157,8 +169,8 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * passed error. If `.not` is prepended, it will check if the promise was
    * rejected with anything but the passed error.
    *
-   * **Important:** Remember to return or `await` for this assertion to not leave
-   * the promise asynchronous to the test
+   * **Important:** Remember to return or `await` for this assertion to not
+   * leave the promise asynchronous to the test
    *
    * @example
    * ```
@@ -175,11 +187,17 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         actual: this.actual,
         expected: !this.inverted ? expected : undefined,
         message: this.inverted
-          ? `Expected promise to be rejected with anything but <${expected}>, but it was resolved with <${value}> instead`
-          : `Expected promise to be rejected with <${expected}>, but it was resolved with <${value}> instead`
+          ? dedent`
+              Expected promise to be rejected with anything but <${prettify(expected)}>, but it was resolved with \
+              <${prettify(value)}> instead
+            `
+          : dedent`
+              Expected promise to be rejected with <${prettify(expected)}>, but it was resolved with \
+              <${prettify(value)}> instead
+            `,
       });
     })
-    .catch(error => {
+    .catch((error: unknown) => {
       if (error instanceof AssertionError) {
         throw error;
       }
@@ -189,15 +207,15 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
         error: new AssertionError({
           actual: error,
           expected,
-          message: `Expected promise to be rejected with <${expected}>, but got <${error}> instead`
+          message: `Expected promise to be rejected with <${prettify(expected)}>, but got <${prettify(error)}> instead`,
         }),
         invertedError: new AssertionError({
           actual: error,
-          message: `Expected promise NOT to be rejected with <${error}>`
-        })
+          message: `Expected promise NOT to be rejected with <${prettify(error)}>`,
+        }),
       });
 
-      return error;
+      return error as I extends false ? E : unknown;
     });
   }
 }

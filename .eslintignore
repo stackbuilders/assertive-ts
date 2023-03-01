@@ -1,0 +1,7 @@
+### Dependencies ###
+.yarn/
+node_modules/
+
+### Auto-generated ###
+build/
+dist/

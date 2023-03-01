@@ -23,7 +23,7 @@
     "typeRoots": ["./node_modules/@types/"]
   },
   "exclude": [
-    ".yarn/**/*",
-    "node_modules/**/*"
+    ".yarn/*",
+    "node_modules/*"
   ]
 }

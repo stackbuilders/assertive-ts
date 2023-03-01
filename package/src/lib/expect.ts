@@ -1,15 +1,15 @@
 import { ArrayAssertion } from "./ArrayAssertion";
 import { Assertion } from "./Assertion";
 import { BooleanAssertion } from "./BooleanAssertion";
-import { config } from "./config/Config";
 import { DateAssertion } from "./DateAssertion";
 import { ErrorAssertion } from "./ErrorAssertion";
 import { AnyFunction, FunctionAssertion } from "./FunctionAssertion";
-import { isAnyFunction, isJSObject, isPromise } from "./helpers/guards";
 import { NumberAssertion } from "./NumberAssertion";
 import { JSObject, ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
+import { config } from "./config/Config";
+import { isAnyFunction, isJSObject, isPromise } from "./helpers/guards";
 
 export interface Expect {
   (actual: boolean): BooleanAssertion;

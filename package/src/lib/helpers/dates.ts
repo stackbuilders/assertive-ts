@@ -45,6 +45,6 @@ export function dayOfWeekAsNumber (day: DayOfWeek): number {
       hours ?? today.getHours(),
       minutes ?? today.getMinutes(),
       seconds ?? today.getSeconds(),
-      miliseconds ?? today.getMilliseconds()
+      miliseconds ?? today.getMilliseconds(),
     );
   }

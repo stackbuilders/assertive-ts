@@ -1,9 +1,10 @@
+import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
+import { type TypeFactory } from "./helpers/TypeFactories";
+import { isJSObject, isKeyOf } from "./helpers/guards";
+import { prettify } from "./helpers/messages";
+
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
-
-import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
-import { isJSObject, isKeyOf } from "./helpers/guards";
-import { TypeFactory } from "./helpers/TypeFactories";
 
 export interface Constructor<T> extends Function {
   prototype: T;
@@ -39,23 +40,11 @@ export class Assertion<T> {
 
   public readonly not: this;
 
-  constructor(actual: T) {
+  public constructor(actual: T) {
     this.actual = actual;
     this.inverted = false;
 
     this.not = new Proxy(this, { get: this.proxyInverter(true) });
-  }
-
-  private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
-    return (target, p) => {
-      const key = isKeyOf(target, p) ? p : undefined;
-
-      if (key === "inverted") {
-        return isInverted;
-      }
-
-      return key ? target[key] : undefined;
-    };
   }
 
   /**
@@ -82,6 +71,18 @@ export class Assertion<T> {
       : this;
   }
 
+  private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
+    return (target, p) => {
+      const key = isKeyOf(target, p) ? p : undefined;
+
+      if (key === "inverted") {
+        return isInverted;
+      }
+
+      return key ? target[key] : undefined;
+    };
+  }
+
   /**
    * Check if the value matches the given predicate.
    *
@@ -91,17 +92,17 @@ export class Assertion<T> {
   public toMatch(matcher: (actual: T) => boolean): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected matcher predicate to return true"
+      message: "Expected matcher predicate to return true",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected matcher predicate NOT to return true"
+      message: "Expected matcher predicate NOT to return true",
     });
 
     return this.execute({
       assertWhen: matcher(this.actual),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -119,17 +120,17 @@ export class Assertion<T> {
   public toExist(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected value to exist, but it was <${this.actual}>`
+      message: `Expected value to exist, but it was <${prettify(this.actual)}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value to NOT exist, but it was <${this.actual}>`
+      message: `Expected value to NOT exist, but it was <${prettify(this.actual)}>`,
     });
 
     return this.execute({
       assertWhen: this.actual !== undefined && this.actual !== null,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -146,17 +147,17 @@ export class Assertion<T> {
   public toBeUndefined(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be undefined`
+      message: `Expected <${prettify(this.actual)}> to be undefined`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be undefined"
+      message: "Expected the value NOT to be undefined",
     });
 
     return this.execute({
       assertWhen: this.actual === undefined,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -173,17 +174,17 @@ export class Assertion<T> {
   public toBeNull(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be null`
+      message: `Expected <${prettify(this.actual)}> to be null`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be null"
+      message: "Expected the value NOT to be null",
     });
 
     return this.execute({
       assertWhen: this.actual === null,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -201,17 +202,17 @@ export class Assertion<T> {
   public toBePresent(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: "Expected the value to be present"
+      message: "Expected the value to be present",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be present"
+      message: "Expected the value NOT to be present",
     });
 
     return this.execute({
       assertWhen: this.actual !== undefined,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -231,17 +232,17 @@ export class Assertion<T> {
   public toBeTruthy(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be a truthy value`
+      message: `Expected <${prettify(this.actual)}> to be a truthy value`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be a truthy value`
+      message: `Expected <${prettify(this.actual)}> NOT to be a truthy value`,
     });
 
     return this.execute({
       assertWhen: !!this.actual,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -260,17 +261,17 @@ export class Assertion<T> {
   public toBeFalsy(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be a falsy value`
+      message: `Expected <${prettify(this.actual)}> to be a falsy value`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be a falsy value`
+      message: `Expected <${prettify(this.actual)}> NOT to be a falsy value`,
     });
 
     return this.execute({
       assertWhen: !this.actual,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -287,20 +288,20 @@ export class Assertion<T> {
    * @param Expected the constructor the value should be an instance
    * @returns the assertion instance
    */
-  public toBeInstanceOf(Expected: Constructor<any>): this {
+  public toBeInstanceOf(Expected: Constructor<unknown>): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected value to be an instance of <${Expected.name}>`
+      message: `Expected value to be an instance of <${Expected.name}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value NOT to be an instance of <${Expected.name}>`
+      message: `Expected value NOT to be an instance of <${Expected.name}>`,
     });
 
     return this.execute({
       assertWhen: this.actual instanceof Expected,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -321,17 +322,17 @@ export class Assertion<T> {
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: "Expected both values to be deep equal"
+      message: "Expected both values to be deep equal",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected both values to NOT be deep equal"
+      message: "Expected both values to NOT be deep equal",
     });
 
     return this.execute({
       assertWhen: isDeepStrictEqual(this.actual, expected),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -353,11 +354,11 @@ export class Assertion<T> {
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: "Expected both values to be similar"
+      message: "Expected both values to be similar",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected both values to NOT be similar"
+      message: "Expected both values to NOT be similar",
     });
 
     const areShallowEqual = (): boolean => {
@@ -385,7 +386,7 @@ export class Assertion<T> {
     return this.execute({
       assertWhen: areShallowEqual() || areBothNaN || this.actual === expected,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -410,17 +411,17 @@ export class Assertion<T> {
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: "Expected both values to be the same"
+      message: "Expected both values to be the same",
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected both values to NOT be the same"
+      message: "Expected both values to NOT be the same",
     });
 
     return this.execute({
       assertWhen: this.actual === expected,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -442,7 +443,9 @@ export class Assertion<T> {
    * expect(uuid)
    *   .asType({
    *     Factory: UUIDAssertion, // a custom UUID assertion
-   *     predicate: (value): value is UUID => typeof value === "string" && UUID.PATTER.test(value)
+   *     predicate: (value): value is UUID => {
+   *      return typeof value === "string" && UUID.PATTER.test(value);
+   *     },
    *   })
    *   .isValid();
    * ```
@@ -465,7 +468,7 @@ export class Assertion<T> {
 
     throw new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be of type "${typeName}"`
+      message: `Expected <${prettify(this.actual)}> to be of type "${typeName}"`,
     });
   }
 }

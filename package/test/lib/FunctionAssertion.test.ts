@@ -1,10 +1,11 @@
-import assert, { AssertionError } from "assert";
-
+/* eslint-disable no-throw-literal */
 import { Assertion } from "../../src/lib/Assertion";
 import { ErrorAssertion } from "../../src/lib/ErrorAssertion";
 import { FunctionAssertion } from "../../src/lib/FunctionAssertion";
-import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
 import { NumberAssertion } from "../../src/lib/NumberAssertion";
+import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
+
+import assert, { AssertionError } from "assert";
 
 class CustomError extends Error {
 
@@ -27,7 +28,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           true,
           null,
           Error(),
-          new CustomError("bar")
+          new CustomError("bar"),
         ] as const;
 
         variants.forEach(error => {
@@ -39,7 +40,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toThrow(), test);
             assert.throws(() => test.not.toThrow(), {
               message: "Expected the function NOT to throw when called",
-              name: AssertionError.name
+              name: AssertionError.name,
             });
           });
         });
@@ -51,7 +52,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
           assert.throws(() => test.toThrow(), {
             message: "Expected the function to throw when called",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toThrow(), test);
         });
@@ -69,7 +70,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toThrow(new Error("This is expected!")), test);
             assert.throws(() => test.not.toThrow(new Error("This is expected!")), {
               message: "Expected the function NOT to throw - Error: This is expected!",
-              name: AssertionError.name
+              name: AssertionError.name,
             });
           });
         });
@@ -82,7 +83,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
             assert.throws(() => test.toThrow(new Error("Another error here!")), {
               message: "Expected the function to throw - Error: Another error here!",
-              name: AssertionError.name
+              name: AssertionError.name,
             });
             assert.deepStrictEqual(test.not.toThrow(new Error("Another error here!")), test);
           });
@@ -95,7 +96,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
           assert.throws(() => test.toThrow(new Error("Unreachable!")), {
             message: "Expected the function to throw - Error: Unreachable!",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toThrow(new Error("Unreachable!")), test);
         });
@@ -111,7 +112,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           const variants = [
             [Error, new Error(message)],
             [TypeError, new TypeError(message)],
-            [CustomError, new CustomError(message)]
+            [CustomError, new CustomError(message)],
           ] as const;
 
           variants.forEach(([ErrorType, error]) => {
@@ -123,7 +124,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
               assert.deepStrictEqual(test.toThrowError(ErrorType), new ErrorAssertion(error));
               assert.throws(() => test.not.toThrowError(ErrorType), {
                 message: `Expected the function NOT to throw an error instance of <${ErrorType.name}>`,
-                name: AssertionError.name
+                name: AssertionError.name,
               });
             });
           });
@@ -139,7 +140,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toThrowError(), new ErrorAssertion(error));
             assert.throws(() => test.not.toThrowError(), {
               message: "Expected the function NOT to throw an error instance of <Error>",
-              name: AssertionError.name
+              name: AssertionError.name,
             });
           });
         });
@@ -155,7 +156,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
             assert.throws(() => test.toThrowError(RangeError), {
               message: "Expected the function to throw an error instance of <RangeError>",
-              name: AssertionError.name
+              name: AssertionError.name,
             });
             assert.deepStrictEqual(test.not.toThrowError(RangeError), new ErrorAssertion(error));
           });
@@ -165,8 +166,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           it("defaults to Error and throws an assertion error", () => {
             const error = new TypeError("foo");
             const test = new FunctionAssertion(() => {
-              // tslint:disable-next-line: no-string-throw
-              throw "somthing";
+              throw "something";
             });
             const test2 = new FunctionAssertion(() => {
               throw error;
@@ -174,7 +174,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
             assert.throws(() => test.toThrowError(), {
               message: "Expected the function to throw an error instance of <Error>",
-              name: AssertionError.name
+              name: AssertionError.name,
             });
             assert.deepStrictEqual(test2.not.toThrowError(RangeError), new ErrorAssertion(error));
           });
@@ -186,7 +186,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
       it("throws an assertion error", () => {
         const assertionError = {
           message: "Expected the function to throw when called",
-          name: AssertionError.name
+          name: AssertionError.name,
         };
         const test = new FunctionAssertion(() => undefined);
 
@@ -210,7 +210,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toThrowValue(TypeFactories.Number), new NumberAssertion(5));
             assert.throws(() => test.not.toThrowValue(TypeFactories.Number), {
               message: `Expected the function NOT to throw a value of type "${TypeFactories.Number.typeName}"`,
-              name: AssertionError.name
+              name: AssertionError.name,
             });
           });
         });
@@ -223,7 +223,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
             assert.throws(() => test.toThrowValue(TypeFactories.String), {
               message: `Expected the function to throw a value of type "${TypeFactories.String.typeName}"`,
-              name: AssertionError.name
+              name: AssertionError.name,
             });
             assert.deepStrictEqual(test.not.toThrowValue(TypeFactories.String), new Assertion(5));
           });
@@ -239,7 +239,7 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
           assert.deepStrictEqual(test.toThrowValue(), new Assertion(5));
           assert.throws(() => test.not.toThrowValue(), {
             message: "Expected the function NOT to throw a value",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
         });
       });
@@ -252,11 +252,11 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
           assert.throws(() => test.toThrowValue(TypeFactories.Number), {
             message: "Expected the function to throw a value",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
           assert.throws(() => test.not.toThrowValue(TypeFactories.Number), {
             message: "Expected the function to throw a value",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
         });
       });
@@ -267,11 +267,11 @@ describe("[Unit] FunctionAssertion.test.ts", () => {
 
           assert.throws(() => test.toThrowValue(), {
             message: "Expected the function to throw a value",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
           assert.throws(() => test.not.toThrowValue(), {
             message: "Expected the function to throw a value",
-            name: AssertionError.name
+            name: AssertionError.name,
           });
         });
       });

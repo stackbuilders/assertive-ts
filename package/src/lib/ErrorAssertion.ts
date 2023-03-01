@@ -1,6 +1,6 @@
-import { AssertionError } from "assert";
-
 import { Assertion } from "./Assertion";
+
+import { AssertionError } from "assert";
 
 /**
  * Encapsulates assertion methods applicable to Error instances.
@@ -29,17 +29,17 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
     const error = new AssertionError({
       actual: this.actual.message,
       expected: message,
-      message: `Expected error to have the message: ${message}`
+      message: `Expected error to have the message: ${message}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected error NOT to have the message: ${message}`
+      message: `Expected error NOT to have the message: ${message}`,
     });
 
     return this.execute({
       assertWhen: this.actual.message === message,
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -58,17 +58,17 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   public toHaveMessageStartingWith(fragment: string): this {
     const error = new AssertionError({
       actual: this.actual.message,
-      message: `Expected error to have a message starting with: ${fragment}`
+      message: `Expected error to have a message starting with: ${fragment}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual.message,
-      message: `Expected error NOT to have a message starting with: ${fragment}`
+      message: `Expected error NOT to have a message starting with: ${fragment}`,
     });
 
     return this.execute({
       assertWhen: this.actual.message.startsWith(fragment),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -87,17 +87,17 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
    public toHaveMessageContaining(fragment: string): this {
     const error = new AssertionError({
       actual: this.actual.message,
-      message: `Expected error to have a message containing: ${fragment}`
+      message: `Expected error to have a message containing: ${fragment}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual.message,
-      message: `Expected error NOT to have a message containing: ${fragment}`
+      message: `Expected error NOT to have a message containing: ${fragment}`,
     });
 
     return this.execute({
       assertWhen: this.actual.message.includes(fragment),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -116,17 +116,17 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
    public toHaveMessageEndingWith(fragment: string): this {
     const error = new AssertionError({
       actual: this.actual.message,
-      message: `Expected error to have a message ending with: ${fragment}`
+      message: `Expected error to have a message ending with: ${fragment}`,
     });
     const invertedError = new AssertionError({
       actual: this.actual.message,
-      message: `Expected error NOT to have a message ending with: ${fragment}`
+      message: `Expected error NOT to have a message ending with: ${fragment}`,
     });
 
     return this.execute({
       assertWhen: this.actual.message.endsWith(fragment),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -146,17 +146,17 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   public toHaveMessageMatching(regex: RegExp): this {
     const error = new AssertionError({
       actual: this.actual.message,
-      message: `Expected the error message to match the regex <${regex.source}>`
+      message: `Expected the error message to match the regex <${regex.source}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the error message NOT to match the regex <${regex.source}>`
+      message: `Expected the error message NOT to match the regex <${regex.source}>`,
     });
 
     return this.execute({
       assertWhen: regex.test(this.actual.message),
       error,
-      invertedError
+      invertedError,
     });
   }
 
@@ -184,17 +184,17 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
   public toHaveName(name: string): this {
     const error = new AssertionError({
       actual: this.actual.message,
-      message: `Expected the error name to be <${name}>`
+      message: `Expected the error name to be <${name}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the error name NOT to be <${name}>`
+      message: `Expected the error name NOT to be <${name}>`,
     });
 
     return this.execute({
       assertWhen: this.actual.name === name,
       error,
-      invertedError
+      invertedError,
     });
   }
 }

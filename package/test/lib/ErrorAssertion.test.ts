@@ -1,6 +1,6 @@
-import assert, { AssertionError } from "assert";
-
 import { ErrorAssertion } from "../../src/lib/ErrorAssertion";
+
+import assert, { AssertionError } from "assert";
 
 class CustomError extends Error {
 
@@ -22,7 +22,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveMessage("foo"), test);
         assert.throws(() => test.not.toHaveMessage("foo"), {
           message: "Expected error NOT to have the message: foo",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -33,7 +33,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveMessage("bar"), {
           message: "Expected error to have the message: bar",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveMessage("bar"), test);
       });
@@ -48,7 +48,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveMessageStartingWith("Something went"), test);
         assert.throws(() => test.not.toHaveMessageStartingWith("Something went"), {
           message: "Expected error NOT to have a message starting with: Something went",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -59,7 +59,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveMessageStartingWith("went wrong"), {
           message: "Expected error to have a message starting with: went wrong",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveMessageStartingWith("went wrong"), test);
       });
@@ -74,7 +74,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveMessageContaining("went"), test);
         assert.throws(() => test.not.toHaveMessageContaining("went"), {
           message: "Expected error NOT to have a message containing: went",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -85,7 +85,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveMessageContaining("foo"), {
           message: "Expected error to have a message containing: foo",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveMessageContaining("foo"), test);
       });
@@ -100,7 +100,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveMessageEndingWith("went wrong"), test);
         assert.throws(() => test.not.toHaveMessageEndingWith("went wrong"), {
           message: "Expected error NOT to have a message ending with: went wrong",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -111,7 +111,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveMessageEndingWith("Something"), {
           message: "Expected error to have a message ending with: Something",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveMessageEndingWith("Something"), test);
       });
@@ -126,7 +126,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveMessageMatching(/\d/g), test);
         assert.throws(() => test.not.toHaveMessageMatching(/\d/g), {
           message: "Expected the error message NOT to match the regex <\\d>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -137,7 +137,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveMessageMatching(/\d/g), {
           message: "Expected the error message to match the regex <\\d>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveMessageMatching(/\d/g), test);
       });
@@ -152,7 +152,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
         assert.deepStrictEqual(test.toHaveName("CustomError"), test);
         assert.throws(() => test.not.toHaveName("CustomError"), {
           message: "Expected the error name NOT to be <CustomError>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
       });
     });
@@ -163,7 +163,7 @@ describe("[Unit] ErrorAssertion.test.ts", () => {
 
         assert.throws(() => test.toHaveName("foo"), {
           message: "Expected the error name to be <foo>",
-          name: AssertionError.name
+          name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toHaveName("foo"), test);
       });
