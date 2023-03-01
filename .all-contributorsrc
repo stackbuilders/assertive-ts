@@ -101,6 +101,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "sebas1208",
+      "name": "Sebastian Avalos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5571870?v=4",
+      "profile": "https://github.com/sebas1208",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7
