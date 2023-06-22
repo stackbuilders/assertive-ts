@@ -6,7 +6,9 @@ import type {
   LowInclusiveBetweenOptions,
 } from "../NumberAssertion";
 
-export function isJSObject<T>(value: T): value is { [K in keyof T]: T[K] } {
+import { Struct } from "./types";
+
+export function isJSObject<T>(value: T): value is { [K in keyof T]: T[K] } & Struct {
   return value !== null
     && typeof value === "object"
     && typeof value !== "function";

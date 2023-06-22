@@ -9,9 +9,9 @@
     "@examples/symbol-plugin": "workspace:^",
     "@stackbuilders/assertive-ts": "workspace:^",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.14.2",
+    "@types/node": "^20.3.1",
     "mocha": "^10.2.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.1.3"
   }
 }

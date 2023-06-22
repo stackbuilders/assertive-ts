@@ -8,6 +8,12 @@ import { isDeepStrictEqual } from "util";
 
 export type AnyFunction = (...args: unknown[]) => unknown;
 
+/**
+ * Helper symbol used to indicate that no error was captured during
+ * the assertion.
+ *
+ * @hidden
+ */
 const NoThrow = Symbol("NoThrow");
 
 /**

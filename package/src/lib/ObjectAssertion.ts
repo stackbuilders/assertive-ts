@@ -1,28 +1,25 @@
 import { Assertion } from "./Assertion";
 import { prettify } from "./helpers/messages";
+import { Entry, Struct } from "./helpers/types";
 
 import { AssertionError } from "assert";
 import { isDeepStrictEqual } from "util";
-
-export type JSObject = Record<keyof unknown, unknown>;
-
-export type Entry<T, K = keyof T> = K extends keyof T
-  ? [K, T[K]]
-  : never;
 
 /**
  * Encapsulates assertion methods applicable to objects.
  *
  * @param T the object's definition type
  */
-export class ObjectAssertion<T extends JSObject> extends Assertion<T> {
+export class ObjectAssertion<T extends Struct> extends Assertion<T> {
 
   public constructor(actual: T) {
     super(actual);
   }
 
-  private hasOwnProp(prop: PropertyKey): boolean {
-    return Object.prototype.hasOwnProperty.call(this.actual, prop);
+  private hasOwnProp(prop: PropertyKey | undefined): boolean {
+    return prop !== undefined
+      ? Object.prototype.hasOwnProperty.call(this.actual, prop)
+      : false;
   }
 
   /**
