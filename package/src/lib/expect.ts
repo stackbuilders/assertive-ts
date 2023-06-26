@@ -9,7 +9,7 @@ import { ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 import { config } from "./config/Config";
-import { isAnyFunction, isJSObject, isPromise } from "./helpers/guards";
+import { isAnyFunction, isStruct, isPromise } from "./helpers/guards";
 import { Struct } from "./helpers/types";
 
 export interface Expect {
@@ -62,7 +62,7 @@ function expectMatcher<T>(actual: T): ReturnType<Expect> {
     return new plugin.Assertion(actual);
   }
 
-  if (isJSObject(actual)) {
+  if (isStruct(actual)) {
     return new ObjectAssertion(actual);
   }
 

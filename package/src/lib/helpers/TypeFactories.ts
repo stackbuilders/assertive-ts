@@ -7,7 +7,7 @@ import { NumberAssertion } from "../NumberAssertion";
 import { ObjectAssertion } from "../ObjectAssertion";
 import { StringAssertion } from "../StringAssertion";
 
-import { isJSObject } from "./guards";
+import { isStruct } from "./guards";
 import { Struct } from "./types";
 
 export type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
@@ -149,7 +149,7 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
   object<T extends Struct>() {
     return {
       Factory: ObjectAssertion,
-      predicate: (value): value is T => isJSObject(value),
+      predicate: (value): value is T => isStruct(value),
       typeName: "object",
     };
   },

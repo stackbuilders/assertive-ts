@@ -8,10 +8,10 @@ import type {
 
 import { Struct } from "./types";
 
-export function isJSObject<T>(value: T): value is { [K in keyof T]: T[K] } & Struct {
-  return value !== null
-    && typeof value === "object"
-    && typeof value !== "function";
+export function isStruct<T>(value: T): value is { [K in keyof T]: T[K] } & Struct {
+  return typeof value === "object"
+    && value !== null
+    && !Array.isArray(value);
 }
 
 export function isKeyOf<T extends object>(target: T, key: unknown): key is keyof T {

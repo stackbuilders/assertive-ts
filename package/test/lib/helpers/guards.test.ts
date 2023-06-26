@@ -1,6 +1,6 @@
 import {
   isAnyFunction,
-  isJSObject,
+  isStruct,
   isKeyOf,
   isPromise,
 } from "../../../src/lib/helpers/guards";
@@ -8,30 +8,29 @@ import {
 import assert from "assert";
 
 describe("[Unit] guards.test.ts", () => {
-  describe(".isJSObject", () => {
+  describe(".isStruct", () => {
     context("when the value is an object", () => {
-      context("and the value is a JS object", () => {
-        it("returns true", () => {
-          assert.equal(isJSObject({ x: 1 }), true);
-        });
-      });
+      const variants = [
+        [() => undefined, false],
+        [[{ x: 1 }], false],
+        [{ x: 1 }, true],
+        ["foo", false],
+        [null, false],
+        [{ }, true],
+      ];
 
-      context("and the value is a function", () => {
-        it("returns false", () => {
-          assert.equal(isJSObject(() => undefined), false);
-        });
-      });
-
-      context("and the value is null", () => {
-        it("returns false", () => {
-          assert.equal(isJSObject(null), false);
+      variants.forEach(([value, expected]) => {
+        context(`and the value is ${JSON.stringify(value)}`, () => {
+          it(`returns ${expected}`, () => {
+            assert.equal(isStruct(value), expected);
+          });
         });
       });
     });
 
     context("when the value in not an object", () => {
       it("returns false", () => {
-        assert.equal(isJSObject("foo"), false);
+        assert.equal(isStruct("foo"), false);
       });
     });
   });
