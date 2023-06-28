@@ -366,7 +366,10 @@ export class Assertion<T> {
         return this.actual.getTime() === expected.getTime();
       }
 
-      if (isStruct(this.actual) && isStruct(expected)) {
+      if (
+        (isStruct(this.actual) && isStruct(expected))
+        || (Array.isArray(this.actual) && Array.isArray(expected))
+      ) {
         const actualKeys = Object.keys(this.actual);
         const expectedKeys = Object.keys(expected);
         const sizeMatch = actualKeys.length === expectedKeys.length;
@@ -375,7 +378,7 @@ export class Assertion<T> {
         return sizeMatch && valuesMatch;
       }
 
-      return false;
+      return Object.is(this.actual, expected);
     };
 
     const areBothNaN = typeof this.actual === "number"
