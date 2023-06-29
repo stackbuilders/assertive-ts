@@ -30,7 +30,7 @@ export type DateMethod = {
 export interface DateOptions {
   day?: DayOfWeek | number;
   hours?: number;
-  miliseconds?: number;
+  milliseconds?: number;
   minutes?: number;
   month?: Month | number;
   seconds?: number;

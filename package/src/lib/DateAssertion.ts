@@ -1,13 +1,13 @@
 import { Assertion } from "./Assertion";
 import { DateMethod, DateOptions, DayOfWeek } from "./DateAssertion.types";
-import { dateOptionsToDate, dayOfWeekAsNumber } from "./helpers/dates";
+import { optionsToDate, dayOfWeekAsNumber, dateToOptions } from "./helpers/dates";
 
 import { AssertionError } from "assert";
 
 const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
   day: "getDay",
   hours: "getHours",
-  miliseconds: "getMilliseconds",
+  milliseconds: "getMilliseconds",
   minutes: "getMinutes",
   month: "getMonth",
   seconds: "getSeconds",
@@ -64,7 +64,7 @@ export class DateAssertion extends Assertion<Date> {
    * Check if two dates are equal or partially equal
    * by using a configuration object that can contain
    * optional specifications for: year, month, day, hour,
-   * minutes, seconds and miliseconds, equals the actual date.
+   * minutes, seconds and milliseconds, equals the actual date.
    * The test fails when the value of one of the specifications
    * doesn't match the actual date.
    *
@@ -73,7 +73,7 @@ export class DateAssertion extends Assertion<Date> {
    * const septemberTenth2022 = new Date(2022, 8, 10);
    *
    * expect(octoberTenth2022).toMatchDateParts({
-   *   month: 8,
+   *   month: "august", // or just `8`
    *   year:2022,
    * });
    * ```
@@ -82,23 +82,22 @@ export class DateAssertion extends Assertion<Date> {
    * @returns the assertion instance
    */
   public toMatchDateParts(options: DateOptions): this {
-    const optionsAsDate = dateOptionsToDate(options);
-    const assertWhen = Object.keys(options).every(key => {
-      const dateMethod = DATE_METHOD_MAP[key];
-      return optionsAsDate[dateMethod]() === this.actual[dateMethod]();
-    });
+    const optionsAsDate = optionsToDate(options);
     const error = new AssertionError({
-      actual: this.actual,
+      actual: dateToOptions(this.actual, options),
       expected: options,
-      message: `Expected <${this.actual.toISOString()}> to be equal to <${optionsAsDate.toISOString()}>`,
+      message: `Expected <${this.actual.toISOString()}> to have parts <${JSON.stringify(options)}>`,
     });
     const invertedError = new AssertionError({
-      actual: this.actual,
-      message: `Expected <${this.actual.toISOString()}> NOT to be equal to <${optionsAsDate.toISOString()}>`,
+      actual: dateToOptions(this.actual, options),
+      message: `Expected <${this.actual.toISOString()}> NOT to have parts <${JSON.stringify(options)}>`,
     });
 
     return this.execute({
-      assertWhen,
+      assertWhen: Object.keys(options).every(key => {
+        const dateMethod = DATE_METHOD_MAP[key];
+        return optionsAsDate[dateMethod]() === this.actual[dateMethod]();
+      }),
       error,
       invertedError,
     });

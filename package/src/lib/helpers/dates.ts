@@ -1,50 +1,108 @@
 import { DateOptions, DayOfWeek, Month } from "../DateAssertion.types";
 
+const DAYS_OF_WEEK: DayOfWeek[] = [
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+];
+
+const MONTHS: Month[] = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+];
+
+/**
+ * Provides a numeric representation of a day of the week string. The number is
+ * consistent with JavaScript's {@link Date}, so it's zero-based and starts
+ * from Sunday = `0` to Saturday = `6`.
+ *
+ * @param day a day of the week string
+ * @returns a number representing the day of the week
+ */
 export function dayOfWeekAsNumber (day: DayOfWeek): number {
-    switch (day) {
-      case "sunday": return 0;
-      case "monday": return 1;
-      case "tuesday": return 2;
-      case "wednesday": return 3;
-      case "thursday": return 4;
-      case "friday": return 5;
-      case "saturday": return 6;
-    }
+  return DAYS_OF_WEEK.indexOf(day);
+}
+
+/**
+ * Provides a numeric representation of a month string. The number is consistent
+ * with JavaScript's {@link Date}, so it's zero-based and starts from
+ * January = `0` to December = `11`.
+ *
+ * @param month a month string
+ * @returns a number representing the month
+ */
+export function monthOfYear (month: Month): number {
+  return MONTHS.indexOf(month);
+}
+
+export function optionsToDate(options: DateOptions): Date {
+  const {
+    year = 0,
+    month = 0,
+    day = 0,
+    hours = 0,
+    minutes = 0,
+    seconds = 0,
+    milliseconds = 0,
+  } = options;
+  const monthAsNum = typeof month === "string"
+    ? monthOfYear(month) + 1
+    : month;
+  const dayAsNum = typeof day === "string"
+    ? dayOfWeekAsNumber(day)
+    : day;
+
+  return new Date(
+    year,
+    monthAsNum,
+    dayAsNum,
+    hours,
+    minutes,
+    seconds,
+    milliseconds,
+  );
+}
+
+export function dateToOptions(date: Date, sample?: DateOptions): DateOptions {
+  const options = {
+    day: date.getDate(),
+    hours: date.getHours(),
+    milliseconds: date.getMilliseconds(),
+    minutes: date.getMinutes(),
+    month: date.getMonth(),
+    seconds: date.getSeconds(),
+    year: date.getFullYear(),
+  };
+
+  if (sample !== undefined) {
+    return Object.keys(sample).reduce((acc, key) => {
+      const dayOrMonth = key === "day"
+        ? DAYS_OF_WEEK[date.getDay()]
+        : MONTHS[date.getMonth()];
+      const value = typeof sample[key] === "string"
+        ? dayOrMonth
+        : options[key];
+
+      return {
+        ...acc,
+        [key]: value,
+      };
+    }, { } as DateOptions);
   }
 
-  export function monthOfYear (month: Month): number {
-    switch (month) {
-      case "january": return 0;
-      case "february": return 1;
-      case "march": return 2;
-      case "april": return 3;
-      case "may": return 4;
-      case "june": return 5;
-      case "july": return 6;
-      case "august": return 7;
-      case "september": return 8;
-      case "october": return 9;
-      case "november": return 10;
-      case "december": return 11;
-    }
-  }
-
-  export function dateOptionsToDate(options: DateOptions): Date {
-    const { year, month, day, hours, minutes, seconds, miliseconds } = options;
-    const monthAsNum = typeof month === "string"
-      ? monthOfYear(month)
-      : month;
-    const dayAsNum = typeof day === "string"
-      ? dayOfWeekAsNumber(day)
-      : day;
-    const today = new Date();
-    return new Date(
-      year ?? today.getFullYear(),
-      monthAsNum ?? today.getMonth(),
-      dayAsNum ?? today.getDate(),
-      hours ?? today.getHours(),
-      minutes ?? today.getMinutes(),
-      seconds ?? today.getSeconds(),
-      miliseconds ?? today.getMilliseconds(),
-    );
-  }
+  return options;
+}
