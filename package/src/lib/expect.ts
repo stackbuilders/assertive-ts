@@ -5,11 +5,12 @@ import { DateAssertion } from "./DateAssertion";
 import { ErrorAssertion } from "./ErrorAssertion";
 import { AnyFunction, FunctionAssertion } from "./FunctionAssertion";
 import { NumberAssertion } from "./NumberAssertion";
-import { JSObject, ObjectAssertion } from "./ObjectAssertion";
+import { ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 import { config } from "./config/Config";
-import { isAnyFunction, isJSObject, isPromise } from "./helpers/guards";
+import { isAnyFunction, isStruct, isPromise } from "./helpers/guards";
+import { Struct } from "./helpers/types";
 
 export interface Expect {
   (actual: boolean): BooleanAssertion;
@@ -20,7 +21,7 @@ export interface Expect {
   <T>(actual: Promise<T>): PromiseAssertion<T>;
   <T extends AnyFunction>(actual: T): FunctionAssertion<T>;
   <T extends Error>(actual: T): ErrorAssertion<T>;
-  <T extends JSObject>(actual: T): ObjectAssertion<T>;
+  <T extends Struct>(actual: T): ObjectAssertion<T>;
   <T>(actual: T): Assertion<T>;
 }
 
@@ -61,7 +62,7 @@ function expectMatcher<T>(actual: T): ReturnType<Expect> {
     return new plugin.Assertion(actual);
   }
 
-  if (isJSObject(actual)) {
+  if (isStruct(actual)) {
     return new ObjectAssertion(actual);
   }
 

@@ -22,14 +22,16 @@
     "@typescript-eslint",
     "eslint-plugin-import",
     "eslint-plugin-jsdoc",
-    "etc"
+    "etc",
+    "sonarjs"
   ],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:etc/recommended",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "plugin:sonarjs/recommended"
   ],
   "overrides": [{
     "files": "*.ts?(x)",
@@ -153,7 +155,10 @@
     "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
     "import/newline-after-import": "error",
     "import/no-absolute-path": "error",
-    "import/no-cycle": ["error", { "ignoreExternal": true }],
+    "import/no-cycle": ["error", {
+      "allowUnsafeDynamicCyclicDependency": true,
+      "ignoreExternal": true
+    }],
     "import/no-duplicates": "error",
     "import/no-import-module-exports": "error",
     "import/no-namespace": "error",
@@ -170,8 +175,7 @@
     }],
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": ["error", { "excludeTags": ["example", "param", "returns"] }],
-    "jsdoc/newline-after-description": "error",
-    "jsx-quotes": "error",
+    "jsdoc/tag-lines": ["error", "any", { "startLines": 1 }],
     "keyword-spacing": "error",
     "linebreak-style": "error",
     "max-classes-per-file": ["error", 1],
@@ -212,6 +216,9 @@
     "radix": "error",
     "rest-spread-spacing": "error",
     "semi-spacing": "error",
+    "sonarjs/cognitive-complexity": "off",
+    "sonarjs/no-duplicate-string": "off",
+    "sonarjs/no-inverted-boolean-check": "error",
     "sort-keys": "error",
     "space-before-blocks": "error",
     "space-in-parens": "error",

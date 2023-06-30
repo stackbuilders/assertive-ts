@@ -4,10 +4,11 @@ import { BooleanAssertion } from "../BooleanAssertion";
 import { DateAssertion } from "../DateAssertion";
 import { type AnyFunction, FunctionAssertion } from "../FunctionAssertion";
 import { NumberAssertion } from "../NumberAssertion";
-import { JSObject, ObjectAssertion } from "../ObjectAssertion";
+import { ObjectAssertion } from "../ObjectAssertion";
 import { StringAssertion } from "../StringAssertion";
 
-import { isJSObject } from "./guards";
+import { isStruct } from "./guards";
+import { Struct } from "./types";
 
 export type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
 
@@ -99,7 +100,7 @@ export interface StaticTypeFactories {
    * ```
    * @typeParam T the type of the object
    */
-  object<T extends JSObject>(): TypeFactory<T, ObjectAssertion<T>>;
+  object<T extends Struct>(): TypeFactory<T, ObjectAssertion<T>>;
 }
 
 export const TypeFactories: Readonly<StaticTypeFactories> = {
@@ -145,10 +146,10 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
       typeName: type.name,
     };
   },
-  object<T extends JSObject>() {
+  object<T extends Struct>() {
     return {
       Factory: ObjectAssertion,
-      predicate: (value): value is T => isJSObject(value),
+      predicate: (value): value is T => isStruct(value),
       typeName: "object",
     };
   },

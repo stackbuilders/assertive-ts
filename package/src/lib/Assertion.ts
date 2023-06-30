@@ -1,6 +1,6 @@
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { type TypeFactory } from "./helpers/TypeFactories";
-import { isJSObject, isKeyOf } from "./helpers/guards";
+import { isStruct, isKeyOf } from "./helpers/guards";
 import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert";
@@ -366,7 +366,10 @@ export class Assertion<T> {
         return this.actual.getTime() === expected.getTime();
       }
 
-      if (isJSObject(this.actual) && isJSObject(expected)) {
+      if (
+        (isStruct(this.actual) && isStruct(expected))
+        || (Array.isArray(this.actual) && Array.isArray(expected))
+      ) {
         const actualKeys = Object.keys(this.actual);
         const expectedKeys = Object.keys(expected);
         const sizeMatch = actualKeys.length === expectedKeys.length;
@@ -375,7 +378,7 @@ export class Assertion<T> {
         return sizeMatch && valuesMatch;
       }
 
-      return false;
+      return Object.is(this.actual, expected);
     };
 
     const areBothNaN = typeof this.actual === "number"
