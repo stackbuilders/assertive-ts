@@ -1,7 +1,8 @@
 import dedent from "@cometlib/dedent";
 
 import { DateAssertion } from "../../src/lib/DateAssertion";
-import { dateOptionsToDate, dayOfWeekAsNumber } from "../../src/lib/helpers/dates";
+import { DateOptions } from "../../src/lib/DateAssertion.types";
+import { dayOfWeekAsNumber } from "../../src/lib/helpers/dates";
 
 import assert, { AssertionError } from "assert";
 
@@ -47,10 +48,10 @@ describe("[Unit] DateAssertion.test.ts", () => {
     context("when the actual date matches the passed date", () => {
       it("returns the assertion instance", () => {
         const actualDate = new Date(2021, 1, 1, 12, 10, 15, 25);
-        const options = {
+        const options: DateOptions = {
           day: 1,
           hours: 12,
-          miliseconds: 25,
+          milliseconds: 25,
           minutes: 10,
           month: 1,
           seconds: 15,
@@ -59,10 +60,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
         const test = new DateAssertion(actualDate);
         assert.deepStrictEqual(test.toMatchDateParts(options), test);
         assert.throws(() => test.not.toMatchDateParts(options), {
-          message: dedent`
-            Expected <${actualDate.toISOString()}> NOT to be equal to \
-            <${dateOptionsToDate(options).toISOString()}>
-          `,
+          message: `Expected <${actualDate.toISOString()}> NOT to have parts <${JSON.stringify(options)}>`,
           name: AssertionError.name,
         });
       });
@@ -81,10 +79,10 @@ describe("[Unit] DateAssertion.test.ts", () => {
     context("when the actual date is NOT equal to the passed date", () => {
       it("throws an assertion error", () => {
         const actualDate = new Date(2021, 1, 1, 12, 10, 15, 25);
-        const options = {
+        const options: DateOptions = {
           day: 1,
           hours: 12,
-          miliseconds: 24,
+          milliseconds: 24,
           minutes: 10,
           month: 1,
           seconds: 15,
@@ -92,10 +90,7 @@ describe("[Unit] DateAssertion.test.ts", () => {
         };
         const test = new DateAssertion(actualDate);
         assert.throws(() => test.toMatchDateParts(options), {
-          message: dedent`
-            Expected <${actualDate.toISOString()}> to be equal to \
-            <${dateOptionsToDate(options).toISOString()}>
-          `,
+          message: `Expected <${actualDate.toISOString()}> to have parts <${JSON.stringify(options)}>`,
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toMatchDateParts(options), test);
