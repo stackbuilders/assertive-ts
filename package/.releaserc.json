@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/semantic-release",
   "branches": [
-    "release"
+    "main"
   ]
 }
