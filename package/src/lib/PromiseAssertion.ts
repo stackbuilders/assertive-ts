@@ -1,10 +1,10 @@
 import dedent from "@cometlib/dedent";
+import isDeepEqual from "fast-deep-equal/es6";
 
 import { Assertion } from "./Assertion";
 import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert/strict";
-import { isDeepStrictEqual } from "util";
 
 /**
  * Encapsulates assertion methods applicable to Promises
@@ -87,7 +87,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
   public toBeResolvedWith(expected: T): Promise<I extends false ? T : unknown> {
     return this.actual.then(value => {
       this.execute({
-        assertWhen: isDeepStrictEqual(value, expected),
+        assertWhen: isDeepEqual(value, expected),
         error: new AssertionError({
           actual: value,
           expected,
@@ -203,7 +203,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
       }
 
       this.execute({
-        assertWhen: isDeepStrictEqual(error, expected),
+        assertWhen: isDeepEqual(error, expected),
         error: new AssertionError({
           actual: error,
           expected,

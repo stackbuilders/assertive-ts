@@ -1,9 +1,10 @@
+import isDeepEqual from "fast-deep-equal/es6";
+
 import { Assertion } from "./Assertion";
 import { prettify } from "./helpers/messages";
 import { Entry, Struct } from "./helpers/types";
 
 import { AssertionError } from "assert";
-import { isDeepStrictEqual } from "util";
 
 /**
  * Encapsulates assertion methods applicable to objects.
@@ -160,7 +161,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       message: `Expected the object NOT to contain the provided value <${prettify(value)}>`,
     });
     return this.execute({
-      assertWhen: Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
+      assertWhen: Object.values(this.actual).some(actualValue => isDeepEqual(actualValue, value)),
       error,
       invertedError,
     });
@@ -191,7 +192,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     return this.execute({
       assertWhen: values
         .every(value =>
-          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
+          Object.values(this.actual).some(actualValue => isDeepEqual(actualValue, value)),
         ),
       error,
       invertedError,
@@ -223,7 +224,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     return this.execute({
       assertWhen: values
         .some(value =>
-          Object.values(this.actual).some(actualValue => isDeepStrictEqual(actualValue, value)),
+          Object.values(this.actual).some(actualValue => isDeepEqual(actualValue, value)),
         ),
       error,
       invertedError,
@@ -254,7 +255,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     return this.execute({
       assertWhen:
         this.hasOwnProp(entry[0]) &&
-        isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
+        isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
       error,
       invertedError,
     });
@@ -286,7 +287,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       assertWhen: entries
         .every(entry =>
           this.hasOwnProp(entry[0]) &&
-          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
+          isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
       error,
       invertedError,
@@ -320,7 +321,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       assertWhen: entries
         .some(entry =>
           this.hasOwnProp(entry[0]) &&
-          isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
+          isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
       error,
       invertedError,
@@ -353,7 +354,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       assertWhen: Object.keys(other)
         .every(key =>
           this.hasOwnProp(key)
-            ? isDeepStrictEqual(Object.getOwnPropertyDescriptor(this.actual, key)?.value, other[key])
+            ? isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, key)?.value, other[key])
             : false,
         ),
       error,

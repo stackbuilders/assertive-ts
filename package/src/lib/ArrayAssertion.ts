@@ -1,3 +1,5 @@
+import isDeepEqual from "fast-deep-equal/es6";
+
 import { Assertion } from "./Assertion";
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { type Expect } from "./expect";
@@ -5,7 +7,6 @@ import { type TypeFactory } from "./helpers/TypeFactories";
 import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert";
-import { isDeepStrictEqual } from "util";
 
 /**
  * Encapsulates assertion methods applicable to arrays.
@@ -316,7 +317,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     });
 
     return this.execute({
-      assertWhen: isDeepStrictEqual(this.actual[index], value),
+      assertWhen: isDeepEqual(this.actual[index], value),
       error,
       invertedError,
     });
