@@ -78,11 +78,11 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
   describe(".toContainAllKeys", () => {
     context("when the object contains all the provided keys", () => {
       it("returns the assertion instance", () => {
-        const keys: Array<"myKey" | 2> = ["myKey", 2];
+        const keys: Array<keyof typeof TEST_OBJ> = ["myKey", 2];
         const test = new ObjectAssertion(TEST_OBJ);
 
-        assert.deepStrictEqual(test.toContainAllKeys(["myKey", 2]), test);
-        assert.throws(() => test.not.toContainAllKeys(keys), {
+        assert.deepStrictEqual(test.toContainAllKeys(...keys), test);
+        assert.throws(() => test.not.toContainAllKeys(...keys), {
           message: `Expected the object NOT to contain all the provided keys <${keys}>`,
           name: AssertionError.name,
         });
@@ -94,11 +94,11 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const someKeys = ["truthy", "wrongKey"];
         const test = new ObjectAssertion(RECORD);
 
-        assert.throws(() => test.toContainAllKeys(someKeys), {
+        assert.throws(() => test.toContainAllKeys(...someKeys), {
           message: `Expected the object to contain all the provided keys <${someKeys}>`,
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toContainAllKeys(someKeys), test);
+        assert.deepStrictEqual(test.not.toContainAllKeys(...someKeys), test);
       });
     });
   });
@@ -109,8 +109,8 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const someKeys = ["truthy", "wrongKey"];
         const test = new ObjectAssertion(RECORD);
 
-        assert.deepStrictEqual(test.toContainAnyKeys(someKeys), test);
-        assert.throws(() => test.not.toContainAnyKeys(someKeys), {
+        assert.deepStrictEqual(test.toContainAnyKeys(...someKeys), test);
+        assert.throws(() => test.not.toContainAnyKeys(...someKeys), {
           message: `Expected the object NOT to contain any of the provided keys <${someKeys}>`,
           name: AssertionError.name,
         });
@@ -122,11 +122,11 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const wrongKeys = ["wrongKey", "randomKey"];
         const test = new ObjectAssertion(RECORD);
 
-        assert.throws(() => test.toContainAnyKeys(wrongKeys), {
+        assert.throws(() => test.toContainAnyKeys(...wrongKeys), {
           message: `Expected the object to contain at least one of the provided keys <${wrongKeys}>`,
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toContainAnyKeys(wrongKeys), test);
+        assert.deepStrictEqual(test.not.toContainAnyKeys(...wrongKeys), test);
       });
     });
   });
@@ -165,8 +165,8 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const allValues = [0, { innerObjKey: 1, message: "inner value" }];
         const test = new ObjectAssertion(TEST_OBJ);
 
-        assert.deepStrictEqual(test.toContainAllValues(allValues), test);
-        assert.throws(() => test.not.toContainAllValues(allValues), {
+        assert.deepStrictEqual(test.toContainAllValues(...allValues), test);
+        assert.throws(() => test.not.toContainAllValues(...allValues), {
           message: `Expected the object NOT to contain all the provided values <${allValues}>`,
           name: AssertionError.name,
         });
@@ -178,11 +178,11 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const someValues = [0, { innerObjKey: 1, message: "wrong inner value" }];
         const test = new ObjectAssertion(TEST_OBJ);
 
-        assert.throws(() => test.toContainAllValues(someValues), {
+        assert.throws(() => test.toContainAllValues(...someValues), {
           message: `Expected the object to contain all the provided values <${someValues}>`,
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toContainAllValues(someValues), test);
+        assert.deepStrictEqual(test.not.toContainAllValues(...someValues), test);
       });
     });
   });
@@ -193,8 +193,8 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const someValues = [0, { innerObjKey: 1, message: "wrong inner value" }];
         const test = new ObjectAssertion(TEST_OBJ);
 
-        assert.deepStrictEqual(test.toContainAnyValues(someValues), test);
-        assert.throws(() => test.not.toContainAnyValues(someValues), {
+        assert.deepStrictEqual(test.toContainAnyValues(...someValues), test);
+        assert.throws(() => test.not.toContainAnyValues(...someValues), {
           message: `Expected the object NOT to contain any of the provided values <${someValues}>`,
           name: AssertionError.name,
         });
@@ -206,11 +206,11 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
         const wrongValues = [10, { innerObjKey: 1, message: "wrong inner value" }];
         const test = new ObjectAssertion(TEST_OBJ);
 
-        assert.throws(() => test.toContainAnyValues(wrongValues), {
+        assert.throws(() => test.toContainAnyValues(...wrongValues), {
           message: `Expected the object to contain at least one of the provided values <${wrongValues}>`,
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toContainAnyValues(wrongValues), test);
+        assert.deepStrictEqual(test.not.toContainAnyValues(...wrongValues), test);
       });
     });
   });
