@@ -1,10 +1,11 @@
+import isDeepEqual from "fast-deep-equal/es6";
+
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { type TypeFactory } from "./helpers/TypeFactories";
 import { isStruct, isKeyOf } from "./helpers/guards";
 import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert";
-import { isDeepStrictEqual } from "util";
 
 export interface Constructor<T> extends Function {
   prototype: T;
@@ -330,7 +331,7 @@ export class Assertion<T> {
     });
 
     return this.execute({
-      assertWhen: isDeepStrictEqual(this.actual, expected),
+      assertWhen: isDeepEqual(this.actual, expected),
       error,
       invertedError,
     });

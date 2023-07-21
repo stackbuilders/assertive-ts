@@ -1,10 +1,11 @@
+import isDeepEqual from "fast-deep-equal/es6";
+
 import { Assertion, Constructor } from "./Assertion";
 import { ErrorAssertion } from "./ErrorAssertion";
 import { type TypeFactory } from "./helpers/TypeFactories";
 import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert";
-import { isDeepStrictEqual } from "util";
 
 export type AnyFunction = (...args: unknown[]) => unknown;
 
@@ -55,7 +56,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
 
     if (error !== undefined) {
       return this.execute({
-        assertWhen: isDeepStrictEqual(captured, error),
+        assertWhen: isDeepEqual(captured, error),
         error: new AssertionError({
           actual: captured,
           expected: error,
