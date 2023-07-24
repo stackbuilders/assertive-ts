@@ -1,7 +1,8 @@
-import { Assertion } from "../../src/lib/Assertion";
+import { Assertion, DataType } from "../../src/lib/Assertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
+import { prettify } from "../../src/lib/helpers/messages";
 
 import assert, { AssertionError } from "assert";
 
@@ -466,6 +467,60 @@ describe("[Unit] Assertion.test.ts", () => {
             name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toBeSame(expected), test);
+        });
+      });
+    });
+  });
+
+  describe(".toBeOfType", () => {
+    context("when the type of the value is of the expected type", () => {
+      const variants: Array<[DataType, unknown]> = [
+        ["array", [1, 2, 3]],
+        ["bigint", BigInt(9)],
+        ["boolean", true],
+        ["function", () => undefined],
+        ["number", 10],
+        ["object", { foo: 1 }],
+        ["string", "foo"],
+        ["symbol", Symbol("id")],
+        ["undefined", undefined],
+      ];
+
+      variants.forEach(([expected, value]) => {
+        it(`[${expected}] returns the assertion instance`, () => {
+          const test = new Assertion(value);
+
+          assert.deepStrictEqual(test.toBeOfType(expected), test);
+          assert.throws(() => test.not.toBeOfType(expected), {
+            message: `Expected <${prettify(value)}> NOT to be of type <${expected}>`,
+            name: AssertionError.name,
+          });
+        });
+      });
+    });
+
+    context("when the type of the value is NOT of the expected type", () => {
+      const variants: Array<[DataType, unknown]> = [
+        ["array", { x: [1, 2, 3] }],
+        ["bigint", 9],
+        ["boolean", "false"],
+        ["function", { foo: () => undefined }],
+        ["number", BigInt(10)],
+        ["object", "foo"],
+        ["string", Symbol("id")],
+        ["symbol", undefined],
+        ["undefined", null],
+      ];
+
+      variants.forEach(([expected, value]) => {
+        it(`[${expected}] throws an assertion error`, () => {
+          const test = new Assertion(value);
+
+          assert.throws(() => test.toBeOfType(expected), {
+            message: `Expected <${prettify(value)}> to be of type <${expected}>`,
+            name: AssertionError.name,
+          });
+          assert.deepStrictEqual(test.not.toBeOfType(expected), test);
         });
       });
     });

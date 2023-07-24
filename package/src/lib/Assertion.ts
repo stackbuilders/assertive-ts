@@ -11,6 +11,17 @@ export interface Constructor<T> extends Function {
   prototype: T;
 }
 
+export type DataType =
+  | "array"
+  | "bigint"
+  | "boolean"
+  | "function"
+  | "number"
+  | "object"
+  | "string"
+  | "symbol"
+  | "undefined";
+
 export interface ExecuteOptions {
   /**
    * The condition for when the assertion should pass. The negation of this
@@ -424,6 +435,43 @@ export class Assertion<T> {
 
     return this.execute({
       assertWhen: this.actual === expected,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Checks if the value is of a specific data type. The supported data types
+   * are the same as the `typeof` operator, plus an additional `array` which
+   * allows desabiguation between `object` (which can also be an array).
+   *
+   * @example
+   * ```
+   * const arr = [1, 2, 3];
+   *
+   * expect(arr).toBeOfType("array");
+   * expect(arr[0]).toBeOfType("number");
+   * expect(arr[9]).toBeOfType("undefined");
+   * ```
+   *
+   * @param expected the expected data type
+   * @returns the assertion instance
+   */
+  public toBeOfType(expected: DataType): this {
+    const error = new AssertionError({
+      actual: typeof this.actual,
+      expected,
+      message: `Expected <${prettify(this.actual)}> to be of type <${expected}>`,
+    });
+    const invertedError = new AssertionError({
+      actual: typeof this.actual,
+      message: `Expected <${prettify(this.actual)}> NOT to be of type <${expected}>`,
+    });
+
+    return this.execute({
+      assertWhen: expected === "array"
+        ? Array.isArray(this.actual)
+        : typeof this.actual === expected,
       error,
       invertedError,
     });
