@@ -68,11 +68,11 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       actual: this.actual,
       message: `Expected the object to contain the provided key <${String(key)}>`,
     });
-
     const invertedError = new AssertionError({
       actual: this.actual,
       message: `Expected the object NOT to contain the provided key <${String(key)}>`,
     });
+
     return this.execute({
       assertWhen: this.hasOwnProp(key),
       error,
@@ -97,11 +97,11 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       expected: keys,
       message: `Expected the object to contain all the provided keys <${prettify(keys)}>`,
     });
-
     const invertedError = new AssertionError({
       actual: Object.keys(this.actual),
       message: `Expected the object NOT to contain all the provided keys <${prettify(keys)}>`,
     });
+
     return this.execute({
       assertWhen: keys.every(key => this.hasOwnProp(key)),
       error,
@@ -126,13 +126,45 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       expected: keys,
       message: `Expected the object to contain at least one of the provided keys <${prettify(keys)}>`,
     });
-
     const invertedError = new AssertionError({
       actual: Object.keys(this.actual),
       message: `Expected the object NOT to contain any of the provided keys <${prettify(keys)}>`,
     });
+
     return this.execute({
       assertWhen: keys.some(key => this.hasOwnProp(key)),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Check if the object has exactly the provided keys.
+   *
+   * @example
+   * ```
+   * expect({ x: 1, y: 2, z: 3 }).toHaveKeys("x", "y", "z");
+   * ```
+   *
+   * @param keys the keys the object should have
+   * @returns the assertion instance
+   */
+  public toHaveKeys(...keys: Array<keyof T>): this {
+    const sortedActual = Object.keys(this.actual).sort();
+    const sortedKeys = [...keys].sort();
+
+    const error = new AssertionError({
+      actual: sortedActual,
+      expected: sortedKeys,
+      message: `Expected the object to have exactly the keys <${prettify(sortedKeys)}>`,
+    });
+    const invertedError = new AssertionError({
+      actual: sortedActual,
+      message: `Expected the object NOT to have the keys <${prettify(sortedKeys)}>`,
+    });
+
+    return this.execute({
+      assertWhen: isDeepEqual(sortedActual, sortedKeys),
       error,
       invertedError,
     });
@@ -155,11 +187,11 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       actual: this.actual,
       message: `Expected the object to contain the provided value <${prettify(value)}>`,
     });
-
     const invertedError = new AssertionError({
       actual: this.actual,
       message: `Expected the object NOT to contain the provided value <${prettify(value)}>`,
     });
+
     return this.execute({
       assertWhen: Object.values(this.actual).some(actualValue => isDeepEqual(actualValue, value)),
       error,
@@ -184,11 +216,11 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       expected: values,
       message: `Expected the object to contain all the provided values <${prettify(values)}>`,
     });
-
     const invertedError = new AssertionError({
       actual: Object.values(this.actual),
       message: `Expected the object NOT to contain all the provided values <${prettify(values)}>`,
     });
+
     return this.execute({
       assertWhen: values
         .every(value =>
@@ -216,16 +248,48 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       expected: values,
       message: `Expected the object to contain at least one of the provided values <${prettify(values)}>`,
     });
-
     const invertedError = new AssertionError({
       actual: Object.values(this.actual),
       message: `Expected the object NOT to contain any of the provided values <${prettify(values)}>`,
     });
+
     return this.execute({
       assertWhen: values
         .some(value =>
           Object.values(this.actual).some(actualValue => isDeepEqual(actualValue, value)),
         ),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Check if the object has exactly the provided values.
+   *
+   * @example
+   * ```
+   * expect({ x: 1, y: "a", z: true }).toHaveValues(1, "a", true);
+   * ```
+   *
+   * @param values the values the object should have
+   * @returns the assertion instance
+   */
+  public toHaveValues(...values: Array<T[keyof T]>): this {
+    const sortedActual = Object.values(this.actual).sort();
+    const sorterdValues = [...values].sort();
+
+    const error = new AssertionError({
+      actual: sortedActual,
+      expected: sorterdValues,
+      message: `Expected the object to have exactly the values <${prettify(sorterdValues)}>`,
+    });
+    const invertedError = new AssertionError({
+      actual: sortedActual,
+      message: `Expected the object NOT to have the values <${prettify(sorterdValues)}>`,
+    });
+
+    return this.execute({
+      assertWhen: isDeepEqual(sortedActual, sorterdValues),
       error,
       invertedError,
     });
@@ -272,7 +336,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @param entries the entries that the object should contain
    * @returns the assertion instance
    */
-  public toContainAllEntries(...entries: Array<Entry<T>>): this {
+  public toContainAllEntries(...entries: Entry<T>[]): this {
     const error = new AssertionError({
       actual: Object.entries(this.actual),
       expected: entries,
@@ -306,7 +370,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @param entries the entries that the object should contain
    * @returns the assertion instance
    */
-  public toContainAnyEntries(...entries: Array<Entry<T>>): this {
+  public toContainAnyEntries(...entries: Entry<T>[]): this {
     const error = new AssertionError({
       actual: Object.entries(this.actual),
       expected: entries,
@@ -323,6 +387,39 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
           this.hasOwnProp(entry[0]) &&
           isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Check if the object has exactly the provided entries.
+   *
+   * @example
+   * ```
+   * expect({ a: 1, b: 2, c: 3 })
+   *   .toHaveEntries(["a", 1], ["b", 2], ["c", 3]);
+   * ```
+   *
+   * @param entries the entries the object should have
+   * @returns the assertion instance
+   */
+  public toHaveEntries(...entries: Entry<T>[]): this {
+    const sortedActual = Object.entries(this.actual).sort();
+    const sortedEntries = [...entries].sort();
+    const prettyEntries = sortedEntries.map(entry => `[${prettify(entry)}]`).join(",");
+    const error = new AssertionError({
+      actual: sortedActual,
+      expected: sortedEntries,
+      message: `Expected the object to have exactly the entries <${prettyEntries}>`,
+    });
+    const invertedError = new AssertionError({
+      actual: Object.entries(this.actual),
+      message: `Expected the object NOT to have the entries <${prettyEntries}>`,
+    });
+
+    return this.execute({
+      assertWhen: isDeepEqual(sortedActual, sortedEntries),
       error,
       invertedError,
     });

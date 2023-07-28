@@ -131,6 +131,32 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
     });
   });
 
+  describe(".toHaveKeys", () => {
+    context("when the object has exactly provided keys", () => {
+      it("returns the assertion instance", () => {
+        const test = new ObjectAssertion({ x: 1, y: 2, z: 3 });
+
+        assert.deepStrictEqual(test.toHaveKeys("x", "y", "z"), test);
+        assert.throws(() => test.not.toHaveKeys("x", "y", "z"), {
+          message: "Expected the object NOT to have the keys <x,y,z>",
+          name: AssertionError.name,
+        });
+      });
+    });
+
+    context("when the object does NOT have exactly the provided keys", () => {
+      it("throws an assertion error", () => {
+        const test = new ObjectAssertion({ x: 1, y: 2, z: 3 });
+
+        assert.throws(() => test.toHaveKeys("x", "y"), {
+          message: "Expected the object to have exactly the keys <x,y>",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(test.not.toHaveKeys("x", "z"), test);
+      });
+    });
+  });
+
   describe(".toContainValue", () => {
     context("when the object contains the provided value", () => {
       it("returns the assertion instance", () => {
@@ -211,6 +237,32 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainAnyValues(...wrongValues), test);
+      });
+    });
+  });
+
+  describe(".toHaveValues", () => {
+    context("when the object has exactly the provided values", () => {
+      it("returns the assertion instance", () => {
+        const test = new ObjectAssertion({ x: 1, y: "a", z: true });
+
+        assert.deepStrictEqual(test.toHaveValues(1, "a", true), test);
+        assert.throws(() => test.not.toHaveValues(1, "a", true), {
+          message: "Expected the object NOT to have the values <1,a,true>",
+          name: AssertionError.name,
+        });
+      });
+    });
+
+    context("when the object does NOT have exactly the provided values", () => {
+      it("throws an assertion error", () => {
+        const test = new ObjectAssertion({ x: 1, y: "a", z: true });
+
+        assert.throws(() => test.toHaveValues(1, "a"), {
+          message: "Expected the object to have exactly the values <1,a>",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(test.not.toHaveValues(1, "a"), test);
       });
     });
   });
@@ -305,6 +357,32 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainAnyEntries(wrongEntry1, wrongEntry2), test);
+      });
+    });
+  });
+
+  describe(".toHaveEntries", () => {
+    context("when the object has exactly the provided entries", () => {
+      it("returns the assertion instance", () => {
+        const test = new ObjectAssertion({ a: 1, b: 2, c: 3 });
+
+        assert.deepStrictEqual(test.toHaveEntries(["a", 1], ["b", 2], ["c", 3]), test);
+        assert.throws(() => test.not.toHaveEntries(["a", 1], ["b", 2], ["c", 3]), {
+          message: "Expected the object NOT to have the entries <[a,1],[b,2],[c,3]>",
+          name: AssertionError.name,
+        });
+      });
+    });
+
+    context("when the object doe NOT have exactly the provided entries", () => {
+      it("throws an assertion error", () => {
+        const test = new ObjectAssertion({ a: 1, b: 2, c: 3 });
+
+        assert.throws(() => test.toHaveEntries(["a", 1], ["c", 3]), {
+          message: "Expected the object to have exactly the entries <[a,1],[c,3]>",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(test.not.toHaveEntries(["a", 1], ["c", 3]), test);
       });
     });
   });
