@@ -73,7 +73,8 @@
       "contributions": [
         "doc",
         "code",
-        "test"
+        "test",
+        "review"
       ]
     },
     {
@@ -113,5 +114,6 @@
       ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "commitType": "docs"
 }
