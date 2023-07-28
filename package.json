@@ -19,7 +19,7 @@
     "compile": "turbo run compile",
     "docs": "yarn workspace @stackbuilders/assertive-ts docs",
     "lint": "eslint .",
-    "release": "turbo release",
+    "release": "turbo release --filter=@stackbuilders/assertive-ts",
     "test": "turbo run test"
   },
   "devDependencies": {
