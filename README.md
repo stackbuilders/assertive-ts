@@ -1,13 +1,15 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-[![Build](https://github.com/stackbuilders/assertive-ts/actions/workflows/build.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/build.yml)
-[![NPM version](https://img.shields.io/npm/v/@stackbuilders/assertive-ts)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
+[![CI](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml)
+[![Release](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml)
+[![Pages](https://github.com/stackbuilders/assertive-ts/actions/workflows/pages.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/pages.yml)
+[![NPM version](https://img.shields.io/npm/v/@stackbuilders/assertive-ts?logo=npm)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
 [![NPM bundle size](https://img.shields.io/bundlephobia/min/@stackbuilders/assertive-ts)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
 [![NPM downloads](https://img.shields.io/npm/dm/@stackbuilders/assertive-ts)](https://www.npmjs.com/package/@stackbuilders/assertive-ts)
 [![NPM license](https://img.shields.io/npm/l/@stackbuilders/assertive-ts)](./LICENSE)
 [![GitHub Release Date](https://img.shields.io/github/release-date/stackbuilders/assertive-ts)](https://github.com/stackbuilders/assertive-ts/releases)
-[![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/npm/@stackbuilders/assertive-ts)](https://snyk.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/stackbuilders/assertive-ts/badge.svg)](https://snyk.io/test/github/stackbuilders/assertive-ts)
 
 # AssertiveTS
 
