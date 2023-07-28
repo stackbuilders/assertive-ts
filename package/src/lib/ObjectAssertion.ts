@@ -393,7 +393,7 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
   }
 
   /**
-   * Check if the object has exctly the provided entries.
+   * Check if the object has exactly the provided entries.
    *
    * @example
    * ```
