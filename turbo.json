@@ -18,10 +18,6 @@
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.ts", "test/**/*.ts"],
       "outputs": []
-    },
-    "release": {
-      "cache": false,
-      "dependsOn": ["^build"]
     }
   }
 }

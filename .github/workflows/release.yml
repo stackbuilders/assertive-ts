@@ -23,7 +23,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: yarn
       - run: yarn install --immutable
-      - run: yarn release
+      - run: yarn build
+      - run: cd package/ && yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
