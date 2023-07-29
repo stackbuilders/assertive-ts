@@ -16,10 +16,11 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/"
+    "dist/",
+    "src/"
   ],
   "engines": {
-    "node": ">=16 <=19"
+    "node": ">=16"
   },
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
@@ -27,7 +28,7 @@
     "compile": "tsc -p tsconfig.json",
     "docs": "typedoc",
     "release": "semantic-release",
-    "test": "cross-env NODE_ENV=test TS_NODE_TRANSPILE_ONLY=true mocha"
+    "test": "cross-env NODE_ENV=test mocha"
   },
   "dependencies": {
     "@cometlib/dedent": "^0.8.0-es.10",
