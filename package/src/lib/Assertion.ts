@@ -7,6 +7,7 @@ import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert";
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export interface Constructor<T> extends Function {
   prototype: T;
 }

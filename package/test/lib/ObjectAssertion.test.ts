@@ -165,7 +165,7 @@ describe("[Unit] ObjectAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toContainValue(value), test);
         assert.throws(() => test.not.toContainValue(value), {
-          message: `Expected the object NOT to contain the provided value <${value}>`,
+          message: `Expected the object NOT to contain the provided value <${prettify(value)}>`,
           name: AssertionError.name,
         });
       });
