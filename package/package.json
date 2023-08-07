@@ -28,7 +28,7 @@
     "compile": "tsc -p tsconfig.json",
     "docs": "typedoc",
     "release": "semantic-release",
-    "test": "cross-env NODE_ENV=test mocha"
+    "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
     "@cometlib/dedent": "^0.8.0-es.10",
@@ -39,9 +39,9 @@
     "@types/node": "^20.3.2",
     "@types/sinon": "^10.0.15",
     "all-contributors-cli": "^6.26.0",
-    "cross-env": "^7.0.3",
     "mocha": "^10.2.0",
     "semantic-release": "^21.0.6",
+    "semantic-release-yarn": "^2.0.0",
     "sinon": "^15.2.0",
     "ts-node": "^10.9.1",
     "typedoc": "^0.24.8",
