@@ -1,4 +1,4 @@
-import { Assertion, AssertionError } from "@stackbuilders/assertive-ts";
+import { Assertion, AssertionError } from "@assertive-ts/core";
 
 export class SymbolAssertion extends Assertion<symbol> {
 

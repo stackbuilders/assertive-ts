@@ -1,4 +1,4 @@
-import { expect } from "@stackbuilders/assertive-ts";
+import { expect } from "@assertive-ts/core";
 
 describe("plugins", () => {
   it("can use the symbol plugin", () => {

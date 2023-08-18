@@ -8,5 +8,6 @@
     "@semantic-release/release-notes-generator",
     "semantic-release-yarn",
     "@semantic-release/github"
-  ]
+  ],
+  "tagFormat": "core/v${version}"
 }

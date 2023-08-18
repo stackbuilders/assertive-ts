@@ -6,8 +6,8 @@
     "test": "mocha"
   },
   "devDependencies": {
+    "@assertive-ts/core": "workspace:^",
     "@examples/symbol-plugin": "workspace:^",
-    "@stackbuilders/assertive-ts": "workspace:^",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.4.8",
     "mocha": "^10.2.0",

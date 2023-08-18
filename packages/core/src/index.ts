@@ -20,7 +20,7 @@ export {
 };
 
 /**
- * Extends `@stackbuilders/assertive-ts` with a local or 3rd-party plugin.
+ * Extends `@assertive-ts/core` with a local or 3rd-party plugin.
  *
  * @param plugin the plugin to use to extend assertive-ts
  * @see {@link Plugin Plugin}

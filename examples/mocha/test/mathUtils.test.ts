@@ -1,4 +1,4 @@
-import { assert, expect } from "@stackbuilders/assertive-ts";
+import { assert, expect } from "@assertive-ts/core";
 
 import { sum } from "../src/mathUtils";
 

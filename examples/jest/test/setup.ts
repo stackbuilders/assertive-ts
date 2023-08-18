@@ -1,5 +1,5 @@
+import { usePlugin } from "@assertive-ts/core";
 import { SymbolPlugin } from "@examples/symbol-plugin";
-import { usePlugin } from "@stackbuilders/assertive-ts";
 
 beforeAll(() => {
   usePlugin(SymbolPlugin);
