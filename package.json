@@ -17,7 +17,7 @@
     "check": "turbo check && yarn lint",
     "build": "turbo run build",
     "compile": "turbo run compile",
-    "docs": "yarn workspace @assertive-ts/core docs",
+    "docs": "yarn workspace @assertive-ts/core docs && yarn workspace @assertive-ts/dom docs",
     "lint": "eslint .",
     "release": "turbo release --concurrency=1",
     "test": "turbo run test"
