@@ -30,13 +30,13 @@ A distinctive feature of Assertive.ts with other assertion libraries is that it 
 
 ## Packages
 
-For conviniece, this library is split into package grouped within the same namespace:
+For convenience, this library is split into packages grouped within the same namespace:
 
-- **[assertive-ts/core](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md):** Core functionalities, assertions applicable for any kind of application. This package is required to use the [extension mechanism](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md#extension-mechanism-⚙️) (plugins). This is package is the replacement for the deprecated `stackbuilders/assertive-ts` package.
+- **[assertive-ts/core](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md):** Core functionalities, assertions applicable for any kind of application. This package is required for the [extension mechanism](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md#extension-mechanism-⚙️) (plugins). Also, this is package replaces the deprecated `stackbuilders/assertive-ts` package.
 
 ## Usage
 
-Using you favorite test runner, you just need to import the `expect` and test away! If you don't really agree with `expect` as the name of the assertion function, we provide a couple aliases to the function, such as `assert` and `assertThat`.
+Using you favorite test runner, you just need to import the `expect` and test away! If you don't really agree with `expect` as the name of the assertion function, we provide a couple aliases, such as `assert` and `assertThat`.
 
 ```ts
 import { expect } from "@assertive-ts/core"

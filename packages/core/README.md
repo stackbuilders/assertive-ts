@@ -30,7 +30,7 @@ You can find the full API reference [here](https://stackbuilders.github.io/asser
 
 ## Usage
 
-Using you favorite test runner, you just need to import the `expect` and test away! If you don't really agree with `expect` as the name of the assertion function, we provide a couple aliases to the function, such as `assert` and `assertThat`.
+Using you favorite test runner, you just need to import the `expect` and test away! If you don't really agree with `expect` as the name of the assertion function, we provide a couple aliases, such as `assert` and `assertThat`.
 
 ```ts
 import { expect } from "@assertive-ts/core"
