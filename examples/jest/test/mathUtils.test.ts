@@ -1,5 +1,5 @@
+import { assert, expect } from "@assertive-ts/core";
 import { expect as jestExpect } from "@jest/globals";
-import { assert, expect } from "@stackbuilders/assertive-ts";
 
 import { sum } from "../src/mathUtils";
 

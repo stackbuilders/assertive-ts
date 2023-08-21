@@ -4,5 +4,5 @@ defaults:
   - scope:
       path: ""
     values:
-      title: AssertiveTS
+      title: Assertive.ts
       subtitle: A type-safe fluent assertion library

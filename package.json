@@ -1,6 +1,6 @@
 {
-  "name": "assertive-ts-workspace",
-  "description": "The AssertiveTS workspace",
+  "name": "assertive-ts",
+  "description": "The Assertive.ts workspace",
   "repository": "git@github.com:stackbuilders/assertive-ts.git",
   "homepage": "https://stackbuilders.github.io/assertive-ts/",
   "author": "Stack Builders <info@stackbuilders.com>",
@@ -10,14 +10,14 @@
   },
   "packageManager": "yarn@3.6.1",
   "workspaces": [
-    "package/",
+    "packages/*",
     "examples/*"
   ],
   "scripts": {
     "check": "turbo check && yarn lint",
     "build": "turbo run build",
     "compile": "turbo run compile",
-    "docs": "yarn workspace @stackbuilders/assertive-ts docs",
+    "docs": "yarn workspace @assertive-ts/core docs",
     "lint": "eslint .",
     "release": "turbo release --concurrency=1",
     "test": "turbo run test"

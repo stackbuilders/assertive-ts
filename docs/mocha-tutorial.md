@@ -4,7 +4,7 @@ Let's set up a project with Mocha and assertive-ts.
 
 First, let's install the dependencies:
 ```
-npm install --save-dev typescript mocha @types/mocha ts-node @stackbuilders/assertive-ts
+npm install --save-dev typescript mocha @types/mocha ts-node @assertive-ts/core
 ```
 
 This library is meant to be used with TypeScript, so to have better results we encourage you to use TypeScript in your project. 
@@ -40,11 +40,11 @@ export const sum = (a: number, b: number): number => {
 }
 ```
 
-Now let's write a test for that function. Make sure to import `expect` from the `@stackbuilders/assertive-ts` module.
+Now let's write a test for that function. Make sure to import `expect` from the `@assertive-ts/core` module.
 
 *tests/mathUtils.test.ts*
 ```typescript
-import { expect } from "@stackbuilders/assertive-ts";
+import { expect } from "@assertive-ts/core";
 import { sum } from "../src/mathUtils";
 
 describe("sum", () => {

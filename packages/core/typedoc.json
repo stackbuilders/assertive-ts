@@ -1,7 +1,7 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "cleanOutputDir": true,
-  "entryPoints": ["src/lib"],
+  "entryPoints": ["src/index.ts"],
   "entryPointStrategy": "expand",
   "gitRevision": "main",
   "githubPages": false,
@@ -10,8 +10,8 @@
   "intentionallyNotExported": ["NoThrow"],
   "mergeModulesMergeMode": "project",
   "mergeModulesRenameDefaults": true,
-  "name": "AssertiveTS - API Reference",
-  "out": "../docs/build",
+  "name": "Assertive.ts - Core API",
+  "out": "../../docs/core/build",
   "plugin": [
     "typedoc-plugin-markdown",
     "typedoc-plugin-merge-modules"

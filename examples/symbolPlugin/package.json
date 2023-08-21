@@ -8,10 +8,10 @@
     "compile": "tsc"
   },
   "devDependencies": {
-    "@stackbuilders/assertive-ts": "workspace:^",
+    "@assertive-ts/core": "workspace:^",
     "typescript": "^5.1.6"
   },
   "peerDependencies": {
-    "@stackbuilders/assertive-ts": "*"
+    "@assertive-ts/core": "*"
   }
 }

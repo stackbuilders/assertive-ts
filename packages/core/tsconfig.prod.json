@@ -4,5 +4,8 @@
     "incremental": false,
     "outDir": "./dist"
   },
-  "include": ["src/**/*", "typings/**/*"]
+  "include": [
+    "src/**/*", 
+    "typings/**/*"
+  ]
 }

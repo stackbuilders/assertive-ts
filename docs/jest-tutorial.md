@@ -5,7 +5,7 @@ Let's set up a project with Jest and assertive-ts to write our first assertion.
 First, let's install the dependencies:
 
 ```
-npm install --save-dev typescript ts-jest jest @types/jest @stackbuilders/assertive-ts
+npm install --save-dev typescript ts-jest jest @types/jest @assertive-ts/core
 ```
 
 This library is meant to be used with TypeScript, so to have better results we encourage you to use TypeScript in your project. 
@@ -31,11 +31,11 @@ export const sum = (a: number, b: number): number => {
 }
 ```
 
-Now let's write a test for that function. Make sure to import `expect` from the `@stackbuilders/assertive-ts` module:
+Now let's write a test for that function. Make sure to import `expect` from the `@assertive-ts/core` module:
 
 *tests/mathUtils.test.ts*
 ```typescript
-import { expect } from "@stackbuilders/assertive-ts";
+import { expect } from "@assertive-ts/core";
 import { sum } from "../src/mathUtils";
 
 describe("sum", () => {
@@ -55,12 +55,12 @@ You might want to use the `expect` function from Jest along with assertive-ts as
 
 ```typescript
     import { expect } from "@jest/globals";
-    import { assert } from "@stackbuilders/assertive-ts";
+    import { assert } from "@assertive-ts/core";
 ```
 
 - Or use an explicit import to rename the `expect` function from Jest to something like `jestExpect`:
 
 ```typescript
     import { expect as jestExpect } from "@jest/globals";
-    import { expect } from "@stackbuilders/assertive-ts";
+    import { expect } from "@assertive-ts/core";
 ```

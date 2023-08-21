@@ -1,8 +1,8 @@
-import { Plugin } from "@stackbuilders/assertive-ts";
+import { Plugin } from "@assertive-ts/core";
 
 import { SymbolAssertion } from "./lib/SymbolAssertion";
 
-declare module "@stackbuilders/assertive-ts" {
+declare module "@assertive-ts/core" {
 
   export interface Expect {
     // eslint-disable-next-line @typescript-eslint/prefer-function-type
