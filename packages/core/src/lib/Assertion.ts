@@ -61,6 +61,19 @@ export class Assertion<T> {
   }
 
   /**
+   * A convenience method to normalized the assertion instance. If it was
+   * inverted with `.not`, it'll return it back to the previous non-inverted
+   * state. Otherwise, it returns the same instance.
+   *
+   * @returns the normalized assertion instance
+   */
+  protected normalized(): this {
+    return this.inverted
+      ? new Proxy(this, { get: this.proxyInverter(false) })
+      : this;
+  }
+
+  /**
    * A convenience method to execute the assertion. The inversion logic for
    * `.not` is already embedded in this method, so this should always be used
    * in assertions to keep the negation system working
@@ -79,9 +92,7 @@ export class Assertion<T> {
       throw invertedError;
     }
 
-    return this.inverted
-      ? new Proxy(this, { get: this.proxyInverter(false) })
-      : this;
+    return this.normalized();
   }
 
   private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
