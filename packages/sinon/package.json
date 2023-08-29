@@ -1,20 +1,23 @@
 {
-  "name": "@assertive-ts/core",
+  "name": "@assertive-ts/sinon",
   "version": "0.0.0",
-  "description": "A type-safe fluent assertion library",
+  "description": "Assertive.ts plugin for Sinon assertions",
   "repository": "git@github.com:stackbuilders/assertive-ts.git",
   "homepage": "https://stackbuilders.github.io/assertive-ts/",
   "author": "Stack Builders <info@stackbuilders.com>",
   "license": "MIT",
   "keywords": [
     "assertions",
+    "assertive-ts",
     "testing",
     "testing-tools",
     "type-safety",
-    "typescript"
+    "typescript",
+    "sinon",
+    "plugin"
   ],
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "files": [
     "dist/",
     "src/"
@@ -32,23 +35,34 @@
     "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
-    "dedent": "^1.5.1",
     "fast-deep-equal": "^3.1.3"
   },
   "devDependencies": {
+    "@assertive-ts/core": "workspace:^",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.6",
     "@types/sinon": "^17.0.2",
-    "all-contributors-cli": "^6.26.1",
     "mocha": "^10.2.0",
     "semantic-release": "^22.0.12",
     "semantic-release-yarn": "^3.0.2",
     "sinon": "^17.0.1",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.25.6",
+    "typedoc": "^0.25.7",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-merge-modules": "^5.1.0",
     "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@assertive-ts/core": ">=2.0.0",
+    "sinon": ">=15.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@assertive-ts/core": {
+      "optional": false
+    },
+    "sinon": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "access": "public",
