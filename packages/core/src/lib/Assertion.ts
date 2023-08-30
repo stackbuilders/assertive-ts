@@ -61,7 +61,7 @@ export class Assertion<T> {
   }
 
   /**
-   * A convenience method to normalized the assertion instance. If it was
+   * A convenience method to normalize the assertion instance. If it was
    * inverted with `.not`, it'll return it back to the previous non-inverted
    * state. Otherwise, it returns the same instance.
    *
