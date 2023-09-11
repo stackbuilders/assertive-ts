@@ -95,18 +95,6 @@ export class Assertion<T> {
     return this.normalized();
   }
 
-  private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
-    return (target, p) => {
-      const key = isKeyOf(target, p) ? p : undefined;
-
-      if (key === "inverted") {
-        return isInverted;
-      }
-
-      return key ? target[key] : undefined;
-    };
-  }
-
   /**
    * Check if the value matches the given predicate.
    *
@@ -534,5 +522,17 @@ export class Assertion<T> {
       actual: this.actual,
       message: `Expected <${prettify(this.actual)}> to be of type "${typeName}"`,
     });
+  }
+
+  private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
+    return (target, p) => {
+      const key = isKeyOf(target, p) ? p : undefined;
+
+      if (key === "inverted") {
+        return isInverted;
+      }
+
+      return key ? target[key] : undefined;
+    };
   }
 }

@@ -28,15 +28,6 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
     super(actual);
   }
 
-  private captureError<X>(): X | typeof NoThrow {
-    try {
-      this.actual();
-      return NoThrow;
-    } catch (error) {
-      return error as X;
-    }
-  }
-
   /**
    * Check if the function throws when called. Optionally, you can check that
    * the thrown error is strictly equal to an `Error` instance by passing it as
@@ -191,5 +182,14 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
     return typeFactory?.predicate(captured)
       ? new typeFactory.Factory(captured)
       : new Assertion(captured) as A;
+  }
+
+  private captureError<X>(): X | typeof NoThrow {
+    try {
+      this.actual();
+      return NoThrow;
+    } catch (error) {
+      return error as X;
+    }
   }
 }

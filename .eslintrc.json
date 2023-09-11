@@ -81,8 +81,8 @@
         "static-method",
         "abstract-method",
         "protected-method",
-        "private-method",
-        "public-method"
+        "public-method",
+        "private-method"
       ],
       "interfaces": { "order": "alphabetically" },
       "typeLiterals": { "order": "alphabetically" }
