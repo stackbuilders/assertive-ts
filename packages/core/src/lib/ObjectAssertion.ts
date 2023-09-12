@@ -17,12 +17,6 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     super(actual);
   }
 
-  private hasOwnProp(prop: PropertyKey | undefined): boolean {
-    return prop !== undefined
-      ? Object.prototype.hasOwnProperty.call(this.actual, prop)
-      : false;
-  }
-
   /**
    * Check if the object is empty. That is, when the object doesn't have any
    * properties.
@@ -457,5 +451,11 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       error,
       invertedError,
     });
+  }
+
+  private hasOwnProp(prop: PropertyKey | undefined): boolean {
+    return prop !== undefined
+      ? Object.prototype.hasOwnProperty.call(this.actual, prop)
+      : false;
   }
 }
