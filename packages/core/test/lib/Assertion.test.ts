@@ -135,7 +135,7 @@ describe("[Unit] Assertion.test.ts", () => {
       });
     });
 
-    [undefined, null].forEach((value) => {
+    [undefined, null].forEach(value => {
       context(`when the value is ${value}`, () => {
         it("throws an assertion error", () => {
           const test = new Assertion(value);
@@ -230,7 +230,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
   describe(".toBeTruthy", () => {
     context("when the value is truthy", () => {
-      TRUTHY_VALUES.forEach((value) => {
+      TRUTHY_VALUES.forEach(value => {
         it(`[${truthyAsText(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
@@ -244,7 +244,7 @@ describe("[Unit] Assertion.test.ts", () => {
     });
 
     context("when the value is NOT truthy", () => {
-      FALSY_VALUES.forEach((value) => {
+      FALSY_VALUES.forEach(value => {
         it(`[${falsyAsText(value)}] throws an assertion error`, () => {
           const test = new Assertion(value);
 
@@ -260,7 +260,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
   describe(".toBeFalsy", () => {
     context("when the value is falsy", () => {
-      FALSY_VALUES.forEach((value) => {
+      FALSY_VALUES.forEach(value => {
         it(`[${falsyAsText(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
@@ -274,7 +274,7 @@ describe("[Unit] Assertion.test.ts", () => {
     });
 
     context("when the value NOT falsy", () => {
-      TRUTHY_VALUES.forEach((value) => {
+      TRUTHY_VALUES.forEach(value => {
         it(`[${truthyAsText(value)}] throws an assertion error`, () => {
           const test = new Assertion(value);
 
@@ -372,7 +372,7 @@ describe("[Unit] Assertion.test.ts", () => {
             assert.deepStrictEqual(test.not.toBeEqual(expected), test);
           });
         });
-      }
+      },
     );
   });
 
@@ -514,7 +514,7 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.toBeOfType(expected), test);
           assert.throws(() => test.not.toBeOfType(expected), {
             message: `Expected <${prettify(
-              value
+              value,
             )}> NOT to be of type <${expected}>`,
             name: AssertionError.name,
           });
@@ -541,7 +541,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.throws(() => test.toBeOfType(expected), {
             message: `Expected <${prettify(
-              value
+              value,
             )}> to be of type <${expected}>`,
             name: AssertionError.name,
           });
@@ -558,7 +558,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
         assert.deepStrictEqual(
           test.asType(TypeFactories.String),
-          new StringAssertion("foo")
+          new StringAssertion("foo"),
         );
       });
     });

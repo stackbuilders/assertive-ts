@@ -136,7 +136,7 @@ export class Assertion<T> {
     const invertedError = new AssertionError({
       actual: this.actual,
       message: `Expected value to NOT exist, but it was <${prettify(
-        this.actual
+        this.actual,
       )}>`,
     });
 
@@ -387,7 +387,7 @@ export class Assertion<T> {
         const expectedKeys = Object.keys(expected);
         const sizeMatch = actualKeys.length === expectedKeys.length;
         const valuesMatch = actualKeys.every(
-          (key) => this.actual[key] === expected[key]
+          key => this.actual[key] === expected[key],
         );
 
         return sizeMatch && valuesMatch;
@@ -508,13 +508,13 @@ export class Assertion<T> {
       actual: typeof this.actual,
       expected,
       message: `Expected <${prettify(
-        this.actual
+        this.actual,
       )}> to be of type <${expected}>`,
     });
     const invertedError = new AssertionError({
       actual: typeof this.actual,
       message: `Expected <${prettify(
-        this.actual
+        this.actual,
       )}> NOT to be of type <${expected}>`,
     });
 
@@ -563,7 +563,7 @@ export class Assertion<T> {
 
     if (this.inverted) {
       throw new UnsupportedOperationError(
-        "The `.not` modifier is not allowed on `.asType(..)` method"
+        "The `.not` modifier is not allowed on `.asType(..)` method",
       );
     }
 
@@ -574,7 +574,7 @@ export class Assertion<T> {
     throw new AssertionError({
       actual: this.actual,
       message: `Expected <${prettify(
-        this.actual
+        this.actual,
       )}> to be of type "${typeName}"`,
     });
   }
