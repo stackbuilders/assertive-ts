@@ -441,6 +441,48 @@ export class Assertion<T> {
   }
 
   /**
+   * Alias of `.toBeSame(..)` assertion.
+   *
+   * @example
+   * ```
+   * const x = { a: 1 };
+   * const y = x;
+   *
+   * expect(x).toBeSameAs(x);
+   * expect(x).toBeSameAs(y);
+   *
+   * expect(x).not.toBeSameAs({ ...x });
+   * ```
+   *
+   * @param expected the value to compare for referential equality
+   * @returns the assertion instance
+   */
+  public toBeSameAs(expected: T): this {
+    return this.toBeSame(expected);
+  }
+
+  /**
+   * Another alias of `.toBeSame(..)` assertion.
+   *
+   * @example
+   * ```
+   * const x = { a: 1 };
+   * const y = x;
+   *
+   * expect(x).toBe(x);
+   * expect(x).toBe(y);
+   *
+   * expect(x).not.toBe({ ...x });
+   * ```
+   *
+   * @param expected the value to compare for referential equality
+   * @returns the assertion instance
+   */
+  public toBe(expected: T): this {
+    return this.toBeSame(expected);
+  }
+
+  /**
    * Checks if the value is of a specific data type. The supported data types
    * are the same as the `typeof` operator, plus an additional `array` which
    * allows desabiguation between `object` (which can also be an array).

@@ -1,3 +1,5 @@
+import Sinon from "sinon";
+
 import { Assertion, DataType } from "../../src/lib/Assertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
@@ -469,6 +471,28 @@ describe("[Unit] Assertion.test.ts", () => {
           assert.deepStrictEqual(test.not.toBeSame(expected), test);
         });
       });
+    });
+  });
+
+  describe(".toBeSameAs", () => {
+    it("aliases .toBeSame(..) method", () => {
+      const test = new StringAssertion("Foo");
+      const spy = Sinon.spy(test, "toBeSame");
+
+      test.toBeSameAs("Foo");
+
+      Sinon.assert.calledWithExactly(spy, "Foo");
+    });
+  });
+
+  describe(".toBe", () => {
+    it("aliases .toBeSame(..) method", () => {
+      const test = new StringAssertion("Foo");
+      const spy = Sinon.spy(test, "toBeSame");
+
+      test.toBe("Foo");
+
+      Sinon.assert.calledWithExactly(spy, "Foo");
     });
   });
 
