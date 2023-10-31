@@ -15,9 +15,23 @@ const HERO = {
 
 const THINGS = [1, "foo", false];
 
-const TRUTHY_VALUES = [true, 1, "foo", {}, [], new Date()];
+const TRUTHY_VALUES = [
+  true,
+  1,
+  "foo",
+  { },
+  [],
+  new Date(),
+];
 
-const FALSY_VALUES = [null, undefined, 0, "", false, NaN];
+const FALSY_VALUES = [
+  null,
+  undefined,
+  0,
+  "",
+  false,
+  NaN,
+];
 
 const TODAY = new Date("2021-12-10T00:00:00.000Z");
 
@@ -42,6 +56,7 @@ const BASE_DIFFS = [
 ];
 
 class Car {
+
   private readonly model: string;
 
   public constructor(model: string) {
@@ -53,7 +68,7 @@ class Car {
   }
 }
 
-function truthyAsText(value: (typeof TRUTHY_VALUES)[number]): string {
+function truthyAsText(value: typeof TRUTHY_VALUES[number]): string {
   if (Array.isArray(value) && value.length === 0) {
     return "Empty array";
   }
@@ -69,8 +84,10 @@ function truthyAsText(value: (typeof TRUTHY_VALUES)[number]): string {
   return String(value);
 }
 
-function falsyAsText(value: (typeof FALSY_VALUES)[number]): string {
-  return value === "" ? '""' : `${value}`;
+function falsyAsText(value: typeof FALSY_VALUES[number]): string {
+  return value === ""
+    ? '""'
+    : `${value}`;
 }
 
 describe("[Unit] Assertion.test.ts", () => {
@@ -332,7 +349,8 @@ describe("[Unit] Assertion.test.ts", () => {
         ["deep-object", { ...HERO, opts: THINGS }, { ...HERO, opts: THINGS }],
         ["deep-array", [...THINGS, { x: HERO }], [...THINGS, { x: HERO }]],
         ["date", TODAY, new Date(TODAY.toISOString())],
-      ].forEach(([type, actual, expected]) => {
+      ]
+      .forEach(([type, actual, expected]) => {
         it(`[${type}] returns the assertion instance`, () => {
           const test = new Assertion(actual);
 
@@ -345,35 +363,29 @@ describe("[Unit] Assertion.test.ts", () => {
       });
     });
 
-    context(
-      "when the value is NOT referentially, NOR shallow, NOR deep equal",
-      () => {
-        [
-          ...BASE_DIFFS,
-          ["NaN", NaN, 5],
-          ["object-ref", HERO, { ...HERO, x: 1 }],
-          ["array-ref", THINGS, [...THINGS, "banana"]],
-          ["shallow-object", { ...HERO }, { ...HERO, foo: { x: 1 } }],
-          ["shallow-array", [1, 2, 3], [1, 2, 3, { x: 4 }]],
-          [
-            "deep-object",
-            { ...HERO, opts: { x: 1 } },
-            { ...HERO, opts: { x: 2 } },
-          ],
-          ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 2 }]],
-        ].forEach(([type, actual, expected]) => {
-          it(`[${type}] throws an assertion error`, () => {
-            const test = new Assertion(actual);
+    context("when the value is NOT referentially, NOR shallow, NOR deep equal", () => {
+      [
+        ...BASE_DIFFS,
+        ["NaN", NaN, 5],
+        ["object-ref", HERO, { ...HERO, x: 1 }],
+        ["array-ref", THINGS, [...THINGS, "banana"]],
+        ["shallow-object", { ...HERO }, { ...HERO, foo: { x: 1 } }],
+        ["shallow-array", [1, 2, 3], [1, 2, 3, { x: 4 }]],
+        ["deep-object", { ...HERO, opts: { x: 1 } }, { ...HERO, opts: { x: 2 } }],
+        ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 2 }]],
+      ]
+      .forEach(([type, actual, expected]) => {
+        it(`[${type}] throws an assertion error`, () => {
+          const test = new Assertion(actual);
 
-            assert.throws(() => test.toBeEqual(expected), {
-              message: "Expected both values to be deep equal",
-              name: AssertionError.name,
-            });
-            assert.deepStrictEqual(test.not.toBeEqual(expected), test);
+          assert.throws(() => test.toBeEqual(expected), {
+            message: "Expected both values to be deep equal",
+            name: AssertionError.name,
           });
+          assert.deepStrictEqual(test.not.toBeEqual(expected), test);
         });
-      },
-    );
+      });
+    });
   });
 
   describe(".toBeSimilar", () => {
@@ -383,7 +395,8 @@ describe("[Unit] Assertion.test.ts", () => {
         ["NaN", NaN, NaN], // Shallow equality has a workaround for `NaN === NaN`
         ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
         ["shallow-array", THINGS, [1, "foo", false]],
-      ].forEach(([valueType, expected, actual]) => {
+      ]
+      .forEach(([valueType, expected, actual]) => {
         it(`[${valueType}] returns the assertion instance`, () => {
           const test = new Assertion(actual);
 
@@ -402,19 +415,12 @@ describe("[Unit] Assertion.test.ts", () => {
         ["NaN", NaN, 5],
         ["object-ref", HERO, { ...HERO, x: 1 }],
         ["array-ref", THINGS, [...THINGS, "banana"]],
-        [
-          "shallow-object",
-          { ...HERO, opt: [...THINGS] },
-          { ...HERO, opt: [...THINGS] },
-        ],
+        ["shallow-object", { ...HERO, opt: [...THINGS] }, { ...HERO, opt: [...THINGS] }],
         ["shallow-array", [1, 2, { hero: HERO }], [1, 2, { hero: HERO }]],
-        [
-          "deep-object",
-          { ...HERO, opts: { x: THINGS } },
-          { ...HERO, opts: { x: THINGS } },
-        ],
+        ["deep-object", { ...HERO, opts: { x: THINGS } }, { ...HERO, opts: { x: THINGS } }],
         ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 1 }]],
-      ].forEach(([type, actual, expected]) => {
+      ]
+      .forEach(([type, actual, expected]) => {
         it(`[${type}] throws an assertion error`, () => {
           const test = new Assertion(actual);
 
@@ -451,13 +457,10 @@ describe("[Unit] Assertion.test.ts", () => {
         ["array-ref", [...THINGS], [...THINGS]],
         ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
         ["shallow-array", THINGS, [1, "foo", false]],
-        [
-          "deep-object",
-          { ...HERO, opts: { x: THINGS } },
-          { ...HERO, opts: { x: THINGS } },
-        ],
+        ["deep-object", { ...HERO, opts: { x: THINGS } }, { ...HERO, opts: { x: THINGS } }],
         ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 1 }]],
-      ].forEach(([type, actual, expected]) => {
+      ]
+      .forEach(([type, actual, expected]) => {
         it(`[${type}] throws an assertion error`, () => {
           const test = new Assertion(actual);
 
@@ -513,9 +516,7 @@ describe("[Unit] Assertion.test.ts", () => {
 
           assert.deepStrictEqual(test.toBeOfType(expected), test);
           assert.throws(() => test.not.toBeOfType(expected), {
-            message: `Expected <${prettify(
-              value,
-            )}> NOT to be of type <${expected}>`,
+            message: `Expected <${prettify(value)}> NOT to be of type <${expected}>`,
             name: AssertionError.name,
           });
         });
@@ -540,9 +541,7 @@ describe("[Unit] Assertion.test.ts", () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.toBeOfType(expected), {
-            message: `Expected <${prettify(
-              value,
-            )}> to be of type <${expected}>`,
+            message: `Expected <${prettify(value)}> to be of type <${expected}>`,
             name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toBeOfType(expected), test);
@@ -556,10 +555,7 @@ describe("[Unit] Assertion.test.ts", () => {
       it("returns a new instance of the assertion passed to the type factory", () => {
         const test = new Assertion("foo");
 
-        assert.deepStrictEqual(
-          test.asType(TypeFactories.String),
-          new StringAssertion("foo"),
-        );
+        assert.deepStrictEqual(test.asType(TypeFactories.String), new StringAssertion("foo"));
       });
     });
 
@@ -579,8 +575,7 @@ describe("[Unit] Assertion.test.ts", () => {
         const test = new Assertion("foo");
 
         assert.throws(() => test.not.asType(TypeFactories.String), {
-          message:
-            "Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method",
+          message: "Unsupported operation. The `.not` modifier is not allowed on `.asType(..)` method",
           name: UnsupportedOperationError.name,
         });
       });

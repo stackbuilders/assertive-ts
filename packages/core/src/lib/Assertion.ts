@@ -46,6 +46,7 @@ export interface ExecuteOptions {
  * @param T the type of the `actual` value
  */
 export class Assertion<T> {
+
   protected readonly actual: T;
 
   protected readonly inverted: boolean;
@@ -135,9 +136,7 @@ export class Assertion<T> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected value to NOT exist, but it was <${prettify(
-        this.actual,
-      )}>`,
+      message: `Expected value to NOT exist, but it was <${prettify(this.actual)}>`,
     });
 
     return this.execute({
@@ -380,15 +379,13 @@ export class Assertion<T> {
       }
 
       if (
-        (isStruct(this.actual) && isStruct(expected)) ||
-        (Array.isArray(this.actual) && Array.isArray(expected))
+        (isStruct(this.actual) && isStruct(expected))
+        || (Array.isArray(this.actual) && Array.isArray(expected))
       ) {
         const actualKeys = Object.keys(this.actual);
         const expectedKeys = Object.keys(expected);
         const sizeMatch = actualKeys.length === expectedKeys.length;
-        const valuesMatch = actualKeys.every(
-          key => this.actual[key] === expected[key],
-        );
+        const valuesMatch = actualKeys.every(key => this.actual[key] === expected[key]);
 
         return sizeMatch && valuesMatch;
       }
@@ -396,11 +393,10 @@ export class Assertion<T> {
       return Object.is(this.actual, expected);
     };
 
-    const areBothNaN =
-      typeof this.actual === "number" &&
-      typeof expected === "number" &&
-      isNaN(this.actual) &&
-      isNaN(expected);
+    const areBothNaN = typeof this.actual === "number"
+      && typeof expected === "number"
+      && isNaN(this.actual)
+      && isNaN(expected);
 
     return this.execute({
       assertWhen: areShallowEqual() || areBothNaN || this.actual === expected,
@@ -507,22 +503,17 @@ export class Assertion<T> {
     const error = new AssertionError({
       actual: typeof this.actual,
       expected,
-      message: `Expected <${prettify(
-        this.actual,
-      )}> to be of type <${expected}>`,
+      message: `Expected <${prettify(this.actual)}> to be of type <${expected}>`,
     });
     const invertedError = new AssertionError({
       actual: typeof this.actual,
-      message: `Expected <${prettify(
-        this.actual,
-      )}> NOT to be of type <${expected}>`,
+      message: `Expected <${prettify(this.actual)}> NOT to be of type <${expected}>`,
     });
 
     return this.execute({
-      assertWhen:
-        expected === "array"
-          ? Array.isArray(this.actual)
-          : typeof this.actual === expected,
+      assertWhen: expected === "array"
+        ? Array.isArray(this.actual)
+        : typeof this.actual === expected,
       error,
       invertedError,
     });
@@ -562,9 +553,7 @@ export class Assertion<T> {
     const { Factory, predicate, typeName } = typeFactory;
 
     if (this.inverted) {
-      throw new UnsupportedOperationError(
-        "The `.not` modifier is not allowed on `.asType(..)` method",
-      );
+      throw new UnsupportedOperationError("The `.not` modifier is not allowed on `.asType(..)` method");
     }
 
     if (predicate(this.actual)) {
@@ -573,9 +562,7 @@ export class Assertion<T> {
 
     throw new AssertionError({
       actual: this.actual,
-      message: `Expected <${prettify(
-        this.actual,
-      )}> to be of type "${typeName}"`,
+      message: `Expected <${prettify(this.actual)}> to be of type "${typeName}"`,
     });
   }
 
