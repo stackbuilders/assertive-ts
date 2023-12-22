@@ -296,7 +296,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         test.toBeBetween({ inclusive: true, range: [10, 12] });
         assert.deepStrictEqual(test.toBeBetween({ inclusive: false, range: [10, 12] }), test);
         assert.throws(() => test.not.toBeBetween({ inclusive: false, range: [10, 12] }), {
-            message: "Expected <11> NOT to be between <10,12>",
+            message: "Expected <11> NOT to be between (10, 12) range",
             name: AssertionError.name,
           },
         );
@@ -308,7 +308,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
           const test = new NumberAssertion(5);
 
           assert.throws(() => test.toBeBetween({ inclusive: false, range: [10, 12] }), {
-              message: "Expected <5> to be between <10,12>",
+              message: "Expected <5> to be between (10, 12) range",
               name: AssertionError.name,
             },
           );
@@ -323,7 +323,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toBeBetween({ inclusive: true, range: [10, 12] }), test);
         assert.throws(() => test.not.toBeBetween({ inclusive: true, range: [10, 12] }), {
-            message: "Expected <12> NOT to be strictly between <10,12>",
+            message: "Expected <12> NOT to be between [10, 12] range",
             name: AssertionError.name,
           },
         );
@@ -335,24 +335,22 @@ describe("[Unit] NumberAssertion.test.ts", () => {
         const test = new NumberAssertion(5);
 
         assert.throws(() => test.toBeBetween({ inclusive: true, range: [10, 12] }), {
-            message: "Expected <5> to be strictly between <10,12>",
+            message: "Expected <5> to be between [10, 12] range",
             name: AssertionError.name,
           },
         );
         assert.deepStrictEqual(test.not.toBeBetween({ inclusive: true, range: [10, 12] }), test);
       });
     });
-  });
 
-  describe(".toBeBetween", () => {
     context("when InclusiveBetweenOptions are used", () => {
       context("and the range is inclusive", () => {
         it("returns the assertion instance", () => {
           const test = new NumberAssertion(11);
 
           assert.deepStrictEqual(test.toBeBetween({ inclusive: true, range: [10, 12] }), test);
-          assert.throws(() => test.not.toBeBetween({ inclusive: false, range: [10, 12] }), {
-              message: "Expected <11> NOT to be between <10,12>",
+          assert.throws(() => test.not.toBeBetween({ inclusive: true, range: [10, 12] }), {
+              message: "Expected <11> NOT to be between [10, 12] range",
               name: AssertionError.name,
             },
           );
@@ -364,7 +362,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
           const test = new NumberAssertion(10);
 
           assert.throws(() => test.toBeBetween({ inclusive: false, range: [10, 12] }), {
-              message: "Expected <10> to be between <10,12>",
+              message: "Expected <10> to be between (10, 12) range",
               name: AssertionError.name,
             },
           );
@@ -381,7 +379,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toBeBetween({ lowInclusive: false, range: [10, 12] }), test);
             assert.throws(() => test.not.toBeBetween({ lowInclusive: false, range: [10, 12] }),
               {
-                message: "Expected <11> NOT to be between <10,12>",
+                message: "Expected <11> NOT to be between (10, 12) range",
                 name: AssertionError.name,
               },
             );
@@ -394,7 +392,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ lowInclusive: false, range: [10, 12] }), {
-                message: "Expected <5> to be between <10,12>",
+                message: "Expected <5> to be between (10, 12) range",
                 name: AssertionError.name,
               },
             );
@@ -409,7 +407,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
             assert.deepStrictEqual(test.toBeBetween({ lowInclusive: true, range: [10, 12] }), test);
             assert.throws(() => test.not.toBeBetween({ lowInclusive: true, range: [10, 12] }), {
-                message: "Expected <10> NOT to be between <10,12> with <10> inclusion",
+                message: "Expected <10> NOT to be between [10, 12) range",
                 name: AssertionError.name,
               },
             );
@@ -422,7 +420,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ lowInclusive: true, range: [10, 12] }), {
-                message: "Expected <5> to be between <10,12> with <10> inclusion",
+                message: "Expected <5> to be between [10, 12) range",
                 name: AssertionError.name,
               },
             );
@@ -439,7 +437,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
             assert.deepStrictEqual(test.toBeBetween({ highInclusive: false, range: [10, 12] }), test);
             assert.throws(() => test.not.toBeBetween({ highInclusive: false, range: [10, 12] }), {
-                message: "Expected <11> NOT to be between <10,12>",
+                message: "Expected <11> NOT to be between (10, 12) range",
                 name: AssertionError.name,
               },
             );
@@ -452,7 +450,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ highInclusive: false, range: [10, 12] }), {
-                message: "Expected <5> to be between <10,12>",
+                message: "Expected <5> to be between (10, 12) range",
                 name: AssertionError.name,
               },
             );
@@ -469,7 +467,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toBeBetween({ highInclusive: true, range: [10, 12] }), test);
             assert.throws(() => test.not.toBeBetween({ highInclusive: true, range: [10, 12] }), {
                 message:
-                  "Expected <12> NOT to be between <10,12> with <12> inclusion",
+                  "Expected <12> NOT to be between (10, 12] range",
                 name: AssertionError.name,
               },
             );
@@ -482,7 +480,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             const test = new NumberAssertion(5);
 
             assert.throws(() => test.toBeBetween({ highInclusive: true, range: [10, 12] }), {
-                message: "Expected <5> to be between <10,12> with <12> inclusion",
+                message: "Expected <5> to be between (10, 12] range",
                 name: AssertionError.name,
               },
             );

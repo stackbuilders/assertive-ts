@@ -184,7 +184,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toHaveSameMembers([2, 3, 1]), test);
         assert.throws(() => test.not.toHaveSameMembers([2, 3, 1]), {
-          message: "Expected array NOT to have the same members as: [2, 3, 1]",
+          message: "Expected array NOT to have the same members as <[2,3,1]>",
           name: AssertionError.name,
         });
       });
@@ -192,10 +192,10 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
     context("when the array does not have the same members as the passed array", () => {
       const variants: Array<[string, number[]]> = [
-        ["[1, 2]", [1, 2]],
-        ["[1, 2, 4]", [1, 2, 4]],
-        ["[5, 6, 7]", [5, 6, 7]],
-        ["[1, 2, 3, 4]", [1, 2, 3, 4]],
+        ["[1,2]", [1, 2]],
+        ["[1,2,4]", [1, 2, 4]],
+        ["[5,6,7]", [5, 6, 7]],
+        ["[1,2,3,4]", [1, 2, 3, 4]],
       ];
 
       variants.forEach(([desc, expected]) => {
@@ -203,7 +203,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
           const test = new ArrayAssertion([1, 2, 3]);
 
           assert.throws(() => test.toHaveSameMembers(expected), {
-            message: `Expected array to have the same members as: ${desc}`,
+            message: `Expected array to have the same members as <${desc}>`,
             name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toHaveSameMembers(expected), test);
@@ -219,7 +219,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toContainAll(1, 3, 5), test);
         assert.throws(() => test.not.toContainAll(1, 3, 5), {
-          message: "Expected array NOT to contain the following values, but it does: [1, 3, 5]",
+          message: "Expected array NOT to contain all the values <1, 3, 5>",
           name: AssertionError.name,
         });
       });
@@ -230,7 +230,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         const test = new ArrayAssertion([1, 2, 3, { x: "foo" }]);
 
         assert.throws(() => test.toContainAll(1, { x: "bar" }), {
-          message: 'Expected array to contain the following values: [1, {"x":"bar"}]',
+          message: 'Expected array to contain all the values <1, {"x":"bar"}>',
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainAll(1, { x: "bar" }), test);
@@ -245,7 +245,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toContainAny(7, 3, 8), test);
         assert.throws(() => test.not.toContainAny(7, 3, 8), {
-          message: "Expected array NOT to contain one of the following values, but it does: [7, 3, 8]",
+          message: "Expected array NOT to contain any of the values <7, 3, 8>",
           name: AssertionError.name,
         });
       });
@@ -256,7 +256,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         const test = new ArrayAssertion([1, 2, 3, { x: "foo" }]);
 
         assert.throws(() => test.toContainAny(7, { x: "bar" }), {
-          message: 'Expected array to contain at least one of the following values: [7, {"x":"bar"}]',
+          message: 'Expected array to contain any of the values <7, {"x":"bar"}>',
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toContainAny(7, { x: "bar" }), test);
@@ -271,7 +271,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
 
         assert.deepStrictEqual(test.toContainAt(1, "bar"), test);
         assert.throws(() => test.not.toContainAt(1, "bar"), {
-          message: "Expected value at index 1 of the array NOT to be <bar>",
+          message: 'Expected value at index <1> NOT to be <"bar">',
           name: AssertionError.name,
         });
       });
@@ -289,7 +289,7 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
           const test = new ArrayAssertion(["foo", "bar", "baz"]);
 
           assert.throws(() => test.toContainAt(index, "bar"), {
-            message: `Expected value at index ${index} of the array to be <bar>`,
+            message: `Expected value at index <${index}> to be <"bar">`,
             name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toContainAt(index, "bar"), test);

@@ -220,15 +220,14 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    * @returns the assertion instance
    */
   public toHaveSameMembers(expected: T[]): this {
-    const prettyValues = `[${expected.map(value => JSON.stringify(value)).join(", ")}]`;
     const error = new AssertionError({
       actual: this.actual,
       expected,
-      message: `Expected array to have the same members as: ${prettyValues}`,
+      message: `Expected array to have the same members as <${prettify(expected)}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected array NOT to have the same members as: ${prettyValues}`,
+      message: `Expected array NOT to have the same members as <${prettify(expected)}>`,
     });
 
     return this.execute({
@@ -252,14 +251,14 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    * @returns the assertion instance
    */
   public toContainAll(...values: T[]): this {
-    const prettyValues = `[${values.map(value => JSON.stringify(value)).join(", ")}]`;
+    const allValues = values.map(prettify).join(", ");
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected array to contain the following values: ${prettyValues}`,
+      message: `Expected array to contain all the values <${allValues}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected array NOT to contain the following values, but it does: ${prettyValues}`,
+      message: `Expected array NOT to contain all the values <${allValues}>`,
     });
 
     return this.execute({
@@ -281,14 +280,14 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
    * @returns the assertion instance
    */
   public toContainAny(...values: T[]): this {
-    const prettyValues = `[${values.map(value => JSON.stringify(value)).join(", ")}]`;
+    const allValues = values.map(prettify).join(", ");
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected array to contain at least one of the following values: ${prettyValues}`,
+      message: `Expected array to contain any of the values <${allValues}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected array NOT to contain one of the following values, but it does: ${prettyValues}`,
+      message: `Expected array NOT to contain any of the values <${allValues}>`,
     });
 
     return this.execute({
@@ -309,11 +308,11 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     const error = new AssertionError({
       actual: this.actual[index],
       expected: value,
-      message: `Expected value at index ${index} of the array to be <${prettify(value)}>`,
+      message: `Expected value at index <${index}> to be <${prettify(value)}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual[index],
-      message: `Expected value at index ${index} of the array NOT to be <${prettify(value)}>`,
+      message: `Expected value at index <${index}> NOT to be <${prettify(value)}>`,
     });
 
     return this.execute({

@@ -1,6 +1,5 @@
 import { Assertion } from "./Assertion";
 import { isHighInclusiveOptions, isInclusiveOptions, isLowInclusiveOptions } from "./helpers/guards";
-import { prettify } from "./helpers/messages";
 
 import { AssertionError } from "assert";
 
@@ -277,62 +276,64 @@ export class NumberAssertion extends Assertion<number> {
    * @returns the assertion instance
    */
 public toBeBetween(options: BetweenOptions): this {
+  const [min, max] = options.range;
+
     if (isInclusiveOptions(options)) {
-      const between = options.inclusive ? "strictly between" : "between";
+      const rangeText = options.inclusive ? `[${min}, ${max}]` : `(${min}, ${max})`;
       const inclusiveError = new AssertionError({
         actual: this.actual,
         expected: options,
-        message: `Expected <${this.actual}> to be ${between} <${prettify(options.range)}>` });
+        message: `Expected <${this.actual}> to be between ${rangeText} range` });
       const inclusiveInvertedError = new AssertionError({
         actual: this.actual,
-        message: `Expected <${this.actual}> NOT to be ${between} <${prettify(options.range)}>` });
+        message: `Expected <${this.actual}> NOT to be between ${rangeText} range` });
 
       return this.execute({
         assertWhen: options.inclusive
-          ? this.actual >= options.range[0] && this.actual <= options.range[1]
-          : this.actual > options.range[0] && this.actual < options.range[1],
+          ? this.actual >= min && this.actual <= max
+          : this.actual > min && this.actual < max,
         error: inclusiveError,
         invertedError: inclusiveInvertedError,
       });
     }
 
     if (isLowInclusiveOptions(options)) {
-      const withInclusion = options.lowInclusive ? ` with <${options.range[0]}> inclusion` : "";
+      const rangeText = options.lowInclusive ? `[${min}, ${max})` : `(${min}, ${max})`;
       const lowInclusiveError = new AssertionError({
         actual: this.actual,
         expected: options,
-        message: `Expected <${this.actual}> to be between <${prettify(options.range)}>${withInclusion}`,
+        message: `Expected <${this.actual}> to be between ${rangeText} range`,
       });
       const lowInclusiveErrorInvertedError = new AssertionError({
         actual: this.actual,
-        message: `Expected <${this.actual}> NOT to be between <${prettify(options.range)}>${withInclusion}`,
+        message: `Expected <${this.actual}> NOT to be between ${rangeText} range`,
       });
 
       return this.execute({
         assertWhen: options.lowInclusive
-          ? this.actual >= options.range[0] && this.actual < options.range[1]
-          : this.actual > options.range[0] && this.actual < options.range[1],
+          ? this.actual >= min && this.actual < max
+          : this.actual > min && this.actual < max,
         error: lowInclusiveError,
         invertedError: lowInclusiveErrorInvertedError,
       });
     }
 
     if (isHighInclusiveOptions(options)) {
-      const withInclusion = options.highInclusive ? ` with <${options.range[1]}> inclusion` : "";
+      const rangeText = options.highInclusive ? `(${min}, ${max}]` : `(${min}, ${max})`;
       const highInclusiveError = new AssertionError({
         actual: this.actual,
         expected: options,
-        message: `Expected <${this.actual}> to be between <${prettify(options.range)}>${withInclusion}`,
+        message: `Expected <${this.actual}> to be between ${rangeText} range`,
       });
       const highInclusiveErrorInvertedError = new AssertionError({
         actual: this.actual,
-        message: `Expected <${this.actual}> NOT to be between <${prettify(options.range)}>${withInclusion}`,
+        message: `Expected <${this.actual}> NOT to be between ${rangeText} range`,
       });
 
       return this.execute({
         assertWhen: options.highInclusive
-          ? this.actual > options.range[0] && this.actual <= options.range[1]
-          : this.actual > options.range[0] && this.actual < options.range[1],
+          ? this.actual > min && this.actual <= max
+          : this.actual > min && this.actual < max,
         error: highInclusiveError,
         invertedError: highInclusiveErrorInvertedError,
       });
@@ -341,16 +342,15 @@ public toBeBetween(options: BetweenOptions): this {
     const error = new AssertionError({
       actual: this.actual,
       expected: options,
-      message: `Expected <${this.actual}> to be between <${prettify(options.range)}>`,
+      message: `Expected <${this.actual}> to be between (${min}, ${max}) range`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> NOT to be between <${prettify(options.range)}>`,
+      message: `Expected <${this.actual}> NOT to be between (${min}, ${max}) range`,
     });
 
     return this.execute({
-      assertWhen:
-        this.actual > options.range[0] && this.actual < options.range[1],
+      assertWhen: this.actual > min && this.actual < max,
       error,
       invertedError,
     });

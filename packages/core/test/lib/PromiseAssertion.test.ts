@@ -27,7 +27,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
 
         return Promise.all([
           assert.rejects(test.toBeResolved(), {
-            message: "Expected promise to be resolved, but it was rejected with <fail> instead",
+            message: 'Expected promise to be resolved, but it was rejected with <"fail"> instead',
             name: AssertionError.name,
           }),
           test.not.toBeResolved().then(error => assert.deepStrictEqual(error, "fail")),
@@ -45,7 +45,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
           return Promise.all([
             test.toBeResolvedWith("foo").then(value => assert.deepStrictEqual(value, "foo")),
             assert.rejects(test.not.toBeResolvedWith("foo"), {
-              message: "Expected promise NOT to be resolved with <foo>",
+              message: 'Expected promise NOT to be resolved with <"foo">',
               name: AssertionError.name,
             }),
           ]);
@@ -58,7 +58,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
 
           return Promise.all([
             assert.rejects(test.toBeResolvedWith("bar"), {
-              message: "Expected promise to be resolved with <bar>, but got <foo> instead",
+              message: 'Expected promise to be resolved with <"bar">, but got <"foo"> instead',
               name: AssertionError.name,
             }),
             test.not.toBeResolvedWith("bar").then(value => assert.deepStrictEqual(value, "foo")),
@@ -95,7 +95,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
 
         return Promise.all([
           assert.rejects(test.toBeRejected(), {
-            message: "Expected promise to be rejected, but it was resolved with <foo> instead",
+            message: 'Expected promise to be rejected, but it was resolved with <"foo"> instead',
             name: AssertionError.name,
           }),
           test.not.toBeRejected().then(value => assert.deepStrictEqual(value, "foo")),
@@ -125,13 +125,13 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
 
         return Promise.all([
           assert.rejects(test.toBeRejectedWith(Error("fail")), {
-            message: "Expected promise to be rejected with <Error: fail>, but it was resolved with <foo> instead",
+            message: 'Expected promise to be rejected with <Error: fail>, but it was resolved with <"foo"> instead',
             name: AssertionError.name,
           }),
           assert.rejects(test.not.toBeRejectedWith(Error("fail")), {
             message: dedent`
               Expected promise to be rejected with anything but <Error: fail>, \
-              but it was resolved with <foo> instead
+              but it was resolved with <"foo"> instead
             `,
             name: AssertionError.name,
           }),
@@ -160,7 +160,7 @@ describe("[Unit] PromiseAssertion.test.ts", () => {
 
           return Promise.all([
             assert.rejects(test.toBeRejectedWith(Error("fail")), {
-              message: "Expected promise to be rejected with <Error: fail>, but got <foo> instead",
+              message: 'Expected promise to be rejected with <Error: fail>, but got <"foo"> instead',
               name: AssertionError.name,
             }),
             test.not.toBeRejectedWith(Error("fail")).then(error => assert.deepStrictEqual(error, "foo")),
