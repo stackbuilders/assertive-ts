@@ -1,4 +1,3 @@
----
 name: Release
 
 on:
@@ -14,8 +13,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [build]
-
+    needs: build
     permissions:
       contents: write
       issues: write
@@ -23,10 +21,10 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: .nvmrc
           cache: yarn
       - run: yarn install --immutable
       - run: yarn build
@@ -37,4 +35,4 @@ jobs:
 
   pages:
     uses: ./.github/workflows/pages.yml
-    needs: [deploy]
+    needs: deploy
