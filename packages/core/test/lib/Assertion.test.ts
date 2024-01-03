@@ -68,28 +68,6 @@ class Car {
   }
 }
 
-function truthyAsText(value: typeof TRUTHY_VALUES[number]): string {
-  if (Array.isArray(value) && value.length === 0) {
-    return "Empty array";
-  }
-
-  if (value instanceof Date) {
-    return "Date";
-  }
-
-  if (typeof value === "object" && Object.keys(value).length === 0) {
-    return "{ }";
-  }
-
-  return String(value);
-}
-
-function falsyAsText(value: typeof FALSY_VALUES[number]): string {
-  return value === ""
-    ? '""'
-    : `${value}`;
-}
-
 describe("[Unit] Assertion.test.ts", () => {
   describe(".not", () => {
     context("when .not is used before the assertion", () => {
@@ -185,7 +163,7 @@ describe("[Unit] Assertion.test.ts", () => {
         const test = new Assertion("foo");
 
         assert.throws(() => test.toBeUndefined(), {
-          message: "Expected <foo> to be undefined",
+          message: 'Expected <"foo"> to be undefined',
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeUndefined(), test);
@@ -211,7 +189,7 @@ describe("[Unit] Assertion.test.ts", () => {
         const test = new Assertion("foo");
 
         assert.throws(() => test.toBeNull(), {
-          message: "Expected <foo> to be null",
+          message: 'Expected <"foo"> to be null',
           name: AssertionError.name,
         });
         assert.deepStrictEqual(test.not.toBeNull(), test);
@@ -248,12 +226,12 @@ describe("[Unit] Assertion.test.ts", () => {
   describe(".toBeTruthy", () => {
     context("when the value is truthy", () => {
       TRUTHY_VALUES.forEach(value => {
-        it(`[${truthyAsText(value)}] returns the assertion instance`, () => {
+        it(`[value: ${prettify(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
           assert.deepStrictEqual(test.toBeTruthy(), test);
           assert.throws(() => test.not.toBeTruthy(), {
-            message: `Expected <${String(value)}> NOT to be a truthy value`,
+            message: `Expected <${prettify(value)}> NOT to be a truthy value`,
             name: AssertionError.name,
           });
         });
@@ -262,11 +240,11 @@ describe("[Unit] Assertion.test.ts", () => {
 
     context("when the value is NOT truthy", () => {
       FALSY_VALUES.forEach(value => {
-        it(`[${falsyAsText(value)}] throws an assertion error`, () => {
+        it(`[value: ${prettify(value)}] throws an assertion error`, () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.toBeTruthy(), {
-            message: `Expected <${value}> to be a truthy value`,
+            message: `Expected <${prettify(value)}> to be a truthy value`,
             name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toBeTruthy(), test);
@@ -278,12 +256,12 @@ describe("[Unit] Assertion.test.ts", () => {
   describe(".toBeFalsy", () => {
     context("when the value is falsy", () => {
       FALSY_VALUES.forEach(value => {
-        it(`[${falsyAsText(value)}] returns the assertion instance`, () => {
+        it(`[value: ${prettify(value)}] returns the assertion instance`, () => {
           const test = new Assertion(value);
 
           assert.deepStrictEqual(test.toBeFalsy(), test);
           assert.throws(() => test.not.toBeFalsy(), {
-            message: `Expected <${value}> NOT to be a falsy value`,
+            message: `Expected <${prettify(value)}> NOT to be a falsy value`,
             name: AssertionError.name,
           });
         });
@@ -292,11 +270,11 @@ describe("[Unit] Assertion.test.ts", () => {
 
     context("when the value NOT falsy", () => {
       TRUTHY_VALUES.forEach(value => {
-        it(`[${truthyAsText(value)}] throws an assertion error`, () => {
+        it(`[value: ${prettify(value)}] throws an assertion error`, () => {
           const test = new Assertion(value);
 
           assert.throws(() => test.toBeFalsy(), {
-            message: `Expected <${String(value)}> to be a falsy value`,
+            message: `Expected <${prettify(value)}> to be a falsy value`,
             name: AssertionError.name,
           });
           assert.deepStrictEqual(test.not.toBeFalsy(), test);
@@ -564,7 +542,7 @@ describe("[Unit] Assertion.test.ts", () => {
         const test = new Assertion("foo");
 
         assert.throws(() => test.asType(TypeFactories.Boolean), {
-          message: 'Expected <foo> to be of type "boolean"',
+          message: 'Expected <"foo"> to be of type "boolean"',
           name: AssertionError.name,
         });
       });

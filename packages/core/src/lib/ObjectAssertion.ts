@@ -60,11 +60,11 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
   public toContainKey(key: keyof T): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected the object to contain the provided key <${String(key)}>`,
+      message: `Expected the object to contain the provided key <${prettify(key)}>`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected the object NOT to contain the provided key <${String(key)}>`,
+      message: `Expected the object NOT to contain the provided key <${prettify(key)}>`,
     });
 
     return this.execute({
@@ -86,14 +86,15 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toContainAllKeys(...keys: Array<keyof T>): this {
+    const allKeys = keys.map(prettify).join(", ");
     const error = new AssertionError({
       actual: Object.keys(this.actual),
       expected: keys,
-      message: `Expected the object to contain all the provided keys <${prettify(keys)}>`,
+      message: `Expected the object to contain all the provided keys <${allKeys}>`,
     });
     const invertedError = new AssertionError({
       actual: Object.keys(this.actual),
-      message: `Expected the object NOT to contain all the provided keys <${prettify(keys)}>`,
+      message: `Expected the object NOT to contain all the provided keys <${allKeys}>`,
     });
 
     return this.execute({
@@ -115,14 +116,15 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toContainAnyKeys(...keys: Array<keyof T>): this {
+    const allKeys = keys.map(prettify).join(", ");
     const error = new AssertionError({
       actual: Object.keys(this.actual),
       expected: keys,
-      message: `Expected the object to contain at least one of the provided keys <${prettify(keys)}>`,
+      message: `Expected the object to contain at least one of the provided keys <${allKeys}>`,
     });
     const invertedError = new AssertionError({
       actual: Object.keys(this.actual),
-      message: `Expected the object NOT to contain any of the provided keys <${prettify(keys)}>`,
+      message: `Expected the object NOT to contain any of the provided keys <${allKeys}>`,
     });
 
     return this.execute({
@@ -146,15 +148,16 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
   public toHaveKeys(...keys: Array<keyof T>): this {
     const sortedActual = Object.keys(this.actual).sort();
     const sortedKeys = [...keys].sort();
+    const allKeys = sortedKeys.map(prettify).join(", ");
 
     const error = new AssertionError({
       actual: sortedActual,
       expected: sortedKeys,
-      message: `Expected the object to have exactly the keys <${prettify(sortedKeys)}>`,
+      message: `Expected the object to have exactly the keys <${allKeys}>`,
     });
     const invertedError = new AssertionError({
       actual: sortedActual,
-      message: `Expected the object NOT to have the keys <${prettify(sortedKeys)}>`,
+      message: `Expected the object NOT to have the keys <${allKeys}>`,
     });
 
     return this.execute({
@@ -205,14 +208,15 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toContainAllValues(...values: Array<T[keyof T]>): this {
+    const allValues = values.map(prettify).join(", ");
     const error = new AssertionError({
       actual: Object.values(this.actual),
       expected: values,
-      message: `Expected the object to contain all the provided values <${prettify(values)}>`,
+      message: `Expected the object to contain all the provided values <${allValues}>`,
     });
     const invertedError = new AssertionError({
       actual: Object.values(this.actual),
-      message: `Expected the object NOT to contain all the provided values <${prettify(values)}>`,
+      message: `Expected the object NOT to contain all the provided values <${allValues}>`,
     });
 
     return this.execute({
@@ -237,14 +241,15 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toContainAnyValues(...values: Array<T[keyof T]>): this {
+    const allValues = values.map(prettify).join(", ");
     const error = new AssertionError({
       actual: Object.values(this.actual),
       expected: values,
-      message: `Expected the object to contain at least one of the provided values <${prettify(values)}>`,
+      message: `Expected the object to contain at least one of the provided values <${allValues}>`,
     });
     const invertedError = new AssertionError({
       actual: Object.values(this.actual),
-      message: `Expected the object NOT to contain any of the provided values <${prettify(values)}>`,
+      message: `Expected the object NOT to contain any of the provided values <${allValues}>`,
     });
 
     return this.execute({
@@ -271,15 +276,16 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
   public toHaveValues(...values: Array<T[keyof T]>): this {
     const sortedActual = Object.values(this.actual).sort();
     const sorterdValues = [...values].sort();
+    const allValues = sorterdValues.map(prettify).join(", ");
 
     const error = new AssertionError({
       actual: sortedActual,
       expected: sorterdValues,
-      message: `Expected the object to have exactly the values <${prettify(sorterdValues)}>`,
+      message: `Expected the object to have exactly the values <${allValues}>`,
     });
     const invertedError = new AssertionError({
       actual: sortedActual,
-      message: `Expected the object NOT to have the values <${prettify(sorterdValues)}>`,
+      message: `Expected the object NOT to have the values <${allValues}>`,
     });
 
     return this.execute({
@@ -331,15 +337,16 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toContainAllEntries(...entries: Entry<T>[]): this {
+    const allEntries = entries.map(prettify).join(", ");
     const error = new AssertionError({
       actual: Object.entries(this.actual),
       expected: entries,
-      message: `Expected the object to contain all the provided entries <${prettify(entries)}>`,
+      message: `Expected the object to contain all the provided entries <${allEntries}>`,
     });
 
     const invertedError = new AssertionError({
       actual: Object.entries(this.actual),
-      message: `Expected the object NOT to contain all the provided entries <${prettify(entries)}>`,
+      message: `Expected the object NOT to contain all the provided entries <${allEntries}>`,
     });
     return this.execute({
       assertWhen: entries
@@ -365,15 +372,16 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toContainAnyEntries(...entries: Entry<T>[]): this {
+    const allEntries = entries.map(prettify).join(", ");
     const error = new AssertionError({
       actual: Object.entries(this.actual),
       expected: entries,
-      message: `Expected the object to contain at least one of the provided entries <${prettify(entries)}>`,
+      message: `Expected the object to contain at least one of the provided entries <${allEntries}>`,
     });
 
     const invertedError = new AssertionError({
       actual: Object.entries(this.actual),
-      message: `Expected the object NOT to contain any of the provided entries <${prettify(entries)}>`,
+      message: `Expected the object NOT to contain any of the provided entries <${allEntries}>`,
     });
     return this.execute({
       assertWhen: entries
@@ -401,15 +409,15 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
   public toHaveEntries(...entries: Entry<T>[]): this {
     const sortedActual = Object.entries(this.actual).sort();
     const sortedEntries = [...entries].sort();
-    const prettyEntries = sortedEntries.map(entry => `[${prettify(entry)}]`).join(",");
+    const allEntries = sortedEntries.map(prettify).join(", ");
     const error = new AssertionError({
       actual: sortedActual,
       expected: sortedEntries,
-      message: `Expected the object to have exactly the entries <${prettyEntries}>`,
+      message: `Expected the object to have exactly the entries <${allEntries}>`,
     });
     const invertedError = new AssertionError({
       actual: Object.entries(this.actual),
-      message: `Expected the object NOT to have the entries <${prettyEntries}>`,
+      message: `Expected the object NOT to have the entries <${allEntries}>`,
     });
 
     return this.execute({
@@ -433,13 +441,12 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
   public toPartiallyMatch(other: Partial<T>): this {
     const error = new AssertionError({
       actual: this.actual,
-      expected: other,
-      message: "Expected the object to be a partial match",
+      message: `Expected the object to partially match <${prettify(other)}>`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the object NOT to be a partial match",
+      message: `Expected the object NOT to partially match <${prettify(other)}>`,
     });
     return this.execute({
       assertWhen: Object.keys(other)
