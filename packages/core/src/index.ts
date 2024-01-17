@@ -20,11 +20,14 @@ export {
 };
 
 /**
- * Extends `@assertive-ts/core` with a local or 3rd-party plugin.
+ * Extends `@assertive-ts/core` with local or 3rd-party plugin(s).
  *
- * @param plugin the plugin to use to extend assertive-ts
+ * @param plugins a plugin or an array of plugins to use
  * @see {@link Plugin Plugin}
  */
-export function usePlugin<T, A extends Assertion<T>>(plugin: Plugin<T, A>): void {
-  config.addPlugin(plugin);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function usePlugin<P extends Plugin<any, Assertion<any>>>(plugins: P | P[]): void {
+  Array.isArray(plugins)
+    ? plugins.forEach(plugin => config.addPlugin(plugin))
+    : config.addPlugin(plugins);
 }

@@ -1,8 +1,14 @@
 import { Assertion } from "../Assertion";
 
+/**
+ * A plugin object that can be used to extend the `expect(..)` function.
+ *
+ * @param T the type the plugin is meant for
+ * @param A the type of the assertion for `T`
+ */
 export interface Plugin<T, A extends Assertion<T>> {
   /**
-   * The `Assertion<T>` instance the plugin adds
+   * The assertion `A` constructor the plugin adds
    */
   Assertion: new(actual: T) => A;
   /**
