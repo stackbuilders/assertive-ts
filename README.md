@@ -1,9 +1,6 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-
 [![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
-
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
-
 [![CI](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml)
 [![Release](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml)
 [![Pages](https://github.com/stackbuilders/assertive-ts/actions/workflows/pages.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/pages.yml)
@@ -62,7 +59,10 @@ expect(sum(1, 2)).not.toBeNull();
 This library provides **fluent assertions**, which means you can chain multiple matcher functions to the same value under test:
 
 ```ts
-expect("assertive-ts is awesome!").toStartWith("assertive-ts").not.toContain("unsafe").toEndWith("awesome!");
+expect("assertive-ts is awesome!")
+  .toStartWith("assertive-ts")
+  .not.toContain("unsafe")
+  .toEndWith("awesome!");
 ```
 
 The matcher functions depend on the type of the value on the `expect`. If you're using TypeScript, the compiler will let you know if something is not available for that assertion:
@@ -102,10 +102,10 @@ expect(14).toEndWith("4");
            ^ ? type error: `toEndWith` does not exist in `NumberAssertion`
 ```
 
-You can also assert from synchronous and asynchronous code, for example:
+You can also assert over functions and asynchronous code, for example:
 
 ```ts
-const verifyEnvVar = (): void => {
+function verifyEnvVar(): void {
   const { MY_ENV_VAR } = process.env;
 
   if (!MY_ENV_VAR) {
@@ -120,7 +120,7 @@ expect(() => verifyEnvVar())
 
 expect(() => verifyEnvVar()).not.toThrow();
 
-export const getData = async (): Promise<DataType> => {
+async function getData(): Promise<DataType> {
   const data = await requestApi();
 
   if (!data) {
@@ -128,7 +128,7 @@ export const getData = async (): Promise<DataType> => {
   }
 
   return data;
-};
+}
 
 // assertion
 await expect(getData()).toBeRejected();
