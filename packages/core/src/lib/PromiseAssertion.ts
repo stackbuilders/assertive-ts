@@ -1,4 +1,4 @@
-import dedent from "@cometlib/dedent";
+import dedent from "dedent";
 import isDeepEqual from "fast-deep-equal/es6";
 
 import { Assertion } from "./Assertion";

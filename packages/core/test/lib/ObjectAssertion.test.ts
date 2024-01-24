@@ -1,4 +1,4 @@
-import dedent from "@cometlib/dedent";
+import dedent from "dedent";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 import { prettify } from "../../src/lib/helpers/messages";

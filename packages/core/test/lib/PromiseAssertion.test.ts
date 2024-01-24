@@ -1,4 +1,4 @@
-import dedent from "@cometlib/dedent";
+import dedent from "dedent";
 
 import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
 
