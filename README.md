@@ -22,7 +22,7 @@ A distinctive feature of Assertive.ts with other assertion libraries is that it 
 
 ### Features
 
-- Type safety and intelligent matcher completion 
+- Type safety and intelligent matcher completion
 - Rich set of expressive and flexible matchers
 - Concise, chainable interface inspired by AssertJ
 - Works with any test runner and framework such as [Jest](/docs/jest-tutorial.md), [Mocha](/docs/mocha-tutorial.md), or Ava
@@ -39,7 +39,7 @@ For convenience, this library is split into packages grouped within the same nam
 Using you favorite test runner, you just need to import the `expect` and test away! If you don't really agree with `expect` as the name of the assertion function, we provide a couple aliases, such as `assert` and `assertThat`.
 
 ```ts
-import { expect } from "@assertive-ts/core"
+import { expect } from "@assertive-ts/core";
 
 describe("sum", () => {
   it("returns the sum of two numbers", () => {
@@ -77,8 +77,63 @@ expect("foobar").toStartWith("foo");
 // Number assertion
 expect(sum(1, 2)).toBePositive();
 
+// Error assertion
+expect(new Error(errorMessage)).toHaveMessage(expectedError);
+
+// Array assertion
+const data = [1, 2, 3, 4]
+expect(data).toMatchAll(x => x < 5);
+expect(data).toBeEmpty()
+
+// Date assertion
+const date = new Date(2023, 12, 31);
+expect(date).toBeAfter(new Date(2023, 12, 1));
+expect(date).toBeBefore(new Date(2024, 1, 1));
+
+// Object assertion
+const objectData = {
+  key1: "test1",
+  key2: "test2",
+};
+expect(objectData).toContainKey("key1");
+expect(objectData).toContainEntry(["key1", "test1"]);
+
 expect(14).toEndWith("4");
            ^ ? type error: `toEndWith` does not exist in `NumberAssertion`
+```
+
+You can also assert over functions and asynchronous code, for example:
+
+```ts
+function verifyEnvVar(): void {
+  const { MY_ENV_VAR } = process.env;
+
+  if (!MY_ENV_VAR) {
+    throw new Error("Missing MY_ENV_VAR environment variable");
+  }
+};
+
+// assertion
+expect(() => verifyEnvVar())
+  .toThrowError(Error)
+  .toHaveMessage("Missing MY_ENV_VAR environment variable");
+
+expect(() => verifyEnvVar()).not.toThrow();
+
+async function getData(): Promise<DataType> {
+  const data = await requestApi();
+
+  if (!data) {
+    throw new Error("Data was not found");
+  }
+
+  return data;
+}
+
+// assertion
+await expect(getData()).toBeRejected();
+
+await expect(getData()).toBeResolved();
 ```
 
 For a list of all [Core](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md) matchers and extended documentation, you can refer to the [Core API documentation](https://stackbuilders.github.io/assertive-ts/docs/core/build/).
@@ -132,6 +187,7 @@ MIT, see [the LICENSE file](LICENSE).
 Do you want to contribute to this project? Please take a look at our [contributing guideline](/docs/CONTRIBUTING.md) to know how you can help us build it.
 
 ---
+
 <img src="https://www.stackbuilders.com/media/images/Sb-supports.original.png" alt="Stack Builders" width="50%" />
 
 [Check out our libraries](https://github.com/stackbuilders/) | [Join our team](https://www.stackbuilders.com/join-us/)
