@@ -1,4 +1,4 @@
-import dedent from "@cometlib/dedent";
+import dedent from "dedent";
 
 import { DateAssertion } from "../../src/lib/DateAssertion";
 import { DateOptions } from "../../src/lib/DateAssertion.types";
