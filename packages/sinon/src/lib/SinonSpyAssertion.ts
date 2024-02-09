@@ -36,7 +36,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    */
   public toBeCalled(times: number = 1): this {
     if (times < 0) {
-      throw new Error("Spy cannot be called less tha zero times!");
+      throw new Error("Spy cannot be called less than zero times!");
     }
 
     const { name, callCount } = this.actual;
@@ -114,7 +114,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
   }
 
   /**
-   * Check if the spy was called at least a number of times.
+   * Check if the spy was called at least a specific number of times.
    *
    * @example
    * ```
@@ -128,7 +128,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    */
   public toBeCalledAtLeast(times: number): this {
     if (times < 0) {
-      throw new Error("Spy cannot be called less tha zero times!");
+      throw new Error("Spy cannot be called less than zero times!");
     }
 
     const { name, callCount } = this.actual;
@@ -149,7 +149,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
   }
 
   /**
-   * Check if the spy was called at most a number of times.
+   * Check if the spy was called at most a specific number of times.
    *
    * @example
    * ```
@@ -163,7 +163,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    */
   public toBeCalledAtMost(times: number): this {
     if (times < 0) {
-      throw new Error("Spy cannot be called less tha zero times!");
+      throw new Error("Spy cannot be called less than zero times!");
     }
 
     const { name, callCount } = this.actual;
@@ -190,12 +190,12 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    * ```
    * const spy = Sinon.spy(..); // .stub(..) / .mock(..) / .fake(..)
    *
-   * expect(spy).toBeNeverCalled();
+   * expect(spy).toNeverBeCalled();
    * ```
    *
    * @returns the assertion instance
    */
-  public toBeNeverCalled(): this {
+  public toNeverBeCalled(): this {
     const { name, callCount } = this.actual;
     const error = new AssertionError({
       actual: callCount,
@@ -216,7 +216,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
 
   /**
    * Check if any of the calls to this spy have the expected arguments. Each
-   * arguments is compared with a strict-deep-equals strategy and must be in
+   * argument is compared with a strict-deep-equals strategy and must be in
    * the exact same order as called.
    *
    * @example
@@ -320,10 +320,10 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
   }
 
   /**
-   * Retrives a specific call of the spy, checking first if there's at least
+   * Retrieves a specific call of the spy, checking first if there's at least
    * that number of calls. Then returns a {@link SinonSpyCallAssertion}
-   * instance of that call. This allows to make more specific verifications
-   * over the spy when this is called more than once.
+   * instance of that call. This allows more specific verifications over the
+   * spy when this is called more than once.
    *
    * @example
    * ```

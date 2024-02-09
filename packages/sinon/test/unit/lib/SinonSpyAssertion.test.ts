@@ -22,7 +22,7 @@ describe("[Unit] SinonSpyAssertion.test.ts", () => {
 
         expect(() => test.toBeCalled(-1))
           .toThrowError()
-          .toHaveMessage("Spy cannot be called less tha zero times!");
+          .toHaveMessage("Spy cannot be called less than zero times!");
       });
     });
 
@@ -121,7 +121,7 @@ describe("[Unit] SinonSpyAssertion.test.ts", () => {
 
         expect(() => test.toBeCalledAtLeast(-1))
           .toThrowError()
-          .toHaveMessage("Spy cannot be called less tha zero times!");
+          .toHaveMessage("Spy cannot be called less than zero times!");
       });
     });
 
@@ -181,7 +181,7 @@ describe("[Unit] SinonSpyAssertion.test.ts", () => {
 
         expect(() => test.toBeCalledAtMost(-1))
           .toThrowError()
-          .toHaveMessage("Spy cannot be called less tha zero times!");
+          .toHaveMessage("Spy cannot be called less than zero times!");
       });
     });
 
@@ -234,14 +234,14 @@ describe("[Unit] SinonSpyAssertion.test.ts", () => {
     });
   });
 
-  describe(".toBeNeverCalled", () => {
+  describe(".toNeverBeCalled", () => {
     context("when the spy is not called", () => {
       it("returns the assertion instance", () => {
         const spy = Sinon.spy(sayHello);
         const test = new SinonSpyAssertion(spy);
 
-        expect(test.toBeNeverCalled()).toBeEqual(test);
-        expect(() => test.not.toBeNeverCalled())
+        expect(test.toNeverBeCalled()).toBeEqual(test);
+        expect(() => test.not.toNeverBeCalled())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected <sayHello> NOT to be never called, but it was never called");
       });
@@ -254,10 +254,10 @@ describe("[Unit] SinonSpyAssertion.test.ts", () => {
 
         spy("world!");
 
-        expect(() => test.toBeNeverCalled())
+        expect(() => test.toNeverBeCalled())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected <sayHello> to be never called, but it was called 1 time");
-        expect(test.not.toBeNeverCalled()).toBeEqual(test);
+        expect(test.not.toNeverBeCalled()).toBeEqual(test);
       });
     });
   });
@@ -440,7 +440,7 @@ describe("[Unit] SinonSpyAssertion.test.ts", () => {
 
         expect(() => test.call(-1))
           .toThrowError()
-          .toHaveMessage("Spy cannot be called less tha zero times!");
+          .toHaveMessage("Spy cannot be called less than zero times!");
       });
     });
 

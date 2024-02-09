@@ -59,7 +59,7 @@ expect(spy).toHaveArgs(10, "long-range");
 expect(spy).toThrow();
 ```
 
-The assertion above act over any of the calls made to the spy. You can get more specific matchers if you assert over a single spy call:
+The assertions above act over any of the calls made to the spy. You can get more specific matchers if you assert over a single spy call:
 
 ```ts
 import { expect } from "@assertive-ts/core";
@@ -90,7 +90,7 @@ expect(spy)
   .toHaveMessage("Something went wrong...");
 ```
 
-Notice how `get(..)` and `.toBeCalledOnce()` methods return an assertion over the single call, this way you can chain matchers instead of writing more statements.
+Notice how `call(..)` and `.toBeCalledOnce()` methods return an assertion over the single call, this way you can chain matchers instead of writing more statements.
 
 ## License
 

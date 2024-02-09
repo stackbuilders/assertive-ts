@@ -26,9 +26,9 @@ export class SinonSpyCallAssertion<A extends unknown[], R> extends Assertion<Sin
   }
 
   /**
-   * Check if the call to this spy have the expected arguments. Each arguments
-   * is compared with a strict-deep-equals strategy and must be in the exact
-   * same order as called.
+   * Check if the call to this spy has the expected arguments. Each argument is
+   * compared with a strict-deep-equals strategy and must be in the exact same
+   * order as called.
    *
    * @example
    * ```
