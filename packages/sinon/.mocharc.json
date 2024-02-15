@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/mocharc",
+  "extension": ["ts"],
+  "recursive": true,
+  "require": [
+    "ts-node/register",
+    "test/hooks.ts"
+  ]
+}
