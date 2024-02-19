@@ -5,6 +5,7 @@
 [![Release](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml)
 [![Pages](https://github.com/stackbuilders/assertive-ts/actions/workflows/pages.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/pages.yml)
 [![NPM Core version](https://img.shields.io/npm/v/@assertive-ts/core?logo=npm&label=core)](https://www.npmjs.com/package/@assertive-ts/core)
+[![NPM Sinon version](https://img.shields.io/npm/v/@assertive-ts/sinon?logo=npm&label=sinon)](https://www.npmjs.com/package/@assertive-ts/sinon)
 [![NPM license](https://img.shields.io/npm/l/@assertive-ts/core)](https://github.com/stackbuilders/assertive-ts/blob/main/LICENSE)
 [![Known Vulnerabilities](https://snyk.io/test/github/stackbuilders/assertive-ts/badge.svg)](https://snyk.io/test/github/stackbuilders/assertive-ts)
 
@@ -32,7 +33,8 @@ A distinctive feature of Assertive.ts with other assertion libraries is that it 
 
 For convenience, this library is split into packages grouped within the same namespace:
 
-- **[assertive-ts/core](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md):** Core functionalities, assertions applicable for any kind of application. This package is required for the [extension mechanism](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md#extension-mechanism-⚙️) (plugins). Also, this is package replaces the deprecated `stackbuilders/assertive-ts` package.
+- **[assertive-ts/core](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md):** Core functionalities, assertions applicable for any kind of application. This package is required for the [extension mechanism](https://github.com/stackbuilders/assertive-ts/blob/main/packages/core/README.md#extension-mechanism-%EF%B8%8F) (plugins). This package replaces the deprecated `stackbuilders/assertive-ts` package.
+- **[assertive-ts/sinon](https://github.com/stackbuilders/assertive-ts/blob/main/packages/sinon/README.md):** Plugin to add matchers for [Sinon.js](https://sinonjs.org/) spies, stubs, mocks, and fakes.
 
 ## Usage
 
