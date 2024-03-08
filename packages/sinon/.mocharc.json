@@ -5,5 +5,6 @@
   "require": [
     "ts-node/register",
     "test/hooks.ts"
-  ]
+  ],
+  "spec": ["test/**/*.test.*"]
 }

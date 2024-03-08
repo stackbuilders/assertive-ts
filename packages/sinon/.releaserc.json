@@ -1,8 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/semantic-release",
-  "branches": [
-    "main"
-  ],
+  "branches": ["main"],
   "plugins": [
     ["@semantic-release/commit-analyzer", {
       "releaseRules": [{ "scope": "!sinon", "release": false }]
