@@ -1,0 +1,68 @@
+{
+  "name": "@assertive-ts/dom",
+  "version": "0.0.0",
+  "description": "Assertive.ts plugin for DOM assertions",
+  "repository": "git@github.com:stackbuilders/assertive-ts.git",
+  "homepage": "https://stackbuilders.github.io/assertive-ts/",
+  "author": "Stack Builders <info@stackbuilders.com>",
+  "license": "MIT",
+  "keywords": [
+    "assertions",
+    "assertive-ts",
+    "testing",
+    "testing-tools",
+    "type-safety",
+    "typescript",
+    "plugin",
+    "dom",
+    "web"
+  ],
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.prod.json",
+    "check": "yarn compile && yarn test --forbid-only",
+    "compile": "tsc -p tsconfig.json",
+    "docs": "typedoc",
+    "release": "semantic-release",
+    "test": "NODE_ENV=test mocha"
+  },
+  "dependencies": {
+    "fast-deep-equal": "^3.1.3"
+  },
+  "devDependencies": {
+    "@assertive-ts/core": "workspace:^",
+    "@types/jsdom-global": "^3",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.19",
+    "jsdom": "^24.0.0",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^10.3.0",
+    "semantic-release": "^23.0.2",
+    "semantic-release-yarn": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.25.8",
+    "typedoc-plugin-markdown": "^3.17.1",
+    "typedoc-plugin-merge-modules": "^5.1.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@assertive-ts/core": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@assertive-ts/core": {
+      "optional": false
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}
