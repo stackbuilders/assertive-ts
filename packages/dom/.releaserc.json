@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/semantic-release",
+  "branches": ["main"],
+  "plugins": [
+    ["@semantic-release/commit-analyzer", {
+      "releaseRules": [{ "scope": "!dom", "release": false }]
+    }],
+    "@semantic-release/release-notes-generator",
+    "semantic-release-yarn",
+    "@semantic-release/github"
+  ],
+  "tagFormat": "dom/v${version}"
+}
