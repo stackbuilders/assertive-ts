@@ -25,7 +25,7 @@ You can find the full API reference [here](https://stackbuilders.github.io/asser
 
 ## Usage
 
-You just need to load the plugin in a file that runs before the tests execution, like a `setup.ts` or something like that:
+You just need to load the plugin in a file that runs before the test execution, like a `setup.ts` or something like that:
 
 ```ts
 // setup.ts
@@ -59,7 +59,7 @@ expect(spy).toHaveArgs(10, "long-range");
 expect(spy).toThrow();
 ```
 
-The assertions above act over any of the calls made to the spy. You can get more specific matchers if you assert over a single spy call:
+The assertions above act over any of the calls made to the spy. You can get more specific methods if you assert over a single spy call:
 
 ```ts
 import { expect } from "@assertive-ts/core";
@@ -90,7 +90,7 @@ expect(spy)
   .toHaveMessage("Something went wrong...");
 ```
 
-Notice how `call(..)` and `.toBeCalledOnce()` methods return an assertion over the single call, this way you can chain matchers instead of writing more statements.
+Notice how both `.call(..)` and `.toBeCalledOnce()` return an assertion over the single call, this way you can chain methods instead of writing more statements.
 
 ## License
 
@@ -98,7 +98,7 @@ MIT, see [the LICENSE file](https://github.com/stackbuilders/assertive-ts/blob/m
 
 ## Contributing
 
-Do you want to contribute to this project? Please take a look at our [contributing guideline](https://github.com/stackbuilders/assertive-ts/blob/main/docs/CONTRIBUTING.md) to know how you can help us build it.
+Do you want to contribute to this project? Please take a look at our [contributing guidelines](https://github.com/stackbuilders/assertive-ts/blob/main/docs/CONTRIBUTING.md) to know how you can help us build it.
 
 ---
 
