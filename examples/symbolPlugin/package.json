@@ -1,8 +1,8 @@
 {
   "name": "@examples/symbol-plugin",
   "private": true,
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
     "compile": "tsc"

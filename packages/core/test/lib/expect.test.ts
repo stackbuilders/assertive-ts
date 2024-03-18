@@ -1,4 +1,3 @@
-import { expect } from "../../src";
 import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
@@ -9,6 +8,7 @@ import { NumberAssertion } from "../../src/lib/NumberAssertion";
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
+import { expect } from "../../src/main";
 
 import assert from "assert";
 

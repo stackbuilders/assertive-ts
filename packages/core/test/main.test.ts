@@ -1,8 +1,8 @@
-import { assert as libAssert, assertThat, expect, TypeFactories } from "../src";
+import { assert as libAssert, assertThat, expect, TypeFactories } from "../src/main";
 
 import assert from "assert";
 
-describe("[Unit] index.test.ts", () => {
+describe("[Unit] main.test.ts", () => {
   context("expect", () => {
     it("is exposed to the API", () => {
       assert.ok(expect);
