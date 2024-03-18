@@ -23,15 +23,15 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
-    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^7.3.0",
+    "@typescript-eslint/parser": "^7.3.0",
+    "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-etc": "^2.0.3",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsdoc": "^48.1.0",
+    "eslint-plugin-jsdoc": "^48.2.1",
     "eslint-plugin-sonarjs": "^0.24.0",
     "turbo": "^1.12.4",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.2"
   }
 }
