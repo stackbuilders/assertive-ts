@@ -188,7 +188,7 @@ declare module "@assertive-ts/core" {
 }
 ```
 
-> **Note:** 3rd-party libraries should do this on their types entry point (index.d.ts), this way the interface is automatically extended when their plugin is passed to the `usePlugin(..)` function.
+> **Note:** 3rd-party libraries should do this on their types entry point (e.g. main.d.ts), this way the interface is automatically extended when their plugin is passed to the `usePlugin(..)` function.
 
 ### How to...
 

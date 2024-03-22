@@ -1,8 +1,8 @@
-import { expect } from "../../src";
 import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
 import { NumberAssertion } from "../../src/lib/NumberAssertion";
 import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
+import { expect } from "../../src/main";
 
 import assert, { AssertionError } from "assert";
 
