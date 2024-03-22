@@ -3,7 +3,10 @@
   "branches": ["main"],
   "plugins": [
     ["@semantic-release/commit-analyzer", {
-      "releaseRules": [{ "scope": "!sinon", "release": false }]
+      "releaseRules": [
+        { "scope": "!all", "release": false },
+        { "scope": "!sinon", "release": false }
+      ]
     }],
     "@semantic-release/release-notes-generator",
     "semantic-release-yarn",

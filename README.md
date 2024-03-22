@@ -186,7 +186,7 @@ MIT, see [the LICENSE file](LICENSE).
 
 ## Contributing
 
-Do you want to contribute to this project? Please take a look at our [contributing guideline](/docs/CONTRIBUTING.md) to know how you can help us build it.
+Do you want to contribute to this project? Please take a look at our [contributing guidelines](/docs/CONTRIBUTING.md) to know how you can help us build it. You can also check the [development guide](/docs/development.md) for information about local setup and the release process.
 
 ---
 
