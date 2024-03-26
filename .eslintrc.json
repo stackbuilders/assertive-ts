@@ -11,6 +11,9 @@
         "alwaysTryTypes": true,
         "project": "./tsconfig.json"
       }
+    },
+    "react": {
+      "version": "detect"
     }
   },
   "parserOptions": {
@@ -22,7 +25,9 @@
     "@typescript-eslint",
     "eslint-plugin-import",
     "eslint-plugin-jsdoc",
+    "eslint-plugin-react",
     "etc",
+    "react-hooks",
     "sonarjs"
   ],
   "extends": [
@@ -31,6 +36,8 @@
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:etc/recommended",
     "plugin:import/typescript",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:sonarjs/recommended"
   ],
   "overrides": [{
@@ -176,6 +183,7 @@
     "jsdoc/check-alignment": "error",
     "jsdoc/check-indentation": ["error", { "excludeTags": ["example", "param", "returns"] }],
     "jsdoc/tag-lines": ["error", "any", { "startLines": 1 }],
+    "jsx-quotes": "error",
     "keyword-spacing": "error",
     "linebreak-style": "error",
     "max-classes-per-file": ["error", 1],
@@ -215,6 +223,22 @@
     "quote-props": ["error", "as-needed"],
     "radix": "error",
     "rest-spread-spacing": "error",
+    "react/display-name": "off",
+    "react/hook-use-state": "error",
+    "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-closing-bracket-location": "error",
+    "react/jsx-curly-spacing": ["error", { "when": "never" }],
+    "react/jsx-equals-spacing": ["error", "never"],
+    "react/jsx-max-props-per-line": ["error", {
+      "maximum": 1,
+      "when": "multiline"
+    }],
+    "react/jsx-no-bind": "error",
+    "react/jsx-no-literals": "error",
+    "react/jsx-tag-spacing": "error",
+    "react/prop-types": "off",
+    "react/self-closing-comp": "error",
+    "react-hooks/rules-of-hooks": "error",
     "semi-spacing": "error",
     "sonarjs/cognitive-complexity": "off",
     "sonarjs/no-duplicate-string": "off",

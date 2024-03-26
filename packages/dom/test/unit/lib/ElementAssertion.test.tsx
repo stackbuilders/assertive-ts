@@ -69,7 +69,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and it is an indirect child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<NestedElementsTestComponent/>);
+          const { findByTestId } = render(<NestedElementsTestComponent />);
           const grandparent = await findByTestId("grandparent");
           const child = await findByTestId("child");
           const grandparentTest = new ElementAssertion(grandparent);
@@ -84,7 +84,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and it is a deeply nested child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<NestedElementsTestComponent/>);
+          const { findByTestId } = render(<NestedElementsTestComponent />);
           const grandparent = await findByTestId("grandparent");
           const deepChild = await findByTestId("deep-child");
           const grandparentTest = new ElementAssertion(grandparent);
@@ -101,7 +101,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when element is NOT contained in ancestor element", () => {
       it("throws an assertion error", async () => {
         const notChildElement = document.createElement("span");
-        const { findByTestId } = render(<NestedElementsTestComponent/>);
+        const { findByTestId } = render(<NestedElementsTestComponent />);
         const grandparent = await findByTestId("grandparent");
         const grandparentTest = new ElementAssertion(grandparent);
 
