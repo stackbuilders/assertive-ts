@@ -1,0 +1,28 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "cleanOutputDir": true,
+  "entryPoints": ["src/main.ts"],
+  "entryPointStrategy": "expand",
+  "gitRevision": "main",
+  "githubPages": false,
+  "hideGenerator": true,
+  "includeVersion": false,
+  "intentionallyNotExported": [],
+  "mergeModulesMergeMode": "project",
+  "mergeModulesRenameDefaults": true,
+  "name": "Assertive.ts - Native API",
+  "out": "../../docs/native/build",
+  "plugin": [
+    "typedoc-plugin-markdown",
+    "typedoc-plugin-merge-modules"
+  ],
+  "readme": "none",
+  "visibilityFilters": {
+    "@alpha": false,
+    "@beta": false,
+    "external": false,
+    "inherited": true,
+    "private": false,
+    "protected": false
+  }
+}

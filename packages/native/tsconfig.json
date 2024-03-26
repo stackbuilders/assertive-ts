@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build",
+    "typeRoots": [
+      "../../node_modules/@types/",
+      "./typings/"
+    ]
+  },
+  "exclude": [
+    "build/*",
+    "dist/*"
+  ],
+  "ts-node": {
+    "transpileOnly": true
+  }
+}
