@@ -1,6 +1,7 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { ReactElement } from "react";
 import { render } from "@testing-library/react";
+import { ReactElement } from "react";
+
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
 function TestComponent(): ReactElement {
@@ -8,7 +9,7 @@ function TestComponent(): ReactElement {
     <div>
       <button>click me</button>
     </div>
-  )
+  );
 }
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -17,7 +18,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const { findByRole } = render(<TestComponent />);
         const button = await findByRole("button", {
           name: "click me",
-        })
+        });
         const test = new ElementAssertion(button);
 
         expect(test.toBeInTheDocument())
@@ -26,8 +27,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.not.toBeInTheDocument())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to NOT be in the document");
-      })
-    })
+      });
+    });
     context("when the element is not in the document", () => {
       it("returns the assertion instance", () => {
         const detachedElement = document.createElement("div");
@@ -40,7 +41,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toBeInTheDocument())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to be in the document");
-      })
-    })
-  })
+      });
+    });
+  });
 });
