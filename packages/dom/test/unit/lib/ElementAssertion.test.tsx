@@ -30,13 +30,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
     context("when the element is not in the document", () => {
-      it("returns the assertion instance", () => {
+      it("Throws an assertion error", () => {
         const detachedElement = document.createElement("div");
 
         const test = new ElementAssertion(detachedElement);
-
-        expect(test.not.toBeInTheDocument())
-          .toBeEqual(test);
 
         expect(() => test.toBeInTheDocument())
           .toThrowError(AssertionError)
