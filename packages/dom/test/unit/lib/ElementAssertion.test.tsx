@@ -38,6 +38,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toBeInTheDocument())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to be in the document");
+
+        expect(test.not.toBeInTheDocument())
+          .toBeEqual(test);
       });
     });
   });
