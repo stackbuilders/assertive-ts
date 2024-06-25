@@ -22,8 +22,10 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     });
 
     return this.execute({
-      assertWhen: (this.actual.ownerDocument.defaultView !== null
-        && this.actual.ownerDocument === this.actual.getRootNode({ composed: true })),
+      assertWhen: (
+        this.actual.ownerDocument.defaultView !== null
+        && this.actual.ownerDocument === this.actual.getRootNode({ composed: true })
+      ),
       error,
       invertedError,
     });

@@ -11,26 +11,25 @@ function TestComponent(): ReactElement {
     </div>
   );
 }
+
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
     context("when the element is in the document", () => {
       it("returns the assertion instance", async () => {
         const { findByRole } = render(<TestComponent />);
-        const button = await findByRole("button", {
-          name: "click me",
-        });
+        const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
-        expect(test.toBeInTheDocument())
-          .toBeEqual(test);
+        expect(test.toBeInTheDocument()).toBeEqual(test);
 
         expect(() => test.not.toBeInTheDocument())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to NOT be in the document");
       });
     });
+
     context("when the element is not in the document", () => {
-      it("Throws an assertion error", () => {
+      it("throws an assertion error", () => {
         const detachedElement = document.createElement("div");
 
         const test = new ElementAssertion(detachedElement);
@@ -39,8 +38,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to be in the document");
 
-        expect(test.not.toBeInTheDocument())
-          .toBeEqual(test);
+        expect(test.not.toBeInTheDocument()).toBeEqual(test);
       });
     });
   });
