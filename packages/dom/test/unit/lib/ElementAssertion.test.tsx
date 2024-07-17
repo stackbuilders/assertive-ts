@@ -59,7 +59,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
         expect(() => test.not.toHaveAttribute("type", "submit"))
           .toThrowError(AssertionError)
-          .toHaveMessage(`Expected the element to NOT have attribute "type" with value "submit", but received "submit"`);
+          .toHaveMessage("Expected to NOT have attribute \"type\" with value \"submit\", but received \"submit\"");
       });
     });
 
@@ -71,7 +71,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
         expect(() => test.toHaveAttribute("type", "different value"))
           .toThrowError(AssertionError)
-          .toHaveMessage(`Expected the element to have attribute "type" with value "different value", but received "submit"`);
+          .toHaveMessage("Expected to have attribute \"type\" with value \"different value\", but received \"submit\"",
+          );
 
         expect(test.not.toHaveAttribute("type", "different value")).toBeEqual(test);
       });
@@ -87,7 +88,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
         expect(() => test.not.toHaveAttribute("disabled"))
           .toThrowError(AssertionError)
-          .toHaveMessage(`Expected the element to NOT have attribute "disabled"`);
+          .toHaveMessage("Expected to NOT have attribute \"disabled\"");
       });
     });
 
@@ -99,12 +100,11 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
         expect(() => test.toHaveAttribute("non-existent"))
           .toThrowError(AssertionError)
-          .toHaveMessage(`Expected the element to have attribute "non-existent"`);
+          .toHaveMessage("Expected to have attribute \"non-existent\"");
 
         expect(test.not.toHaveAttribute("non-existent")).toBeEqual(test);
       });
     });
-
 
   });
 });

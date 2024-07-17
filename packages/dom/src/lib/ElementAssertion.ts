@@ -48,16 +48,16 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       actual: receivedValue,
       expected: expectedValue,
       message: isExpectedValuePresent
-        ? `Expected the element to have attribute "${name}" with value "${expectedValue}", but received "${receivedValue}"`
-        : `Expected the element to have attribute "${name}"`,
+        ? `Expected to have attribute "${name}" with value "${expectedValue}", but received "${receivedValue}"`
+        : `Expected to have attribute "${name}"`,
     });
 
     const invertedError = new AssertionError({
       actual: receivedValue,
       expected: expectedValue,
       message: isExpectedValuePresent
-        ? `Expected the element to NOT have attribute "${name}" with value "${expectedValue}", but received "${receivedValue}"`
-        : `Expected the element to NOT have attribute "${name}"`,
+        ? `Expected to NOT have attribute "${name}" with value "${expectedValue}", but received "${receivedValue}"`
+        : `Expected to NOT have attribute "${name}"`,
     });
 
     return this.execute({
