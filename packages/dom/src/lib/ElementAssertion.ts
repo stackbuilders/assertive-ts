@@ -30,4 +30,43 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       invertedError,
     });
   }
+
+  /**
+   * Check if the element has a specific attribute with a specific value.
+   *
+   * @param name - The attribute name.
+   * @param expectedValue - The expected attribute value.
+   * @returns the assertion instance.
+   */
+
+  public toHaveAttribute(name: string, expectedValue?: string): this {
+    const hasAttribute = this.actual.hasAttribute(name);
+    const receivedValue = this.actual.getAttribute(name);
+    const isExpectedValuePresent = expectedValue !== undefined;
+
+    const error = new AssertionError({
+      actual: receivedValue,
+      expected: expectedValue,
+      message: isExpectedValuePresent
+        ? `Expected the element to have attribute "${name}" with value "${expectedValue}", but received "${receivedValue}"`
+        : `Expected the element to have attribute "${name}"`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: receivedValue,
+      expected: expectedValue,
+      message: isExpectedValuePresent
+        ? `Expected the element to NOT have attribute "${name}" with value "${expectedValue}", but received "${receivedValue}"`
+        : `Expected the element to NOT have attribute "${name}"`,
+    });
+
+    return this.execute({
+      assertWhen: (isExpectedValuePresent
+        ? hasAttribute && receivedValue === expectedValue
+        : hasAttribute),
+      error,
+      invertedError,
+    });
+  }
+
 }
