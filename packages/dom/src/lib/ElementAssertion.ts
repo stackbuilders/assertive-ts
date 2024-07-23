@@ -30,4 +30,28 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       invertedError,
     });
   }
+
+  /**
+   * Check if a given container element contains a specified child element.
+   *
+   * @returns the assertion instance.
+   */
+  public toContainElement(element: Element): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the container to contain the element",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the container to NOT contain the element",
+    });
+
+    return this.execute({
+      assertWhen: (
+        this.actual.contains(element)
+      ),
+      error,
+      invertedError,
+    });
+  }
 }
