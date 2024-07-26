@@ -32,13 +32,12 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   /**
-   * Check if the element has a specific attribute with a specific value.
+   * Check if the element has a specific attribute.
    *
    * @param name - The attribute name.
-   * @param expectedValue - The expected attribute value.
+   * @param expectedValue - The expected attribute value (Optional).
    * @returns the assertion instance.
    */
-
   public toHaveAttribute(name: string, expectedValue?: string): this {
     const hasAttribute = this.actual.hasAttribute(name);
     const receivedValue = this.actual.getAttribute(name);

@@ -12,11 +12,13 @@ function TestComponent(): ReactElement {
   );
 }
 
-const TestComponentElement = (): ReactElement => (
-  <button role="button" type="submit" className="btn primary" disabled>
-    click me
-  </button>
-);
+function TestComponentElement(): ReactElement {
+  return (
+    <button role="button" type="submit" className="btn primary" disabled>
+      click me
+    </button>
+  );
+}
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -48,6 +50,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
   describe(".toHaveAttribute", () => {
     context("when the element has the attribute with the expected value", () => {
       it("returns the assertion instance", async () => {
@@ -105,6 +108,5 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveAttribute("non-existent")).toBeEqual(test);
       });
     });
-
   });
 });
