@@ -32,7 +32,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   /**
-   * Check if a given container element contains a specified child element.
+   * Check if a given ancestor element contains a specified child element.
    *
    * @returns the assertion instance.
    */
