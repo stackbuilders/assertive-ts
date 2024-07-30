@@ -33,7 +33,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
   /**
    * Check if a given ancestor element contains a specified child element.
-   *
+   * 
+   * @param element - the child element.
    * @returns the assertion instance.
    */
   public toContainElement(element: Element): this {
