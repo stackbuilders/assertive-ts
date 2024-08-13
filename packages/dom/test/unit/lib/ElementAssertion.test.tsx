@@ -2,8 +2,9 @@ import { AssertionError, expect } from "@assertive-ts/core";
 import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
-import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
+
 import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
+import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
 import { WithAttributesTestComponent } from "./fixtures/withAttributesTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
