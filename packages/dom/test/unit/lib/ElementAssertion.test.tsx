@@ -2,15 +2,15 @@ import { AssertionError, expect } from "@assertive-ts/core";
 import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
-import { TestComponent } from "./fixtures/toBeInDocTestComponent";
-import { ContainsTestComponent } from "./fixtures/toContainElementTestComponent";
-import { TestComponentElement } from "./fixtures/toHaveAttributeTestComponent";
+import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
+import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
+import { WithAttributesTestComponent } from "./fixtures/withAttributesTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
     context("when the element is in the document", () => {
       it("returns the assertion instance", async () => {
-        const { findByRole } = render(<TestComponent />);
+        const { findByRole } = render(<SimpleTestComponent />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -40,7 +40,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the descendant element is contained in the ancestor element", () => {
       context("and it is a direct child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<ContainsTestComponent />);
+          const { findByTestId } = render(<NestedElementsTestComponent />);
           const grandparent = await findByTestId("grandparent");
           const parent = await findByTestId("parent");
           const child = await findByTestId("child");
@@ -68,7 +68,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and it is an indirect child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<ContainsTestComponent/>);
+          const { findByTestId } = render(<NestedElementsTestComponent/>);
           const grandparent = await findByTestId("grandparent");
           const child = await findByTestId("child");
           const grandparentTest = new ElementAssertion(grandparent);
@@ -83,7 +83,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and it is a deeply nested child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<ContainsTestComponent/>);
+          const { findByTestId } = render(<NestedElementsTestComponent/>);
           const grandparent = await findByTestId("grandparent");
           const deepChild = await findByTestId("deep-child");
           const grandparentTest = new ElementAssertion(grandparent);
@@ -100,7 +100,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when element is NOT contained in ancestor element", () => {
       it("throws an assertion error", async () => {
         const notChildElement = document.createElement("span");
-        const { findByTestId } = render(<ContainsTestComponent/>);
+        const { findByTestId } = render(<NestedElementsTestComponent/>);
         const grandparent = await findByTestId("grandparent");
         const grandparentTest = new ElementAssertion(grandparent);
 
@@ -116,7 +116,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toHaveAttribute", () => {
     context("when the element has the attribute with the expected value", () => {
       it("returns the assertion instance", async () => {
-        const { findByRole } = render(<TestComponentElement />);
+        const { findByRole } = render(<WithAttributesTestComponent />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -130,7 +130,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element has the attribute with a not expected value", () => {
       it("throws an assertion error", async () => {
-        const { findByRole } = render(<TestComponentElement />);
+        const { findByRole } = render(<WithAttributesTestComponent />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -145,7 +145,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element has the attribute without checking value", () => {
       it("returns the assertion instance", async () => {
-        const { findByRole } = render(<TestComponentElement />);
+        const { findByRole } = render(<WithAttributesTestComponent />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -159,7 +159,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element does not have the attribute", () => {
       it("throws an assertion error", async () => {
-        const { findByRole } = render(<TestComponentElement />);
+        const { findByRole } = render(<WithAttributesTestComponent />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 

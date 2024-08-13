@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-export function TestComponent(): ReactElement {
+export function SimpleTestComponent(): ReactElement {
     return (
       <div>
         <button>click me</button>

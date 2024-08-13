@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-export function ContainsTestComponent(): ReactElement {
+export function NestedElementsTestComponent(): ReactElement {
   return (
     <span data-testid="grandparent">
       <span data-testid="parent">
