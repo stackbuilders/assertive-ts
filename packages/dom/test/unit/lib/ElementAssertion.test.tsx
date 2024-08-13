@@ -2,7 +2,8 @@ import { AssertionError, expect } from "@assertive-ts/core";
 import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
-import { TestComponent, ContainsTestComponent } from "../../../src/lib/resources/fixtures";
+import { TestComponent } from "./fixtures/toBeInDocTestComponent";
+import { ContainsTestComponent } from "./fixtures/toContainElementTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -23,7 +24,6 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element is not in the document", () => {
       it("throws an assertion error", () => {
         const detachedElement = document.createElement("div");
-
         const test = new ElementAssertion(detachedElement);
 
         expect(() => test.toBeInTheDocument())
@@ -38,14 +38,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toContainElement", () => {
     context("when the descendant element is contained in the ancestor element", () => {
       context("and it is a direct child", () => {
-        it("returns the assertion instance", () => {
-          const { getByTestId } = render(<ContainsTestComponent/>);
-
-          const grandparent = getByTestId("grandparent");
-          const parent = getByTestId("parent");
-          const child = getByTestId("child");
-          const svgElement = getByTestId("svg-element");
-
+        it("returns the assertion instance", async () => {
+          const { findByTestId } = render(<ContainsTestComponent />);
+          const grandparent = await findByTestId("grandparent");
+          const parent = await findByTestId("parent");
+          const child = await findByTestId("child");
+          const svgElement = await findByTestId("svg-element");
           const grandparentTest = new ElementAssertion(grandparent);
           const parentTest = new ElementAssertion(parent);
 
@@ -68,12 +66,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
 
       context("and it is an indirect child", () => {
-        it("returns the assertion instance", () => {
-          const { getByTestId } = render(<ContainsTestComponent/>);
-
-          const grandparent = getByTestId("grandparent");
-          const child = getByTestId("child");
-
+        it("returns the assertion instance", async () => {
+          const { findByTestId } = render(<ContainsTestComponent/>);
+          const grandparent = await findByTestId("grandparent");
+          const child = await findByTestId("child");
           const grandparentTest = new ElementAssertion(grandparent);
 
           expect(grandparentTest.toContainElement(child));
@@ -85,12 +81,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
 
       context("and it is a deeply nested child", () => {
-        it("returns the assertion instance", () => {
-          const { getByTestId } = render(<ContainsTestComponent/>);
-
-          const grandparent = getByTestId("grandparent");
-          const deepChild = getByTestId("deep-child");
-
+        it("returns the assertion instance", async () => {
+          const { findByTestId } = render(<ContainsTestComponent/>);
+          const grandparent = await findByTestId("grandparent");
+          const deepChild = await findByTestId("deep-child");
           const grandparentTest = new ElementAssertion(grandparent);
 
           expect(grandparentTest.toContainElement(deepChild));
@@ -103,19 +97,17 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when element is NOT contained in ancestor element", () => {
-      it("throws an assertion error", () => {
-        const detachedElement = document.createElement("span") as Element;
-        const { getByTestId } = render(<ContainsTestComponent/>);
+      it("throws an assertion error", async () => {
+        const notChildElement = document.createElement("span");
+        const { findByTestId } = render(<ContainsTestComponent/>);
+        const grandparent = await findByTestId("grandparent");
+        const grandparentTest = new ElementAssertion(grandparent);
 
-          const grandparent = getByTestId("grandparent");
-
-          const grandparentTest = new ElementAssertion(grandparent);
-
-        expect(() => grandparentTest.toContainElement(detachedElement))
+        expect(() => grandparentTest.toContainElement(notChildElement))
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the container to contain the element");
 
-        expect(grandparentTest.not.toContainElement(detachedElement)).toBeEqual(grandparentTest);
+        expect(grandparentTest.not.toContainElement(notChildElement)).toBeEqual(grandparentTest);
       });
     });
   });
