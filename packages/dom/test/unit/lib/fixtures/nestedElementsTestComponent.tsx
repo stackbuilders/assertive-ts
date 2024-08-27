@@ -6,11 +6,11 @@ export function NestedElementsTestComponent(): ReactElement {
       <span data-testid="parent">
         <span data-testid="child">
           <span>
+            <span>
               <span>
-                  <span>
-                      <span data-testid="deep-child"></span>
-                  </span>
+                <span data-testid="deep-child"></span>
               </span>
+            </span>
           </span>
         </span>
       </span>
