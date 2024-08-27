@@ -32,9 +32,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   /**
-   * Check if a given ancestor element contains a specified child element.
+   * Check if a given container element contains a specified child element.
    *
-   * @param element - the child element.
+   * @param element the child expected to be contained.
    * @returns the assertion instance.
    */
   public toContainElement(element: Element): this {
@@ -48,9 +48,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     });
 
     return this.execute({
-      assertWhen: (
-        this.actual.contains(element)
-      ),
+      assertWhen: this.actual.contains(element),
       error,
       invertedError,
     });
