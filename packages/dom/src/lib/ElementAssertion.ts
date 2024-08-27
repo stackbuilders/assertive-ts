@@ -32,6 +32,29 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   /**
+   * Check if a given container element contains a specified child element.
+   *
+   * @param element the child expected to be contained.
+   * @returns the assertion instance.
+   */
+  public toContainElement(element: Element): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the container to contain the element",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the container to NOT contain the element",
+    });
+
+    return this.execute({
+      assertWhen: this.actual.contains(element),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
    * Check if the element has a specific attribute.
    *
    * @param name - The attribute name.
@@ -67,5 +90,4 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       invertedError,
     });
   }
-
 }
