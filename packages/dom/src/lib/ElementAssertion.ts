@@ -90,4 +90,36 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       invertedError,
     });
   }
+
+  public toHaveClass(classNames: string | string[], options: { exact?: boolean } = {}): this {
+    const actualClassList = this.actual.className.split(/\s+/).filter(Boolean);
+    const expectedClassList = Array.isArray(classNames) ? classNames : [classNames];
+    const { exact = false } = options;
+
+    const error = new AssertionError({
+      actual: actualClassList,
+      expected: expectedClassList,
+      message: exact
+        ? `Expected the element to have exactly these classes: "${expectedClassList.join(' ')}"`
+        : `Expected the element to have class(es): "${expectedClassList.join(' ')}"`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: actualClassList,
+      expected: expectedClassList,
+      message: exact
+        ? `Expected the element to NOT have exactly these classes: "${expectedClassList.join(' ')}"`
+        : `Expected the element to NOT have class(es): "${expectedClassList.join(' ')}"`,
+    });
+
+    const assertWhen = exact
+      ? actualClassList.length === expectedClassList.length && expectedClassList.every(cls => actualClassList.includes(cls))
+      : expectedClassList.every(cls => actualClassList.includes(cls));
+
+    return this.execute({
+      assertWhen,
+      error,
+      invertedError,
+    });
+  }
 }
