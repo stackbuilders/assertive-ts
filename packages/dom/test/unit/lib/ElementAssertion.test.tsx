@@ -6,6 +6,7 @@ import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
 import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
 import { WithAttributesTestComponent } from "./fixtures/withAttributesTestComponent";
+import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -172,4 +173,51 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
+  describe(".toHaveClass", () => {
+    context("when the element has the the expected class", () => {
+      it("returns the assertion instance", async () => {
+        const { findByTestId } = render(<HaveClassTestComponent />);
+        const divTest = await findByTestId("classTest");
+        divTest.className = "foo bar";
+        const test = new ElementAssertion(divTest);
+        expect(test.toHaveClass("foo")).toBeEqual(test);
+      });
+    });
+
+    context("when the element does not have the expected class ", () => {
+      it("throws an assertion error", async () => {
+        const { findByTestId } = render(<HaveClassTestComponent />);
+        const divTest = await findByTestId("classTest");
+        divTest.className = "foo";
+        const test = new ElementAssertion(divTest);
+        expect(() => test.toHaveClass("bar"))
+          .toThrowError(AssertionError)
+          .toHaveMessage(`Expected the element to have class(es): "bar"`);
+      });
+    });
+
+    context("when the element element has the the exact matching expected class", () => {
+      it("returns the assertion instance", async () => {
+        const { findByTestId } = render(<HaveClassTestComponent />);
+        const divTest = await findByTestId("classTest");
+        divTest.className = "foo bar";
+        const test = new ElementAssertion(divTest);
+        expect(test.toHaveClass(["foo", "bar"], { exact: true })).toBeEqual(test);
+      });
+    });
+
+    context("when the element does not have the exact matching expected class ", async () => {
+      it("throws an assertion error", async () => {
+        const { findByTestId } = render(<HaveClassTestComponent />);
+        const divTest = await findByTestId("classTest");
+        divTest.className = "foo bar extra";
+        const test = new ElementAssertion(divTest);
+        expect(() => test.toHaveClass(["foo", "bar"], { exact: true }))
+          .toThrowError(AssertionError)
+          .toHaveMessage(`Expected the element to have exactly these classes: "foo bar"`);
+      });
+    });
+  });
+
 });
