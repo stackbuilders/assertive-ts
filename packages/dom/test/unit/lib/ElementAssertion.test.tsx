@@ -3,10 +3,10 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
+import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
 import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
 import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
 import { WithAttributesTestComponent } from "./fixtures/withAttributesTestComponent";
-import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -193,7 +193,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const test = new ElementAssertion(divTest);
         expect(() => test.toHaveClass("bar"))
           .toThrowError(AssertionError)
-          .toHaveMessage(`Expected the element to have class(es): "bar"`);
+          .toHaveMessage("Expected the element to have class(es): \"bar\"");
       });
     });
 
@@ -207,7 +207,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
 
-    context("when the element does not have the exact matching expected class ", async () => {
+    context("when the element does not have the exact matching expected class ", () => {
       it("throws an assertion error", async () => {
         const { findByTestId } = render(<HaveClassTestComponent />);
         const divTest = await findByTestId("classTest");
@@ -215,7 +215,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const test = new ElementAssertion(divTest);
         expect(() => test.toHaveClass(["foo", "bar"], { exact: true }))
           .toThrowError(AssertionError)
-          .toHaveMessage(`Expected the element to have exactly these classes: "foo bar"`);
+          .toHaveMessage("Expected the element to have exactly these classes: \"foo bar\"");
       });
     });
   });
