@@ -181,7 +181,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const divTest = await findByTestId("classTest");
         divTest.className = "foo bar";
         const test = new ElementAssertion(divTest);
+
         expect(test.toHaveClass("foo")).toBeEqual(test);
+
+        expect(() => test.not.toHaveClass("foo"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to NOT have class(es): \"foo\"");
       });
     });
 
@@ -191,9 +196,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const divTest = await findByTestId("classTest");
         divTest.className = "foo";
         const test = new ElementAssertion(divTest);
+
         expect(() => test.toHaveClass("bar"))
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to have class(es): \"bar\"");
+
+        expect(test.not.toHaveClass("bar")).toBeEqual(test);
       });
     });
 
@@ -203,7 +211,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const divTest = await findByTestId("classTest");
         divTest.className = "foo bar";
         const test = new ElementAssertion(divTest);
+
         expect(test.toHaveClass(["foo", "bar"], { exact: true })).toBeEqual(test);
+
+        expect(() => test.not.toHaveClass(["foo", "bar"], { exact: true }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to NOT have exactly these classes: \"foo bar\"");
       });
     });
 
@@ -213,9 +226,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const divTest = await findByTestId("classTest");
         divTest.className = "foo bar extra";
         const test = new ElementAssertion(divTest);
+
         expect(() => test.toHaveClass(["foo", "bar"], { exact: true }))
           .toThrowError(AssertionError)
           .toHaveMessage("Expected the element to have exactly these classes: \"foo bar\"");
+
+        expect(test.not.toHaveClass(["foo", "bar"], { exact: true })).toBeEqual(test);
       });
     });
   });
