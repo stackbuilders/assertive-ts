@@ -91,6 +91,17 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     });
   }
 
+/**
+ * Check if the element has a specific class or classes.
+ *
+ * Validates that the provided element contains specified classes.
+ * Allows checking for one or more class names and supports exact matching.
+ *
+ * @param classNames - A single class name or an array of class names to check.
+ * @param options - Optional settings for matching:
+ *  - `exact` (boolean): When true, checks for an exact match of all classes.
+ * @returns the assertion instance.
+ */
   public toHaveClass(classNames: string | string[], options: { exact?: boolean; } = {}): this {
     const actualClassList = this.actual.className.split(/\s+/).filter(Boolean);
     const expectedClassList = Array.isArray(classNames) ? classNames : [classNames];
