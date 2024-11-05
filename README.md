@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![CI](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml)
 [![Release](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml)
@@ -169,6 +169,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/nieled"><img src="https://avatars.githubusercontent.com/u/20074796?v=4?s=100" width="100px;" alt="Daniel Calle"/><br /><sub><b>Daniel Calle</b></sub></a><br /><a href="#infra-nieled" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/NeoLight1010"><img src="https://avatars.githubusercontent.com/u/58057324?v=4?s=100" width="100px;" alt="Anthony Suárez"/><br /><sub><b>Anthony Suárez</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=NeoLight1010" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/sebas1208"><img src="https://avatars.githubusercontent.com/u/5571870?v=4?s=100" width="100px;" alt="Sebastian Avalos"/><br /><sub><b>Sebastian Avalos</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/pulls?q=is%3Apr+reviewed-by%3Asebas1208" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://wavee.world/invitation/b96d00e6-b802-4a1b-8a66-2e3854a01ffd"><img src="https://avatars.githubusercontent.com/u/22633385?v=4?s=100" width="100px;" alt="Ikko Eltociear Ashimine"/><br /><sub><b>Ikko Eltociear Ashimine</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=eltociear" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
