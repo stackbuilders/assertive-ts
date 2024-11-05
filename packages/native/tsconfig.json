@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "outDir": "./build",
+    "typeRoots": [
+      "../../node_modules/@types/",
+      "./typings/"
+    ]
+  },
+  "exclude": [
+    "build/*",
+    "dist/*"
+  ],
+  "ts-node": {
+    "transpileOnly": true
+  }
+}

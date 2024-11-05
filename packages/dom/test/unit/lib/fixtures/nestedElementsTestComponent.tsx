@@ -8,13 +8,13 @@ export function NestedElementsTestComponent(): ReactElement {
           <span>
             <span>
               <span>
-                <span data-testid="deep-child"></span>
+                <span data-testid="deep-child" />
               </span>
             </span>
           </span>
         </span>
       </span>
-      <svg data-testid="svg-element"></svg>
+      <svg data-testid="svg-element" />
     </span>
   );
 }

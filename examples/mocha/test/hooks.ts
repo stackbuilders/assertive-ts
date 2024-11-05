@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { usePlugin } from "@assertive-ts/core";
 import { SymbolPlugin } from "@examples/symbol-plugin";
 import { RootHookObject } from "mocha";
