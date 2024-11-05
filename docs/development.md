@@ -39,7 +39,7 @@ The release process is automated by [semantic-release](https://semantic-release.
 
 ### Scopes
 
-Scopes are optional on Conventional Commits, but we take advantange of them to specify the package a change is aimed for. The table below describes the the available scopes and what package they affect:
+Scopes are optional on Conventional Commits, but we take advantange of them to specify the package a change is aimed for. The table below describes the available scopes and what package they affect:
 
 | Scope   | Package               | Commit example                   |
 | :-----: | :-------------------: | -------------------------------- |
