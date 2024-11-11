@@ -35,5 +35,8 @@
     "eslint-plugin-sonarjs": "^0.24.0",
     "turbo": "^1.12.4",
     "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "@testing-library/react-native": "^12.8.1"
   }
 }

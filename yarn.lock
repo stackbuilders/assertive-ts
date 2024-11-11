@@ -2958,7 +2958,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-native@npm:^12.4.4":
+"@testing-library/react-native@npm:^12.4.4, @testing-library/react-native@npm:^12.8.1":
   version: 12.8.1
   resolution: "@testing-library/react-native@npm:12.8.1"
   dependencies:
@@ -3988,6 +3988,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "assertive-ts@workspace:."
   dependencies:
+    "@testing-library/react-native": "npm:^12.8.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.3.0"
     "@typescript-eslint/parser": "npm:^7.3.0"
     eslint: "npm:^8.57.0"
