@@ -1,6 +1,8 @@
 import { userEvent } from "@testing-library/react-native";
 import Sinon from "sinon";
 
+import { toBeDisabled } from "../src";
+
 process.env.RNTL_SKIP_AUTO_DETECT_FAKE_TIMERS = "true";
 
 const newUserEvent = userEvent.setup({
@@ -9,3 +11,8 @@ const newUserEvent = userEvent.setup({
 });
 
 Object.assign(userEvent, newUserEvent);
+
+//
+expect.extend({
+  toBeDisabled,
+});
