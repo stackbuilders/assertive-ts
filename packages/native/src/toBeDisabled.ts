@@ -1,24 +1,32 @@
-import type { ReactTestInstance } from 'react-test-renderer';
-import { matcherHint } from 'jest-matcher-utils';
-import { checkReactElement, getType } from './utils';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { matcherHint } from "jest-matcher-utils";
+import type { ReactTestInstance } from "react-test-renderer";
+
+import { checkReactElement, getType } from "./utils";
+
+type Response = {
+  message: () => string;
+  pass: boolean;
+};
 
 // Elements that support 'disabled'
 const DISABLE_TYPES = [
-  'Button',
-  'Slider',
-  'Switch',
-  'Text',
-  'TouchableHighlight',
-  'TouchableOpacity',
-  'TouchableWithoutFeedback',
-  'TouchableNativeFeedback',
-  'View',
-  'TextInput',
-  'Pressable',
+  "Button",
+  "Slider",
+  "Switch",
+  "Text",
+  "TouchableHighlight",
+  "TouchableOpacity",
+  "TouchableWithoutFeedback",
+  "TouchableNativeFeedback",
+  "View",
+  "TextInput",
+  "Pressable",
 ];
 
-function isElementDisabled(element: ReactTestInstance) {
-  if (getType(element) === 'TextInput' && element?.props?.editable === false) {
+function isElementDisabled(element: ReactTestInstance): boolean {
+  if (getType(element) === "TextInput" && element?.props?.editable === false) {
     return true;
   }
 
@@ -29,31 +37,31 @@ function isElementDisabled(element: ReactTestInstance) {
   return (
     !!element?.props?.disabled ||
     !!element?.props?.accessibilityState?.disabled ||
-    !!element?.props?.accessibilityStates?.includes('disabled')
+    !!element?.props?.accessibilityStates?.includes("disabled")
   );
 }
 
 function isAncestorDisabled(element: ReactTestInstance): boolean {
   const parent = element.parent;
-  return parent != null && (isElementDisabled(element) || isAncestorDisabled(parent));
+  return parent !== null && (isElementDisabled(element) || isAncestorDisabled(parent));
 }
 
-export function toBeDisabled(this: jest.MatcherContext, element: ReactTestInstance) {
+export function toBeDisabled(matcherContext: jest.MatcherContext, element: ReactTestInstance): Response {
   checkReactElement(element);
 
   const isDisabled = isElementDisabled(element) || isAncestorDisabled(element);
 
   return {
-    pass: isDisabled,
     message: () => {
-      const is = isDisabled ? 'is' : 'is not';
+      const is = isDisabled ? "is" : "is not";
       return [
-        matcherHint(`${this.isNot ? '.not' : ''}.toBeDisabled`, 'element', ''),
-        '',
+        // eslint-disable-next-line no-invalid-this
+        matcherHint(`${matcherContext.isNot ? ".not" : ""}.toBeDisabled`, "element", ""),
+        "",
         `Received element ${is} disabled:`,
         element,
-      ].join('\n');
+      ].join("\n");
     },
+    pass: isDisabled,
   };
 }
-
