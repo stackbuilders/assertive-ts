@@ -1,4 +1,5 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import { get } from "dot-prop-immutable";
 import prettyFormat, { plugins } from "pretty-format";
 import { ReactTestInstance } from "react-test-renderer";
 
@@ -76,8 +77,8 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     return (
         !!element?.props?.disabled ||
-        !!element?.props?.accessibilityState?.disabled ||
-        !!element?.props?.accessibilityStates?.includes("disabled")
+        get<ReactTestInstance, boolean>(element, "props.accessibilityState.disabled", false) ||
+        get<ReactTestInstance, [string]>(element, "props.accessibilityStates", []).includes("disabled")
     );
   }
 
