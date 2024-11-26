@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react-native";
-import { TextInput, View } from "react-native";
+import { TextInput } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
 
@@ -7,12 +7,10 @@ import assert, { AssertionError } from "assert";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
     describe(".toBeDisabled", () => {
-      context("when the component is disabled", () => {
+      context("when the component TextInput is disabled", () => {
         it("returns the assertion instance", () => {
           const element = render(
-            <View disabled={true} testID="id">
-              <TextInput />
-            </View>,
+            <TextInput testID="id" editable={false} />,
           );
           const test = new ElementAssertion(element.getByTestId("id"));
 
