@@ -1,5 +1,8 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import prettyFormat, { plugins } from "pretty-format";
 import { ReactTestInstance } from "react-test-renderer";
+
+const { ReactTestComponent, ReactElement } = plugins;
 
 // Elements that support 'disabled'
 const DISABLE_TYPES = [
@@ -21,10 +24,32 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     super(actual);
   }
 
+  public override toString = (): string => {
+    if (this.actual === null) {
+      return "null";
+    }
+
+    return prettyFormat(
+        {
+          // This prop is needed to persuade the prettyFormat that the element
+          // is a ReactTestRendererJSON instance, so it is formatted as JSX.
+          $$typeof: Symbol.for("react.test.json"),
+          props: this.actual.props,
+          type: this.actual.type,
+        },
+        {
+          highlight: true,
+          plugins: [ReactTestComponent, ReactElement],
+          printBasicPrototype: false,
+          printFunctionName: false,
+        },
+    );
+  };
+
   public toBeDisabled(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected <${this.actual}> to be disabled`,
+      message: `Expected ${this.toString()} to be disabled`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
@@ -39,11 +64,13 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   private isElementDisabled(element: ReactTestInstance): boolean {
-    if (this.getType(element) === "TextInput" && element?.props?.editable === false) {
+    const { type } = element;
+    const elementType = type.toString();
+    if (elementType === "TextInput" && element?.props?.editable === false) {
       return true;
     }
 
-    if (!DISABLE_TYPES.includes(this.getType(element))) {
+    if (!DISABLE_TYPES.includes(elementType)) {
       return false;
     }
 
@@ -58,10 +85,4 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     const parent = element.parent;
     return parent !== null && (this.isElementDisabled(element) || this.isAncestorDisabled(parent));
   }
-
-  private getType({ type }: ReactTestInstance): string {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return type.displayName || type.name || type;
-  }
-
 }
