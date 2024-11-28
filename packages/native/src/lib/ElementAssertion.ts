@@ -5,21 +5,6 @@ import { ReactTestInstance } from "react-test-renderer";
 
 const { ReactTestComponent, ReactElement } = plugins;
 
-// Elements that support 'disabled'
-const DISABLE_TYPES = [
-  "Button",
-  "Slider",
-  "Switch",
-  "Text",
-  "TouchableHighlight",
-  "TouchableOpacity",
-  "TouchableWithoutFeedback",
-  "TouchableNativeFeedback",
-  "View",
-  "TextInput",
-  "Pressable",
-];
-
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
     super(actual);
@@ -47,6 +32,17 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     );
   };
 
+   /**
+    * Check if the component is diabled.
+    *
+    * @example
+    * ```
+    * expect(component).toBeDisabled();
+    * ```
+    *
+    * @returns the assertion instance
+    */
+
   public toBeDisabled(): this {
     const error = new AssertionError({
       actual: this.actual,
@@ -71,19 +67,16 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       return true;
     }
 
-    if (!DISABLE_TYPES.includes(elementType)) {
-      return false;
-    }
-
     return (
-        !!element?.props?.disabled ||
-        get<ReactTestInstance, boolean>(element, "props.accessibilityState.disabled", false) ||
+        get(element, "props.aria-disabled") ||
+        get(element, "props.disabled", false) ||
+        get(element, "props.accessibilityState.disabled", false) ||
         get<ReactTestInstance, [string]>(element, "props.accessibilityStates", []).includes("disabled")
     );
   }
 
   private isAncestorDisabled(element: ReactTestInstance): boolean {
-    const parent = element.parent;
+    const { parent } = element;
     return parent !== null && (this.isElementDisabled(element) || this.isAncestorDisabled(parent));
   }
 }
