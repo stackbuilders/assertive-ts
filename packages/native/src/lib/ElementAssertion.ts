@@ -20,7 +20,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     *
     * @example
     * ```
-    * expect(component).toBeDisabled();
+    * expect(component.toBeDisabled()).toBeTruthy();
     * ```
     *
     * @returns the assertion instance
@@ -43,6 +43,15 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the component is enabled.
+   *
+   * @example
+   * ```
+   * expect(component.toBeEnabled()).toBeTruthy();
+   * ```
+   * @returns the assertion instance
+   */
   public toBeEnabled(): this {
     return this.not.toBeDisabled();
   }
