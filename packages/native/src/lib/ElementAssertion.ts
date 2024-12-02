@@ -1,9 +1,6 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
-import prettyFormat, { plugins } from "pretty-format";
 import { ReactTestInstance } from "react-test-renderer";
-
-const { ReactTestComponent, ReactElement } = plugins;
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -15,25 +12,11 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       return "null";
     }
 
-    return prettyFormat(
-        {
-          // This prop is needed to persuade the prettyFormat that the element
-          // is a ReactTestRendererJSON instance, so it is formatted as JSX.
-          $$typeof: Symbol.for("react.test.json"),
-          props: this.actual.props,
-          type: this.actual.type,
-        },
-        {
-          highlight: true,
-          plugins: [ReactTestComponent, ReactElement],
-          printBasicPrototype: false,
-          printFunctionName: false,
-        },
-    );
+    return `<${this.actual.type.toString()} testID="${this.actual.props.testID}"... />`;
   };
 
    /**
-    * Check if the component is diabled.
+    * Check if the component is disabled.
     *
     * @example
     * ```
@@ -46,11 +29,11 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   public toBeDisabled(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected ${this.toString()} to be disabled`,
+      message: `Received element ${this.toString()} is enabled.`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be disabled",
+      message: `Received element ${this.toString()} is disabled.`,
     });
 
     return this.execute({
@@ -58,6 +41,10 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       error,
       invertedError,
     });
+  }
+
+  public toBeEnabled(): this {
+    return this.not.toBeDisabled();
   }
 
   private isElementDisabled(element: ReactTestInstance): boolean {

@@ -8,20 +8,27 @@ import {
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
-    describe(".toBeDisabled", () => {
-      it("returns the assertion instance when the component TextInput is not editable", () => {
+  describe(".toBeDisabled", () => {
+    context("when the element is TextInput", () => {
+      it("returns the assertion instance when is not editable", () => {
         const element = render(
-          <TextInput testID="id" editable={false} />,
+            <TextInput testID="id" editable={false} />,
         );
         const test = new ElementAssertion(element.getByTestId("id"));
-
         expect(test.toBeDisabled()).toBe(test);
-        expect(() => test.not.toBeDisabled())
-            .toThrowError(AssertionError)
-            .toHaveMessage("Expected the value NOT to be disabled");
       });
+      it("throws an error when it is editable", () => {
+        const reactElement = render(<TextInput editable={true} testID="id" />);
+        const test = new ElementAssertion(reactElement.getByTestId("id"));
 
-      it("checks aria-disabled prop for parent and child element", () => {
+        expect(() => test.toBeDisabled())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Received element <TextInput testID="id"... /> is enabled.');
+      });
+    });
+
+    context("when the parent has property aria-disabled", () => {
+      it("returns disable for parent and child element when aria-disabled=true", () => {
         const element = render(
             <View aria-disabled={true} testID="parentId">
               <View testID="childId">
@@ -32,22 +39,13 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
         const parent = new ElementAssertion(element.getByTestId("parentId"));
         const child = new ElementAssertion(element.getByTestId("childId"));
-
         expect(parent.toBeDisabled()).toBeTruthy();
         expect(child.toBeDisabled()).toBeTruthy();
-        expect(() => parent.not.toBeDisabled())
-            .toThrowError(AssertionError)
-            .toHaveMessage("Expected the value NOT to be disabled");
-        expect(() => child.not.toBeDisabled())
-            .toThrowError(AssertionError)
-            .toHaveMessage("Expected the value NOT to be disabled");
-
       });
-
-      it("checks aria-disabled prop for child element", () => {
+      it("throws an error when aria-disabled=false", () => {
         const element = render(
-            <View testID="parentId">
-              <View aria-disabled={true} testID="childId">
+            <View aria-disabled={false} testID="parentId">
+              <View testID="childId">
                 <TextInput />
               </View>
             </View>,
@@ -56,12 +54,41 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const parent = new ElementAssertion(element.getByTestId("parentId"));
         const child = new ElementAssertion(element.getByTestId("childId"));
 
-        expect(child.toBeDisabled()).toBeTruthy();
-        expect(parent.not.toBeDisabled()).toBeTruthy();
-        expect(() => child.not.toBeDisabled())
+        expect(parent.toBeEnabled()).toBeTruthy();
+        expect(() => parent.toBeDisabled())
             .toThrowError(AssertionError)
-            .toHaveMessage("Expected the value NOT to be disabled");
+            .toHaveMessage('Received element <View testID="parentId"... /> is enabled.');
+        expect(() => child.toBeDisabled())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Received element <View testID="childId"... /> is enabled.');
+      });
+    });
+
+    context("when the child has property aria-disabled", () => {
+      const element = render(
+          <View testID="parentId">
+            <View aria-disabled={true} testID="childId">
+              <TextInput />
+            </View>
+          </View>,
+      );
+
+      const parent = new ElementAssertion(element.getByTestId("parentId"));
+      const child = new ElementAssertion(element.getByTestId("childId"));
+
+      it("returns disable for child element when aria-disabled=true", () => {
+        expect(child.toBeDisabled()).toBeTruthy();
+        expect(() => child.toBeEnabled())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Received element <View testID=\"childId\"... /> is disabled.");
+      });
+      it("returns enable for parent with disabled child", () => {
+        expect(parent.toBeEnabled()).toBeTruthy();
+        expect(() => parent.toBeDisabled())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Received element <View testID=\"parentId\"... /> is enabled.");
 
       });
     });
   });
+});
