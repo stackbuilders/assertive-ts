@@ -20,20 +20,19 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     *
     * @example
     * ```
-    * expect(component.toBeDisabled()).toBeTruthy();
+    * expect(component).toBeDisabled();
     * ```
     *
     * @returns the assertion instance
     */
-
   public toBeDisabled(): this {
     const error = new AssertionError({
       actual: this.actual,
-      message: `Received element ${this.toString()} is enabled.`,
+      message: `Expected element ${this.toString()} to be disabled.`,
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Received element ${this.toString()} is disabled.`,
+      message: `Received element ${this.toString()} not to be disabled.`,
     });
 
     return this.execute({
@@ -48,7 +47,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
    *
    * @example
    * ```
-   * expect(component.toBeEnabled()).toBeTruthy();
+   * expect(component).toBeEnabled();
    * ```
    * @returns the assertion instance
    */
@@ -64,10 +63,10 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     }
 
     return (
-        get(element, "props.aria-disabled") ||
-        get(element, "props.disabled", false) ||
-        get(element, "props.accessibilityState.disabled", false) ||
-        get<ReactTestInstance, [string]>(element, "props.accessibilityStates", []).includes("disabled")
+        get(element, "props.aria-disabled")
+        || get(element, "props.disabled", false)
+        || get(element, "props.accessibilityState.disabled", false)
+        || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
     );
   }
 
