@@ -12,7 +12,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       return "null";
     }
 
-    return `<${this.actual.type.toString()} testID="${this.actual.props.testID}"... />`;
+    return `<${this.actual.type.toString()} ... />`;
   };
 
    /**

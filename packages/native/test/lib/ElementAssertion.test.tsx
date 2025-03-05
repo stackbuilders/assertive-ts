@@ -27,7 +27,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(() => test.toBeDisabled())
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected element <TextInput testID="id"... /> to be disabled.');
+            .toHaveMessage("Expected element <TextInput ... /> to be disabled.");
         });
       });
     });
@@ -66,10 +66,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           expect(parent.toBeEnabled()).toBeEqual(parent);
           expect(() => parent.toBeDisabled())
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected element <View testID="parentId"... /> to be disabled.');
+            .toHaveMessage("Expected element <View ... /> to be disabled.");
           expect(() => child.toBeDisabled())
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected element <View testID="childId"... /> to be disabled.');
+            .toHaveMessage("Expected element <View ... /> to be disabled.");
         });
       });
     });
@@ -91,14 +91,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           expect(child.toBeDisabled()).toBe(child);
           expect(() => child.toBeEnabled())
             .toThrowError(AssertionError)
-            .toHaveMessage("Received element <View testID=\"childId\"... /> not to be disabled.");
+            .toHaveMessage("Received element <View ... /> not to be disabled.");
         });
 
         it("returns error for parent element", () => {
           expect(parent.toBeEnabled()).toBe(parent);
           expect(() => parent.toBeDisabled())
             .toThrowError(AssertionError)
-            .toHaveMessage("Expected element <View testID=\"parentId\"... /> to be disabled.");
+            .toHaveMessage("Expected element <View ... /> to be disabled.");
         });
       });
     });
