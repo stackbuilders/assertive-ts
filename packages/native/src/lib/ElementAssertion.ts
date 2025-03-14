@@ -32,7 +32,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Received element ${this.toString()} not to be disabled.`,
+      message: `Expected element ${this.toString()} to NOT be disabled.`,
     });
 
     return this.execute({
@@ -52,7 +52,20 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
    * @returns the assertion instance
    */
   public toBeEnabled(): this {
-    return this.not.toBeDisabled();
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to be enabled.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to NOT be enabled.`,
+    });
+
+    return this.execute({
+      assertWhen: !this.isElementDisabled(this.actual) && !this.isAncestorDisabled(this.actual),
+      error,
+      invertedError,
+    });
   }
 
   private isElementDisabled(element: ReactTestInstance): boolean {
