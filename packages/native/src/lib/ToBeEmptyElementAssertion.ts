@@ -40,7 +40,7 @@ export class ToBeEmptyElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: isEmpty(this.actual),
+      assertWhen: isEmpty(this.actual.children),
       error,
       invertedError,
     });
