@@ -1,14 +1,16 @@
-import { ReactTestInstance } from "react-test-renderer";
-
-export function isEmpty(element: ReactTestInstance): boolean {
-  const children = element?.children;
-
-  if (!children) {
+/**
+ * Checks if a value is empty.
+ *
+ * @param value - The value to check.
+ * @returns `true` if the value is empty, `false` otherwise.
+ */
+export function isEmpty(value: unknown): boolean {
+  if (!value) {
     return true;
   }
 
-  if (Array.isArray(children)) {
-    return children.length === 0;
+  if (Array.isArray(value)) {
+    return value.length === 0;
   }
 
   return false;
