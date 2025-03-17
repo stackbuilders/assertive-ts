@@ -17,5 +17,8 @@ node_modules/
 # VSCode
 .vscode/
 
+# idea
+.idea/
+
 # Packages
 *.tgz
