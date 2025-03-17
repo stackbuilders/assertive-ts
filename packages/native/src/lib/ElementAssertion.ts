@@ -15,16 +15,16 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     return `<${this.actual.type.toString()} ... />`;
   };
 
-   /**
-    * Check if the component is disabled.
-    *
-    * @example
-    * ```
-    * expect(component).toBeDisabled();
-    * ```
-    *
-    * @returns the assertion instance
-    */
+  /**
+  * Check if the component is disabled or has been disabled by an ancestor.
+  *
+  * @example
+  * ```
+  * expect(component).toBeDisabled();
+  * ```
+  *
+  * @returns the assertion instance
+  */
   public toBeDisabled(): this {
     const error = new AssertionError({
       actual: this.actual,
