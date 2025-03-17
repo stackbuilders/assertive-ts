@@ -42,10 +42,16 @@ export class ToBeEmptyElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   private isEmpty(element: ReactTestInstance): boolean {
-    if(!element?.props?.children) {
+    const children = element?.children;
+
+    if (!children) {
       return true;
     }
 
-    return element?.props?.children.length === 0;
+    if (Array.isArray(children)) {
+      return children.length === 0;
+    }
+
+    return false;
   }
 }
