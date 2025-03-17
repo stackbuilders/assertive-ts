@@ -1,6 +1,11 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { ReactTestInstance } from "react-test-renderer";
 
+import { isEmpty } from "./helpers/helpers";
+
+/**
+ * Assertion for checking if a React element is empty.
+ */
 export class ToBeEmptyElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
     super(actual);
@@ -35,23 +40,9 @@ export class ToBeEmptyElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isEmpty(this.actual),
+      assertWhen: isEmpty(this.actual),
       error,
       invertedError,
     });
-  }
-
-  private isEmpty(element: ReactTestInstance): boolean {
-    const children = element?.children;
-
-    if (!children) {
-      return true;
-    }
-
-    if (Array.isArray(children)) {
-      return children.length === 0;
-    }
-
-    return false;
   }
 }

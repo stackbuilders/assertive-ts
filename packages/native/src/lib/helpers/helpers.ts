@@ -7,9 +7,23 @@ import { ReactTestInstance } from "react-test-renderer";
  * @returns A string representation of the instance.
  */
 export function instanceToString(instance: ReactTestInstance | null): string {
-  if (instance === null) {
-    return "null";
+    if (instance === null) {
+        return "null";
+    }
+
+    return `<${instance.type.toString()} ... />`;
+}
+
+export function isEmpty(element: ReactTestInstance): boolean {
+  const children = element?.children;
+
+  if (!children) {
+    return true;
   }
 
-  return `<${instance.type.toString()} ... />`;
+  if (Array.isArray(children)) {
+    return children.length === 0;
+  }
+
+  return false;
 }
