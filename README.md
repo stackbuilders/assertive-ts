@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![CI](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml)
 [![Release](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml)
@@ -173,6 +173,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fonsiher"><img src="https://avatars.githubusercontent.com/u/67283172?v=4?s=100" width="100px;" alt="Edwin Hernández"/><br /><sub><b>Edwin Hernández</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=fonsiher" title="Code">💻</a> <a href="https://github.com/stackbuilders/assertive-ts/pulls?q=is%3Apr+reviewed-by%3Afonsiher" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/matycarolina"><img src="https://avatars.githubusercontent.com/u/34869971?v=4?s=100" width="100px;" alt="Marialejandra Contreras"/><br /><sub><b>Marialejandra Contreras</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=matycarolina" title="Code">💻</a> <a href="https://github.com/stackbuilders/assertive-ts/pulls?q=is%3Apr+reviewed-by%3Amatycarolina" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/suany0805"><img src="https://avatars.githubusercontent.com/u/79164262?v=4?s=100" width="100px;" alt="Suany Chalan"/><br /><sub><b>Suany Chalan</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=suany0805" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kdquistanchala"><img src="https://avatars.githubusercontent.com/u/51094604?v=4?s=100" width="100px;" alt="Karla Quistanchala"/><br /><sub><b>Karla Quistanchala</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/pulls?q=is%3Apr+reviewed-by%3Akdquistanchala" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>
