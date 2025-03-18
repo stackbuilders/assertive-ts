@@ -2,19 +2,19 @@ import { AssertionError, expect } from "@assertive-ts/core";
 import { render } from "@testing-library/react-native";
 import { View, Text } from "react-native";
 
-import { ToBeEmptyElementAssertion } from "../../src/lib/ToBeEmptyElementAssertion";
+import { ToBeEmptyAssertion } from "../../src/lib/ToBeEmptyAssertion";
 
-describe("[Unit] ToBeEmptyElementAssertion.test.ts", () => {
-  describe(".toBeEmptyElement", () => {
+describe("[Unit] toBeEmptyAssertion.test.ts", () => {
+  describe(".toBeEmpty", () => {
     context("when the element is empty", () => {
       it("returns the assertion instance", () => {
         const element = render(<View testID="id" />);
-        const test = new ToBeEmptyElementAssertion(element.getByTestId("id"));
+        const test = new ToBeEmptyAssertion(element.getByTestId("id"));
 
-        expect(test.toBeEmptyElement()).toBe(test);
-        expect(() => test.not.toBeEmptyElement())
+        expect(test.toBeEmpty()).toBe(test);
+        expect(() => test.not.toBeEmpty())
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> to NOT be empty.");
+          .toHaveMessage("Expected element <View ... /> NOT to be empty.");
       });
     });
 
@@ -25,10 +25,10 @@ describe("[Unit] ToBeEmptyElementAssertion.test.ts", () => {
             <Text>{"Not empty"}</Text>
           </View>,
         );
-        const test = new ToBeEmptyElementAssertion(element.getByTestId("id"));
+        const test = new ToBeEmptyAssertion(element.getByTestId("id"));
 
-        expect(test.not.toBeEmptyElement()).toBeEqual(test);
-        expect(() => test.toBeEmptyElement())
+        expect(test.not.toBeEmpty()).toBeEqual(test);
+        expect(() => test.toBeEmpty())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected element <View ... /> to be empty.");
       });
