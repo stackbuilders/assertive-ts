@@ -2,17 +2,15 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
+import { instanceToString } from "./helpers/helpers";
+
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
     super(actual);
   }
 
   public override toString = (): string => {
-    if (this.actual === null) {
-      return "null";
-    }
-
-    return `<${this.actual.type.toString()} ... />`;
+    return instanceToString(this.actual);
   };
 
   /**
@@ -32,7 +30,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to NOT be disabled.`,
+      message: `Expected element ${this.toString()} NOT to be disabled.`,
     });
 
     return this.execute({
@@ -58,7 +56,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to NOT be enabled.`,
+      message: `Expected element ${this.toString()} NOT to be enabled.`,
     });
 
     return this.execute({
