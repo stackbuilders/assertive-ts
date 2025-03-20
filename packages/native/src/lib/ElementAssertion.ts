@@ -3,7 +3,7 @@ import { get } from "dot-prop-immutable";
 import { Children } from "react";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString } from "./helpers/helpers";
+import { instanceToString, isEmpty } from "./helpers/helpers";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
