@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString } from "./helpers/helpers";
+import { instanceToString, isEmpty } from "./helpers/helpers";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -61,6 +61,33 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     return this.execute({
       assertWhen: !this.isElementDisabled(this.actual) && !this.isAncestorDisabled(this.actual),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Check if the element is empty.
+   *
+   * @example
+   * ```
+   * expect(element).toBeEmpty();
+   * ```
+   *
+   * @returns the assertion instance
+   */
+  public toBeEmpty(): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to be empty.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to be empty.`,
+    });
+
+    return this.execute({
+      assertWhen: isEmpty(this.actual.children),
       error,
       invertedError,
     });
