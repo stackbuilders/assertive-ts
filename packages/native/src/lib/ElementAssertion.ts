@@ -93,6 +93,33 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the element is visible.
+   *
+   * @example
+   * ```
+   * expect(element).toBeVisible();
+   * ```
+   *
+   * @returns the assertion instance
+   */
+  public toBeVisible(): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to be visible.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to be visible.`,
+    });
+
+    return this.execute({
+      assertWhen: this.isElementVisible(this.actual) && !this.isAncestorNotVisible(this.actual),
+      error,
+      invertedError,
+    });
+  }
+
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
     const elementType = type.toString();
@@ -111,5 +138,25 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   private isAncestorDisabled(element: ReactTestInstance): boolean {
     const { parent } = element;
     return parent !== null && (this.isElementDisabled(element) || this.isAncestorDisabled(parent));
+  }
+
+  private isElementVisible(element: ReactTestInstance): boolean {
+    const { type } = element;
+    const elementType = type.toString();
+    if (elementType === "Modal" && !element?.props?.visible === true) {
+      return false;
+    }
+
+    return (
+      get(element, "props.style.display") !== "none"
+      && get(element, "props.style.opacity") !== 0
+      && get(element, "props.accessibilityElementsHidden") !== true
+      && get(element, "props.importantForAccessibility") !== "no-hide-descendants"
+    );
+  }
+
+  private isAncestorNotVisible(element: ReactTestInstance): boolean {
+    const { parent } = element;
+    return parent !== null && (!this.isElementVisible(element) || this.isAncestorNotVisible(parent));
   }
 }
