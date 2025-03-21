@@ -121,6 +121,33 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the element is visible.
+   *
+   * @example
+   * ```
+   * expect(element).toBeVisible();
+   * ```
+   *
+   * @returns the assertion instance
+   */
+  public toBeVisible(): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to be visible.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to be visible.`,
+    });
+
+    return this.execute({
+      assertWhen: this.isElementVisible(this.actual) && !this.isAncestorNotVisible(this.actual),
+      error,
+      invertedError,
+    });
+  }
+
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
     const elementType = type.toString();
