@@ -122,7 +122,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   /**
-   * Check if the element is visible.
+   * Check if the element is visible and has not been hidden by an ancestor.
    *
    * @example
    * ```
