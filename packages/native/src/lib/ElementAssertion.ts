@@ -42,7 +42,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   /**
-   * Check if the component is enabled.
+   * Check if the component is enabled and has not been disabled by an ancestor.
    *
    * @example
    * ```
@@ -95,7 +95,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   /**
-   * Check if the element is visible.
+   * Check if the element is visible and has not been hidden by an ancestor.
    *
    * @example
    * ```
