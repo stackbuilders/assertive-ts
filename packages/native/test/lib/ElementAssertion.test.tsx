@@ -4,6 +4,7 @@ import {
   View,
   TextInput,
   Text,
+  Modal,
 } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
@@ -157,6 +158,116 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toBeEmpty())
           .toThrowError(AssertionError)
           .toHaveMessage("Expected element <View ... /> to be empty.");
+      });
+    });
+  });
+
+  describe (".toBeVisible", () => {
+    context("when the modal is visible", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Modal testID="id" visible={true} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Modal ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'display' property", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" style={{ display: "flex" }} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'accessibilityElementsHidden' property", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" accessibilityElementsHidden={false} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'importantForAccessibility' property", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" importantForAccessibility={"yes"} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the parent element contains 'opacity' property", () => {
+      context("if parent opacity = 0", () => {
+        const element = render(
+          <View testID="parentId" style={{ opacity: 0 }} >
+            <View testID="childId" style={{ opacity: 1 }} />
+          </View>,
+        );
+
+        const parent = new ElementAssertion(element.getByTestId("parentId"));
+        const child = new ElementAssertion(element.getByTestId("childId"));
+
+        it("returns assertion instance for NOT visible elements", () => {
+          expect(parent.not.toBeVisible()).toBeEqual(parent);
+          expect(child.not.toBeVisible()).toBeEqual(child);
+        });
+
+        it("throws an error for visible elements", () => {
+          expect(() => parent.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to be visible.");
+          expect(() => child.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to be visible.");
+        });
+      });
+
+      context("if child opacity = 0", () => {
+        const element = render(
+          <View testID="parentId" style={{ opacity: 1 }} >
+            <View testID="childId" style={{ opacity: 0 }} />
+          </View>,
+        );
+
+        const parent = new ElementAssertion(element.getByTestId("parentId"));
+        const child = new ElementAssertion(element.getByTestId("childId"));
+
+        it("returns assertion instance for NOT visible elements", () => {
+          expect(parent.toBeVisible()).toBeEqual(parent);
+          expect(child.not.toBeVisible()).toBeEqual(child);
+        });
+
+        it("throws an error for visible elements", () => {
+          expect(() => parent.not.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+          expect(() => child.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to be visible.");
+        });
       });
     });
   });
