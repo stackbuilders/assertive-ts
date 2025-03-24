@@ -148,6 +148,50 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if an element is contained within another element.
+   *
+   * @example
+   * ```
+   * expect(parent).toContainElement(child);
+   * ```
+   *
+   * @param element - The element to check for.
+   * @returns the assertion instance
+   */
+  public toContainElement(element: ReactTestInstance): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to contain element ${instanceToString(element)}.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to contain element ${instanceToString(element)}.`,
+    });
+
+    const isElementContained = (
+      parentElement: ReactTestInstance,
+      childElement: ReactTestInstance,
+    ): boolean => {
+      if (parentElement === null || childElement === null) {
+        return false;
+      }
+
+      return (
+        parentElement.findAll(
+          node =>
+            node.type === childElement.type && node.props === childElement.props,
+        ).length > 0
+      );
+    };
+
+    return this.execute({
+      assertWhen: isElementContained(this.actual, element),
+      error,
+      invertedError,
+    });
+  }
+
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
     const elementType = type.toString();
