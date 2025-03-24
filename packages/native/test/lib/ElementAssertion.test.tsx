@@ -271,4 +271,50 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
+  describe (".toContainElement", () => {
+    const element = render(
+      <View testID="grandParentId">
+        <View testID="parentId">
+          <View testID="childId" />
+        </View>
+        <Text testID="textId" />
+      </View>,
+    );
+
+    const container = element.getByTestId("grandParentId");
+    const containerElementAssertion = new ElementAssertion(container);
+    const parent = element.getByTestId("parentId");
+    const parentElementAssertion = new ElementAssertion(parent);
+    const child = element.getByTestId("childId");
+    const text = element.getByTestId("textId");
+
+    context("when the container element contains the target element", () => {
+      it("returns the assertion instance", () => {
+        expect(containerElementAssertion.toContainElement(parent)).toBe(containerElementAssertion);
+        expect(containerElementAssertion.toContainElement(child)).toBe(containerElementAssertion);
+        expect(containerElementAssertion.toContainElement(text)).toBe(containerElementAssertion);
+        expect(parentElementAssertion.toContainElement(child)).toBe(parentElementAssertion);
+      });
+
+      it("returns the assertion instance for negated assertions when the target element is not contained", () => {
+        expect(parentElementAssertion.not.toContainElement(text)).toBe(parentElementAssertion);
+        expect(parentElementAssertion.not.toContainElement(container)).toBe(parentElementAssertion);
+      });
+    });
+
+    context("when the container element does NOT contain the target element", () => {
+      it("throws an error", () => {
+        expect(() => containerElementAssertion.not.toContainElement(parent))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to contain element <View ... />.");
+        expect(() => containerElementAssertion.not.toContainElement(text))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to contain element <Text ... />.");
+        expect(() => parentElementAssertion.toContainElement(text))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to contain element <Text ... />.");
+      });
+    });
+  });
 });
