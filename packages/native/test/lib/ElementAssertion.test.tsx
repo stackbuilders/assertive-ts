@@ -338,8 +338,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
 
       it("returns the assertion instance for negated assertions when the target element is not contained", () => {
-        expect(parentElementAssertion.not.toContainElement(text)).toBe(parentElementAssertion);
-        expect(parentElementAssertion.not.toContainElement(container)).toBe(parentElementAssertion);
+        expect(parentElementAssertion.not.toContainElement(text)).toBeEqual(parentElementAssertion);
+        expect(parentElementAssertion.not.toContainElement(container)).toBeEqual(parentElementAssertion);
       });
     });
 
