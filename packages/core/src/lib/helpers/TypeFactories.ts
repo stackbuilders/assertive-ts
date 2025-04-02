@@ -2,6 +2,7 @@ import { ArrayAssertion } from "../ArrayAssertion";
 import { Assertion, Constructor } from "../Assertion";
 import { BooleanAssertion } from "../BooleanAssertion";
 import { DateAssertion } from "../DateAssertion";
+import { ErrorAssertion } from "../ErrorAssertion";
 import { type AnyFunction, FunctionAssertion } from "../FunctionAssertion";
 import { NumberAssertion } from "../NumberAssertion";
 import { ObjectAssertion } from "../ObjectAssertion";
@@ -48,6 +49,10 @@ export interface StaticTypeFactories {
    */
   Date: TypeFactory<Date, DateAssertion>;
   /**
+   * An `Error` TypeFactory.
+   */
+  Error: TypeFactory<Error, ErrorAssertion<Error>>;
+  /**
    * A `function` TypeFactory.
    */
   Function: TypeFactory<AnyFunction, FunctionAssertion<AnyFunction>>;
@@ -71,6 +76,20 @@ export interface StaticTypeFactories {
    * @param innerType the TypeFactory for the array type
    */
   array<T>(innerType?: TypeFactory<T, Assertion<T>>): TypeFactory<T[], ArrayAssertion<T>>;
+  /**
+   * Creates an `Error` TypeFactory for a specific error constructor.
+   *
+   * @example
+   * ```
+   * class CustomError extends Error { ... }
+   *
+   * TypeFactories.error(CustomError); // a `CustomError` error factory
+   * ```
+   *
+   * @typeParam T the type of the error constructor
+   * @param Type the error constructor
+   */
+  error<T extends Error>(Type: Constructor<T>): TypeFactory<T, ErrorAssertion<T>>;
   /**
    * Creates a TypeFactory for an instance of the given constructor.
    *
@@ -114,6 +133,11 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
     predicate: (value): value is Date => value instanceof Date,
     typeName: Date.name,
   },
+  Error: {
+    Factory: ErrorAssertion,
+    predicate: (value): value is Error => value instanceof Error,
+    typeName: Error.name,
+  },
   Function: {
     Factory: FunctionAssertion,
     predicate: (value): value is AnyFunction => typeof value === "function",
@@ -137,6 +161,13 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
           ? Array.isArray(value) && value.every(innerType.predicate)
           : Array.isArray(value),
       typeName: "array",
+    };
+  },
+  error<T extends Error>(Type: Constructor<T>) {
+    return {
+      Factory: ErrorAssertion,
+      predicate: (value): value is T => value instanceof Type,
+      typeName: Type.name,
     };
   },
   instanceOf<T>(type: Constructor<T>) {
