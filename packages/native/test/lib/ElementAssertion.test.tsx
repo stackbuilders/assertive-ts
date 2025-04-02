@@ -317,4 +317,62 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
+  describe(".toHaveProp", () => {
+    context("when the element contains the target prop", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" accessibilityLabel="label" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveProp("accessibilityLabel")).toBe(test);
+        expect(() => test.not.toHaveProp("accessibilityLabel"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have prop 'accessibilityLabel'.");
+      });
+    });
+
+    context("when the element does NOT contain the target prop", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveProp("accessibilityLabel")).toBeEqual(test);
+        expect(() => test.toHaveProp("accessibilityLabel"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have prop 'accessibilityLabel'.");
+      });
+    });
+
+    context("when the element contains the target prop with a specific value", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" accessibilityLabel="label" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveProp("accessibilityLabel", "label")).toBe(test);
+        expect(() => test.not.toHaveProp("accessibilityLabel", "label"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have prop 'accessibilityLabel' with value 'label'.");
+      });
+    });
+
+    context("when the element does NOT contain the target prop with a specific value", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" accessibilityLabel="new-label" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveProp("accessibilityLabel", "label")).toBeEqual(test);
+        expect(() => test.toHaveProp("accessibilityLabel", "label"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have prop 'accessibilityLabel' with value 'label'.");
+      });
+    });
+  });
 });

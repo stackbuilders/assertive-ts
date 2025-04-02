@@ -164,6 +164,42 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the element has a specific property or a specific property value.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveProp("propName");
+   * expect(element).toHaveProp("propName", "propValue");
+   * ```
+   *
+   * @param propName - The name of the prop to check for.
+   * @param value - The value of the prop to check for.
+   * @returns the assertion instance
+   */
+  public toHaveProp(propName: string, value?: unknown): this {
+    const propValue: unknown = get(this.actual, `props.${propName}`, undefined);
+    const hasProp = propValue !== undefined;
+    const isPropEqual = value === undefined || propValue === value;
+
+    const errorMessage = value === undefined
+      ? `Expected element ${this.toString()} to have prop '${propName}'.`
+      : `Expected element ${this.toString()} to have prop '${propName}' with value '${String(value)}'.`;
+
+    const invertedErrorMessage = value === undefined
+      ? `Expected element ${this.toString()} NOT to have prop '${propName}'.`
+      : `Expected element ${this.toString()} NOT to have prop '${propName}' with value '${String(value)}'.`;
+
+    const error = new AssertionError({ actual: this.actual, message: errorMessage });
+    const invertedError = new AssertionError({ actual: this.actual, message: invertedErrorMessage });
+
+    return this.execute({
+      assertWhen: hasProp && isPropEqual,
+      error,
+      invertedError,
+    });
+  }
+
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
     const elementType = type.toString();
