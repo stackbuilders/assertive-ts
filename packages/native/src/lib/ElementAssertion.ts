@@ -2,17 +2,15 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
+import { instanceToString, isEmpty } from "./helpers/helpers";
+
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
     super(actual);
   }
 
   public override toString = (): string => {
-    if (this.actual === null) {
-      return "null";
-    }
-
-    return `<${this.actual.type.toString()} ... />`;
+    return instanceToString(this.actual);
   };
 
   /**
@@ -32,7 +30,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to NOT be disabled.`,
+      message: `Expected element ${this.toString()} NOT to be disabled.`,
     });
 
     return this.execute({
@@ -58,11 +56,38 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to NOT be enabled.`,
+      message: `Expected element ${this.toString()} NOT to be enabled.`,
     });
 
     return this.execute({
       assertWhen: !this.isElementDisabled(this.actual) && !this.isAncestorDisabled(this.actual),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Check if the element is empty.
+   *
+   * @example
+   * ```
+   * expect(element).toBeEmpty();
+   * ```
+   *
+   * @returns the assertion instance
+   */
+  public toBeEmpty(): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to be empty.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to be empty.`,
+    });
+
+    return this.execute({
+      assertWhen: isEmpty(this.actual.children),
       error,
       invertedError,
     });
