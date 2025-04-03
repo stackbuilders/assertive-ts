@@ -2,6 +2,17 @@ import { TypeFactories } from "../../../src/lib/helpers/TypeFactories";
 
 import assert from "assert";
 
+class CustomError extends Error {
+
+  public constructor(message?: string) {
+    super(message);
+
+    this.name = this.constructor.name;
+    Error.captureStackTrace(this, this.constructor);
+    Object.setPrototypeOf(this, CustomError.prototype);
+  }
+}
+
 describe("[Unit] TypeFactories.test.ts", () => {
   describe(".predicate", () => {
     describe("#Boolean", () => {
@@ -36,6 +47,24 @@ describe("[Unit] TypeFactories.test.ts", () => {
       context("when the value is not a Date", () => {
         it("returns false", () => {
           const result = TypeFactories.Date.predicate("foo");
+
+          assert.equal(result, false);
+        });
+      });
+    });
+
+    describe("#Error", () => {
+      context("when the value is an Error", () => {
+        it("returns true", () => {
+          const result = TypeFactories.Error.predicate(new Error("foo"));
+
+          assert.equal(result, true);
+        });
+      });
+
+      context("when the value is not an Error", () => {
+        it("returns false", () => {
+          const result = TypeFactories.Error.predicate("foo");
 
           assert.equal(result, false);
         });
@@ -139,6 +168,24 @@ describe("[Unit] TypeFactories.test.ts", () => {
 
             assert.equal(result, false);
           });
+        });
+      });
+    });
+
+    describe(".error", () => {
+      context("when the value is an instace o the error type", () => {
+        it("returns true", () => {
+          const result = TypeFactories.error(CustomError).predicate(new CustomError("foo"));
+
+          assert.equal(result, true);
+        });
+      });
+
+      context("when the value is not an instace o the error type", () => {
+        it("returns false", () => {
+          const result = TypeFactories.error(CustomError).predicate(new Error("foo"));
+
+          assert.equal(result, false);
         });
       });
     });
