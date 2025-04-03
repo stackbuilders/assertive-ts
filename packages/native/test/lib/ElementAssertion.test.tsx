@@ -1,13 +1,39 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
+import { useState, useCallback } from "react";
 import {
   View,
   TextInput,
   Text,
   Modal,
+  Button,
 } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
+
+const SimpleToggleText: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  const handleToggle = useCallback((): void => {
+    setIsVisible((prev: boolean) => !prev);
+  }, []);
+
+  return (
+    <View>
+      <Text
+        testID="textElement"
+        style={{ display: isVisible ? "flex" : "none" }}
+      >
+        {"Toggle me!"}
+      </Text>
+      <Button
+        testID="toggleButton"
+        title="Toggle Text"
+        onPress={handleToggle}
+      />
+    </View>
+  );
+};
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeDisabled", () => {
@@ -178,16 +204,34 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the element contains 'display' property", () => {
-      it("returns the assertion instance", () => {
-        const element = render(
-          <View testID="id" style={{ display: "flex" }} />,
-        );
-        const test = new ElementAssertion(element.getByTestId("id"));
+      context("and display = none", () => {
+        it("throws an error", () => {
+          const element = render(
+            <SimpleToggleText />,
+          );
+          const textElement = new ElementAssertion(element.getByTestId("textElement"));
 
-        expect(test.toBeVisible()).toBe(test);
-        expect(() => test.not.toBeVisible())
-          .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+          expect(textElement.toBeVisible()).toBeEqual(textElement);
+
+          const toggleButton = element.getByTestId("toggleButton");
+          fireEvent.press(toggleButton);
+
+          expect(textElement.not.toBeVisible()).toBeEqual(textElement);
+        });
+      });
+
+      context("and display = flex", () => {
+        it("returns the assertion instance", () => {
+          const element = render(
+            <View testID="id" style={{ display: "flex" }} />,
+          );
+          const test = new ElementAssertion(element.getByTestId("id"));
+
+          expect(test.toBeVisible()).toBe(test);
+          expect(() => test.not.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+        });
       });
     });
 
@@ -220,7 +264,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the parent element contains 'opacity' property", () => {
-      context("if parent opacity = 0", () => {
+      context("and parent opacity = 0", () => {
         const element = render(
           <View testID="parentId" style={{ opacity: 0 }} >
             <View testID="childId" style={{ opacity: 1 }} />
@@ -245,7 +289,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
       });
 
-      context("if child opacity = 0", () => {
+      context("and child opacity = 0", () => {
         const element = render(
           <View testID="parentId" style={{ opacity: 1 }} >
             <View testID="childId" style={{ opacity: 0 }} />
@@ -255,12 +299,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const parent = new ElementAssertion(element.getByTestId("parentId"));
         const child = new ElementAssertion(element.getByTestId("childId"));
 
-        it("returns assertion instance for NOT visible elements", () => {
+        it("returns assertion instance for visible parent and NOT visible child", () => {
           expect(parent.toBeVisible()).toBeEqual(parent);
           expect(child.not.toBeVisible()).toBeEqual(child);
         });
 
-        it("throws an error for visible elements", () => {
+        it("throws an error for NOT visible parent and visible child", () => {
           expect(() => parent.not.toBeVisible())
             .toThrowError(AssertionError)
             .toHaveMessage("Expected element <View ... /> NOT to be visible.");
