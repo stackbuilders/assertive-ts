@@ -91,45 +91,92 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     });
   }
 
-/**
- * Check if the element has a specific class or classes.
- *
- * Validates that the provided element contains specified classes.
- * Allows checking for one or more class names and supports exact matching.
- *
- * @param classNames - A single class name or an array of class names to check.
- * @param options - Optional settings for matching:
- *  - `exact` (boolean): When true, checks for an exact match of all classes.
- * @returns the assertion instance.
- */
-  public toHaveClass(classNames: string | string[], options: { exact?: boolean; } = {}): this {
-    const actualClassList = this.actual.className.split(/\s+/).filter(Boolean);
-    const expectedClassList = Array.isArray(classNames) ? classNames : [classNames];
-    const { exact = false } = options;
+  /**
+   * Asserts that the element has the specified class.
+   *
+   * @param className - The class name to check.
+   * @returns the assertion instance.
+   */
+  public toHaveClass(className: string): this {
+    const actualClassList = this.getClassList();
+
+    return this.assertClassPresence(
+      actualClassList.includes(className),
+      [className],
+      `Expected the element to have class: "${className}"`,
+      `Expected the element to NOT have class: "${className}"`,
+    );
+  }
+
+  /**
+   * Asserts that the element has at least one of the specified classes.
+   *
+   * @param classNames - A variadic list of class names to check.
+   * @returns the assertion instance.
+   */
+  public toHaveAnyClass(...classNames: string[]): this {
+    const actualClassList = this.getClassList();
+
+    return this.assertClassPresence(
+      classNames.some(cls => actualClassList.includes(cls)),
+      classNames,
+      `Expected the element to have at least one of these classes: "${classNames.join(" ")}"`,
+      `Expected the element to NOT have any of these classes: "${classNames.join(" ")}"`,
+    );
+  }
+
+  /**
+   * Asserts that the element has all of the specified classes.
+   *
+   * @param classNames - A variadic list of class names to check.
+   * @returns the assertion instance.
+   */
+  public toHaveAllClasses(...classNames: string[]): this {
+    const actualClassList = this.getClassList();
+
+    return this.assertClassPresence(
+      classNames.every(cls => actualClassList.includes(cls)),
+      classNames,
+      `Expected the element to have all of these classes: "${classNames.join(" ")}"`,
+      `Expected the element to NOT have all of these classes: "${classNames.join(" ")}"`,
+    );
+  }
+
+  private getClassList(): string[] {
+    return this.actual.className.split(/\s+/).filter(Boolean);
+  }
+
+  /**
+   * Helper method to assert the presence or absence of class names.
+   *
+   * @param assertCondition - Boolean to determine assertion pass or fail.
+   * @param classNames - Array of class names involved in the assertion.
+   * @param message - Assertion error message.
+   * @param invertedMessage - Inverted assertion error message.
+   * @returns the assertion instance.
+   */
+  private assertClassPresence(
+    assertCondition: boolean,
+    classNames: string[],
+    message: string,
+    invertedMessage: string,
+  ): this {
+    const actualClassList = this.getClassList();
 
     const error = new AssertionError({
       actual: actualClassList,
-      expected: expectedClassList,
-      message: exact
-        ? `Expected the element to have exactly these classes: "${expectedClassList.join(" ")}"`
-        : `Expected the element to have class(es): "${expectedClassList.join(" ")}"`,
+      expected: classNames,
+      message,
     });
 
     const invertedError = new AssertionError({
       actual: actualClassList,
-      expected: expectedClassList,
-      message: exact
-        ? `Expected the element to NOT have exactly these classes: "${expectedClassList.join(" ")}"`
-        : `Expected the element to NOT have class(es): "${expectedClassList.join(" ")}"`,
+      expected: classNames,
+      message: invertedMessage,
     });
 
-    const assertWhen = exact
-      ? actualClassList.length === expectedClassList.length
-      && expectedClassList.every(cls => actualClassList.includes(cls))
-      : expectedClassList.every(cls => actualClassList.includes(cls));
-
     return this.execute({
-      assertWhen,
+      assertWhen: assertCondition,
       error,
       invertedError,
     });
