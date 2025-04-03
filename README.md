@@ -13,7 +13,7 @@
 
 A type-safe fluent assertion library written in TypeScript and inspired by [Jest](https://jestjs.io/docs/expect) assertions and the popular [AssertJ](https://assertj.github.io/doc/).
 
-This library is designed to work in the browser and in Node.js. It ships with a rich set of expressive and flexible matchers that allows chaining multiple assertions. Assertive.ts is framework agnostic and should be used with a test framework such as [Jest](/docs/jest-tutorial.md), [Mocha](/docs/mocha-tutorial.md), or Ava.
+This library is designed to work in Node.js. It ships with a rich set of expressive and flexible matchers that allows chaining multiple assertions. Assertive.ts is framework agnostic and should be used with a test framework such as [Jest](/docs/jest-tutorial.md), [Mocha](/docs/mocha-tutorial.md), or Ava.
 
 **🚨 BREAKING CHANGES:** Since v2, the `@stackbuilders/assertive-ts` package has been renamed to `@assertive-ts/core` so we can group other packages, such as plugins, into the same namespace. Check the [packages](#packages) section for more info.
 
@@ -142,7 +142,7 @@ For a list of all [Core](https://github.com/stackbuilders/assertive-ts/blob/main
 
 ## Test Runner Integration
 
-Assertive.ts works on any JavaScript test runner, both on Node.js and browser environments. Below you can find some example of how to use it on some of the most common test runners:
+Assertive.ts works on any JavaScript test runner, in the Node.js environments. Below you can find some example of how to use it on some of the most common test runners:
 
 - [Jest Integration](https://github.com/stackbuilders/assertive-ts/blob/main/docs/jest-tutorial.md)
 - [Mocha Integration](https://github.com/stackbuilders/assertive-ts/blob/main/docs/mocha-tutorial.md)
