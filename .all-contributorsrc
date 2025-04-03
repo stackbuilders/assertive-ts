@@ -162,6 +162,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "asimpletune",
+      "name": "Spencer Scorcelletti",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2670813?v=4",
+      "profile": "https://spenc.es",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
