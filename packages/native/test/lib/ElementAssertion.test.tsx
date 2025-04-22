@@ -328,32 +328,46 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     const parentElementAssertion = new ElementAssertion(parent);
     const child = element.getByTestId("childId");
     const text = element.getByTestId("textId");
+    const textElementAssertion = new ElementAssertion(text);
 
-    context("when the container element contains the target element", () => {
-      it("returns the assertion instance", () => {
-        expect(containerElementAssertion.toContainElement(parent)).toBe(containerElementAssertion);
-        expect(containerElementAssertion.toContainElement(child)).toBe(containerElementAssertion);
-        expect(containerElementAssertion.toContainElement(text)).toBe(containerElementAssertion);
-        expect(parentElementAssertion.toContainElement(child)).toBe(parentElementAssertion);
+    context("when the element has children", () => {
+      context("and the target element is found in the children's element", () => {
+        it("returns the assertion instance", () => {
+          expect(containerElementAssertion.toContainElement(parent)).toBe(containerElementAssertion);
+          expect(containerElementAssertion.toContainElement(child)).toBe(containerElementAssertion);
+          expect(containerElementAssertion.toContainElement(text)).toBe(containerElementAssertion);
+          expect(parentElementAssertion.toContainElement(child)).toBe(parentElementAssertion);
+        });
+
+        it("throws an error for negative assertion", () => {
+          expect(() => containerElementAssertion.not.toContainElement(parent))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to contain element <View ... />.");
+          expect(() => containerElementAssertion.not.toContainElement(text))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to contain element <Text ... />.");
+        });
       });
 
-      it("returns the assertion instance for negated assertions when the target element is not contained", () => {
-        expect(parentElementAssertion.not.toContainElement(text)).toBeEqual(parentElementAssertion);
-        expect(parentElementAssertion.not.toContainElement(container)).toBeEqual(parentElementAssertion);
+      context("and the target element is NOT found in the children's element", () => {
+        it("throws an error", () => {
+          expect(() => parentElementAssertion.toContainElement(text))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to contain element <Text ... />.");
+        });
+
+        it("returns the assertion instance for negative assertion", () => {
+          expect(parentElementAssertion.not.toContainElement(text)).toBeEqual(parentElementAssertion);
+          expect(parentElementAssertion.not.toContainElement(container)).toBeEqual(parentElementAssertion);
+        });
       });
     });
 
-    context("when the container element does NOT contain the target element", () => {
+    context("when the element does NOT have children", () => {
       it("throws an error", () => {
-        expect(() => containerElementAssertion.not.toContainElement(parent))
+        expect(() => textElementAssertion.toContainElement(parent))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> NOT to contain element <View ... />.");
-        expect(() => containerElementAssertion.not.toContainElement(text))
-          .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> NOT to contain element <Text ... />.");
-        expect(() => parentElementAssertion.toContainElement(text))
-          .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> to contain element <Text ... />.");
+          .toHaveMessage("Expected element <Text ... /> to contain element <View ... />.");
       });
     });
   });
