@@ -1,6 +1,6 @@
 import { AssertionError, expect } from "@assertive-ts/core";
 import { fireEvent, render } from "@testing-library/react-native";
-import { useState, useCallback } from "react";
+import { useState, useCallback, ReactElement } from "react";
 import {
   View,
   TextInput,
@@ -11,29 +11,27 @@ import {
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
 
-const SimpleToggleText: React.FC = () => {
+function SimpleToggleText(): ReactElement {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleToggle = useCallback((): void => {
-    setIsVisible((prev: boolean) => !prev);
+    setIsVisible(prev => !prev);
   }, []);
 
   return (
     <View>
       <Text
-        testID="textElement"
         style={{ display: isVisible ? "flex" : "none" }}
       >
         {"Toggle me!"}
       </Text>
       <Button
-        testID="toggleButton"
         title="Toggle Text"
         onPress={handleToggle}
       />
     </View>
   );
-};
+}
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeDisabled", () => {
@@ -191,10 +189,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe (".toBeVisible", () => {
     context("when the modal is visible", () => {
       it("returns the assertion instance", () => {
-        const element = render(
+        const { getByTestId } = render(
           <Modal testID="id" visible={true} />,
         );
-        const test = new ElementAssertion(element.getByTestId("id"));
+        const test = new ElementAssertion(getByTestId("id"));
 
         expect(test.toBeVisible()).toBe(test);
         expect(() => test.not.toBeVisible())
@@ -206,14 +204,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element contains 'display' property", () => {
       context("and display = none", () => {
         it("throws an error", () => {
-          const element = render(
+          const { getByText, getByRole } = render(
             <SimpleToggleText />,
           );
-          const textElement = new ElementAssertion(element.getByTestId("textElement"));
+          const textElement = new ElementAssertion(getByText("Toggle me!"));
 
           expect(textElement.toBeVisible()).toBeEqual(textElement);
 
-          const toggleButton = element.getByTestId("toggleButton");
+          const toggleButton = getByRole("button", { name: "Toggle Text" });
           fireEvent.press(toggleButton);
 
           expect(textElement.not.toBeVisible()).toBeEqual(textElement);
@@ -222,10 +220,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and display = flex", () => {
         it("returns the assertion instance", () => {
-          const element = render(
+          const { getByTestId } = render(
             <View testID="id" style={{ display: "flex" }} />,
           );
-          const test = new ElementAssertion(element.getByTestId("id"));
+          const test = new ElementAssertion(getByTestId("id"));
 
           expect(test.toBeVisible()).toBe(test);
           expect(() => test.not.toBeVisible())
@@ -237,10 +235,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element contains 'accessibilityElementsHidden' property", () => {
       it("returns the assertion instance", () => {
-        const element = render(
+        const { getByTestId } = render(
           <View testID="id" accessibilityElementsHidden={false} />,
         );
-        const test = new ElementAssertion(element.getByTestId("id"));
+        const test = new ElementAssertion(getByTestId("id"));
 
         expect(test.toBeVisible()).toBe(test);
         expect(() => test.not.toBeVisible())
@@ -251,10 +249,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element contains 'importantForAccessibility' property", () => {
       it("returns the assertion instance", () => {
-        const element = render(
+        const { getByTestId } = render(
           <View testID="id" importantForAccessibility={"yes"} />,
         );
-        const test = new ElementAssertion(element.getByTestId("id"));
+        const test = new ElementAssertion(getByTestId("id"));
 
         expect(test.toBeVisible()).toBe(test);
         expect(() => test.not.toBeVisible())
@@ -265,14 +263,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the parent element contains 'opacity' property", () => {
       context("and parent opacity = 0", () => {
-        const element = render(
+        const { getByTestId } = render(
           <View testID="parentId" style={{ opacity: 0 }} >
             <View testID="childId" style={{ opacity: 1 }} />
           </View>,
         );
 
-        const parent = new ElementAssertion(element.getByTestId("parentId"));
-        const child = new ElementAssertion(element.getByTestId("childId"));
+        const parent = new ElementAssertion(getByTestId("parentId"));
+        const child = new ElementAssertion(getByTestId("childId"));
 
         it("returns assertion instance for NOT visible elements", () => {
           expect(parent.not.toBeVisible()).toBeEqual(parent);
@@ -290,14 +288,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
 
       context("and child opacity = 0", () => {
-        const element = render(
+        const { getByTestId } = render(
           <View testID="parentId" style={{ opacity: 1 }} >
             <View testID="childId" style={{ opacity: 0 }} />
           </View>,
         );
 
-        const parent = new ElementAssertion(element.getByTestId("parentId"));
-        const child = new ElementAssertion(element.getByTestId("childId"));
+        const parent = new ElementAssertion(getByTestId("parentId"));
+        const child = new ElementAssertion(getByTestId("childId"));
 
         it("returns assertion instance for visible parent and NOT visible child", () => {
           expect(parent.toBeVisible()).toBeEqual(parent);
