@@ -1,8 +1,9 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
+import { Children } from "react";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty } from "./helpers/helpers";
+import { instanceToString } from "./helpers/helpers";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -87,7 +88,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: isEmpty(this.actual.children),
+      assertWhen: Children.count(this.actual.props.children) === 0,
       error,
       invertedError,
     });
