@@ -176,10 +176,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
   describe(".toHaveClass", () => {
     context("when the element has the expected class", () => {
-      it("returns the assertion instance", async () => {
-        const { findByTestId } = render(<HaveClassTestComponent />);
-        const divTest = await findByTestId("classTest");
-        divTest.classList.add("foo", "bar");
+      it("returns the assertion instance", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
         expect(test.toHaveClass("foo")).toBeEqual(test);
@@ -191,10 +190,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the element does not have the expected class", () => {
-      it("throws an assertion error", async () => {
-        const { findByTestId } = render(<HaveClassTestComponent />);
-        const divTest = await findByTestId("classTest");
-        divTest.classList.add("foo", "bar");
+      it("throws an assertion error", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
         expect(() => test.toHaveClass("baz"))
@@ -208,10 +206,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
   describe(".toHaveAnyClass", () => {
     context("when the element has at least one of the expected classes", () => {
-      it("returns the assertion instance", async () => {
-        const { findByTestId } = render(<HaveClassTestComponent />);
-        const divTest = await findByTestId("classTest");
-        divTest.classList.add("foo", "bar");
+      it("returns the assertion instance", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
         expect(test.toHaveAnyClass("bar", "baz")).toBeEqual(test);
@@ -223,10 +220,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the element does not have any of the expected classes", () => {
-      it("throws an assertion error", async () => {
-        const { findByTestId } = render(<HaveClassTestComponent />);
-        const divTest = await findByTestId("classTest");
-        divTest.className = "foo";
+      it("throws an assertion error", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo" />);
+        const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
         expect(() => test.toHaveAnyClass("bar", "baz"))
@@ -240,10 +236,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
   describe(".toHaveAllClasses", () => {
     context("when the element has all the expected classes", () => {
-      it("returns the assertion instance", async () => {
-        const { findByTestId } = render(<HaveClassTestComponent />);
-        const divTest = await findByTestId("classTest");
-        divTest.classList.add("foo", "bar", "baz");
+      it("returns the assertion instance", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar baz" />);
+        const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
         expect(test.toHaveAllClasses("foo", "bar")).toBeEqual(test);
@@ -255,9 +250,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the element does not have all the expected classes", () => {
-      it("throws an assertion error", async () => {
-        const { findByTestId } = render(<HaveClassTestComponent />);
-        const divTest = await findByTestId("classTest");
+      it("throws an assertion error", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
         divTest.classList.add("foo", "bar");
         const test = new ElementAssertion(divTest);
 

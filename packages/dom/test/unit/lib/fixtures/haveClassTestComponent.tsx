@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 
-export function HaveClassTestComponent(): ReactElement {
-    return (
-      <div data-testid="classTest">
-        {"Test text inside a div"}
-      </div>
-    );
+export function HaveClassTestComponent({ className }: { className?: string; }): ReactElement {
+  return (
+    <div className={className}>
+      {"Test text inside a div"}
+    </div>
+  );
 }

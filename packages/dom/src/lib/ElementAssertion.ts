@@ -94,7 +94,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element has the specified class.
    *
-   * @param className - The class name to check.
+   * @param className The class name to check.
    * @returns the assertion instance.
    */
   public toHaveClass(className: string): this {
