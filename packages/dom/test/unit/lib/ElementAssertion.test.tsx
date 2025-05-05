@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
+import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
 import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
 import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
 import { WithAttributesTestComponent } from "./fixtures/withAttributesTestComponent";
@@ -172,4 +173,96 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
+  describe(".toHaveClass", () => {
+    context("when the element has the expected class", () => {
+      it("returns the assertion instance", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveClass("foo")).toBeEqual(test);
+
+        expect(() => test.not.toHaveClass("foo"))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to NOT have class: "foo"');
+      });
+    });
+
+    context("when the element does not have the expected class", () => {
+      it("throws an assertion error", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toHaveClass("baz"))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to have class: "baz"');
+
+        expect(test.not.toHaveClass("baz")).toBeEqual(test);
+      });
+    });
+  });
+
+  describe(".toHaveAnyClass", () => {
+    context("when the element has at least one of the expected classes", () => {
+      it("returns the assertion instance", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveAnyClass("bar", "baz")).toBeEqual(test);
+
+        expect(() => test.not.toHaveAnyClass("bar", "baz"))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to NOT have any of these classes: "bar baz"');
+      });
+    });
+
+    context("when the element does not have any of the expected classes", () => {
+      it("throws an assertion error", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo" />);
+        const divTest = getByText("Test text inside a div");
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toHaveAnyClass("bar", "baz"))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to have at least one of these classes: "bar baz"');
+
+        expect(test.not.toHaveAnyClass("bar", "baz")).toBeEqual(test);
+      });
+    });
+  });
+
+  describe(".toHaveAllClasses", () => {
+    context("when the element has all the expected classes", () => {
+      it("returns the assertion instance", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar baz" />);
+        const divTest = getByText("Test text inside a div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveAllClasses("foo", "bar")).toBeEqual(test);
+
+        expect(() => test.not.toHaveAllClasses("foo", "bar"))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to NOT have all of these classes: "foo bar"');
+      });
+    });
+
+    context("when the element does not have all the expected classes", () => {
+      it("throws an assertion error", () => {
+        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const divTest = getByText("Test text inside a div");
+        divTest.classList.add("foo", "bar");
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toHaveAllClasses("foo", "bar", "baz"))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to have all of these classes: "foo bar baz"');
+
+        expect(test.not.toHaveAllClasses("foo", "bar", "baz")).toBeEqual(test);
+      });
+    });
+  });
+
 });
