@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
+import { FocusTestComponent } from "./fixtures/focusTestComponent";
 import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
 import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
 import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
@@ -265,4 +266,36 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
   });
 
+  describe(".toHaveFocus", () => {
+    context("when the element has focus", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<FocusTestComponent />);
+        const input1 = getByTestId("input1");
+        input1.focus();
+        const test = new ElementAssertion(input1);
+
+        expect(test.toHaveFocus()).toBeEqual(test);
+
+        expect(() => test.not.toHaveFocus())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element not to have focus.");
+      });
+    });
+
+    context("when the element does not have focus", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<FocusTestComponent />);
+        const input1 = getByTestId("input1");
+        const input2 = getByTestId("input2");
+        input1.focus();
+        const test = new ElementAssertion(input2);
+
+        expect(() => test.toHaveFocus())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to have focus.");
+
+        expect(test.not.toHaveFocus()).toBeEqual(test);
+      });
+    });
+  });
 });
