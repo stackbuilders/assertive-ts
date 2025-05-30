@@ -3,6 +3,8 @@ import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
 import { instanceToString, isEmpty } from "./helpers/helpers";
+import { getFlattenedStyle } from "./helpers/styles";
+import { AssertiveStyle } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -195,6 +197,32 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     return this.execute({
       assertWhen: hasProp && isPropEqual,
+      error,
+      invertedError,
+    });
+  }
+
+  public toHaveStyle(style: AssertiveStyle): this {
+    const stylesOnElement: AssertiveStyle = get(this.actual, "props.style", {});
+
+    const flattenedElementStyle = getFlattenedStyle(stylesOnElement);
+    const flattenedStyle = getFlattenedStyle(style);
+
+    const hasStyle = Object.keys(flattenedStyle)
+                           .every(key => flattenedElementStyle[key] === flattenedStyle[key]);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to have style ${JSON.stringify(flattenedStyle)}.`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to have style ${JSON.stringify(flattenedStyle)}.`,
+    });
+
+    return this.execute({
+      assertWhen: hasStyle,
       error,
       invertedError,
     });
