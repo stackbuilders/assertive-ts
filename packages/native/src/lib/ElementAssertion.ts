@@ -202,6 +202,22 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+
+  /**
+   * Asserts that a component has the specified style(s) applied.
+   * 
+   * This method supports both single style objects and arrays of style objects.
+   * It checks if all specified style properties exist and match on the target element.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveStyle({ backgroundColor: "red" });
+   * expect(element).toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }]);
+   * ```
+   *
+   * @param style - A style object or an array of style objects to verify against the element’s computed styles.
+   * @returns the assertion instance
+   */
   public toHaveStyle(style: AssertiveStyle): this {
     const stylesOnElement: AssertiveStyle = get(this.actual, "props.style", {});
 
