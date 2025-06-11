@@ -522,4 +522,183 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
+  describe(".toHaveTextContent", () => {
+    context("when the element contains the target text", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveTextContent("Hello World")).toBe(test);
+        expect(() => test.not.toHaveTextContent("Hello World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching 'String: \"Hello World\"'.");
+      });
+    });
+
+    context("when the element does NOT contain the target text", () => {
+      it("throws an error", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent("Goodbye World")).toBeEqual(test);
+        expect(() => test.toHaveTextContent("Goodbye World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> to have text content matching 'String: \"Goodbye World\"'.");
+      });
+    });
+
+    context("when the element contains the target text with a RegExp", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveTextContent(/Hello/)).toBe(test);
+        expect(() => test.not.toHaveTextContent(/Hello/))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching 'RegExp: /Hello/'.");
+      });
+    });
+
+    context("when the element does NOT contain the target text with a RegExp", () => {
+      it("throws an error", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(/Goodbye/)).toBeEqual(test);
+        expect(() => test.toHaveTextContent(/Goodbye/))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> to have text content matching 'RegExp: /Goodbye/'.");
+      });
+    });
+
+    context("when the eleme contains the target text within a child element", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id">
+            <View>
+              <Text>{"Test 1"}</Text>
+              <View>
+                <Text>{"Test 2"}</Text>
+                <Text>{"Hello World"}</Text>
+              </View>
+            </View>
+          </View>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+        expect(test.toHaveTextContent("Hello World")).toBe(test);
+        expect(() => test.not.toHaveTextContent("Hello World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have text content matching 'String: \"Hello World\"'.");
+      });
+    });
+
+    context("when the element does NOT contain the target text within a child element", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id">
+            <View>
+              <Text>{"Test 1"}</Text>
+              <View>
+                <Text>{"Test 2"}</Text>
+                <Text>{"Hello World"}</Text>
+              </View>
+            </View>
+          </View>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+        expect(test.not.toHaveTextContent("Goodbye World")).toBeEqual(test);
+        expect(() => test.toHaveTextContent("Goodbye World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'String: \"Goodbye World\"'.");
+      });
+    });
+
+    context("when the element contains the target text with a function matcher", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveTextContent(text => text.startsWith("Hello"))).toBe(test);
+        expect(() => test.not.toHaveTextContent(text => text.startsWith("Hello")))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <Text ... /> NOT to have text content matching " +
+            "'Function: text => text.startsWith(\"Hello\")'.",
+          );
+      });
+    });
+
+    context("when the element does NOT contain the target text with a function matcher", () => {
+      it("throws an error", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(text => text.startsWith("Goodbye"))).toBeEqual(test);
+        expect(() => test.toHaveTextContent(text => text.startsWith("Goodbye")))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <Text ... /> to have text content matching " +
+            "'Function: text => text.startsWith(\"Goodbye\")'.",
+          );
+      });
+    });
+
+    context("when the element has no text content", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent("Hello World")).toBeEqual(test);
+        expect(() => test.toHaveTextContent("Hello World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'String: \"Hello World\"'.");
+      });
+    });
+
+    context("when the element has no text content with a RegExp", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(/Hello/)).toBeEqual(test);
+        expect(() => test.toHaveTextContent(/Hello/))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'RegExp: /Hello/'.");
+      });
+    });
+
+    context("when the element has no text content with a function matcher", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(text => text.startsWith("Hello"))).toBeEqual(test);
+        expect(() => test.toHaveTextContent(text => text.startsWith("Hello")))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <View ... /> to have text content matching " +
+            "'Function: text => text.startsWith(\"Hello\")'.",
+          );
+      });
+    });
+  });
 });

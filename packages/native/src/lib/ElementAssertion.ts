@@ -2,9 +2,9 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty } from "./helpers/helpers";
+import { instanceToString, isEmpty, testableTextMatcherToString, textMatches } from "./helpers/helpers";
 import { getFlattenedStyle } from "./helpers/styles";
-import { AssertiveStyle } from "./helpers/types";
+import { AssertiveStyle, TestableTextMatcher, WithTextContent } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -242,6 +242,88 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       invertedError,
     });
   }
+
+  /**
+   * Check if the element has text content matching the provided string,
+   * RegExp, or function.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveTextContent("Hello World");
+   * expect(element).toHaveTextContent(/Hello/);
+   * expect(element).toHaveTextContent(text => text.startsWith("Hello"));
+   * ```
+   *
+   * @param text - The text to check for.
+   * @returns the assertion instance
+   */
+  public toHaveTextContent(text: TestableTextMatcher): this {
+    const actualTextContent = this.getTextContent(this.actual);
+    const matchesText = textMatches(actualTextContent, text);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to have text content matching '` +
+        `${testableTextMatcherToString(text)}'.`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message:
+      `Expected element ${this.toString()} NOT to have text content matching '` +
+      `${testableTextMatcherToString(text)}'.`,
+    });
+
+    return this.execute({
+      assertWhen: matchesText,
+      error,
+      invertedError,
+    });
+  }
+
+  private getTextContent(element: ReactTestInstance): string {
+    if (!element) {
+      return "";
+    }
+
+    if (typeof element === "string") {
+      return element;
+    }
+
+    if (typeof element.props?.value === "string") {
+      return element.props.value;
+    }
+
+    return this.collectText(element).join(" ");
+  }
+
+  private collectText = (element: WithTextContent): string[] => {
+    if (typeof element === "string") {
+      return [element];
+    }
+
+    if (Array.isArray(element)) {
+      return element.flatMap(child => this.collectText(child));
+    }
+
+    if (element && typeof element === "object" && "props" in element) {
+      const value = element.props?.value as WithTextContent;
+      if (typeof value === "string") {
+        return [value];
+      }
+
+      const children = (element.props?.children as ReactTestInstance[]) ?? element.children;
+      if (!children) {
+        return [];
+      }
+
+      return Array.isArray(children)
+        ? children.flatMap(this.collectText)
+        : this.collectText(children);
+    }
+
+    return [];
+  };
 
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
