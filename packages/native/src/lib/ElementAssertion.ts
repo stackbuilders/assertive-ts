@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty } from "./helpers/helpers";
+import { instanceToString, isEmpty, textMatches } from "./helpers/helpers";
 import { getFlattenedStyle } from "./helpers/styles";
 import { AssertiveStyle } from "./helpers/types";
 
@@ -241,6 +241,58 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       error,
       invertedError,
     });
+  }
+
+  public toHaveTextContent(text: string | RegExp | ((text: string) => boolean)): this {
+    const actualTextContent = this.getTextContent(this.actual);
+    const matchesText = textMatches(actualTextContent, text);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to have text content matching '${text}'.`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to have text content matching '${text}'.`,
+    });
+
+    return this.execute({
+      assertWhen: matchesText,
+      error,
+      invertedError,
+    });
+  }
+
+  private getTextContent(element: ReactTestInstance): string {
+    if (!element) return "";
+
+    if (typeof element === "string") return element;
+
+    if (typeof element.props?.value === "string") {
+      return element.props.value;
+    }
+
+    return this.collectText(element).join(" ");
+  }
+
+  private collectText(element: ReactTestInstance | ReactTestInstance[] | string): string[] {
+    if (typeof element === "string") return [element];
+    if (Array.isArray(element)) return element.flatMap(this.collectText, this);
+
+    if (element && typeof element === "object" && "props" in element) {
+      const value = element.props?.value;
+      if (typeof value === "string") return [value];
+
+      const children = element.props?.children ?? element.children;
+      if (!children) return [];
+
+      return Array.isArray(children)
+        ? children.flatMap(this.collectText, this)
+        : this.collectText(children);
+    }
+
+    return [];
   }
 
   private isElementDisabled(element: ReactTestInstance): boolean {
