@@ -1,5 +1,7 @@
 import { ReactTestInstance } from "react-test-renderer";
 
+import { TestableTextMatcher } from "./types";
+
 /**
  * Checks if a value is empty.
  *
@@ -33,10 +35,33 @@ export function instanceToString(instance: ReactTestInstance | null): string {
 }
 
 /**
+ * Converts a TestableTextMatcher to a string representation.
+ *
+ * @param matcher - The matcher to convert.
+ * @returns A string representation of the matcher.
+ * @throws Error if the matcher is not a string, RegExp, or function.
+ */
+export function testableTextMatcherToString(matcher: TestableTextMatcher): string {
+  if (typeof matcher === "string") {
+    return `String: "${matcher}"`;
+  }
+
+  if (matcher instanceof RegExp) {
+    return `RegExp: ${matcher.toString()}`;
+  }
+
+  if (typeof matcher === "function") {
+    return `Function: ${matcher.toString()}`;
+  }
+
+  throw new Error("Matcher must be a string, RegExp, or function.");
+}
+
+/**
  * Checks if a text matches a given matcher.
- *  
+ *
  * @param text - The text to check.
- * @param matcher - The matcher to use for comparison. It can be a string, RegExp, or a function.
+ * @param matcher - The matcher to use for comparison.
  * @returns `true` if the text matches the matcher, `false` otherwise.
  * @throws Error if the matcher is not a string, RegExp, or function.
  * @example
@@ -51,7 +76,7 @@ export function instanceToString(instance: ReactTestInstance | null): string {
  */
 export function textMatches(
   text: string,
-  matcher: string | RegExp | ((text: string) => boolean),
+  matcher: TestableTextMatcher,
 ): boolean {
   if (typeof matcher === "string") {
     return text.includes(matcher);

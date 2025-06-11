@@ -2,9 +2,9 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty, textMatches } from "./helpers/helpers";
+import { instanceToString, isEmpty, testableTextMatcherToString, textMatches } from "./helpers/helpers";
 import { getFlattenedStyle } from "./helpers/styles";
-import { AssertiveStyle } from "./helpers/types";
+import { AssertiveStyle, TestableTextMatcher, WithTextContent } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -244,7 +244,8 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   /**
-   * Check if the element has text content matching the provided string, RegExp, or function.
+   * Check if the element has text content matching the provided string,
+   * RegExp, or function.
    *
    * @example
    * ```
@@ -256,18 +257,21 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
    * @param text - The text to check for.
    * @returns the assertion instance
    */
-  public toHaveTextContent(text: string | RegExp | ((text: string) => boolean)): this {
+  public toHaveTextContent(text: TestableTextMatcher): this {
     const actualTextContent = this.getTextContent(this.actual);
     const matchesText = textMatches(actualTextContent, text);
 
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to have text content matching '${text}'.`,
+      message: `Expected element ${this.toString()} to have text content matching '` +
+        `${testableTextMatcherToString(text)}'.`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} NOT to have text content matching '${text}'.`,
+      message:
+      `Expected element ${this.toString()} NOT to have text content matching '` +
+      `${testableTextMatcherToString(text)}'.`,
     });
 
     return this.execute({
@@ -278,9 +282,13 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   private getTextContent(element: ReactTestInstance): string {
-    if (!element) return "";
+    if (!element) {
+      return "";
+    }
 
-    if (typeof element === "string") return element;
+    if (typeof element === "string") {
+      return element;
+    }
 
     if (typeof element.props?.value === "string") {
       return element.props.value;
@@ -289,24 +297,33 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     return this.collectText(element).join(" ");
   }
 
-  private collectText(element: ReactTestInstance | ReactTestInstance[] | string): string[] {
-    if (typeof element === "string") return [element];
-    if (Array.isArray(element)) return element.flatMap(this.collectText, this);
+  private collectText = (element: WithTextContent): string[] => {
+    if (typeof element === "string") {
+      return [element];
+    }
+
+    if (Array.isArray(element)) {
+      return element.flatMap(child => this.collectText(child));
+    }
 
     if (element && typeof element === "object" && "props" in element) {
-      const value = element.props?.value;
-      if (typeof value === "string") return [value];
+      const value = element.props?.value as WithTextContent;
+      if (typeof value === "string") {
+        return [value];
+      }
 
-      const children = element.props?.children ?? element.children;
-      if (!children) return [];
+      const children = (element.props?.children as ReactTestInstance[]) ?? element.children;
+      if (!children) {
+        return [];
+      }
 
       return Array.isArray(children)
-        ? children.flatMap(this.collectText, this)
+        ? children.flatMap(this.collectText)
         : this.collectText(children);
     }
 
     return [];
-  }
+  };
 
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
