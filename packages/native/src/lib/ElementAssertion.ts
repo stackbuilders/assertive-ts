@@ -243,6 +243,19 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the element has text content matching the provided string, RegExp, or function.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveTextContent("Hello World");
+   * expect(element).toHaveTextContent(/Hello/);
+   * expect(element).toHaveTextContent(text => text.startsWith("Hello"));
+   * ```
+   *
+   * @param text - The text to check for.
+   * @returns the assertion instance
+   */
   public toHaveTextContent(text: string | RegExp | ((text: string) => boolean)): this {
     const actualTextContent = this.getTextContent(this.actual);
     const matchesText = textMatches(actualTextContent, text);
