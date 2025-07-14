@@ -146,18 +146,22 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       message: `Expected element ${this.toString()} NOT to contain element ${instanceToString(element)}.`,
     });
 
-    const isElementContained = (
-      parentElement: ReactTestInstance,
-      childElement: ReactTestInstance,
-    ): boolean => {
-      if (parentElement === null || childElement === null) {
-        return false;
-      }
+    return this.execute({
+      assertWhen: this.isElementContained(this.actual, element),
+      error,
+      invertedError,
+    });
+  }
 
-      return (
+  private isElementContained(parentElement: ReactTestInstance, childElement: ReactTestInstance): boolean {
+    if (parentElement === null || childElement === null) {
+      return false;
+    }
+
+    return (
         parentElement.findAll(
-          node =>
-            node.type === childElement.type && node.props === childElement.props,
+            node =>
+                node.type === childElement.type && node.props === childElement.props,
         ).length > 0
       );
     };
