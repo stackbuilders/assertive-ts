@@ -115,7 +115,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isElementVisible(this.actual) && !this.isAncestorNotVisible(this.actual),
+      assertWhen: this.isElementVisible(this.actual) && this.isAncestorVisible(this.actual),
       error,
       invertedError,
     });
@@ -156,8 +156,8 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     );
   }
 
-  private isAncestorNotVisible(element: ReactTestInstance): boolean {
+  private isAncestorVisible(element: ReactTestInstance): boolean {
     const { parent } = element;
-    return parent !== null && (!this.isElementVisible(element) || this.isAncestorNotVisible(parent));
+    return parent === null || (this.isElementVisible(parent) && this.isAncestorVisible(parent));
   }
 }
