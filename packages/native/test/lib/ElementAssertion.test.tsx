@@ -20,9 +20,7 @@ function SimpleToggleText(): ReactElement {
 
   return (
     <View>
-      <Text
-        style={{ display: isVisible ? "flex" : "none" }}
-      >
+      <Text style={{ display: isVisible ? "flex" : "none" }}>
         {"Toggle me!"}
       </Text>
       <Button
