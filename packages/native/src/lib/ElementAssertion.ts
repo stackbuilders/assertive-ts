@@ -143,9 +143,9 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
   private isElementVisible(element: ReactTestInstance): boolean {
     const { type } = element;
-    const elementType = type.toString();
-    if (elementType === "Modal") {
-      return Boolean(element.props && element.props.visible);
+
+    if (type.toString() === "Modal") {
+      return Boolean(element.props?.visible);
     }
 
     return (
