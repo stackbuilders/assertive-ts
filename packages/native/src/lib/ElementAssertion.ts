@@ -42,7 +42,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   }
 
   /**
-   * Check if the component is enabled.
+   * Check if the component is enabled and has not been disabled by an ancestor.
    *
    * @example
    * ```
@@ -94,6 +94,33 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the element is visible and has not been hidden by an ancestor.
+   *
+   * @example
+   * ```
+   * expect(element).toBeVisible();
+   * ```
+   *
+   * @returns the assertion instance
+   */
+  public toBeVisible(): this {
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to be visible.`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to be visible.`,
+    });
+
+    return this.execute({
+      assertWhen: this.isElementVisible(this.actual) && this.isAncestorVisible(this.actual),
+      error,
+      invertedError,
+    });
+  }
+
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
     const elementType = type.toString();
@@ -112,5 +139,25 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
   private isAncestorDisabled(element: ReactTestInstance): boolean {
     const { parent } = element;
     return parent !== null && (this.isElementDisabled(element) || this.isAncestorDisabled(parent));
+  }
+
+  private isElementVisible(element: ReactTestInstance): boolean {
+    const { type } = element;
+
+    if (type.toString() === "Modal") {
+      return Boolean(element.props?.visible);
+    }
+
+    return (
+      get(element, "props.style.display") !== "none"
+      && get(element, "props.style.opacity") !== 0
+      && get(element, "props.accessibilityElementsHidden") !== true
+      && get(element, "props.importantForAccessibility") !== "no-hide-descendants"
+    );
+  }
+
+  private isAncestorVisible(element: ReactTestInstance): boolean {
+    const { parent } = element;
+    return parent === null || (this.isElementVisible(parent) && this.isAncestorVisible(parent));
   }
 }
