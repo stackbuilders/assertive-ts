@@ -1,4 +1,5 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import {parse} from '@adobe/css-tools'
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -179,6 +180,77 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   private getClassList(): string[] {
     return this.actual.className.split(/\s+/).filter(Boolean);
   }
+
+  public toHaveStyle(css: Object|string): this {
+    const styleTest = document.createElement("div");
+    styleTest.style.color = "red";
+    styleTest.style.display = "flex";
+    if (
+      this.actual instanceof HTMLElement ||
+      this.actual['ownerDocument']
+    ) {
+
+      
+      const parsedCSS = typeof css === 'object' 
+      ? css 
+      : parse(`selector { ${css} }`, {silent: true}).stylesheet
+      
+      const window = this.actual.ownerDocument.defaultView;
+      
+      const computedStyle = window?.getComputedStyle;
+      
+      const expected = parsedCSS
+      const received = computedStyle?.(this.actual);
+      console.log(received?.color);
+      const expectedRule = expected.rules[0];
+
+      interface StyleDeclaration {
+        property: string;
+        value: string;
+      }
+
+      let style = {}
+      let props: string[] = []
+      
+      expectedRule.declarations.map((declaration: StyleDeclaration) => {
+        const property = declaration.property;
+        const value = declaration.value;
+
+        props = [...props, property];
+
+        style = {
+          ...style,
+          [property]: value,
+        };
+        
+        return style
+      
+      })
+
+      console.log(style);
+      console.log(props);
+
+      props.map((prop: string) => {
+        
+        console.log(received?.[prop]);
+      })
+
+
+      return this.execute({
+        assertWhen: true,
+        error: new AssertionError({
+          actual: this.actual,
+          message: "Expected the element to have the specified style",
+        }),
+        invertedError: new AssertionError({
+          actual: this.actual,
+          message: "Expected the element to NOT have the specified style",
+        }),
+      });
+    }
+    return this;
+  }
+
 
   /**
    * Helper method to assert the presence or absence of class names.
