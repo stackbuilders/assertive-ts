@@ -1,5 +1,5 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { render } from "@testing-library/react";
+import { getByTestId, render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
@@ -296,4 +296,17 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+  describe(".toHaveStyle", () => {
+    context("when the element has the expected style when passed as object", () => {
+      it("returns the assertion instance when it receives an object", () => {
+        const { getByTestId } = render(<div className="foo bar test" style={{ display: "flex", color: "red" }} data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveStyle("display: flex; color: red")).toBeEqual(test);
+
+    });
+  });
+});
+
 });
