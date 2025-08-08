@@ -201,7 +201,6 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       
       const expected = parsedCSS
       const received = computedStyle?.(this.actual);
-      console.log(received?.color);
       const expectedRule = expected.rules[0];
 
       interface StyleDeclaration {
@@ -209,32 +208,58 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
         value: string;
       }
 
-      let style = {}
+      let expectedStyle = {}
+      let receivedStyle = {}
       let props: string[] = []
       
+      const normalizer = document.createElement("div");
+      document.body.appendChild(normalizer);
+
+
       expectedRule.declarations.map((declaration: StyleDeclaration) => {
         const property = declaration.property;
         const value = declaration.value;
-
-        props = [...props, property];
-
-        style = {
-          ...style,
-          [property]: value,
-        };
-        
-        return style
       
-      })
+        props = [...props, property];
+      
+        normalizer.style[property] = value;
+        const normalizedValue = window.getComputedStyle(normalizer).getPropertyValue(property);
+      
+        expectedStyle = {
+          ...expectedStyle,
+          [property]: normalizedValue.trim(),
+        };
+      
+        return expectedStyle;
+      });
 
-      console.log(style);
-      console.log(props);
+      document.body.removeChild(normalizer);
+
+
+      console.log("expected style: ",expectedStyle);
 
       props.map((prop: string) => {
-        
-        console.log(received?.[prop]);
+        receivedStyle = {
+          ...receivedStyle,
+          [prop]: received?.getPropertyValue(prop).trim(),
+        };
       })
 
+      console.log("received style: ", receivedStyle);
+      
+      const isSameStyle = !!Object.keys(expectedStyle).length &&
+      Object.entries(expectedStyle).every(([expectedProp, expectedValue]) => {
+      const isCustomProperty = expectedProp.startsWith('--')
+      const spellingVariants = [expectedProp]
+      expectedProp !== null;
+
+      if (!isCustomProperty) spellingVariants.push(expectedProp.toLowerCase())
+        return spellingVariants.some( searchProp => 
+          receivedStyle[searchProp] === expectedValue
+      )
+  })
+
+  console.log("isSameStyle: ", isSameStyle)
 
       return this.execute({
         assertWhen: true,
