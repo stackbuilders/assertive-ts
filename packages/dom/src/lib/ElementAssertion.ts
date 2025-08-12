@@ -182,14 +182,10 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   public toHaveStyle(css: Object|string): this {
-    const styleTest = document.createElement("div");
-    styleTest.style.color = "red";
-    styleTest.style.display = "flex";
     if (
       this.actual instanceof HTMLElement ||
       this.actual['ownerDocument']
     ) {
-
       
       const parsedCSS = typeof css === 'object' 
       ? css 
@@ -200,8 +196,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       const computedStyle = window?.getComputedStyle;
       
       const expected = parsedCSS
+      console.log("expected: ", expected);
       const received = computedStyle?.(this.actual);
-      const expectedRule = expected.rules[0];
 
       interface StyleDeclaration {
         property: string;
@@ -215,7 +211,23 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       const normalizer = document.createElement("div");
       document.body.appendChild(normalizer);
 
+      if (typeof css === 'object') {
+        Object.entries(css).map(([property, value]) => {
+          props = [...props, property];
 
+          normalizer.style[property] = value;
+          const normalizedValue = window?.getComputedStyle(normalizer).getPropertyValue(property);
+
+        expectedStyle = {
+          ...expectedStyle,
+          [property]: normalizedValue?.trim(),
+
+        };
+
+      });
+      console.log("EXPECTED STYLE: ", expectedStyle);
+    } else {
+      const expectedRule = expected.rules[0];
       expectedRule.declarations.map((declaration: StyleDeclaration) => {
         const property = declaration.property;
         const value = declaration.value;
@@ -232,6 +244,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       
         return expectedStyle;
       });
+      }
 
       document.body.removeChild(normalizer);
 
