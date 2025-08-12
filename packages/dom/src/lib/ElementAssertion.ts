@@ -273,17 +273,20 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   })
 
   console.log("isSameStyle: ", isSameStyle)
+  const error = new AssertionError({
+          actual: this.actual,
+          message: `Expected the element to have ${JSON.stringify(expectedStyle)} style`,
+          expected: expectedStyle
+        })
+        const invertedError = new AssertionError({
+          actual: this.actual,
+          message: `Expected the element to NOT have ${JSON.stringify(expectedStyle)} style`,
+        })
 
       return this.execute({
-        assertWhen: true,
-        error: new AssertionError({
-          actual: this.actual,
-          message: "Expected the element to have the specified style",
-        }),
-        invertedError: new AssertionError({
-          actual: this.actual,
-          message: "Expected the element to NOT have the specified style",
-        }),
+        assertWhen: isSameStyle,
+        error,
+        invertedError
       });
     }
     return this;

@@ -303,7 +303,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const divTest = getByTestId("test-div");
         const test = new ElementAssertion(divTest);
 
-        expect(test.toHaveStyle("color: red; display: flex; border: 1px solid black")).toBeEqual(test);
+        expect(test.toHaveStyle("display: flex; color: red; border: 1px solid black")).toBeEqual(test);
 
     });
      it("fails the assertion when the styles are not the same", () => {
