@@ -1,4 +1,5 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import {parse} from '@adobe/css-tools'
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -145,6 +146,118 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   private getClassList(): string[] {
     return this.actual.className.split(/\s+/).filter(Boolean);
   }
+
+  public toHaveStyle(css: Object|string): this {
+    if (
+      this.actual instanceof HTMLElement ||
+      this.actual['ownerDocument']
+    ) {
+      
+      const parsedCSS = typeof css === 'object' 
+      ? css 
+      : parse(`selector { ${css} }`, {silent: true}).stylesheet
+      
+      const window = this.actual.ownerDocument.defaultView;
+      
+      const computedStyle = window?.getComputedStyle;
+      
+      const expected = parsedCSS
+      console.log("expected: ", expected);
+      const received = computedStyle?.(this.actual);
+
+      interface StyleDeclaration {
+        property: string;
+        value: string;
+      }
+
+      let expectedStyle = {}
+      let receivedStyle = {}
+      let props: string[] = []
+      
+      const normalizer = document.createElement("div");
+      document.body.appendChild(normalizer);
+
+      if (typeof css === 'object') {
+        Object.entries(css).map(([property, value]) => {
+          props = [...props, property];
+
+          normalizer.style[property] = value;
+          const normalizedValue = window?.getComputedStyle(normalizer).getPropertyValue(property);
+
+        expectedStyle = {
+          ...expectedStyle,
+          [property]: normalizedValue?.trim(),
+
+        };
+
+      });
+      console.log("EXPECTED STYLE: ", expectedStyle);
+    } else {
+      const expectedRule = expected.rules[0];
+      expectedRule.declarations.map((declaration: StyleDeclaration) => {
+        const property = declaration.property;
+        const value = declaration.value;
+      
+        props = [...props, property];
+      
+        normalizer.style[property] = value;
+        const normalizedValue = window.getComputedStyle(normalizer).getPropertyValue(property);
+      
+        expectedStyle = {
+          ...expectedStyle,
+          [property]: normalizedValue.trim(),
+        };
+      
+        return expectedStyle;
+      });
+      }
+
+      document.body.removeChild(normalizer);
+
+
+      console.log("expected style: ",expectedStyle);
+
+      props.map((prop: string) => {
+        receivedStyle = {
+          ...receivedStyle,
+          [prop]: received?.getPropertyValue(prop).trim(),
+        };
+      })
+
+      console.log("received style: ", receivedStyle);
+      
+      const isSameStyle = !!Object.keys(expectedStyle).length &&
+      Object.entries(expectedStyle).every(([expectedProp, expectedValue]) => {
+      const isCustomProperty = expectedProp.startsWith('--')
+      const spellingVariants = [expectedProp]
+      expectedProp !== null;
+
+      if (!isCustomProperty) spellingVariants.push(expectedProp.toLowerCase())
+        return spellingVariants.some( searchProp => 
+          receivedStyle[searchProp] === expectedValue
+      )
+  })
+
+  console.log("isSameStyle: ", isSameStyle)
+  const error = new AssertionError({
+          actual: this.actual,
+          message: `Expected the element to have ${JSON.stringify(expectedStyle)} style`,
+          expected: expectedStyle
+        })
+        const invertedError = new AssertionError({
+          actual: this.actual,
+          message: `Expected the element to NOT have ${JSON.stringify(expectedStyle)} style`,
+        })
+
+      return this.execute({
+        assertWhen: isSameStyle,
+        error,
+        invertedError
+      });
+    }
+    return this;
+  }
+
 
   /**
    * Helper method to assert the presence or absence of class names.

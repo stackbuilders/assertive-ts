@@ -1,5 +1,5 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { render } from "@testing-library/react";
+import { getByTestId, render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
@@ -265,4 +265,42 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
   });
 
-});
+  describe(".toHaveStyle", () => {
+    context("when the element has the expected style when passed as string", () => {
+      it("returns the assertion instance when the styles are the same", () => {
+        const { getByTestId } = render(<div className="foo bar test" style={{ display: "flex", color: "red", border: "1px solid black" }} data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveStyle("display: flex; color: red; border: 1px solid black")).toBeEqual(test);
+
+    });
+     it("fails the assertion when the styles are not the same", () => {
+        const { getByTestId } = render(<div className="foo bar test" style={{ display: "flex", color: "red" }} data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveStyle("color: red; display: flex; border: 1px solid black;")).toBeEqual(test);
+
+    });
+    context("when the element has the expected style when passed as object", () => {
+      it("returns the assertion instance when the styles are the same", () => {
+        const { getByTestId } = render(<div className="foo bar test" style={{ display: "flex", color: "red", border: "1px solid black" }} data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveStyle({color: "red", display: "flex", border: "1px solid black"})).toBeEqual(test);
+
+    });
+     it("fails the assertion when the styles are not the same", () => {
+        const { getByTestId } = render(<div className="foo bar test" style={{ display: "flex", color: "red" }} data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveStyle({color: "red", display: "flex", border: "1px solid black"})).toBeEqual(test);
+
+    });
+  });
+})
+})
+})
