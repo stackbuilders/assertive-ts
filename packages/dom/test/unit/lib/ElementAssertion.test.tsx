@@ -278,7 +278,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
         expect(() => test.not.toHaveFocus())
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected the element not to have focus.");
+          .toHaveMessage("Expected the element NOT to be focused");
       });
     });
 
@@ -286,13 +286,11 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       it("throws an assertion error", () => {
         const { getByTestId } = render(<FocusTestComponent />);
         const input1 = getByTestId("input1");
-        const input2 = getByTestId("input2");
-        input1.focus();
-        const test = new ElementAssertion(input2);
+        const test = new ElementAssertion(input1);
 
         expect(() => test.toHaveFocus())
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected the element to have focus.");
+          .toHaveMessage("Expected the element to be focused");
 
         expect(test.not.toHaveFocus()).toBeEqual(test);
       });
