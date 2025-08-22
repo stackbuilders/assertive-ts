@@ -154,13 +154,13 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       const error = new AssertionError({
         actual: this.actual,
         expected: document.activeElement,
-        message: "Expected the element to have focus.",
+        message: "Expected the element to be focused",
       });
 
       const invertedError = new AssertionError({
         actual: this.actual,
         expected: document.activeElement,
-        message: "Expected the element not to have focus.",
+        message: "Expected the element NOT to be focused",
       });
 
       return this.execute({
