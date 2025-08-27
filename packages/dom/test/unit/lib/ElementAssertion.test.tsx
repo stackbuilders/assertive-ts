@@ -1,5 +1,5 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { getByTestId, render } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
