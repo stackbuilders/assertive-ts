@@ -26,6 +26,7 @@ function normalizeStyles(css: Partial<CSSStyleDeclaration>): StyleDeclaration {
           ...acc.expectedStyle,
           [property]: normalizedValue,
         },
+        props: [...acc.props, property],
       };
     },
     { expectedStyle: {} as StyleDeclaration },
