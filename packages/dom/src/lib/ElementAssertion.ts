@@ -1,6 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
-import { parse } from "@adobe/css-tools";
-import { CssAtRuleAST, getProps, isSameStyle, normalizeStylesObject, normalizeStylesString } from "./helpers/helpers";
+import equal from "fast-deep-equal";
+
+import { getReceivedStyle, normalizeStyles } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -185,52 +186,42 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element has the specified CSS styles.
    *
-   * @param css - The expected CSS styles.
+   * @param expected - The expected CSS styles.
    * @returns The assertion instance.
    */
 
-  public toHaveStyle(css: Object | string): this {
-    if (this.actual instanceof HTMLElement || this.actual["ownerDocument"]) {
-      const parsedCSS =
-        typeof css === "object"
-          ? css
-          : parse(`selector { ${css} }`, { silent: true }).stylesheet;
-
-      const window = this.actual.ownerDocument.defaultView;
-      const computedStyle = window?.getComputedStyle;
-
-      const expected = parsedCSS as CssAtRuleAST;
-      const received = computedStyle?.(this.actual) as CSSStyleDeclaration;
-      
-      
-      const { props, expectedStyle } =
-      typeof css === "object"
-      ? normalizeStylesObject(css, window!)
-      : normalizeStylesString(expected, window!);
-      
-      const receivedStyle = getProps(props, received);
-
-      const error = new AssertionError({
-        actual: this.actual,
-        message: `Expected the element to have ${JSON.stringify(expectedStyle
-        )} style`,
-        expected: expectedStyle,
-      });
-      const invertedError = new AssertionError({
-        actual: this.actual,
-        message: `Expected the element to NOT have ${JSON.stringify(
-          expectedStyle
-        )} style`,
-      });
-      return this.execute({
-        assertWhen: isSameStyle(expectedStyle, receivedStyle),
-        error,
-        invertedError,
-      });
+  public toHaveStyle(expected: Partial<CSSStyleDeclaration>): this {
+    if (!this.actual.ownerDocument.defaultView) {
+      throw new Error("The element is not attached to a document with a default view.");
     }
-    return this;
-  }
+    if (!(this.actual instanceof HTMLElement)) {
+      throw new Error("The element is not an HTMLElement.");
+    }
 
+    const window = this.actual.ownerDocument.defaultView;
+
+    const received = window.getComputedStyle(this.actual);
+
+    const { props, expectedStyle } = normalizeStyles(expected);
+
+    const receivedStyle = getReceivedStyle(props, received);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      expected: expectedStyle,
+      message: `Expected the element to match the following style:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected the element to NOT match the following style:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    return this.execute({
+      assertWhen: equal(expectedStyle, receivedStyle),
+      error,
+      invertedError,
+    });
+    }
 
   /**
    * Helper method to assert the presence or absence of class names.
@@ -266,5 +257,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       error,
       invertedError,
     });
+  }
+
+  private getClassList(): string[] {
+    return this.actual.className.split(/\s+/).filter(Boolean);
   }
 }
