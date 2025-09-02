@@ -1,4 +1,7 @@
+import { StyleSheet } from "react-native";
 import { ReactTestInstance } from "react-test-renderer";
+
+import { AssertiveStyle, StyleObject } from "./types";
 
 /**
  * Checks if a value is empty.
@@ -30,4 +33,14 @@ export function instanceToString(instance: ReactTestInstance | null): string {
   }
 
   return `<${instance.type.toString()} ... />`;
+}
+
+export function getFlattenedStyle(style: AssertiveStyle): StyleObject {
+    const flattenedStyle = StyleSheet.flatten(style);
+    return flattenedStyle ? (flattenedStyle as StyleObject) : {};
+}
+
+export function styleToString(flattenedStyle: StyleObject): string {
+  const styleEntries = Object.entries(flattenedStyle);
+  return styleEntries.map(([key, value]) => `\t- ${key}: ${String(value)};`).join("\n");
 }
