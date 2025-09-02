@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty, getFlattenedStyle  } from "./helpers/helpers";
+import { instanceToString, isEmpty, getFlattenedStyle, styleToString  } from "./helpers/helpers";
 import { AssertiveStyle } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
@@ -227,12 +227,12 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to have style ${JSON.stringify(flattenedStyle)}.`,
+      message: `Expected element ${this.toString()} to have style: \n${styleToString(flattenedStyle)}`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} NOT to have style ${JSON.stringify(flattenedStyle)}.`,
+      message: `Expected element ${this.toString()} NOT to have style: \n${styleToString(flattenedStyle)}`,
     });
 
     return this.execute({

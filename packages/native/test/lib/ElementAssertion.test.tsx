@@ -387,7 +387,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(test.toHaveStyle({ backgroundColor: "red" })).toBe(test);
       expect(() => test.not.toHaveStyle({ backgroundColor: "red" }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> NOT to have style {\"backgroundColor\":\"red\"}.");
+        .toHaveMessage("Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;");
       });
     });
 
@@ -401,7 +401,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
         expect(() => test.toHaveStyle({ backgroundColor: "red" }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style {\"backgroundColor\":\"red\"}.");
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
@@ -416,7 +416,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
         .toThrowError(AssertionError)
         .toHaveMessage(
-          "Expected element <View ... /> NOT to have style {\"backgroundColor\":\"red\",\"opacity\":0.5}.",
+          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
         );
       });
     });
@@ -431,7 +431,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBeEqual(test);
       expect(() => test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style {\"backgroundColor\":\"red\",\"opacity\":0.5}.");
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;");
       });
     });
 
@@ -445,7 +445,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
       expect(() => test.toHaveStyle({ backgroundColor: "red" }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style {\"backgroundColor\":\"red\"}.");
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
@@ -460,7 +460,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
         .toThrowError(AssertionError)
         .toHaveMessage(
-          "Expected element <View ... /> NOT to have style {\"backgroundColor\":\"red\",\"opacity\":0.5}.",
+          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
         );
       });
     });
@@ -475,7 +475,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(() => test.not.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }]))
         .toThrowError(AssertionError)
         .toHaveMessage(
-          "Expected element <View ... /> NOT to have style {\"backgroundColor\":\"red\",\"opacity\":0.5}.",
+          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
         );
       });
     });
@@ -490,7 +490,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
       expect(() => test.toHaveStyle({ backgroundColor: "red" }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style {\"backgroundColor\":\"red\"}.");
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
@@ -504,7 +504,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
       expect(() => test.toHaveStyle({ backgroundColor: "red" }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style {\"backgroundColor\":\"red\"}.");
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
@@ -518,7 +518,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
       expect(() => test.toHaveStyle({ backgroundColor: "red" }))
         .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style {\"backgroundColor\":\"red\"}.");
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
   });
