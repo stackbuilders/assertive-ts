@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty, getFlattenedStyle, styleToString  } from "./helpers/helpers";
+import { instanceToString, isEmpty, getFlattenedStyle, styleToString } from "./helpers/helpers";
 import { AssertiveStyle } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
