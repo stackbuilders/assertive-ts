@@ -186,8 +186,13 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element has the specified CSS styles.
    *
-   * @param expected - The expected CSS styles.
-   * @returns The assertion instance.
+   * @example
+   * ```
+   * expect(component).toHaveStyle({ color: 'green', display: 'block' });
+   * ```
+   *
+   * @param expected the expected CSS styles.
+   * @returns the assertion instance.
    */
 
   public toHaveStyle(expected: Partial<CSSStyleDeclaration>): this {
