@@ -368,4 +368,22 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
     });
   });
+
+  describe(".toHaveSomeStyle", () => {
+    context("when the element contains one or more expected styles", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(
+            <div
+              className="foo bar test"
+              style={{ border: "1px solid black", color: "blue", display: "block" }}
+              data-testid="test-div"
+            />,
+          );
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveSomeStyle({ color: "red", display: "block" })).toBeEqual(test);
+      });
+    });
+  });
 });
