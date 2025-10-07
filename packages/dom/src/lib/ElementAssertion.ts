@@ -217,51 +217,43 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     }
 
   /**
-   * Asserts that the element has the one of the specified CSS style.
+   * Asserts that the element has one or more of the specified CSS style.
    *
    * @example
    * ```
-   * expect(component).toHaveStyle({ color: 'green', display: 'block' });
+   * expect(component).toHaveSomeStyle({ color: 'green', display: 'block' });
    * ```
    *
-   * @param expected the expected CSS styles.
+   * @param expected the expected CSS style/s.
    * @returns the assertion instance.
    */
 
   public toHaveSomeStyle(expected: Partial<CSSStyleDeclaration>): this {
 
-    if (!this.actual.ownerDocument.defaultView) {
-      throw new Error("The element is not attached to a document with a default view.");
+    const [expectedStyle, receivedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+
+    if (!expectedStyle || !receivedStyle) {
+      throw new Error("No available styles.");
     }
-    if (!(this.actual instanceof HTMLElement)) {
-      throw new Error("The element is not an HTMLElement.");
-    }
 
-    const window = this.actual.ownerDocument.defaultView;
-
-    const received = window.getComputedStyle(this.actual);
-
-    const { props, expectedStyle } = normalizeStyles(expected);
-
-    const receivedStyle = getReceivedStyle(props, received);
-
-    const a = Object.values(receivedStyle).some((receivedItem, idx) => {
+    const hasSomeStyle = Object.values(receivedStyle).some((receivedItem, idx) => {
       const expectedItem = Object.values(expectedStyle)[idx];
       return equal(expectedItem, receivedItem);
     });
 
     const error = new AssertionError({
       actual: this.actual,
-      message: "Error",
+      message: `Expected the element to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Inverted Error",
+      // eslint-disable-next-line max-len
+      message: `Expected the element NOT to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
     });
 
     return this.execute({
-      assertWhen: a,
+      assertWhen: hasSomeStyle,
       error,
       invertedError,
     });
