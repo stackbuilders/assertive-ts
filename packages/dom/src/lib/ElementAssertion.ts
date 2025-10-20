@@ -217,7 +217,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     }
 
   /**
-   * Asserts that the element has one or more of the specified CSS style.
+   * Asserts that the element has one or more of the specified CSS styles.
    *
    * @example
    * ```
@@ -230,15 +230,16 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
   public toHaveSomeStyle(expected: Partial<CSSStyleDeclaration>): this {
 
-    const [expectedStyle, receivedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+    const [expectedStyle, elementProcessedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
 
-    if (!expectedStyle || !receivedStyle) {
+    if (!expectedStyle || !elementProcessedStyle) {
       throw new Error("No available styles.");
     }
 
-    const hasSomeStyle = Object.values(receivedStyle).some((receivedItem, idx) => {
-      const expectedItem = Object.values(expectedStyle)[idx];
-      return equal(expectedItem, receivedItem);
+    const hasSomeStyle = Object.entries(expectedStyle).some(([expectedProp, expectedValue]) => {
+      return Object.entries(elementProcessedStyle).some(([receivedProp, receivedValue]) => {
+        return equal(expectedProp, receivedProp) && equal(expectedValue, receivedValue);
+      });
     });
 
     const error = new AssertionError({
