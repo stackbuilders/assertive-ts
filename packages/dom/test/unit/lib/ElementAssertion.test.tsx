@@ -374,15 +374,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       it("returns the assertion instance", () => {
         const { getByTestId } = render(
             <div
-              className="foo bar test"
-              style={{ border: "1px solid black", color: "blue", display: "block" }}
+              style={{ color: "blue", maxHeight: "3rem", width: "2rem" }}
               data-testid="test-div"
             />,
           );
         const divTest = getByTestId("test-div");
         const test = new ElementAssertion(divTest);
 
-        expect(test.toHaveSomeStyle({ color: "blue", display: "flex" })).toBeEqual(test);
+        expect(test.toHaveSomeStyle({ color: "red", display: "flex", height: "3rem", width: "2rem" })).toBeEqual(test);
 
         expect(() => test.not.toHaveSomeStyle({ color: "blue" }))
         .toThrowError(AssertionError)
