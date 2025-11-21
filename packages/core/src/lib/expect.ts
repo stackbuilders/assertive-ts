@@ -3,14 +3,15 @@ import { Assertion } from "./Assertion";
 import { BooleanAssertion } from "./BooleanAssertion";
 import { DateAssertion } from "./DateAssertion";
 import { ErrorAssertion } from "./ErrorAssertion";
-import { AnyFunction, FunctionAssertion } from "./FunctionAssertion";
+import { type AnyFunction, FunctionAssertion } from "./FunctionAssertion";
 import { NumberAssertion } from "./NumberAssertion";
 import { ObjectAssertion } from "./ObjectAssertion";
 import { PromiseAssertion } from "./PromiseAssertion";
 import { StringAssertion } from "./StringAssertion";
 import { config } from "./config/Config";
-import { isAnyFunction, isStruct, isPromise } from "./helpers/guards";
-import { Struct } from "./helpers/types";
+import { isAnyFunction, isPromise, isStruct } from "./helpers/guards";
+
+import type { Struct } from "./helpers/types";
 
 export interface Expect {
   (actual: boolean): BooleanAssertion;

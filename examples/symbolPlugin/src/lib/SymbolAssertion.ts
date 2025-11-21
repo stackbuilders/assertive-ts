@@ -1,7 +1,6 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 
 export class SymbolAssertion extends Assertion<symbol> {
-
   public constructor(actual: symbol) {
     super(actual);
   }

@@ -1,6 +1,6 @@
-import { Plugin } from "@assertive-ts/core";
-
 import { SymbolAssertion } from "./lib/SymbolAssertion";
+
+import type { Plugin } from "@assertive-ts/core";
 
 declare module "@assertive-ts/core" {
 

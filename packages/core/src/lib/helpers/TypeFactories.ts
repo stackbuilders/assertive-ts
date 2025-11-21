@@ -1,5 +1,5 @@
 import { ArrayAssertion } from "../ArrayAssertion";
-import { Assertion, Constructor } from "../Assertion";
+import { Assertion, type Constructor } from "../Assertion";
 import { BooleanAssertion } from "../BooleanAssertion";
 import { DateAssertion } from "../DateAssertion";
 import { ErrorAssertion } from "../ErrorAssertion";
@@ -9,7 +9,8 @@ import { ObjectAssertion } from "../ObjectAssertion";
 import { StringAssertion } from "../StringAssertion";
 
 import { isStruct } from "./guards";
-import { Struct } from "./types";
+
+import type { Struct } from "./types";
 
 export type AssertionFactory<S, A extends Assertion<S>> = new(actual: S) => A;
 
@@ -41,30 +42,6 @@ export interface TypeFactory<S, A extends Assertion<S>> {
  */
 export interface StaticTypeFactories {
   /**
-   * A `boolean` TypeFactory.
-   */
-  Boolean: TypeFactory<boolean, BooleanAssertion>;
-  /**
-   * A `Date` TypeFactory.
-   */
-  Date: TypeFactory<Date, DateAssertion>;
-  /**
-   * An `Error` TypeFactory.
-   */
-  Error: TypeFactory<Error, ErrorAssertion<Error>>;
-  /**
-   * A `function` TypeFactory.
-   */
-  Function: TypeFactory<AnyFunction, FunctionAssertion<AnyFunction>>;
-  /**
-   * A `number` TypeFactory.
-   */
-  Number: TypeFactory<number, NumberAssertion>;
-  /**
-   * A `string` TypeFactory.
-   */
-  String: TypeFactory<string, StringAssertion>;
-  /**
    * Creates an array TypeFactory of the given TypeFactory.
    *
    * @example
@@ -76,6 +53,14 @@ export interface StaticTypeFactories {
    * @param innerType the TypeFactory for the array type
    */
   array<T>(innerType?: TypeFactory<T, Assertion<T>>): TypeFactory<T[], ArrayAssertion<T>>;
+  /**
+   * A `boolean` TypeFactory.
+   */
+  Boolean: TypeFactory<boolean, BooleanAssertion>;
+  /**
+   * A `Date` TypeFactory.
+   */
+  Date: TypeFactory<Date, DateAssertion>;
   /**
    * Creates an `Error` TypeFactory for a specific error constructor.
    *
@@ -90,6 +75,14 @@ export interface StaticTypeFactories {
    * @param Type the error constructor
    */
   error<T extends Error>(Type: Constructor<T>): TypeFactory<T, ErrorAssertion<T>>;
+  /**
+   * An `Error` TypeFactory.
+   */
+  Error: TypeFactory<Error, ErrorAssertion<Error>>;
+  /**
+   * A `function` TypeFactory.
+   */
+  Function: TypeFactory<AnyFunction, FunctionAssertion<AnyFunction>>;
   /**
    * Creates a TypeFactory for an instance of the given constructor.
    *
@@ -106,6 +99,10 @@ export interface StaticTypeFactories {
    */
   instanceOf<T>(Type: Constructor<T>): TypeFactory<T, Assertion<T>>;
   /**
+   * A `number` TypeFactory.
+   */
+  Number: TypeFactory<number, NumberAssertion>;
+  /**
    * Creates a TypeFactory for a Javascript Object.
    *
    * @example
@@ -120,9 +117,23 @@ export interface StaticTypeFactories {
    * @typeParam T the type of the object
    */
   object<T extends Struct>(): TypeFactory<T, ObjectAssertion<T>>;
+  /**
+   * A `string` TypeFactory.
+   */
+  String: TypeFactory<string, StringAssertion>;
 }
 
 export const TypeFactories: Readonly<StaticTypeFactories> = {
+  array<T>(innerType?: TypeFactory<T, Assertion<T>>) {
+    return {
+      Factory: ArrayAssertion,
+      predicate: (value): value is T[] =>
+        innerType !== undefined
+          ? Array.isArray(value) && value.every(innerType.predicate)
+          : Array.isArray(value),
+      typeName: "array",
+    };
+  },
   Boolean: {
     Factory: BooleanAssertion,
     predicate: (value): value is boolean => typeof value === "boolean",
@@ -138,37 +149,17 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
     predicate: (value): value is Error => value instanceof Error,
     typeName: Error.name,
   },
-  Function: {
-    Factory: FunctionAssertion,
-    predicate: (value): value is AnyFunction => typeof value === "function",
-    typeName: "function",
-  },
-  Number: {
-    Factory: NumberAssertion,
-    predicate: (value): value is number => typeof value === "number",
-    typeName: "number",
-  },
-  String: {
-    Factory: StringAssertion,
-    predicate: (value): value is string => typeof value === "string",
-    typeName: "string",
-  },
-  array<T>(innerType?: TypeFactory<T, Assertion<T>>) {
-    return {
-      Factory: ArrayAssertion,
-      predicate: (value): value is T[] =>
-        innerType !== undefined
-          ? Array.isArray(value) && value.every(innerType.predicate)
-          : Array.isArray(value),
-      typeName: "array",
-    };
-  },
   error<T extends Error>(Type: Constructor<T>) {
     return {
       Factory: ErrorAssertion,
       predicate: (value): value is T => value instanceof Type,
       typeName: Type.name,
     };
+  },
+  Function: {
+    Factory: FunctionAssertion,
+    predicate: (value): value is AnyFunction => typeof value === "function",
+    typeName: "function",
   },
   instanceOf<T>(type: Constructor<T>) {
     return {
@@ -177,11 +168,21 @@ export const TypeFactories: Readonly<StaticTypeFactories> = {
       typeName: type.name,
     };
   },
+  Number: {
+    Factory: NumberAssertion,
+    predicate: (value): value is number => typeof value === "number",
+    typeName: "number",
+  },
   object<T extends Struct>() {
     return {
       Factory: ObjectAssertion,
       predicate: (value): value is T => isStruct(value),
       typeName: "object",
     };
+  },
+  String: {
+    Factory: StringAssertion,
+    predicate: (value): value is string => typeof value === "string",
+    typeName: "string",
   },
 };

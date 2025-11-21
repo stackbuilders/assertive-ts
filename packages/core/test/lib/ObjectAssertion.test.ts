@@ -1,11 +1,11 @@
+import assert, { AssertionError } from "assert";
+
 import dedent from "dedent";
 
 import { ObjectAssertion } from "../../src/lib/ObjectAssertion";
 import { prettify } from "../../src/lib/helpers/messages";
 
-import assert, { AssertionError } from "assert";
-
-type Entry = ["myKey", number] | [2, { innerObjKey: number; message: string; }] | [string, boolean];
+type Entry = [2, { innerObjKey: number; message: string; }] | ["myKey", number] | [string, boolean];
 
 const RECORD: Record<string, boolean> = {
   falsy: false,

@@ -1,4 +1,4 @@
-import { ReactTestInstance } from "react-test-renderer";
+import type { ReactTestInstance } from "react-test-renderer";
 
 /**
  * Converts a ReactTestInstance to a string representation.
@@ -6,7 +6,7 @@ import { ReactTestInstance } from "react-test-renderer";
  * @param instance The ReactTestInstance to convert.
  * @returns A string representation of the instance.
  */
-export function instanceToString(instance: ReactTestInstance | null): string {
+export function instanceToString(instance: null | ReactTestInstance): string {
   if (instance === null) {
     return "null";
   }

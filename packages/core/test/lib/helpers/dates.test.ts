@@ -1,7 +1,8 @@
-import { DateOptions } from "../../../src/lib/DateAssertion.types";
+import assert from "assert";
+
 import { dateToOptions, dayOfWeekAsNumber, monthOfYear, optionsToDate } from "../../../src/lib/helpers/dates";
 
-import assert from "assert";
+import type { DateOptions } from "../../../src/lib/DateAssertion.types";
 
 describe("[Unit] dates.test.ts", () => {
   describe(".dayOfWeekAsNumber", () => {

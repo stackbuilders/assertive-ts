@@ -1,12 +1,13 @@
+import { AssertionError } from "assert";
+
 import isDeepEqual from "fast-deep-equal/es6";
 
 import { Assertion } from "./Assertion";
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
-import { type Expect } from "./expect";
-import { type TypeFactory } from "./helpers/TypeFactories";
 import { prettify } from "./helpers/messages";
 
-import { AssertionError } from "assert";
+import type { Expect } from "./expect";
+import type { TypeFactory } from "./helpers/TypeFactories";
 
 /**
  * Encapsulates assertion methods applicable to arrays.
@@ -14,7 +15,6 @@ import { AssertionError } from "assert";
  * @param T the type of the array
  */
 export class ArrayAssertion<T> extends Assertion<T[]> {
-
   public constructor(actual: T[]) {
     super(actual);
   }
@@ -142,7 +142,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
         try {
           consumer(value);
           return true;
-        } catch (err) {
+        } catch {
           return false;
         }
       }),
@@ -354,7 +354,10 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     }
 
     // We use `require(..)` to avoid import cycles with the `./expect` module
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    /* eslint-disable-next-line
+      @typescript-eslint/no-var-requires,
+      @typescript-eslint/no-require-imports
+    */
     const { expect } = require("./expect") as { expect: Expect; };
 
     return expect(this.actual[index]).asType(typeFactory);

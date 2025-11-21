@@ -1,10 +1,10 @@
+import { AssertionError } from "assert/strict";
+
 import dedent from "dedent";
 import isDeepEqual from "fast-deep-equal/es6";
 
 import { Assertion } from "./Assertion";
 import { prettify } from "./helpers/messages";
-
-import { AssertionError } from "assert/strict";
 
 /**
  * Encapsulates assertion methods applicable to Promises
@@ -13,7 +13,6 @@ import { AssertionError } from "assert/strict";
  * @param I type to track the current inverted state
  */
 export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Promise<T>> {
-
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore:
   // Needed because the `I` generic has to change in the inverted
@@ -24,6 +23,7 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
 
   public constructor(actual: Promise<T>) {
     super(actual);
+    this.not = new Proxy(this, { get: super.proxyInverter(true) }) as PromiseAssertion<T, true>;
   }
 
   /**
@@ -42,30 +42,31 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    *          prepended)
    */
   public toBeResolved(): Promise<I extends false ? T : unknown> {
-    return this.actual.then(value => {
-      if (this.inverted) {
+    return this.actual
+      .then(value => {
+        if (this.inverted) {
+          throw new AssertionError({
+            actual: this.actual,
+            message: "Expected promise NOT to be resolved",
+          });
+        }
+
+        return value;
+      })
+      .catch((error: unknown) => {
+        if (error instanceof AssertionError) {
+          throw error;
+        }
+
+        if (this.inverted) {
+          return error as I extends false ? T : unknown;
+        }
+
         throw new AssertionError({
           actual: this.actual,
-          message: "Expected promise NOT to be resolved",
+          message: `Expected promise to be resolved, but it was rejected with <${prettify(error)}> instead`,
         });
-      }
-
-      return value;
-    })
-    .catch((error: unknown) => {
-      if (error instanceof AssertionError) {
-        throw error;
-      }
-
-      if (this.inverted) {
-        return error as I extends false ? T : unknown;
-      }
-
-      throw new AssertionError({
-        actual: this.actual,
-        message: `Expected promise to be resolved, but it was rejected with <${prettify(error)}> instead`,
       });
-    });
   }
 
   /**
@@ -85,41 +86,45 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * @returns a promise with the resolved value
    */
   public toBeResolvedWith(expected: T): Promise<I extends false ? T : unknown> {
-    return this.actual.then(value => {
-      this.execute({
-        assertWhen: isDeepEqual(value, expected),
-        error: new AssertionError({
-          actual: value,
-          expected,
-          message: `Expected promise to be resolved with <${prettify(expected)}>, but got <${prettify(value)}> instead`,
-        }),
-        invertedError: new AssertionError({
-          actual: value,
-          message: `Expected promise NOT to be resolved with <${prettify(value)}>`,
-        }),
-      });
+    return this.actual
+      .then(value => {
+        this.execute({
+          assertWhen: isDeepEqual(value, expected),
+          error: new AssertionError({
+            actual: value,
+            expected,
+            message: dedent`
+              Expected promise to be resolved with <${prettify(expected)}>, \
+              but got <${prettify(value)}> instead
+            `,
+          }),
+          invertedError: new AssertionError({
+            actual: value,
+            message: `Expected promise NOT to be resolved with <${prettify(value)}>`,
+          }),
+        });
 
-      return value;
-    })
-    .catch((error: unknown) => {
-      if (error instanceof AssertionError) {
-        throw error;
-      }
+        return value;
+      })
+      .catch((error: unknown) => {
+        if (error instanceof AssertionError) {
+          throw error;
+        }
 
-      throw new AssertionError({
-        actual: error,
-        expected: !this.inverted ? expected : undefined,
-        message: this.inverted
-          ? dedent`
+        throw new AssertionError({
+          actual: error,
+          expected: !this.inverted ? expected : undefined,
+          message: this.inverted
+            ? dedent`
               Expected promise to be resolved with anything but <${prettify(expected)}>, but was rejected with \
               <${prettify(error)}> instead
             `
-          : dedent`
+            : dedent`
               Expected promise to be resolved with <${prettify(expected)}>, but it was rejected with \
               <${prettify(error)}> instead
             `,
+        });
       });
-    });
   }
 
   /**
@@ -138,30 +143,31 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    *          prepended)
    */
   public toBeRejected(): Promise<I extends false ? unknown : T> {
-    return this.actual.then(value => {
-      if (this.inverted) {
-        return value;
-      }
+    return this.actual
+      .then(value => {
+        if (this.inverted) {
+          return value;
+        }
 
-      throw new AssertionError({
-        actual: this.actual,
-        message: `Expected promise to be rejected, but it was resolved with <${prettify(value)}> instead`,
-      });
-    })
-    .catch((error: unknown) => {
-      if (error instanceof AssertionError) {
-        throw error;
-      }
-
-      if (this.inverted) {
         throw new AssertionError({
-          actual: error,
-          message: "Expected promise NOT to be rejected",
+          actual: this.actual,
+          message: `Expected promise to be rejected, but it was resolved with <${prettify(value)}> instead`,
         });
-      }
+      })
+      .catch((error: unknown) => {
+        if (error instanceof AssertionError) {
+          throw error;
+        }
 
-      return error as I extends false ? unknown : T;
-    });
+        if (this.inverted) {
+          throw new AssertionError({
+            actual: error,
+            message: "Expected promise NOT to be rejected",
+          });
+        }
+
+        return error as I extends false ? unknown : T;
+      });
   }
 
   /**
@@ -182,40 +188,44 @@ export class PromiseAssertion<T, I extends boolean = false> extends Assertion<Pr
    * @returns a promise with the caught error
    */
   public toBeRejectedWith<E>(expected: E): Promise<I extends false ? E : unknown> {
-    return this.actual.then(value => {
-      throw new AssertionError({
-        actual: this.actual,
-        expected: !this.inverted ? expected : undefined,
-        message: this.inverted
-          ? dedent`
+    return this.actual
+      .then(value => {
+        throw new AssertionError({
+          actual: this.actual,
+          expected: !this.inverted ? expected : undefined,
+          message: this.inverted
+            ? dedent`
               Expected promise to be rejected with anything but <${prettify(expected)}>, but it was resolved with \
               <${prettify(value)}> instead
             `
-          : dedent`
+            : dedent`
               Expected promise to be rejected with <${prettify(expected)}>, but it was resolved with \
               <${prettify(value)}> instead
             `,
-      });
-    })
-    .catch((error: unknown) => {
-      if (error instanceof AssertionError) {
-        throw error;
-      }
+        });
+      })
+      .catch((error: unknown) => {
+        if (error instanceof AssertionError) {
+          throw error;
+        }
 
-      this.execute({
-        assertWhen: isDeepEqual(error, expected),
-        error: new AssertionError({
-          actual: error,
-          expected,
-          message: `Expected promise to be rejected with <${prettify(expected)}>, but got <${prettify(error)}> instead`,
-        }),
-        invertedError: new AssertionError({
-          actual: error,
-          message: `Expected promise NOT to be rejected with <${prettify(error)}>`,
-        }),
-      });
+        this.execute({
+          assertWhen: isDeepEqual(error, expected),
+          error: new AssertionError({
+            actual: error,
+            expected,
+            message: dedent`
+              Expected promise to be rejected with <${prettify(expected)}>, \
+              but got <${prettify(error)}> instead
+            `,
+          }),
+          invertedError: new AssertionError({
+            actual: error,
+            message: `Expected promise NOT to be rejected with <${prettify(error)}>`,
+          }),
+        });
 
-      return error as I extends false ? E : unknown;
-    });
+        return error as I extends false ? E : unknown;
+      });
   }
 }

@@ -6,7 +6,7 @@
 export function sneakyCall(fn: () => unknown): void {
   try {
     fn();
-  } catch (e) {
+  } catch {
     // continue...
   }
 }

@@ -1,29 +1,36 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "declaration": true,
     "esModuleInterop": true,
     "importHelpers": true,
     "incremental": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "noImplicitAny": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "removeComments": false,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES6",
-    "typeRoots": ["./node_modules/@types/"]
+    "target": "es6",
+    "useDefineForClassFields": true,
+    "useUnknownInCatchVariables": true,
   },
   "exclude": [
-    ".yarn/*",
-    "node_modules/*"
+    "**/.turbo/**",
+    "**/.yarn/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/node_modules/**"
   ]
 }

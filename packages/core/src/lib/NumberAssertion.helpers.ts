@@ -19,11 +19,11 @@ export interface HighInclusiveBetweenOptions extends BaseBetweenOptions {
   highInclusive: boolean;
 }
 
-export type BetweenOptions =
-  | BaseBetweenOptions
+export type BetweenOptions
+  = BaseBetweenOptions
+  | HighInclusiveBetweenOptions
   | InclusiveBetweenOptions
-  | LowInclusiveBetweenOptions
-  | HighInclusiveBetweenOptions;
+  | LowInclusiveBetweenOptions;
 
 export function isInclusiveOptions(options: BetweenOptions): options is InclusiveBetweenOptions {
   return (options as InclusiveBetweenOptions).inclusive !== undefined;

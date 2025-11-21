@@ -1,10 +1,11 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
-import { Constructor } from "@assertive-ts/core/dist/lib/Assertion";
 import { ErrorAssertion } from "@assertive-ts/core/dist/lib/ErrorAssertion";
 import isDeepEqual from "fast-deep-equal";
-import { SinonSpyCall } from "sinon";
 
 import { prettify } from "./helpers/messages";
+
+import type { Constructor } from "@assertive-ts/core/dist/lib/Assertion";
+import type { SinonSpyCall } from "sinon";
 
 /**
  * Encapsulates assertion methods applicable to {@link SinonSpyCall} instances.
@@ -15,7 +16,6 @@ import { prettify } from "./helpers/messages";
  * @param R the type return type of the spied function
  */
 export class SinonSpyCallAssertion<A extends unknown[], R> extends Assertion<SinonSpyCall<A, R>> {
-
   private spyName: string;
 
   public constructor(actual: SinonSpyCall<A, R>) {

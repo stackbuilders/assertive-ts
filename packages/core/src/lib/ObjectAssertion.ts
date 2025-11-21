@@ -1,10 +1,11 @@
+import { AssertionError } from "assert";
+
 import isDeepEqual from "fast-deep-equal/es6";
 
 import { Assertion } from "./Assertion";
 import { prettify } from "./helpers/messages";
-import { Entry, Struct } from "./helpers/types";
 
-import { AssertionError } from "assert";
+import type { Entry, Struct } from "./helpers/types";
 
 /**
  * Encapsulates assertion methods applicable to objects.
@@ -12,7 +13,6 @@ import { AssertionError } from "assert";
  * @param T the object's definition type
  */
 export class ObjectAssertion<T extends Struct> extends Assertion<T> {
-
   public constructor(actual: T) {
     super(actual);
   }
@@ -146,8 +146,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toHaveKeys(...keys: Array<keyof T>): this {
-    const sortedActual = Object.keys(this.actual).sort();
-    const sortedKeys = [...keys].sort();
+    const sortedActual = Object.keys(this.actual).toSorted(alphabetically);
+    const sortedKeys = keys.toSorted(alphabetically);
     const allKeys = sortedKeys.map(prettify).join(", ");
 
     const error = new AssertionError({
@@ -274,8 +274,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toHaveValues(...values: Array<T[keyof T]>): this {
-    const sortedActual = Object.values(this.actual).sort();
-    const sorterdValues = [...values].sort();
+    const sortedActual = Object.values(this.actual).toSorted(alphabetically);
+    const sorterdValues = values.toSorted(alphabetically);
     const allValues = sorterdValues.map(prettify).join(", ");
 
     const error = new AssertionError({
@@ -318,8 +318,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     });
     return this.execute({
       assertWhen:
-        this.hasOwnProp(entry[0]) &&
-        isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
+        this.hasOwnProp(entry[0])
+        && isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
       error,
       invertedError,
     });
@@ -351,8 +351,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     return this.execute({
       assertWhen: entries
         .every(entry =>
-          this.hasOwnProp(entry[0]) &&
-          isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
+          this.hasOwnProp(entry[0])
+          && isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
       error,
       invertedError,
@@ -386,8 +386,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
     return this.execute({
       assertWhen: entries
         .some(entry =>
-          this.hasOwnProp(entry[0]) &&
-          isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
+          this.hasOwnProp(entry[0])
+          && isDeepEqual(Object.getOwnPropertyDescriptor(this.actual, entry[0])?.value, entry[1]),
         ),
       error,
       invertedError,
@@ -407,8 +407,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
    * @returns the assertion instance
    */
   public toHaveEntries(...entries: Entry<T>[]): this {
-    const sortedActual = Object.entries(this.actual).sort();
-    const sortedEntries = [...entries].sort();
+    const sortedActual = Object.entries(this.actual).toSorted(alphabetically);
+    const sortedEntries = entries.toSorted(alphabetically);
     const allEntries = sortedEntries.map(prettify).join(", ");
     const error = new AssertionError({
       actual: sortedActual,
@@ -465,4 +465,8 @@ export class ObjectAssertion<T extends Struct> extends Assertion<T> {
       ? Object.prototype.hasOwnProperty.call(this.actual, prop)
       : false;
   }
+}
+
+function alphabetically<T>(a: T, b: T): number {
+  return String(a).localeCompare(String(b));
 }

@@ -1,8 +1,8 @@
-import { Plugin } from "@assertive-ts/core";
-import { SinonSpy, SinonSpyCall } from "sinon";
-
 import { SinonSpyAssertion } from "./lib/SinonSpyAssertion";
 import { SinonSpyCallAssertion } from "./lib/SinonSpyCallAssertion";
+
+import type { Plugin } from "@assertive-ts/core";
+import type { SinonSpy, SinonSpyCall } from "sinon";
 
 export type { SinonSpyAssertion } from "./lib/SinonSpyAssertion";
 export type { SinonSpyCallAssertion } from "./lib/SinonSpyCallAssertion";

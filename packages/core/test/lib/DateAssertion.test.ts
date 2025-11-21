@@ -1,10 +1,11 @@
+import assert, { AssertionError } from "assert";
+
 import dedent from "dedent";
 
 import { DateAssertion } from "../../src/lib/DateAssertion";
-import { DateOptions } from "../../src/lib/DateAssertion.types";
 import { dayOfWeekAsNumber } from "../../src/lib/helpers/dates";
 
-import assert, { AssertionError } from "assert";
+import type { DateOptions } from "../../src/lib/DateAssertion.types";
 
 describe("[Unit] DateAssertion.test.ts", () => {
   describe(".toBeDayOfWeek", () => {
@@ -128,37 +129,37 @@ describe("[Unit] DateAssertion.test.ts", () => {
 
   describe(".toBeBeforeOrEqualTo", () => {
     context("when the actual date is before or equal to the passed date", () => {
-        it("returns the assertion instance", () => {
-          const actualDate = new Date(2021, 1, 1);
-          const passedDate = new Date(2021, 1, 1);
-          const test = new DateAssertion(actualDate);
-          assert.deepStrictEqual(test.toBeBeforeOrEqual(passedDate), test);
-          assert.throws(() => test.not.toBeBeforeOrEqual(passedDate), {
-            message: dedent`
+      it("returns the assertion instance", () => {
+        const actualDate = new Date(2021, 1, 1);
+        const passedDate = new Date(2021, 1, 1);
+        const test = new DateAssertion(actualDate);
+        assert.deepStrictEqual(test.toBeBeforeOrEqual(passedDate), test);
+        assert.throws(() => test.not.toBeBeforeOrEqual(passedDate), {
+          message: dedent`
               Expected <${actualDate.toISOString()}> \
               NOT to be before or equal to <${passedDate.toISOString()}>
             `,
-            name: AssertionError.name,
-          });
+          name: AssertionError.name,
         });
-      },
+      });
+    },
     );
 
     context("when the actual date is NOT before or equal to the passed date", () => {
-        it("throws an assertion error", () => {
-          const actualDate = new Date(2021, 2, 1);
-          const passedDate = new Date(2021, 1, 1);
-          const test = new DateAssertion(actualDate);
-          assert.throws(() => test.toBeBeforeOrEqual(passedDate), {
-            message: `Expected <${actualDate.toISOString()}> to be before or equal to <${passedDate.toISOString()}>`,
-            name: AssertionError.name,
-          });
-          assert.deepStrictEqual(
-            test.not.toBeBeforeOrEqual(passedDate),
-            test,
-          );
+      it("throws an assertion error", () => {
+        const actualDate = new Date(2021, 2, 1);
+        const passedDate = new Date(2021, 1, 1);
+        const test = new DateAssertion(actualDate);
+        assert.throws(() => test.toBeBeforeOrEqual(passedDate), {
+          message: `Expected <${actualDate.toISOString()}> to be before or equal to <${passedDate.toISOString()}>`,
+          name: AssertionError.name,
         });
-      },
+        assert.deepStrictEqual(
+          test.not.toBeBeforeOrEqual(passedDate),
+          test,
+        );
+      });
+    },
     );
   });
 
@@ -205,17 +206,17 @@ describe("[Unit] DateAssertion.test.ts", () => {
     });
 
     context("when the actual date is NOT after or equal to the passed date", () => {
-        it("throws an assertion error", () => {
-          const actualDate = new Date(2021, 1, 1);
-          const passedDate = new Date(2021, 2, 1);
-          const test = new DateAssertion(actualDate);
-          assert.throws(() => test.toBeAfterOrEqual(passedDate), {
-            message: `Expected <${actualDate.toISOString()}> to be after or equal to <${passedDate.toISOString()}>`,
-            name: AssertionError.name,
-          });
-          assert.deepStrictEqual(test.not.toBeAfterOrEqual(passedDate), test);
+      it("throws an assertion error", () => {
+        const actualDate = new Date(2021, 1, 1);
+        const passedDate = new Date(2021, 2, 1);
+        const test = new DateAssertion(actualDate);
+        assert.throws(() => test.toBeAfterOrEqual(passedDate), {
+          message: `Expected <${actualDate.toISOString()}> to be after or equal to <${passedDate.toISOString()}>`,
+          name: AssertionError.name,
         });
-      },
+        assert.deepStrictEqual(test.not.toBeAfterOrEqual(passedDate), test);
+      });
+    },
     );
   });
 });

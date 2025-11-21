@@ -1,4 +1,4 @@
-import { Assertion } from "../Assertion";
+import type { Assertion } from "../Assertion";
 
 /**
  * A plugin object that can be used to extend the `expect(..)` function.
@@ -16,7 +16,7 @@ export interface Plugin<T, A extends Assertion<T>> {
    * - `top`: Test before all primitives and object-related types.
    * - `bottom`: Test after all primitives and object-related types.
    */
-  insertAt: "top" | "bottom";
+  insertAt: "bottom" | "top";
   /**
    * The predicate that tests if the actual value should returnt and instance of
    * the plugin's `Assertion`.
@@ -29,7 +29,6 @@ export interface Plugin<T, A extends Assertion<T>> {
  * methods that can change global settings.
  */
 export class Config {
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private pluginSet: Set<Plugin<any, Assertion<any>>>;
 
