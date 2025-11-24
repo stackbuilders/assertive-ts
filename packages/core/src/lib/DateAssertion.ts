@@ -1,8 +1,9 @@
-import { Assertion } from "./Assertion";
-import { DateMethod, DateOptions, DayOfWeek } from "./DateAssertion.types";
-import { optionsToDate, dayOfWeekAsNumber, dateToOptions } from "./helpers/dates";
-
 import { AssertionError } from "assert";
+
+import { Assertion } from "./Assertion";
+import { dateToOptions, dayOfWeekAsNumber, optionsToDate } from "./helpers/dates";
+
+import type { DateMethod, DateOptions, DayOfWeek } from "./DateAssertion.types";
 
 const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
   day: "getDay",
@@ -18,7 +19,6 @@ const DATE_METHOD_MAP: Record<keyof DateOptions, DateMethod> = {
  * Encapsulates assertion methods applicable to values of type Date
  */
 export class DateAssertion extends Assertion<Date> {
-
   public constructor(actual: Date) {
     super(actual);
   }

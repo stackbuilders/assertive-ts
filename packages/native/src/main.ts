@@ -1,21 +1,21 @@
-import { Plugin } from "@assertive-ts/core";
-import { ReactTestInstance } from "react-test-renderer";
-
 import { ElementAssertion } from "./lib/ElementAssertion";
+
+import type { Plugin } from "@assertive-ts/core";
+import type { ReactTestInstance } from "react-test-renderer";
 
 declare module "@assertive-ts/core" {
 
-    export interface Expect {
-      // eslint-disable-next-line @typescript-eslint/prefer-function-type
-      (actual: ReactTestInstance): ElementAssertion;
-    }
+  export interface Expect {
+    // eslint-disable-next-line @typescript-eslint/prefer-function-type
+    (actual: ReactTestInstance): ElementAssertion;
+  }
 }
 
 const ElementPlugin: Plugin<ReactTestInstance, ElementAssertion> = {
-    Assertion: ElementAssertion,
-    insertAt: "top",
-    predicate: (actual): actual is ReactTestInstance =>
-        typeof actual === "object"
+  Assertion: ElementAssertion,
+  insertAt: "top",
+  predicate: (actual): actual is ReactTestInstance =>
+    typeof actual === "object"
         && actual !== null
         && "instance" in actual
         && typeof actual.instance === "object"

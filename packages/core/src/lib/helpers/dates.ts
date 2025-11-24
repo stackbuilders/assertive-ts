@@ -1,4 +1,4 @@
-import { DateOptions, DayOfWeek, Month } from "../DateAssertion.types";
+import type { DateOptions, DayOfWeek, Month } from "../DateAssertion.types";
 
 const DAYS_OF_WEEK: DayOfWeek[] = [
   "sunday",
@@ -33,7 +33,7 @@ const MONTHS: Month[] = [
  * @param day a day of the week string
  * @returns a number representing the day of the week
  */
-export function dayOfWeekAsNumber (day: DayOfWeek): number {
+export function dayOfWeekAsNumber(day: DayOfWeek): number {
   return DAYS_OF_WEEK.indexOf(day);
 }
 
@@ -45,19 +45,19 @@ export function dayOfWeekAsNumber (day: DayOfWeek): number {
  * @param month a month string
  * @returns a number representing the month
  */
-export function monthOfYear (month: Month): number {
+export function monthOfYear(month: Month): number {
   return MONTHS.indexOf(month);
 }
 
 export function optionsToDate(options: DateOptions): Date {
   const {
-    year = 0,
-    month = 0,
     day = 0,
     hours = 0,
-    minutes = 0,
-    seconds = 0,
     milliseconds = 0,
+    minutes = 0,
+    month = 0,
+    seconds = 0,
+    year = 0,
   } = options;
   const monthAsNum = typeof month === "string"
     ? monthOfYear(month) + 1

@@ -1,3 +1,4 @@
+import type { Struct } from "./types";
 import type { AnyFunction } from "../FunctionAssertion";
 import type {
   BetweenOptions,
@@ -6,9 +7,7 @@ import type {
   LowInclusiveBetweenOptions,
 } from "../NumberAssertion";
 
-import { Struct } from "./types";
-
-export function isStruct<T>(value: T): value is { [K in keyof T]: T[K] } & Struct {
+export function isStruct<T>(value: T): value is Struct & { [K in keyof T]: T[K] } {
   return typeof value === "object"
     && value !== null
     && !Array.isArray(value);
@@ -24,7 +23,7 @@ export function isKeyOf<T extends object>(target: T, key: unknown): key is keyof
 }
 
 export function isPromise<T>(value: unknown): value is Promise<T> {
-  const maybePromise = value as Promise<T> | null;
+  const maybePromise = value as null | Promise<T>;
 
   return (
     typeof value === "object"
