@@ -1,7 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getReceivedStyle, normalizeStyles } from "./helpers/helpers";
+import { getExpectedAndReceivedStyles } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -196,20 +196,12 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    */
 
   public toHaveStyle(expected: Partial<CSSStyleDeclaration>): this {
-    if (!this.actual.ownerDocument.defaultView) {
-      throw new Error("The element is not attached to a document with a default view.");
+
+    const [expectedStyle, receivedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+
+    if (!expectedStyle || !receivedStyle) {
+      throw new Error("Currently there are no available styles.");
     }
-    if (!(this.actual instanceof HTMLElement)) {
-      throw new Error("The element is not an HTMLElement.");
-    }
-
-    const window = this.actual.ownerDocument.defaultView;
-
-    const received = window.getComputedStyle(this.actual);
-
-    const { props, expectedStyle } = normalizeStyles(expected);
-
-    const receivedStyle = getReceivedStyle(props, received);
 
     const error = new AssertionError({
       actual: this.actual,
