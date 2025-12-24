@@ -15,7 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [18, 19, 20, 21]
+        node:
+          - 20 # Maintenance LTS
+          - 22 # Maintenance LTS
+          - 24 # Active LTS
+          - 25 # Current
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
