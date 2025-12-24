@@ -2,6 +2,7 @@
   "name": "@examples/mocha",
   "private": true,
   "scripts": {
+    "check": "yarn compile && yarn test --forbid-only",
     "compile": "tsc",
     "test": "mocha"
   },
@@ -9,7 +10,7 @@
     "@assertive-ts/core": "workspace:^",
     "@examples/symbol-plugin": "workspace:^",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.19",
+    "@types/node": "^24.10.1",
     "mocha": "^10.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"

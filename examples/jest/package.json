@@ -2,6 +2,7 @@
   "name": "@examples/jest",
   "private": true,
   "scripts": {
+    "check": "yarn compile && yarn test",
     "compile": "tsc",
     "test": "jest"
   },
@@ -9,7 +10,7 @@
     "@assertive-ts/core": "workspace:^",
     "@examples/symbol-plugin": "workspace:^",
     "@types/jest": "^29.5.12",
-    "@types/node": "^20.11.19",
+    "@types/node": "^24.10.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

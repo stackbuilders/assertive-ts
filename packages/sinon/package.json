@@ -40,7 +40,7 @@
   "devDependencies": {
     "@assertive-ts/core": "workspace:^",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.19",
+    "@types/node": "^24.10.1",
     "@types/sinon": "^17.0.3",
     "mocha": "^10.3.0",
     "semantic-release": "^23.0.2",
