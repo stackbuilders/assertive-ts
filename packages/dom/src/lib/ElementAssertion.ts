@@ -142,6 +142,40 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     );
   }
 
+  /**
+   * Check if the provided element is currently focused in the document.
+   *
+   * @example
+   * const userNameInput = document.querySelector('#username');
+   * userNameInput.focus();
+   * expect(userNameInput).toHaveFocus(); // passes
+   * expect(userNameInput).not.toHaveFocus(); // fails
+   *
+   * @returns The assertion instance.
+   */
+    public toHaveFocus(): this {
+
+      const hasFocus = this.actual === document.activeElement;
+
+      const error = new AssertionError({
+        actual: this.actual,
+        expected: document.activeElement,
+        message: "Expected the element to be focused",
+      });
+
+      const invertedError = new AssertionError({
+        actual: this.actual,
+        expected: document.activeElement,
+        message: "Expected the element NOT to be focused",
+      });
+
+      return this.execute({
+        assertWhen: hasFocus,
+        error,
+        invertedError,
+      });
+    }
+
   private getClassList(): string[] {
     return this.actual.className.split(/\s+/).filter(Boolean);
   }
