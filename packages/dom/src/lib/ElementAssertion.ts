@@ -217,6 +217,50 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     }
 
   /**
+   * Asserts that the element has one or more of the specified CSS styles.
+   *
+   * @example
+   * ```
+   * expect(component).toHaveSomeStyle({ color: 'green', display: 'block' });
+   * ```
+   *
+   * @param expected the expected CSS style/s.
+   * @returns the assertion instance.
+   */
+
+  public toHaveSomeStyle(expected: Partial<CSSStyleDeclaration>): this {
+
+    const [expectedStyle, elementProcessedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+
+    if (!expectedStyle || !elementProcessedStyle) {
+      throw new Error("No available styles.");
+    }
+
+    const hasSomeStyle = Object.entries(expectedStyle).some(([expectedProp, expectedValue]) => {
+      return Object.entries(elementProcessedStyle).some(([receivedProp, receivedValue]) => {
+        return equal(expectedProp, receivedProp) && equal(expectedValue, receivedValue);
+      });
+    });
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected the element to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      // eslint-disable-next-line max-len
+      message: `Expected the element NOT to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    return this.execute({
+      assertWhen: hasSomeStyle,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
    * Helper method to assert the presence or absence of class names.
    *
    * @param assertCondition - Boolean to determine assertion pass or fail.

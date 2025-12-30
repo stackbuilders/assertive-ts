@@ -368,4 +368,47 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
     });
   });
+
+  describe(".toHaveSomeStyle", () => {
+    context("when the element contains one or more expected styles", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(
+            <div
+              style={{ color: "blue", maxHeight: "3rem", width: "2rem" }}
+              data-testid="test-div"
+            />,
+          );
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toHaveSomeStyle({ color: "red", display: "flex", height: "3rem", width: "2rem" })).toBeEqual(test);
+
+        expect(() => test.not.toHaveSomeStyle({ color: "blue" }))
+        .toThrowError(AssertionError)
+        // eslint-disable-next-line max-len
+        .toHaveMessage("Expected the element NOT to match some of the following styles:\n{\n  \"color\": \"rgb(0, 0, 255)\"\n}");
+      });
+    });
+
+    context("when the element does not contain any of the expected styles", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(
+            <div
+              className="foo bar test"
+              style={{ border: "1px solid black", color: "blue", display: "block" }}
+              data-testid="test-div"
+            />,
+          );
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toHaveSomeStyle({ color: "red", display: "flex" }))
+        .toThrowError(AssertionError)
+        // eslint-disable-next-line max-len
+        .toHaveMessage("Expected the element to match some of the following styles:\n{\n  \"color\": \"rgb(255, 0, 0)\",\n  \"display\": \"flex\"\n}");
+
+        expect(test.not.toHaveSomeStyle({ border: "1px solid blue", color: "red", display: "flex" })).toBeEqual(test);
+      });
+    });
+  });
 });
