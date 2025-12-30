@@ -179,10 +179,6 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       });
     }
 
-  private getClassList(): string[] {
-    return this.actual.className.split(/\s+/).filter(Boolean);
-  }
-
   /**
    * Asserts that the element has the specified CSS styles.
    *
