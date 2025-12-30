@@ -1,4 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import equal from "fast-deep-equal";
+
+import { getExpectedAndReceivedStyles } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -176,9 +179,42 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       });
     }
 
-  private getClassList(): string[] {
-    return this.actual.className.split(/\s+/).filter(Boolean);
-  }
+  /**
+   * Asserts that the element has the specified CSS styles.
+   *
+   * @example
+   * ```
+   * expect(component).toHaveStyle({ color: 'green', display: 'block' });
+   * ```
+   *
+   * @param expected the expected CSS styles.
+   * @returns the assertion instance.
+   */
+
+  public toHaveStyle(expected: Partial<CSSStyleDeclaration>): this {
+
+    const [expectedStyle, receivedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+
+    if (!expectedStyle || !receivedStyle) {
+      throw new Error("Currently there are no available styles.");
+    }
+
+    const error = new AssertionError({
+      actual: this.actual,
+      expected: expectedStyle,
+      message: `Expected the element to match the following style:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected the element to NOT match the following style:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    return this.execute({
+      assertWhen: equal(expectedStyle, receivedStyle),
+      error,
+      invertedError,
+    });
+    }
 
   /**
    * Helper method to assert the presence or absence of class names.
@@ -214,5 +250,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       error,
       invertedError,
     });
+  }
+
+  private getClassList(): string[] {
+    return this.actual.className.split(/\s+/).filter(Boolean);
   }
 }
