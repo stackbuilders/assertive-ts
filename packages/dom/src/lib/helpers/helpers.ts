@@ -49,8 +49,8 @@ function getReceivedStyle (props: string[], received: CSSStyleDeclaration): Styl
   }, {} as StyleDeclaration);
 }
 
-export const getExpectedAndReceivedStyles =
-(actual: Element, expected: Partial<CSSStyleDeclaration>): StyleDeclaration[] => {
+export function getExpectedAndReceivedStyles
+(actual: Element, expected: Partial<CSSStyleDeclaration>): StyleDeclaration[] {
     if (!actual.ownerDocument.defaultView) {
       throw new Error("The element is not attached to a document with a default view.");
     }
@@ -72,4 +72,9 @@ export const getExpectedAndReceivedStyles =
       expectedStyle,
       elementProcessedStyle,
     ];
-};
+}
+
+export function isElementEmpty (element: Element): boolean {
+  const nonCommentChildNodes = [...element.childNodes].filter(child => child.nodeType !== 8);
+  return nonCommentChildNodes.length === 0;
+}
