@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
+import { DescriptionTestComponent } from "./fixtures/descriptionTestComponent";
 import { FocusTestComponent } from "./fixtures/focusTestComponent";
 import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
 import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
@@ -408,6 +409,112 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         .toHaveMessage("Expected the element to match some of the following styles:\n{\n  \"color\": \"rgb(255, 0, 0)\",\n  \"display\": \"flex\"\n}");
 
         expect(test.not.toHaveSomeStyle({ border: "1px solid blue", color: "red", display: "flex" })).toBeEqual(test);
+      });
+    });
+  });
+
+  describe(".toHaveDescription", () => {
+    context("when checking for any description", () => {
+      context("when the element has a description", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-single");
+          const test = new ElementAssertion(button);
+
+          expect(test.toHaveDescription()).toBeEqual(test);
+
+          expect(() => test.not.toHaveDescription())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element NOT to have a description, but received "This is a description"');
+        });
+      });
+
+      context("when the element does not have a description", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-no-description");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toHaveDescription())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected the element to have a description");
+
+          expect(test.not.toHaveDescription()).toBeEqual(test);
+        });
+      });
+    });
+
+    context("when checking for specific description text", () => {
+      context("when the element has the expected description", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-single");
+          const test = new ElementAssertion(button);
+
+          expect(test.toHaveDescription("This is a description")).toBeEqual(test);
+
+          expect(() => test.not.toHaveDescription("This is a description"))
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element NOT to have description "This is a description", but received "This is a description"');
+        });
+      });
+
+      context("when the element has multiple descriptions combined", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-multiple");
+          const test = new ElementAssertion(button);
+
+          expect(test.toHaveDescription("This is a description Additional info")).toBeEqual(test);
+
+          expect(() => test.not.toHaveDescription("This is a description Additional info"))
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element NOT to have description "This is a description Additional info", but received "This is a description Additional info"');
+        });
+      });
+
+      context("when the element does not have the expected description", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-single");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toHaveDescription("Wrong description"))
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to have description "Wrong description", but received "This is a description"');
+
+          expect(test.not.toHaveDescription("Wrong description")).toBeEqual(test);
+        });
+      });
+    });
+
+    context("when checking with a RegExp pattern", () => {
+      context("when the description matches the pattern", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-single");
+          const test = new ElementAssertion(button);
+
+          expect(test.toHaveDescription(/description/i)).toBeEqual(test);
+
+          expect(() => test.not.toHaveDescription(/description/i))
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element NOT to have description matching /description/i, but received "This is a description"');
+        });
+      });
+
+      context("when the description does not match the pattern", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<DescriptionTestComponent />);
+          const button = getByTestId("button-single");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toHaveDescription(/wrong pattern/))
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to have description matching /wrong pattern/, but received "This is a description"');
+
+          expect(test.not.toHaveDescription(/wrong pattern/)).toBeEqual(test);
+        });
       });
     });
   });
