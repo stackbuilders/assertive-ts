@@ -73,3 +73,13 @@ export const getExpectedAndReceivedStyles =
       elementProcessedStyle,
     ];
 };
+
+/**
+ * Normalizes text by collapsing whitespace and trimming.
+ *
+ * @param text - The text to normalize.
+ * @returns The normalized text.
+ */
+export function normalizeText(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
