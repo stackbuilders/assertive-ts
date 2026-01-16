@@ -1,7 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getExpectedAndReceivedStyles } from "./helpers/helpers";
+import { getExpectedAndReceivedStyles, isElementEmpty } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -255,6 +255,38 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: hasSomeStyle,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element does not contain child nodes, excluding comments.
+   *
+   * @example
+   * ```
+   * expect(component).toBeEmpty();
+   * ```
+   *
+   * @returns the assertion instance.
+   */
+
+  public toBeEmpty(): this {
+
+    const isEmpty = isElementEmpty(this.actual);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be empty.",
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element NOT to be empty.",
+    });
+
+    return this.execute({
+      assertWhen: isEmpty,
       error,
       invertedError,
     });
