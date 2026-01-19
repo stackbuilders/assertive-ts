@@ -455,7 +455,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(() => test.not.toHaveDescription("This is a description"))
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element NOT to have description "This is a description", but received "This is a description"');
+            .toHaveMessage(
+              'Expected the element NOT to have description "This is a description", ' +
+              'but received "This is a description"',
+            );
         });
       });
 
@@ -469,7 +472,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(() => test.not.toHaveDescription("This is a description Additional info"))
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element NOT to have description "This is a description Additional info", but received "This is a description Additional info"');
+            .toHaveMessage(
+              'Expected the element NOT to have description "This is a description Additional info", ' +
+              'but received "This is a description Additional info"',
+            );
         });
       });
 
@@ -481,7 +487,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(() => test.toHaveDescription("Wrong description"))
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element to have description "Wrong description", but received "This is a description"');
+            .toHaveMessage(
+              'Expected the element to have description "Wrong description", but received "This is a description"',
+            );
 
           expect(test.not.toHaveDescription("Wrong description")).toBeEqual(test);
         });
@@ -499,7 +507,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(() => test.not.toHaveDescription(/description/i))
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element NOT to have description matching /description/i, but received "This is a description"');
+            .toHaveMessage(
+              "Expected the element NOT to have description matching /description/i, " +
+              'but received "This is a description"',
+            );
         });
       });
 
@@ -511,7 +522,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(() => test.toHaveDescription(/wrong pattern/))
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element to have description matching /wrong pattern/, but received "This is a description"');
+            .toHaveMessage(
+              "Expected the element to have description matching /wrong pattern/, " +
+              'but received "This is a description"',
+            );
 
           expect(test.not.toHaveDescription(/wrong pattern/)).toBeEqual(test);
         });

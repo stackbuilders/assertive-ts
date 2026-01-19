@@ -1,7 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getExpectedAndReceivedStyles, normalizeText } from "./helpers/helpers";
+import { getExpectedAndReceivedStyles, getAccessibleDescription } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -262,28 +262,30 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
   /**
    * Asserts that the element has an accessible description.
-   * 
-   * The accessible description is computed from the `aria-describedby` attribute,
-   * which references one or more elements by ID. The text content of those elements
-   * is combined to form the description.
-   * 
+   *
+   * The accessible description is computed from the `aria-describedby`
+   * attribute, which references one or more elements by ID. The text
+   * content of those elements is combined to form the description.
+   *
    * @example
    * ```
    * // Check if element has any description
    * expect(element).toHaveDescription();
-   * 
+   *
    * // Check if element has specific description text
    * expect(element).toHaveDescription('Expected description text');
-   * 
+   *
    * // Check if element description matches a regex pattern
    * expect(element).toHaveDescription(/description pattern/i);
    * ```
    *
-   * @param expectedDescription - Optional expected description (string or RegExp).
+   * @param expectedDescription
+   * - Optional expected description (string or RegExp).
    * @returns the assertion instance.
    */
+
   public toHaveDescription(expectedDescription?: string | RegExp): this {
-    const description = this.getAccessibleDescription();
+    const description = getAccessibleDescription(this.actual);
     const hasExpectedValue = expectedDescription !== undefined;
 
     const matchesExpectation = (desc: string): boolean => {
@@ -302,7 +304,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       actual: description,
       expected: expectedDescription,
       message: hasExpectedValue
-        ? `Expected the element to have description ${formatExpectation(expectedDescription instanceof RegExp)}, but received "${description}"`
+        ? `Expected the element to have description ${formatExpectation(expectedDescription instanceof RegExp)}, ` +
+        `but received "${description}"`
         : "Expected the element to have a description",
     });
 
@@ -310,7 +313,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       actual: description,
       expected: expectedDescription,
       message: hasExpectedValue
-        ? `Expected the element NOT to have description ${formatExpectation(expectedDescription instanceof RegExp)}, but received "${description}"`
+        ? `Expected the element NOT to have description ${formatExpectation(expectedDescription instanceof RegExp)}, ` +
+        `but received "${description}"`
         : `Expected the element NOT to have a description, but received "${description}"`,
     });
 
@@ -355,33 +359,6 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       error,
       invertedError,
     });
-  }
-
-  /**
-   * Gets the accessible description of an element based on aria-describedby.
-   *
-   * @returns The normalized description text.
-   */
-  private getAccessibleDescription(): string {
-    const descriptionIDs = (this.actual.getAttribute('aria-describedby') || '')
-      .split(/\s+/)
-      .filter(Boolean);
-
-    if (descriptionIDs.length === 0) {
-      return '';
-    }
-
-    const getElementText = (id: string): string | null => {
-      const element = this.actual.ownerDocument.getElementById(id);
-      return element?.textContent || null;
-    };
-
-    return normalizeText(
-      descriptionIDs
-        .map(getElementText)
-        .filter((text): text is string => text !== null)
-        .join(' '),
-    );
   }
 
   private getClassList(): string[] {

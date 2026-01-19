@@ -83,3 +83,32 @@ export const getExpectedAndReceivedStyles =
 export function normalizeText(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
+
+/**
+ * Gets the accessible description of an element based on aria-describedby.
+ *
+ * @param actual - The element to get the description from.
+ * @returns The normalized description text.
+ */
+export function getAccessibleDescription(actual: Element): string {
+  const ariaDescribedBy = actual.getAttribute("aria-describedby") || "";
+  const descriptionIDs = ariaDescribedBy
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (descriptionIDs.length === 0) {
+    return "";
+  }
+
+  const getElementText = (id: string): string | null => {
+    const element = actual.ownerDocument.getElementById(id);
+    return element?.textContent || null;
+  };
+
+  return normalizeText(
+    descriptionIDs
+      .map(getElementText)
+      .filter((text): text is string => text !== null)
+      .join(" "),
+  );
+}
