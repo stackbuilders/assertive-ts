@@ -1,23 +1,13 @@
 import { Assertion } from "./lib/Assertion";
-import { config, Plugin } from "./lib/config/Config";
-import { expect, Expect } from "./lib/expect";
+import { type Plugin, config } from "./lib/config/Config";
+import { type Expect, expect } from "./lib/expect";
 
 export { AssertionError } from "assert/strict";
-export {
-  AssertionFactory,
-  StaticTypeFactories,
-  TypeFactory,
-  TypeFactories,
-} from "./lib/helpers/TypeFactories";
+export type { AssertionFactory, StaticTypeFactories, TypeFactory } from "./lib/helpers/TypeFactories";
+export { TypeFactories } from "./lib/helpers/TypeFactories";
 
-export {
-  Assertion,
-  Expect,
-  Plugin,
-  expect,
-  expect as assert,
-  expect as assertThat,
-};
+export type { Expect, Plugin };
+export { Assertion, expect, expect as assert, expect as assertThat };
 
 /**
  * Extends `@assertive-ts/core` with local or 3rd-party plugin(s).

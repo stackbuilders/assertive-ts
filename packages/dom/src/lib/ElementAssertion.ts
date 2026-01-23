@@ -6,7 +6,6 @@ import { isElementEmpty } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
-
   public constructor(actual: T) {
     super(actual);
   }

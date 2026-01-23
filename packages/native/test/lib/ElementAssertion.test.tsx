@@ -1,10 +1,12 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
+import { type ReactElement, useCallback, useState } from "react";
 import {
-  View,
-  TextInput,
-  Text,
+  Button,
   Modal,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
@@ -17,7 +19,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       context("and the element is not editable", () => {
         it("returns the assertion instance", () => {
           const element = render(
-              <TextInput testID="id" editable={false} />,
+            <TextInput testID="id" editable={false} />,
           );
           const test = new ElementAssertion(element.getByTestId("id"));
           expect(test.toBeDisabled()).toBe(test);
@@ -132,6 +134,84 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
       });
     });
+  });
+
+  describe(".toBeEmpty", () => {
+    context("when the element is empty", () => {
+      it("returns the assertion instance", () => {
+        const element = render(<View testID="id" />);
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeEmpty()).toBe(test);
+        expect(() => test.not.toBeEmpty())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be empty.");
+      });
+    });
+
+    context("when the element is NOT empty", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id">
+            <Text>{"Not empty"}</Text>
+          </View>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toBeEmpty()).toBeEqual(test);
+        expect(() => test.toBeEmpty())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to be empty.");
+      });
+    });
+  });
+
+  describe (".toBeVisible", () => {
+    context("when the modal is visible", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(
+          <Modal testID="id" visible={true} />,
+        );
+        const test = new ElementAssertion(getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Modal ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'display' property", () => {
+      context("and display = none", () => {
+        it("throws an error", () => {
+          const { getByRole, getByText } = render(
+            <SimpleToggleText />,
+          );
+          const textElement = new ElementAssertion(getByText("Toggle me!"));
+
+          expect(textElement.toBeVisible()).toBeEqual(textElement);
+
+          const toggleButton = getByRole("button", { name: "Toggle Text" });
+          fireEvent.press(toggleButton);
+
+          expect(textElement.not.toBeVisible()).toBeEqual(textElement);
+        });
+      });
+
+      context("and display = flex", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(
+            <View testID="id" style={{ display: "flex" }} />,
+          );
+          const test = new ElementAssertion(getByTestId("id"));
+
+          expect(test.toBeVisible()).toBe(test);
+          expect(() => test.not.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+        });
+      });
+    });
 
     context("when the element contains 'accessibilityElementsHidden' property", () => {
       it("returns the assertion instance", () => {
@@ -150,7 +230,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element contains 'importantForAccessibility' property", () => {
       it("returns the assertion instance", () => {
         const { getByTestId } = render(
-          <View testID="id" importantForAccessibility={"yes"} />,
+          <View testID="id" importantForAccessibility="yes" />,
         );
         const test = new ElementAssertion(getByTestId("id"));
 
@@ -164,7 +244,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the parent element contains 'opacity' property", () => {
       context("and parent opacity = 0", () => {
         const { getByTestId } = render(
-          <View testID="parentId" style={{ opacity: 0 }} >
+          <View testID="parentId" style={{ opacity: 0 }}>
             <View testID="childId" style={{ opacity: 1 }} />
           </View>,
         );
@@ -189,7 +269,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and child opacity = 0", () => {
         const { getByTestId } = render(
-          <View testID="parentId" style={{ opacity: 1 }} >
+          <View testID="parentId" style={{ opacity: 1 }}>
             <View testID="childId" style={{ opacity: 0 }} />
           </View>,
         );

@@ -7,7 +7,6 @@ import { SinonSpyCallAssertion } from "../../../src/lib/SinonSpyCallAssertion";
 import { sneakyCall } from "../../helpers/common";
 
 class InvariantError extends Error {
-
   public constructor(message: string) {
     super(`Invariant: ${message}`);
     this.name = InvariantError.name;

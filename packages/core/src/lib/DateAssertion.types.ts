@@ -1,25 +1,25 @@
-export type Month =
-  | "january"
-  | "february"
-  | "march"
-  | "april"
-  | "may"
-  | "june"
-  | "july"
+export type Month
+  = "april"
   | "august"
-  | "september"
-  | "october"
+  | "december"
+  | "february"
+  | "january"
+  | "july"
+  | "june"
+  | "march"
+  | "may"
   | "november"
-  | "december";
+  | "october"
+  | "september";
 
-export type DayOfWeek =
+export type DayOfWeek
+  = "friday"
   | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
   | "saturday"
-  | "sunday";
+  | "sunday"
+  | "thursday"
+  | "tuesday"
+  | "wednesday";
 
 export type DateMethod = {
   [K in keyof Date]: Date[K] extends () => number

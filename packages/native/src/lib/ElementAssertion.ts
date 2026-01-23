@@ -1,5 +1,6 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
+import { Children } from "react";
 import { ReactTestInstance } from "react-test-renderer";
 
 import { isAncestorDisabled, isElementDisabled, isAncestorNotVisible, isElementVisible } from "./helpers/accesibility";

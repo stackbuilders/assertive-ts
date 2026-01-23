@@ -1,12 +1,14 @@
+// Remove when migrated to Vitest
+/* eslint-disable @typescript-eslint/no-base-to-string */
+import assert, { AssertionError } from "assert";
+
 import Sinon from "sinon";
 
-import { Assertion, DataType } from "../../src/lib/Assertion";
+import { Assertion, type DataType } from "../../src/lib/Assertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 import { UnsupportedOperationError } from "../../src/lib/errors/UnsupportedOperationError";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
 import { prettify } from "../../src/lib/helpers/messages";
-
-import assert, { AssertionError } from "assert";
 
 const HERO = {
   name: "Batman",
@@ -56,7 +58,6 @@ const BASE_DIFFS = [
 ];
 
 class Car {
-
   private readonly model: string;
 
   public constructor(model: string) {
@@ -328,17 +329,17 @@ describe("[Unit] Assertion.test.ts", () => {
         ["deep-array", [...THINGS, { x: HERO }], [...THINGS, { x: HERO }]],
         ["date", TODAY, new Date(TODAY.toISOString())],
       ]
-      .forEach(([type, actual, expected]) => {
-        it(`[${type}] returns the assertion instance`, () => {
-          const test = new Assertion(actual);
+        .forEach(([type, actual, expected]) => {
+          it(`[${type}] returns the assertion instance`, () => {
+            const test = new Assertion(actual);
 
-          assert.deepStrictEqual(test.toBeEqual(expected), test);
-          assert.throws(() => test.not.toBeEqual(expected), {
-            message: "Expected both values to NOT be deep equal",
-            name: AssertionError.name,
+            assert.deepStrictEqual(test.toBeEqual(expected), test);
+            assert.throws(() => test.not.toBeEqual(expected), {
+              message: "Expected both values to NOT be deep equal",
+              name: AssertionError.name,
+            });
           });
         });
-      });
     });
 
     context("when the value is NOT referentially, NOR shallow, NOR deep equal", () => {
@@ -352,17 +353,17 @@ describe("[Unit] Assertion.test.ts", () => {
         ["deep-object", { ...HERO, opts: { x: 1 } }, { ...HERO, opts: { x: 2 } }],
         ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 2 }]],
       ]
-      .forEach(([type, actual, expected]) => {
-        it(`[${type}] throws an assertion error`, () => {
-          const test = new Assertion(actual);
+        .forEach(([type, actual, expected]) => {
+          it(`[${type}] throws an assertion error`, () => {
+            const test = new Assertion(actual);
 
-          assert.throws(() => test.toBeEqual(expected), {
-            message: "Expected both values to be deep equal",
-            name: AssertionError.name,
+            assert.throws(() => test.toBeEqual(expected), {
+              message: "Expected both values to be deep equal",
+              name: AssertionError.name,
+            });
+            assert.deepStrictEqual(test.not.toBeEqual(expected), test);
           });
-          assert.deepStrictEqual(test.not.toBeEqual(expected), test);
         });
-      });
     });
   });
 
@@ -374,17 +375,17 @@ describe("[Unit] Assertion.test.ts", () => {
         ["shallow-object", HERO, { name: "Batman", realName: "Bruce Wayne" }],
         ["shallow-array", THINGS, [1, "foo", false]],
       ]
-      .forEach(([valueType, expected, actual]) => {
-        it(`[${valueType}] returns the assertion instance`, () => {
-          const test = new Assertion(actual);
+        .forEach(([valueType, expected, actual]) => {
+          it(`[${valueType}] returns the assertion instance`, () => {
+            const test = new Assertion(actual);
 
-          assert.deepStrictEqual(test.toBeSimilar(expected), test);
-          assert.throws(() => test.not.toBeSimilar(expected), {
-            message: "Expected both values to NOT be similar",
-            name: AssertionError.name,
+            assert.deepStrictEqual(test.toBeSimilar(expected), test);
+            assert.throws(() => test.not.toBeSimilar(expected), {
+              message: "Expected both values to NOT be similar",
+              name: AssertionError.name,
+            });
           });
         });
-      });
     });
 
     context("when the value is NOT referentially, NOR shallow equal", () => {
@@ -398,17 +399,17 @@ describe("[Unit] Assertion.test.ts", () => {
         ["deep-object", { ...HERO, opts: { x: THINGS } }, { ...HERO, opts: { x: THINGS } }],
         ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 1 }]],
       ]
-      .forEach(([type, actual, expected]) => {
-        it(`[${type}] throws an assertion error`, () => {
-          const test = new Assertion(actual);
+        .forEach(([type, actual, expected]) => {
+          it(`[${type}] throws an assertion error`, () => {
+            const test = new Assertion(actual);
 
-          assert.throws(() => test.toBeSimilar(expected), {
-            message: "Expected both values to be similar",
-            name: AssertionError.name,
+            assert.throws(() => test.toBeSimilar(expected), {
+              message: "Expected both values to be similar",
+              name: AssertionError.name,
+            });
+            assert.deepStrictEqual(test.not.toBeSimilar(expected), test);
           });
-          assert.deepStrictEqual(test.not.toBeSimilar(expected), test);
         });
-      });
     });
   });
 
@@ -438,17 +439,17 @@ describe("[Unit] Assertion.test.ts", () => {
         ["deep-object", { ...HERO, opts: { x: THINGS } }, { ...HERO, opts: { x: THINGS } }],
         ["deep-array", [...THINGS, { x: 1 }], [...THINGS, { x: 1 }]],
       ]
-      .forEach(([type, actual, expected]) => {
-        it(`[${type}] throws an assertion error`, () => {
-          const test = new Assertion(actual);
+        .forEach(([type, actual, expected]) => {
+          it(`[${type}] throws an assertion error`, () => {
+            const test = new Assertion(actual);
 
-          assert.throws(() => test.toBeSame(expected), {
-            message: "Expected both values to be the same",
-            name: AssertionError.name,
+            assert.throws(() => test.toBeSame(expected), {
+              message: "Expected both values to be the same",
+              name: AssertionError.name,
+            });
+            assert.deepStrictEqual(test.not.toBeSame(expected), test);
           });
-          assert.deepStrictEqual(test.not.toBeSame(expected), test);
         });
-      });
     });
   });
 
