@@ -20,22 +20,24 @@
     "compile": "turbo run compile",
     "docs": "turbo docs",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "release": "turbo release --concurrency=1",
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^7.3.0",
-    "@typescript-eslint/parser": "^7.3.0",
-    "eslint": "^8.57.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-etc": "^2.0.3",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsdoc": "^48.2.1",
-    "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-sonarjs": "^0.24.0",
+    "@eslint/js": "^9.39.1",
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "eslint": "^9.39.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsdoc": "^61.2.1",
+    "eslint-plugin-perfectionist": "^4.15.1",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-sonarjs": "^3.0.5",
+    "globals": "^16.5.0",
     "rimraf": "^6.1.2",
     "turbo": "^1.12.4",
-    "typescript": "^5.4.2"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.47.0"
   }
 }

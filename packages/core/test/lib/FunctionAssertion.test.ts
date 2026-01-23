@@ -1,14 +1,13 @@
-/* eslint-disable no-throw-literal */
+/* eslint-disable @typescript-eslint/only-throw-error */
+import assert, { AssertionError } from "assert";
+
 import { Assertion } from "../../src/lib/Assertion";
 import { ErrorAssertion } from "../../src/lib/ErrorAssertion";
 import { FunctionAssertion } from "../../src/lib/FunctionAssertion";
 import { NumberAssertion } from "../../src/lib/NumberAssertion";
 import { TypeFactories } from "../../src/lib/helpers/TypeFactories";
 
-import assert, { AssertionError } from "assert";
-
 class CustomError extends Error {
-
   public constructor(message?: string) {
     super(message);
 

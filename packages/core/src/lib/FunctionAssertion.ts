@@ -1,11 +1,12 @@
+import { AssertionError } from "assert";
+
 import isDeepEqual from "fast-deep-equal/es6";
 
-import { Assertion, Constructor } from "./Assertion";
+import { Assertion, type Constructor } from "./Assertion";
 import { ErrorAssertion } from "./ErrorAssertion";
-import { type TypeFactory } from "./helpers/TypeFactories";
 import { prettify } from "./helpers/messages";
 
-import { AssertionError } from "assert";
+import type { TypeFactory } from "./helpers/TypeFactories";
 
 export type AnyFunction = (...args: unknown[]) => unknown;
 
@@ -23,7 +24,6 @@ const NoThrow = Symbol("NoThrow");
  * @param T the type of the function's signature
  */
 export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
-
   public constructor(actual: T) {
     super(actual);
   }
@@ -184,7 +184,7 @@ export class FunctionAssertion<T extends AnyFunction> extends Assertion<T> {
       : new Assertion(captured) as A;
   }
 
-  private captureError<X>(): X | typeof NoThrow {
+  private captureError<X>(): typeof NoThrow | X {
     try {
       this.actual();
       return NoThrow;

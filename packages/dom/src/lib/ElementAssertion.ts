@@ -1,7 +1,6 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
-
   public constructor(actual: T) {
     super(actual);
   }

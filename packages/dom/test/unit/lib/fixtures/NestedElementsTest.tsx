@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 
-export function NestedElementsTestComponent(): ReactElement {
+export function NestedElementsTest(): ReactElement {
   return (
     <span data-testid="grandparent">
       <span data-testid="parent">

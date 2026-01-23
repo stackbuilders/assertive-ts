@@ -1,9 +1,8 @@
-import { TypeFactories } from "../../../src/lib/helpers/TypeFactories";
-
 import assert from "assert";
 
-class CustomError extends Error {
+import { TypeFactories } from "../../../src/lib/helpers/TypeFactories";
 
+class CustomError extends Error {
   public constructor(message?: string) {
     super(message);
 

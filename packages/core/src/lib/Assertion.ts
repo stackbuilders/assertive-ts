@@ -1,19 +1,20 @@
+import { AssertionError } from "assert";
+
 import isDeepEqual from "fast-deep-equal/es6";
 
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
-import { type TypeFactory } from "./helpers/TypeFactories";
-import { isStruct, isKeyOf } from "./helpers/guards";
+import { isKeyOf, isStruct } from "./helpers/guards";
 import { prettify } from "./helpers/messages";
 
-import { AssertionError } from "assert";
+import type { TypeFactory } from "./helpers/TypeFactories";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export interface Constructor<T> extends Function {
   prototype: T;
 }
 
-export type DataType =
-  | "array"
+export type DataType
+  = "array"
   | "bigint"
   | "boolean"
   | "function"
@@ -46,7 +47,6 @@ export interface ExecuteOptions {
  * @param T the type of the `actual` value
  */
 export class Assertion<T> {
-
   protected readonly actual: T;
 
   protected readonly inverted: boolean;
@@ -58,6 +58,18 @@ export class Assertion<T> {
     this.inverted = false;
 
     this.not = new Proxy(this, { get: this.proxyInverter(true) });
+  }
+
+  protected proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
+    return (target, p) => {
+      const key = isKeyOf(target, p) ? p : undefined;
+
+      if (key === "inverted") {
+        return isInverted;
+      }
+
+      return key ? target[key] : undefined;
+    };
   }
 
   /**
@@ -564,17 +576,5 @@ export class Assertion<T> {
       actual: this.actual,
       message: `Expected <${prettify(this.actual)}> to be of type "${typeName}"`,
     });
-  }
-
-  private proxyInverter(isInverted: boolean): ProxyHandler<this>["get"] {
-    return (target, p) => {
-      const key = isKeyOf(target, p) ? p : undefined;
-
-      if (key === "inverted") {
-        return isInverted;
-      }
-
-      return key ? target[key] : undefined;
-    };
   }
 }
