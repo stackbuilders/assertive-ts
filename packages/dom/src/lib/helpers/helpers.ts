@@ -74,22 +74,10 @@ export const getExpectedAndReceivedStyles =
     ];
 };
 
-/**
- * Normalizes text by collapsing whitespace and trimming.
- *
- * @param text - The text to normalize.
- * @returns The normalized text.
- */
-export function normalizeText(text: string): string {
+function normalizeText(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
-/**
- * Gets the accessible description of an element based on aria-describedby.
- *
- * @param actual - The element to get the description from.
- * @returns The normalized description text.
- */
 export function getAccessibleDescription(actual: Element): string {
   const ariaDescribedBy = actual.getAttribute("aria-describedby") || "";
   const descriptionIDs = ariaDescribedBy
