@@ -73,3 +73,30 @@ export const getExpectedAndReceivedStyles =
       elementProcessedStyle,
     ];
 };
+
+function normalizeText(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+export function getAccessibleDescription(actual: Element): string {
+  const ariaDescribedBy = actual.getAttribute("aria-describedby") || "";
+  const descriptionIDs = ariaDescribedBy
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if (descriptionIDs.length === 0) {
+    return "";
+  }
+
+  const getElementText = (id: string): string | null => {
+    const element = actual.ownerDocument.getElementById(id);
+    return element?.textContent || null;
+  };
+
+  return normalizeText(
+    descriptionIDs
+      .map(getElementText)
+      .filter((text): text is string => text !== null)
+      .join(" "),
+  );
+}

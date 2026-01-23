@@ -1,7 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getExpectedAndReceivedStyles } from "./helpers/helpers";
+import { getExpectedAndReceivedStyles, getAccessibleDescription } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
@@ -255,6 +255,71 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: hasSomeStyle,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element has an accessible description.
+   *
+   * The accessible description is computed from the `aria-describedby`
+   * attribute, which references one or more elements by ID. The text
+   * content of those elements is combined to form the description.
+   *
+   * @example
+   * ```
+   * // Check if element has any description
+   * expect(element).toHaveDescription();
+   *
+   * // Check if element has specific description text
+   * expect(element).toHaveDescription('Expected description text');
+   *
+   * // Check if element description matches a regex pattern
+   * expect(element).toHaveDescription(/description pattern/i);
+   * ```
+   *
+   * @param expectedDescription
+   * - Optional expected description (string or RegExp).
+   * @returns the assertion instance.
+   */
+
+  public toHaveDescription(expectedDescription?: string | RegExp): this {
+    const description = getAccessibleDescription(this.actual);
+    const hasExpectedValue = expectedDescription !== undefined;
+
+    const matchesExpectation = (desc: string): boolean => {
+      if (!hasExpectedValue) {
+        return Boolean(desc);
+      }
+      return expectedDescription instanceof RegExp
+        ? expectedDescription.test(desc)
+        : desc === expectedDescription;
+    };
+
+    const formatExpectation = (isRegExp: boolean): string =>
+      isRegExp ? `matching ${expectedDescription}` : `"${expectedDescription}"`;
+
+    const error = new AssertionError({
+      actual: description,
+      expected: expectedDescription,
+      message: hasExpectedValue
+        ? `Expected the element to have description ${formatExpectation(expectedDescription instanceof RegExp)}, ` +
+        `but received "${description}"`
+        : "Expected the element to have a description",
+    });
+
+    const invertedError = new AssertionError({
+      actual: description,
+      expected: expectedDescription,
+      message: hasExpectedValue
+        ? `Expected the element NOT to have description ${formatExpectation(expectedDescription instanceof RegExp)}, ` +
+        `but received "${description}"`
+        : `Expected the element NOT to have a description, but received "${description}"`,
+    });
+
+    return this.execute({
+      assertWhen: matchesExpectation(description),
       error,
       invertedError,
     });
