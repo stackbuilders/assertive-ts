@@ -3,6 +3,8 @@ interface StyleDeclaration extends Record<string, string> {
   value: string;
 }
 
+const COMMENT_NODE_TYPE = 8;
+
 function normalizeStyles(css: Partial<CSSStyleDeclaration>): StyleDeclaration {
   const normalizer = document.createElement("div");
   document.body.appendChild(normalizer);
@@ -75,6 +77,6 @@ export function getExpectedAndReceivedStyles
 }
 
 export function isElementEmpty (element: Element): boolean {
-  const nonCommentChildNodes = [...element.childNodes].filter(child => child.nodeType !== 8);
+  const nonCommentChildNodes = [...element.childNodes].filter(child => child.nodeType !== COMMENT_NODE_TYPE);
   return nonCommentChildNodes.length === 0;
 }
