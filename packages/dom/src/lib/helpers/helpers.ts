@@ -80,11 +80,11 @@ function normalizeText(text: string): string {
 
 export function getAccessibleDescription(actual: Element): string {
   const ariaDescribedBy = actual.getAttribute("aria-describedby") || "";
-  const descriptionIDs = ariaDescribedBy
+  const descriptionIds = ariaDescribedBy
     .split(/\s+/)
     .filter(Boolean);
 
-  if (descriptionIDs.length === 0) {
+  if (descriptionIds.length === 0) {
     return "";
   }
 
@@ -94,7 +94,7 @@ export function getAccessibleDescription(actual: Element): string {
   };
 
   return normalizeText(
-    descriptionIDs
+    descriptionIds
       .map(getElementText)
       .filter((text): text is string => text !== null)
       .join(" "),
