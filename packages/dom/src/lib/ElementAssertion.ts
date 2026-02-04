@@ -1,4 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import equal from "fast-deep-equal";
+
+import { getExpectedAndReceivedStyles } from "./helpers/helpers";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
   public constructor(actual: T) {
@@ -141,8 +144,119 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     );
   }
 
-  private getClassList(): string[] {
-    return this.actual.className.split(/\s+/).filter(Boolean);
+  /**
+   * Check if the provided element is currently focused in the document.
+   *
+   * @example
+   * const userNameInput = document.querySelector('#username');
+   * userNameInput.focus();
+   * expect(userNameInput).toHaveFocus(); // passes
+   * expect(userNameInput).not.toHaveFocus(); // fails
+   *
+   * @returns The assertion instance.
+   */
+    public toHaveFocus(): this {
+
+      const hasFocus = this.actual === document.activeElement;
+
+      const error = new AssertionError({
+        actual: this.actual,
+        expected: document.activeElement,
+        message: "Expected the element to be focused",
+      });
+
+      const invertedError = new AssertionError({
+        actual: this.actual,
+        expected: document.activeElement,
+        message: "Expected the element NOT to be focused",
+      });
+
+      return this.execute({
+        assertWhen: hasFocus,
+        error,
+        invertedError,
+      });
+    }
+
+  /**
+   * Asserts that the element has the specified CSS styles.
+   *
+   * @example
+   * ```
+   * expect(component).toHaveStyle({ color: 'green', display: 'block' });
+   * ```
+   *
+   * @param expected the expected CSS styles.
+   * @returns the assertion instance.
+   */
+
+  public toHaveStyle(expected: Partial<CSSStyleDeclaration>): this {
+
+    const [expectedStyle, receivedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+
+    if (!expectedStyle || !receivedStyle) {
+      throw new Error("Currently there are no available styles.");
+    }
+
+    const error = new AssertionError({
+      actual: this.actual,
+      expected: expectedStyle,
+      message: `Expected the element to match the following style:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected the element to NOT match the following style:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    return this.execute({
+      assertWhen: equal(expectedStyle, receivedStyle),
+      error,
+      invertedError,
+    });
+    }
+
+  /**
+   * Asserts that the element has one or more of the specified CSS styles.
+   *
+   * @example
+   * ```
+   * expect(component).toHaveSomeStyle({ color: 'green', display: 'block' });
+   * ```
+   *
+   * @param expected the expected CSS style/s.
+   * @returns the assertion instance.
+   */
+
+  public toHaveSomeStyle(expected: Partial<CSSStyleDeclaration>): this {
+
+    const [expectedStyle, elementProcessedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
+
+    if (!expectedStyle || !elementProcessedStyle) {
+      throw new Error("No available styles.");
+    }
+
+    const hasSomeStyle = Object.entries(expectedStyle).some(([expectedProp, expectedValue]) => {
+      return Object.entries(elementProcessedStyle).some(([receivedProp, receivedValue]) => {
+        return equal(expectedProp, receivedProp) && equal(expectedValue, receivedValue);
+      });
+    });
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected the element to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      // eslint-disable-next-line max-len
+      message: `Expected the element NOT to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
+    });
+
+    return this.execute({
+      assertWhen: hasSomeStyle,
+      error,
+      invertedError,
+    });
   }
 
   /**
@@ -179,5 +293,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       error,
       invertedError,
     });
+  }
+
+  private getClassList(): string[] {
+    return this.actual.className.split(/\s+/).filter(Boolean);
   }
 }
