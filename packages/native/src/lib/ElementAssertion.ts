@@ -1,9 +1,10 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { Children } from "react";
-import { ReactTestInstance } from "react-test-renderer";
 
 import { instanceToString } from "./helpers/helpers";
+
+import type { ReactTestInstance } from "react-test-renderer";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -129,7 +130,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     }
 
     return (
-        get(element, "props.aria-disabled")
+      get(element, "props.aria-disabled")
         || get(element, "props.disabled", false)
         || get(element, "props.accessibilityState.disabled", false)
         || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")

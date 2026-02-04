@@ -1,6 +1,6 @@
-import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
-
 import assert, { AssertionError } from "assert";
+
+import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
 
 describe("[Unit] BooleanAssertion.test.ts", () => {
   describe(".toBeTrue", () => {

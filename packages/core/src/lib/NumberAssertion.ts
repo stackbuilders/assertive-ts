@@ -1,7 +1,7 @@
+import { AssertionError } from "assert";
+
 import { Assertion } from "./Assertion";
 import { isHighInclusiveOptions, isInclusiveOptions, isLowInclusiveOptions } from "./helpers/guards";
-
-import { AssertionError } from "assert";
 
 export interface BaseBetweenOptions {
   range: [number, number];
@@ -24,17 +24,16 @@ export interface HighInclusiveBetweenOptions extends BaseBetweenOptions {
   highInclusive: boolean;
 }
 
-export type BetweenOptions =
-  | BaseBetweenOptions
+export type BetweenOptions
+  = BaseBetweenOptions
+  | HighInclusiveBetweenOptions
   | InclusiveBetweenOptions
-  | LowInclusiveBetweenOptions
-  | HighInclusiveBetweenOptions;
+  | LowInclusiveBetweenOptions;
 
 /**
  * Encapsulates assertion methods applicable to values of type number
  */
 export class NumberAssertion extends Assertion<number> {
-
   public constructor(actual: number) {
     super(actual);
   }
@@ -275,8 +274,8 @@ export class NumberAssertion extends Assertion<number> {
    *                `lowInclusive: true` or `highInclusive: true`, respectively
    * @returns the assertion instance
    */
-public toBeBetween(options: BetweenOptions): this {
-  const [min, max] = options.range;
+  public toBeBetween(options: BetweenOptions): this {
+    const [min, max] = options.range;
 
     if (isInclusiveOptions(options)) {
       const rangeText = options.inclusive ? `[${min}, ${max}]` : `(${min}, ${max})`;

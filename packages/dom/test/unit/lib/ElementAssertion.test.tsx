@@ -3,17 +3,17 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
+import { HaveClassTest } from "./fixtures/HaveClassTest";
+import { NestedElementsTest } from "./fixtures/NestedElementsTest";
+import { SimpleTest } from "./fixtures/SimpleTest";
+import { WithAttributesTest } from "./fixtures/WithAttributesTest";
 import { FocusTestComponent } from "./fixtures/focusTestComponent";
-import { HaveClassTestComponent } from "./fixtures/haveClassTestComponent";
-import { NestedElementsTestComponent } from "./fixtures/nestedElementsTestComponent";
-import { SimpleTestComponent } from "./fixtures/simpleTestComponent";
-import { WithAttributesTestComponent } from "./fixtures/withAttributesTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
     context("when the element is in the document", () => {
       it("returns the assertion instance", async () => {
-        const { findByRole } = render(<SimpleTestComponent />);
+        const { findByRole } = render(<SimpleTest />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -43,7 +43,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the descendant element is contained in the ancestor element", () => {
       context("and it is a direct child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<NestedElementsTestComponent />);
+          const { findByTestId } = render(<NestedElementsTest />);
           const grandparent = await findByTestId("grandparent");
           const parent = await findByTestId("parent");
           const child = await findByTestId("child");
@@ -51,9 +51,9 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const grandparentTest = new ElementAssertion(grandparent);
           const parentTest = new ElementAssertion(parent);
 
-          expect(grandparentTest.toContainElement(parent));
-          expect(grandparentTest.toContainElement(svgElement));
-          expect(parentTest.toContainElement(child));
+          expect(grandparentTest.toContainElement(parent)).toBeEqual(grandparentTest);
+          expect(grandparentTest.toContainElement(svgElement)).toBeEqual(grandparentTest);
+          expect(parentTest.toContainElement(child)).toBeEqual(parentTest);
 
           expect(() => grandparentTest.not.toContainElement(parent))
             .toThrowError(AssertionError)
@@ -71,12 +71,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and it is an indirect child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<NestedElementsTestComponent />);
+          const { findByTestId } = render(<NestedElementsTest />);
           const grandparent = await findByTestId("grandparent");
           const child = await findByTestId("child");
           const grandparentTest = new ElementAssertion(grandparent);
 
-          expect(grandparentTest.toContainElement(child));
+          expect(grandparentTest.toContainElement(child)).toBeEqual(grandparentTest);
 
           expect(() => grandparentTest.not.toContainElement(child))
             .toThrowError(AssertionError)
@@ -86,12 +86,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and it is a deeply nested child", () => {
         it("returns the assertion instance", async () => {
-          const { findByTestId } = render(<NestedElementsTestComponent />);
+          const { findByTestId } = render(<NestedElementsTest />);
           const grandparent = await findByTestId("grandparent");
           const deepChild = await findByTestId("deep-child");
           const grandparentTest = new ElementAssertion(grandparent);
 
-          expect(grandparentTest.toContainElement(deepChild));
+          expect(grandparentTest.toContainElement(deepChild)).toBeEqual(grandparentTest);
 
           expect(() => grandparentTest.not.toContainElement(deepChild))
             .toThrowError(AssertionError)
@@ -103,7 +103,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when element is NOT contained in ancestor element", () => {
       it("throws an assertion error", async () => {
         const notChildElement = document.createElement("span");
-        const { findByTestId } = render(<NestedElementsTestComponent />);
+        const { findByTestId } = render(<NestedElementsTest />);
         const grandparent = await findByTestId("grandparent");
         const grandparentTest = new ElementAssertion(grandparent);
 
@@ -119,7 +119,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toHaveAttribute", () => {
     context("when the element has the attribute with the expected value", () => {
       it("returns the assertion instance", async () => {
-        const { findByRole } = render(<WithAttributesTestComponent />);
+        const { findByRole } = render(<WithAttributesTest />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -133,7 +133,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element has the attribute with a not expected value", () => {
       it("throws an assertion error", async () => {
-        const { findByRole } = render(<WithAttributesTestComponent />);
+        const { findByRole } = render(<WithAttributesTest />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -148,7 +148,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element has the attribute without checking value", () => {
       it("returns the assertion instance", async () => {
-        const { findByRole } = render(<WithAttributesTestComponent />);
+        const { findByRole } = render(<WithAttributesTest />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -162,7 +162,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element does not have the attribute", () => {
       it("throws an assertion error", async () => {
-        const { findByRole } = render(<WithAttributesTestComponent />);
+        const { findByRole } = render(<WithAttributesTest />);
         const button = await findByRole("button", { name: "click me" });
         const test = new ElementAssertion(button);
 
@@ -178,7 +178,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toHaveClass", () => {
     context("when the element has the expected class", () => {
       it("returns the assertion instance", () => {
-        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const { getByText } = render(<HaveClassTest className="foo bar" />);
         const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
@@ -192,7 +192,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element does not have the expected class", () => {
       it("throws an assertion error", () => {
-        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const { getByText } = render(<HaveClassTest className="foo bar" />);
         const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
@@ -208,7 +208,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toHaveAnyClass", () => {
     context("when the element has at least one of the expected classes", () => {
       it("returns the assertion instance", () => {
-        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const { getByText } = render(<HaveClassTest className="foo bar" />);
         const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
@@ -222,7 +222,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element does not have any of the expected classes", () => {
       it("throws an assertion error", () => {
-        const { getByText } = render(<HaveClassTestComponent className="foo" />);
+        const { getByText } = render(<HaveClassTest className="foo" />);
         const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
@@ -238,7 +238,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toHaveAllClasses", () => {
     context("when the element has all the expected classes", () => {
       it("returns the assertion instance", () => {
-        const { getByText } = render(<HaveClassTestComponent className="foo bar baz" />);
+        const { getByText } = render(<HaveClassTest className="foo bar baz" />);
         const divTest = getByText("Test text inside a div");
         const test = new ElementAssertion(divTest);
 
@@ -252,14 +252,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
     context("when the element does not have all the expected classes", () => {
       it("throws an assertion error", () => {
-        const { getByText } = render(<HaveClassTestComponent className="foo bar" />);
+        const { getByText } = render(<HaveClassTest className="foo bar" />);
         const divTest = getByText("Test text inside a div");
         divTest.classList.add("foo", "bar");
         const test = new ElementAssertion(divTest);
 
         expect(() => test.toHaveAllClasses("foo", "bar", "baz"))
-        .toThrowError(AssertionError)
-        .toHaveMessage('Expected the element to have all of these classes: "foo bar baz"');
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element to have all of these classes: "foo bar baz"');
 
         expect(test.not.toHaveAllClasses("foo", "bar", "baz")).toBeEqual(test);
       });
@@ -300,11 +300,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element has the expected style", () => {
       it("returns the assertion instance", () => {
         const { getByTestId } = render(
-        <div
-          className="foo bar test"
-          style={{ border: "1px solid black", color: "red", display: "flex" }}
-          data-testid="test-div"
-        />);
+          <div
+            className="foo bar test"
+            style={{ border: "1px solid black", color: "red", display: "flex" }}
+            data-testid="test-div"
+          />,
+        );
         const divTest = getByTestId("test-div");
         const test = new ElementAssertion(divTest);
 
@@ -313,59 +314,60 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.not.toHaveStyle({ border: "1px solid black", color: "red", display: "flex" }))
           .toThrowError(AssertionError)
           .toHaveMessage(
-            // eslint-disable-next-line max-len
-            'Expected the element to NOT match the following style:\n{\n  "border": "1px solid black",\n  "color": "rgb(255, 0, 0)",\n  "display": "flex"\n}',
+
+            "Expected the element to NOT match the following style:\n"
+            + '{\n  "border": "1px solid black",\n  "color": "rgb(255, 0, 0)",\n  "display": "flex"\n}',
           );
       });
     });
 
     context("when the element does not have the expected style", () => {
-        it("throws an assertion error", () => {
-          const { getByTestId } = render(
-            <div
-              className="foo bar test"
-              style={{ color: "blue", display: "block" }}
-              data-testid="test-div"
-            />,
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(
+          <div
+            className="foo bar test"
+            style={{ color: "blue", display: "block" }}
+            data-testid="test-div"
+          />,
+        );
+
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toHaveStyle(({ border: "1px solid black", color: "red", display: "flex" })))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+
+            "Expected the element to match the following style:\n"
+            + '{\n  "border": "1px solid black",\n  "color": "rgb(255, 0, 0)",\n  "display": "flex"\n}',
           );
 
-          const divTest = getByTestId("test-div");
-          const test = new ElementAssertion(divTest);
-
-          expect(() => test.toHaveStyle(({ border: "1px solid black", color: "red", display: "flex" })))
-            .toThrowError(AssertionError)
-            .toHaveMessage(
-            // eslint-disable-next-line max-len
-            'Expected the element to match the following style:\n{\n  "border": "1px solid black",\n  "color": "rgb(255, 0, 0)",\n  "display": "flex"\n}',
-          );
-
-          expect(test.not.toHaveStyle({ border: "1px solid black", color: "red", display: "flex" })).toBeEqual(test);
-
-        });
+        expect(test.not.toHaveStyle({ border: "1px solid black", color: "red", display: "flex" })).toBeEqual(test);
+      });
     });
     context("when the element partially match the style", () => {
-        it("throws an assertion error", () => {
-          const { getByTestId } = render(
-            <div
-              className="foo bar test"
-              style={{ border: "1px solid black", color: "blue", display: "block" }}
-              data-testid="test-div"
-            />,
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(
+          <div
+            className="foo bar test"
+            style={{ border: "1px solid black", color: "blue", display: "block" }}
+            data-testid="test-div"
+          />,
+        );
+
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toHaveStyle(({ color: "red", display: "flex" })))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+
+            "Expected the element to match the following style:\n"
+            + '{\n  "color": "rgb(255, 0, 0)",\n  "display": "flex"\n}',
           );
 
-          const divTest = getByTestId("test-div");
-          const test = new ElementAssertion(divTest);
-
-          expect(() => test.toHaveStyle(({ color: "red", display: "flex" })))
-            .toThrowError(AssertionError)
-            .toHaveMessage(
-            // eslint-disable-next-line max-len
-          'Expected the element to match the following style:\n{\n  "color": "rgb(255, 0, 0)",\n  "display": "flex"\n}',
-          );
-
-          expect(test.not.toHaveStyle({ border: "1px solid black", color: "red", display: "flex" })).toBeEqual(test);
-
-        });
+        expect(test.not.toHaveStyle({ border: "1px solid black", color: "red", display: "flex" })).toBeEqual(test);
+      });
     });
   });
 
@@ -373,39 +375,41 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element contains one or more expected styles", () => {
       it("returns the assertion instance", () => {
         const { getByTestId } = render(
-            <div
-              style={{ color: "blue", maxHeight: "3rem", width: "2rem" }}
-              data-testid="test-div"
-            />,
-          );
+          <div
+            style={{ color: "blue", maxHeight: "3rem", width: "2rem" }}
+            data-testid="test-div"
+          />,
+        );
         const divTest = getByTestId("test-div");
         const test = new ElementAssertion(divTest);
 
         expect(test.toHaveSomeStyle({ color: "red", display: "flex", height: "3rem", width: "2rem" })).toBeEqual(test);
 
         expect(() => test.not.toHaveSomeStyle({ color: "blue" }))
-        .toThrowError(AssertionError)
-        // eslint-disable-next-line max-len
-        .toHaveMessage("Expected the element NOT to match some of the following styles:\n{\n  \"color\": \"rgb(0, 0, 255)\"\n}");
+          .toThrowError(AssertionError)
+
+          .toHaveMessage("Expected the element NOT to match some of the following styles:\n"
+            + "{\n  \"color\": \"rgb(0, 0, 255)\"\n}");
       });
     });
 
     context("when the element does not contain any of the expected styles", () => {
       it("throws an assertion error", () => {
         const { getByTestId } = render(
-            <div
-              className="foo bar test"
-              style={{ border: "1px solid black", color: "blue", display: "block" }}
-              data-testid="test-div"
-            />,
-          );
+          <div
+            className="foo bar test"
+            style={{ border: "1px solid black", color: "blue", display: "block" }}
+            data-testid="test-div"
+          />,
+        );
         const divTest = getByTestId("test-div");
         const test = new ElementAssertion(divTest);
 
         expect(() => test.toHaveSomeStyle({ color: "red", display: "flex" }))
-        .toThrowError(AssertionError)
-        // eslint-disable-next-line max-len
-        .toHaveMessage("Expected the element to match some of the following styles:\n{\n  \"color\": \"rgb(255, 0, 0)\",\n  \"display\": \"flex\"\n}");
+          .toThrowError(AssertionError)
+
+          .toHaveMessage("Expected the element to match some of the following styles:\n"
+            + "{\n  \"color\": \"rgb(255, 0, 0)\",\n  \"display\": \"flex\"\n}");
 
         expect(test.not.toHaveSomeStyle({ border: "1px solid blue", color: "red", display: "flex" })).toBeEqual(test);
       });

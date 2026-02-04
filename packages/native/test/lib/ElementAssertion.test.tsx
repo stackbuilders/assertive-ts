@@ -1,12 +1,12 @@
 import { AssertionError, expect } from "@assertive-ts/core";
 import { fireEvent, render } from "@testing-library/react-native";
-import { useState, useCallback, ReactElement } from "react";
+import { type ReactElement, useCallback, useState } from "react";
 import {
-  View,
-  TextInput,
-  Text,
-  Modal,
   Button,
+  Modal,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
@@ -37,7 +37,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       context("and the element is not editable", () => {
         it("returns the assertion instance", () => {
           const element = render(
-              <TextInput testID="id" editable={false} />,
+            <TextInput testID="id" editable={false} />,
           );
           const test = new ElementAssertion(element.getByTestId("id"));
           expect(test.toBeDisabled()).toBe(test);
@@ -202,7 +202,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element contains 'display' property", () => {
       context("and display = none", () => {
         it("throws an error", () => {
-          const { getByText, getByRole } = render(
+          const { getByRole, getByText } = render(
             <SimpleToggleText />,
           );
           const textElement = new ElementAssertion(getByText("Toggle me!"));
@@ -248,7 +248,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element contains 'importantForAccessibility' property", () => {
       it("returns the assertion instance", () => {
         const { getByTestId } = render(
-          <View testID="id" importantForAccessibility={"yes"} />,
+          <View testID="id" importantForAccessibility="yes" />,
         );
         const test = new ElementAssertion(getByTestId("id"));
 
@@ -262,7 +262,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the parent element contains 'opacity' property", () => {
       context("and parent opacity = 0", () => {
         const { getByTestId } = render(
-          <View testID="parentId" style={{ opacity: 0 }} >
+          <View testID="parentId" style={{ opacity: 0 }}>
             <View testID="childId" style={{ opacity: 1 }} />
           </View>,
         );
@@ -287,7 +287,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and child opacity = 0", () => {
         const { getByTestId } = render(
-          <View testID="parentId" style={{ opacity: 1 }} >
+          <View testID="parentId" style={{ opacity: 1 }}>
             <View testID="childId" style={{ opacity: 0 }} />
           </View>,
         );

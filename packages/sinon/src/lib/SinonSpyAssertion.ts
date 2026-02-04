@@ -1,9 +1,10 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import isDeepEqual from "fast-deep-equal";
-import { SinonSpy } from "sinon";
 
 import { SinonSpyCallAssertion } from "./SinonSpyCallAssertion";
 import { callTimes, numeral, prettify } from "./helpers/messages";
+
+import type { SinonSpy } from "sinon";
 
 /**
  * Encapsulates assertion methods applicable to {@link SinonSpy} instances.
@@ -14,7 +15,6 @@ import { callTimes, numeral, prettify } from "./helpers/messages";
  * @param R the type return type of the spied function
  */
 export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSpy<A, R>> {
-
   public constructor(actual: SinonSpy<A, R>) {
     super(actual);
   }
@@ -39,7 +39,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
       throw new Error("Spy cannot be called less than zero times!");
     }
 
-    const { name, callCount } = this.actual;
+    const { callCount, name } = this.actual;
     const error = new AssertionError({
       actual: callCount,
       expected: times,
@@ -131,7 +131,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
       throw new Error("Spy cannot be called less than zero times!");
     }
 
-    const { name, callCount } = this.actual;
+    const { callCount, name } = this.actual;
     const error = new AssertionError({
       actual: callCount,
       message: `Expeceted <${name}> to be called at least ${numeral(times)}, but it was ${callTimes(callCount)}`,
@@ -166,7 +166,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
       throw new Error("Spy cannot be called less than zero times!");
     }
 
-    const { name, callCount } = this.actual;
+    const { callCount, name } = this.actual;
     const error = new AssertionError({
       actual: callCount,
       message: `Expeceted <${name}> to be called at most ${numeral(times)}, but it was ${callTimes(callCount)}`,
@@ -196,7 +196,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    * @returns the assertion instance
    */
   public toNeverBeCalled(): this {
-    const { name, callCount } = this.actual;
+    const { callCount, name } = this.actual;
     const error = new AssertionError({
       actual: callCount,
       expected: 0,
@@ -230,7 +230,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    * @returns the assertion instance
    */
   public toHaveArgs(...expected: A): this {
-    const { name, args } = this.actual;
+    const { args, name } = this.actual;
     const prettyArgs = expected.map(prettify).join(", ");
     const error = new AssertionError({
       expected,
@@ -296,7 +296,7 @@ export class SinonSpyAssertion<A extends unknown[], R> extends Assertion<SinonSp
    * @returns the assertion instance
    */
   public toThrow(exception?: unknown): this {
-    const { name, exceptions } = this.actual;
+    const { exceptions, name } = this.actual;
     const errorCount = exceptions?.length ?? 0;
     const expected = exception !== undefined
       ? `<${prettify(exception)}>`

@@ -1,6 +1,6 @@
-import { Assertion } from "./Assertion";
-
 import { AssertionError } from "assert";
+
+import { Assertion } from "./Assertion";
 
 /**
  * Encapsulates assertion methods applicable to Error instances.
@@ -8,7 +8,6 @@ import { AssertionError } from "assert";
  * @param T the Error constructor type
  */
 export class ErrorAssertion<T extends Error> extends Assertion<T> {
-
   public constructor(actual: T) {
     super(actual);
   }
@@ -84,7 +83,7 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
    * @param fragment the fragment the message should contain
    * @returns the assertion instance
    */
-   public toHaveMessageContaining(fragment: string): this {
+  public toHaveMessageContaining(fragment: string): this {
     const error = new AssertionError({
       actual: this.actual.message,
       message: `Expected error to have a message containing: ${fragment}`,
@@ -113,7 +112,7 @@ export class ErrorAssertion<T extends Error> extends Assertion<T> {
    * @param fragment the fragment the message should end with
    * @returns the assertion instance
    */
-   public toHaveMessageEndingWith(fragment: string): this {
+  public toHaveMessageEndingWith(fragment: string): this {
     const error = new AssertionError({
       actual: this.actual.message,
       message: `Expected error to have a message ending with: ${fragment}`,

@@ -1,8 +1,8 @@
+import assert, { AssertionError } from "assert";
+
 import Sinon from "sinon";
 
 import { StringAssertion } from "../../src/lib/StringAssertion";
-
-import assert, { AssertionError } from "assert";
 
 describe("[Unit] StringAssertion.test.ts", () => {
   describe(".toBeEmpty", () => {
@@ -213,9 +213,9 @@ describe("[Unit] StringAssertion.test.ts", () => {
       it("returns the assertion instance", () => {
         const test = new StringAssertion("1234567890");
 
-        assert.deepStrictEqual(test.toMatchRegex(/^[0-9]+$/), test);
-        assert.throws(() => test.not.toMatchRegex(/^[0-9]+$/), {
-          message: "Expected <1234567890> NOT to match the regular expression <^[0-9]+$>",
+        assert.deepStrictEqual(test.toMatchRegex(/^\d+$/), test);
+        assert.throws(() => test.not.toMatchRegex(/^\d+$/), {
+          message: "Expected <1234567890> NOT to match the regular expression <^\\d+$>",
           name: AssertionError.name,
         });
       });
@@ -225,11 +225,11 @@ describe("[Unit] StringAssertion.test.ts", () => {
       it("throws an assertion error", () => {
         const test = new StringAssertion("1234567890x");
 
-        assert.throws(() => test.toMatchRegex(/^[0-9]+$/), {
-          message: "Expected <1234567890x> to match the regular expression <^[0-9]+$>",
+        assert.throws(() => test.toMatchRegex(/^\d+$/), {
+          message: "Expected <1234567890x> to match the regular expression <^\\d+$>",
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toMatchRegex(/^[0-9]+$/), test);
+        assert.deepStrictEqual(test.not.toMatchRegex(/^\d+$/), test);
       });
     });
   });

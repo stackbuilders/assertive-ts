@@ -1,9 +1,8 @@
-import { ErrorAssertion } from "../../src/lib/ErrorAssertion";
-
 import assert, { AssertionError } from "assert";
 
-class CustomError extends Error {
+import { ErrorAssertion } from "../../src/lib/ErrorAssertion";
 
+class CustomError extends Error {
   public constructor(message?: string) {
     super(message);
 
