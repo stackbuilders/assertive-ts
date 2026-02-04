@@ -155,28 +155,27 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    *
    * @returns The assertion instance.
    */
-    public toHaveFocus(): this {
+  public toHaveFocus(): this {
+    const hasFocus = this.actual === document.activeElement;
 
-      const hasFocus = this.actual === document.activeElement;
+    const error = new AssertionError({
+      actual: this.actual,
+      expected: document.activeElement,
+      message: "Expected the element to be focused",
+    });
 
-      const error = new AssertionError({
-        actual: this.actual,
-        expected: document.activeElement,
-        message: "Expected the element to be focused",
-      });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      expected: document.activeElement,
+      message: "Expected the element NOT to be focused",
+    });
 
-      const invertedError = new AssertionError({
-        actual: this.actual,
-        expected: document.activeElement,
-        message: "Expected the element NOT to be focused",
-      });
-
-      return this.execute({
-        assertWhen: hasFocus,
-        error,
-        invertedError,
-      });
-    }
+    return this.execute({
+      assertWhen: hasFocus,
+      error,
+      invertedError,
+    });
+  }
 
   /**
    * Asserts that the element has the specified CSS styles.
@@ -191,7 +190,6 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    */
 
   public toHaveStyle(expected: Partial<CSSStyleDeclaration>): this {
-
     const [expectedStyle, receivedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
 
     if (!expectedStyle || !receivedStyle) {
@@ -213,7 +211,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       error,
       invertedError,
     });
-    }
+  }
 
   /**
    * Asserts that the element has one or more of the specified CSS styles.
@@ -228,7 +226,6 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    */
 
   public toHaveSomeStyle(expected: Partial<CSSStyleDeclaration>): this {
-
     const [expectedStyle, elementProcessedStyle] = getExpectedAndReceivedStyles(this.actual, expected);
 
     if (!expectedStyle || !elementProcessedStyle) {
@@ -248,8 +245,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      // eslint-disable-next-line max-len
-      message: `Expected the element NOT to match some of the following styles:\n${JSON.stringify(expectedStyle, null, 2)}`,
+
+      message: `Expected the element NOT to match some of the following styles:\n`
+        + `${JSON.stringify(expectedStyle, null, 2)}`,
     });
 
     return this.execute({
