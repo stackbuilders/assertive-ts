@@ -79,24 +79,28 @@ function normalizeText(text: string): string {
 }
 
 export function getAccessibleDescription(actual: Element): string {
-  const ariaDescribedBy = actual.getAttribute("aria-describedby") || "";
-  const descriptionIds = ariaDescribedBy
-    .split(/\s+/)
-    .filter(Boolean);
-
-  if (descriptionIds.length === 0) {
+  const ariaDescribedBy = actual.getAttribute("aria-describedby");
+  
+  if (!ariaDescribedBy) {
     return "";
   }
+  
+  const descriptionIds = ariaDescribedBy.split(/\s+/).filter(Boolean);
 
   const getElementText = (id: string): string | null => {
     const element = actual.ownerDocument.getElementById(id);
-    return element?.textContent || null;
+    
+    if (!element || !element.textContent) {
+      return null;
+    }
+    
+    return element.textContent;
   };
 
-  return normalizeText(
-    descriptionIds
-      .map(getElementText)
-      .filter((text): text is string => text !== null)
-      .join(" "),
-  );
+  const combinedText = descriptionIds
+    .map(getElementText)
+    .filter((text): text is string => text !== null)
+    .join(" ");
+
+  return normalizeText(combinedText);
 }
