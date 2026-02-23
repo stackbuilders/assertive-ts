@@ -411,4 +411,58 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
   });
+
+  describe(".toBeEmpty", () => {
+    context("when the element does not contain any child node", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<div data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toBeEmpty()).toBeEqual(test);
+
+        expect(() => test.not.toBeEmpty())
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected the element NOT to be empty.");
+
+      });
+    });
+
+    context("when the element contains a comment node", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<div data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+        const comment = document.createComment("test comment");
+        divTest.appendChild(comment);
+        const test = new ElementAssertion(divTest);
+
+        expect(test.toBeEmpty()).toBeEqual(test);
+
+        expect(() => test.not.toBeEmpty())
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected the element NOT to be empty.");
+
+      });
+    });
+
+    context("when the element contains a child node", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<div data-testid="test-div" />);
+        const divTest = getByTestId("test-div");
+
+        const emptyDiv = document.createElement("div");
+        divTest.appendChild(emptyDiv);
+
+        const test = new ElementAssertion(divTest);
+
+        expect(() => test.toBeEmpty())
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected the element to be empty.");
+
+        expect(test.not.toBeEmpty()).toBeEqual(test);
+
+      });
+    });
+  });
+
 });
