@@ -36,29 +36,6 @@ export function instanceToString(instance: ReactTestInstance | null): string {
 }
 
 /**
- * Converts a TestableTextMatcher to a string representation.
- *
- * @param matcher - The matcher to convert.
- * @returns A string representation of the matcher.
- * @throws Error if the matcher is not a string, RegExp, or function.
- */
-export function testableTextMatcherToString(matcher: TestableTextMatcher): string {
-  if (typeof matcher === "string") {
-    return `String: "${matcher}"`;
-  }
-
-  if (matcher instanceof RegExp) {
-    return `RegExp: ${matcher.toString()}`;
-  }
-
-  if (typeof matcher === "function") {
-    return `Function: ${matcher.toString()}`;
-  }
-
-  throw new Error("Matcher must be a string, RegExp, or function.");
-}
-
-/**
  * Checks if a text matches a given matcher.
  *
  * @param text - The text to check.

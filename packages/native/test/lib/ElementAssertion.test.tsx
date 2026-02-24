@@ -534,7 +534,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.toHaveTextContent("Hello World")).toBe(test);
         expect(() => test.not.toHaveTextContent("Hello World"))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching 'String: \"Hello World\"'.");
+          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching 'Hello World'.");
       });
     });
 
@@ -548,7 +548,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveTextContent("Goodbye World")).toBeEqual(test);
         expect(() => test.toHaveTextContent("Goodbye World"))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <Text ... /> to have text content matching 'String: \"Goodbye World\"'.");
+          .toHaveMessage("Expected element <Text ... /> to have text content matching 'Goodbye World'.");
       });
     });
 
@@ -562,7 +562,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.toHaveTextContent(/Hello/)).toBe(test);
         expect(() => test.not.toHaveTextContent(/Hello/))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching 'RegExp: /Hello/'.");
+          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching '/Hello/'.");
       });
     });
 
@@ -576,7 +576,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveTextContent(/Goodbye/)).toBeEqual(test);
         expect(() => test.toHaveTextContent(/Goodbye/))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <Text ... /> to have text content matching 'RegExp: /Goodbye/'.");
+          .toHaveMessage("Expected element <Text ... /> to have text content matching '/Goodbye/'.");
       });
     });
 
@@ -597,7 +597,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.toHaveTextContent("Hello World")).toBe(test);
         expect(() => test.not.toHaveTextContent("Hello World"))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> NOT to have text content matching 'String: \"Hello World\"'.");
+          .toHaveMessage("Expected element <View ... /> NOT to have text content matching 'Hello World'.");
       });
     });
 
@@ -618,7 +618,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveTextContent("Goodbye World")).toBeEqual(test);
         expect(() => test.toHaveTextContent("Goodbye World"))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> to have text content matching 'String: \"Goodbye World\"'.");
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'Goodbye World'.");
       });
     });
 
@@ -634,7 +634,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           .toThrowError(AssertionError)
           .toHaveMessage(
             "Expected element <Text ... /> NOT to have text content matching " +
-            "'Function: text => text.startsWith(\"Hello\")'.",
+            "'text => text.startsWith(\"Hello\")'.",
           );
       });
     });
@@ -651,7 +651,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           .toThrowError(AssertionError)
           .toHaveMessage(
             "Expected element <Text ... /> to have text content matching " +
-            "'Function: text => text.startsWith(\"Goodbye\")'.",
+            "'text => text.startsWith(\"Goodbye\")'.",
           );
       });
     });
@@ -666,7 +666,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveTextContent("Hello World")).toBeEqual(test);
         expect(() => test.toHaveTextContent("Hello World"))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> to have text content matching 'String: \"Hello World\"'.");
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'Hello World'.");
       });
     });
 
@@ -680,7 +680,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.not.toHaveTextContent(/Hello/)).toBeEqual(test);
         expect(() => test.toHaveTextContent(/Hello/))
           .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> to have text content matching 'RegExp: /Hello/'.");
+          .toHaveMessage("Expected element <View ... /> to have text content matching '/Hello/'.");
       });
     });
 
@@ -696,7 +696,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           .toThrowError(AssertionError)
           .toHaveMessage(
             "Expected element <View ... /> to have text content matching " +
-            "'Function: text => text.startsWith(\"Hello\")'.",
+            "'text => text.startsWith(\"Hello\")'.",
           );
       });
     });

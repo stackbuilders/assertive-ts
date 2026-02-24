@@ -2,8 +2,14 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { AssertiveStyle, TestableTextMatcher, WithTextContent } from "./helpers/types";
-import { instanceToString, isEmpty, getFlattenedStyle, styleToString, testableTextMatcherToString, textMatches } from "./helpers/helpers";
+import {
+  instanceToString,
+  isEmpty,
+  getFlattenedStyle,
+  styleToString,
+  textMatches,
+} from "./helpers/helpers";
+import { AssertiveStyle, TestableTextMatcher, TextContent } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -223,7 +229,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     const flattenedStyle = getFlattenedStyle(style);
 
     const hasStyle = Object.keys(flattenedStyle)
-                           .every(key => flattenedElementStyle[key] === flattenedStyle[key]);
+      .every(key => flattenedElementStyle[key] === flattenedStyle[key]);
 
     const error = new AssertionError({
       actual: this.actual,
@@ -263,14 +269,14 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     const error = new AssertionError({
       actual: this.actual,
       message: `Expected element ${this.toString()} to have text content matching '` +
-        `${testableTextMatcherToString(text)}'.`,
+        `${text.toString()}'.`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
       message:
-      `Expected element ${this.toString()} NOT to have text content matching '` +
-      `${testableTextMatcherToString(text)}'.`,
+        `Expected element ${this.toString()} NOT to have text content matching '` +
+        `${text.toString()}'.`,
     });
 
     return this.execute({
@@ -296,7 +302,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     return this.collectText(element).join(" ");
   }
 
-  private collectText = (element: WithTextContent): string[] => {
+  private collectText = (element: TextContent): string[] => {
     if (typeof element === "string") {
       return [element];
     }
@@ -305,8 +311,8 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       return element.flatMap(child => this.collectText(child));
     }
 
-    if (element && typeof element === "object" && "props" in element) {
-      const value = element.props?.value as WithTextContent;
+    if (element && (typeof element === "object" && "props" in element)) {
+      const value = element.props?.value as TextContent;
       if (typeof value === "string") {
         return [value];
       }
@@ -332,10 +338,10 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     }
 
     return (
-        get(element, "props.aria-disabled")
-        || get(element, "props.disabled", false)
-        || get(element, "props.accessibilityState.disabled", false)
-        || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
+      get(element, "props.aria-disabled")
+      || get(element, "props.disabled", false)
+      || get(element, "props.accessibilityState.disabled", false)
+      || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
     );
   }
 

@@ -31,4 +31,4 @@ export type TestableTextMatcher = string | RegExp | ((text: string) => boolean);
  * Type representing a value that can be used to match text content in tests.
  * It can be a string, a ReactTestInstance, or an array of ReactTestInstances.
  */
-export type WithTextContent = string | ReactTestInstance | ReactTestInstance[];
+export type TextContent = string | ReactTestInstance | ReactTestInstance[];
