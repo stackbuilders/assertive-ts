@@ -2,9 +2,8 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty, testableTextMatcherToString, textMatches } from "./helpers/helpers";
-import { getFlattenedStyle } from "./helpers/styles";
 import { AssertiveStyle, TestableTextMatcher, WithTextContent } from "./helpers/types";
+import { instanceToString, isEmpty, getFlattenedStyle, styleToString, testableTextMatcherToString, textMatches } from "./helpers/helpers";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -228,12 +227,12 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to have style ${JSON.stringify(flattenedStyle)}.`,
+      message: `Expected element ${this.toString()} to have style: \n${styleToString(flattenedStyle)}`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} NOT to have style ${JSON.stringify(flattenedStyle)}.`,
+      message: `Expected element ${this.toString()} NOT to have style: \n${styleToString(flattenedStyle)}`,
     });
 
     return this.execute({
