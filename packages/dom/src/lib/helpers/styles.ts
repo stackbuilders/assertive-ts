@@ -3,8 +3,6 @@ interface StyleDeclaration extends Record<string, string> {
   value: string;
 }
 
-const COMMENT_NODE_TYPE = 8;
-
 function normalizeStyles(css: Partial<CSSStyleDeclaration>): StyleDeclaration {
   const normalizer = document.createElement("div");
   document.body.appendChild(normalizer);
@@ -74,40 +72,4 @@ export function getExpectedAndReceivedStyles
       expectedStyle,
       elementProcessedStyle,
     ];
-}
-
-export function isElementEmpty (element: Element): boolean {
-  const nonCommentChildNodes = [...element.childNodes].filter(child => child.nodeType !== COMMENT_NODE_TYPE);
-  return nonCommentChildNodes.length === 0;
-}
-
-function normalizeText(text: string): string {
-  return text.replace(/\s+/g, " ").trim();
-}
-
-export function getAccessibleDescription(actual: Element): string {
-  const ariaDescribedBy = actual.getAttribute("aria-describedby");
-
-  if (!ariaDescribedBy) {
-    return "";
-  }
-
-  const descriptionIds = ariaDescribedBy.split(/\s+/).filter(Boolean);
-
-  const getElementText = (id: string): string | null => {
-    const element = actual.ownerDocument.getElementById(id);
-
-    if (!element || !element.textContent) {
-      return null;
-    }
-
-    return element.textContent;
-  };
-
-  const combinedText = descriptionIds
-    .map(getElementText)
-    .filter((text): text is string => text !== null)
-    .join(" ");
-
-  return normalizeText(combinedText);
 }
