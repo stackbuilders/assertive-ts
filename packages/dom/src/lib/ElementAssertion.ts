@@ -1,7 +1,9 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getExpectedAndReceivedStyles, getAccessibleDescription, isElementEmpty } from "./helpers/helpers";
+import { getAccessibleDescription } from "./helpers/accessibility";
+import { isElementEmpty } from "./helpers/dom";
+import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
 
