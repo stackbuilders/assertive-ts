@@ -1,4 +1,7 @@
+import { StyleSheet } from "react-native";
 import { ReactTestInstance } from "react-test-renderer";
+
+import { AssertiveStyle, StyleObject, TestableTextMatcher } from "./types";
 
 /**
  * Checks if a value is empty.
@@ -30,4 +33,50 @@ export function instanceToString(instance: ReactTestInstance | null): string {
   }
 
   return `<${instance.type.toString()} ... />`;
+}
+
+/**
+ * Checks if a text matches a given matcher.
+ *
+ * @param text - The text to check.
+ * @param matcher - The matcher to use for comparison.
+ * @returns `true` if the text matches the matcher, `false` otherwise.
+ * @throws Error if the matcher is not a string, RegExp, or function.
+ * @example
+ * ```ts
+ * textMatches("Hello World", "Hello World"); // true
+ * textMatches("Hello World", /Hello/); // true
+ * textMatches("Hello World", (text) => text.startsWith("Hello")); // true
+ * textMatches("Hello World", "Goodbye"); // false
+ * textMatches("Hello World", /Goodbye/); // false
+ * textMatches("Hello World", (text) => text.startsWith("Goodbye")); // false
+ * ```
+ */
+export function textMatches(
+  text: string,
+  matcher: TestableTextMatcher,
+): boolean {
+  if (typeof matcher === "string") {
+    return text.includes(matcher);
+  }
+
+  if (matcher instanceof RegExp) {
+    return matcher.test(text);
+  }
+
+  if (typeof matcher === "function") {
+    return matcher(text);
+  }
+
+  throw new Error("Matcher must be a string, RegExp, or function.");
+}
+
+export function getFlattenedStyle(style: AssertiveStyle): StyleObject {
+    const flattenedStyle = StyleSheet.flatten(style);
+    return flattenedStyle ? (flattenedStyle as StyleObject) : {};
+}
+
+export function styleToString(flattenedStyle: StyleObject): string {
+  const styleEntries = Object.entries(flattenedStyle);
+  return styleEntries.map(([key, value]) => `\t- ${key}: ${String(value)};`).join("\n");
 }
