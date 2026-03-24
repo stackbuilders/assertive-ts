@@ -2,8 +2,14 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString, isEmpty, getFlattenedStyle, styleToString } from "./helpers/helpers";
-import { AssertiveStyle } from "./helpers/types";
+import {
+  instanceToString,
+  isEmpty,
+  getFlattenedStyle,
+  styleToString,
+  textMatches,
+} from "./helpers/helpers";
+import { AssertiveStyle, TestableTextMatcher, TextContent } from "./helpers/types";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -223,7 +229,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     const flattenedStyle = getFlattenedStyle(style);
 
     const hasStyle = Object.keys(flattenedStyle)
-                           .every(key => flattenedElementStyle[key] === flattenedStyle[key]);
+      .every(key => flattenedElementStyle[key] === flattenedStyle[key]);
 
     const error = new AssertionError({
       actual: this.actual,
@@ -242,6 +248,88 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
   }
 
+  /**
+   * Check if the element has text content matching the provided string,
+   * RegExp, or function.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveTextContent("Hello World");
+   * expect(element).toHaveTextContent(/Hello/);
+   * expect(element).toHaveTextContent(text => text.startsWith("Hello"));
+   * ```
+   *
+   * @param text - The text to check for.
+   * @returns the assertion instance
+   */
+  public toHaveTextContent(text: TestableTextMatcher): this {
+    const actualTextContent = this.getTextContent(this.actual);
+    const matchesText = textMatches(actualTextContent, text);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to have text content matching '` +
+        `${text.toString()}'.`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message:
+        `Expected element ${this.toString()} NOT to have text content matching '` +
+        `${text.toString()}'.`,
+    });
+
+    return this.execute({
+      assertWhen: matchesText,
+      error,
+      invertedError,
+    });
+  }
+
+  private getTextContent(element: ReactTestInstance): string {
+    if (!element) {
+      return "";
+    }
+
+    if (typeof element === "string") {
+      return element;
+    }
+
+    if (typeof element.props?.value === "string") {
+      return element.props.value;
+    }
+
+    return this.collectText(element).join(" ");
+  }
+
+  private collectText = (element: TextContent): string[] => {
+    if (typeof element === "string") {
+      return [element];
+    }
+
+    if (Array.isArray(element)) {
+      return element.flatMap(child => this.collectText(child));
+    }
+
+    if (element && (typeof element === "object" && "props" in element)) {
+      const value = element.props?.value as TextContent;
+      if (typeof value === "string") {
+        return [value];
+      }
+
+      const children = (element.props?.children as ReactTestInstance[]) ?? element.children;
+      if (!children) {
+        return [];
+      }
+
+      return Array.isArray(children)
+        ? children.flatMap(this.collectText)
+        : this.collectText(children);
+    }
+
+    return [];
+  };
+
   private isElementDisabled(element: ReactTestInstance): boolean {
     const { type } = element;
     const elementType = type.toString();
@@ -250,10 +338,10 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     }
 
     return (
-        get(element, "props.aria-disabled")
-        || get(element, "props.disabled", false)
-        || get(element, "props.accessibilityState.disabled", false)
-        || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
+      get(element, "props.aria-disabled")
+      || get(element, "props.disabled", false)
+      || get(element, "props.accessibilityState.disabled", false)
+      || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
     );
   }
 
