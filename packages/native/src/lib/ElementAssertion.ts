@@ -1,5 +1,6 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
+import { Children } from "react";
 import { ReactTestInstance } from "react-test-renderer";
 
 import { isAncestorDisabled, isElementDisabled, isAncestorNotVisible, isElementVisible } from "./helpers/accesibility";
@@ -265,5 +266,25 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       error,
       invertedError,
     });
+  }
+
+  private isElementVisible(element: ReactTestInstance): boolean {
+    const { type } = element;
+
+    if (type.toString() === "Modal") {
+      return Boolean(element.props?.visible);
+    }
+
+    return (
+      get(element, "props.style.display") !== "none"
+      && get(element, "props.style.opacity") !== 0
+      && get(element, "props.accessibilityElementsHidden") !== true
+      && get(element, "props.importantForAccessibility") !== "no-hide-descendants"
+    );
+  }
+
+  private isAncestorVisible(element: ReactTestInstance): boolean {
+    const { parent } = element;
+    return parent === null || (this.isElementVisible(parent) && this.isAncestorVisible(parent));
   }
 }
