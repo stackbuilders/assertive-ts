@@ -19,3 +19,15 @@ export function instanceToString(instance: ReactTestInstance | null): string {
 
   return `<${instance.type.toString()} ... />`;
 }
+
+export function isElementContained(parentElement: ReactTestInstance, childElement: ReactTestInstance): boolean {
+  if (parentElement === null || childElement === null) {
+    return false;
+  }
+  return (
+      parentElement.findAll(
+          node =>
+              node.type === childElement.type && node.props === childElement.props,
+      ).length > 0
+  );
+}

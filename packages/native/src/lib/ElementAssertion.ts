@@ -6,7 +6,7 @@ import { isAncestorDisabled, isElementDisabled, isAncestorNotVisible, isElementV
 import { getFlattenedStyle, styleToString } from "./helpers/styles";
 import { getTextContent, textMatches } from "./helpers/text";
 import { AssertiveStyle, TestableTextMatcher } from "./helpers/types";
-import { isEmpty, instanceToString } from "./helpers/utils";
+import { isEmpty, instanceToString, isElementContained } from "./helpers/utils";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -144,26 +144,6 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       actual: this.actual,
       message: `Expected element ${this.toString()} NOT to contain element ${instanceToString(element)}.`,
     });
-
-    return this.execute({
-      assertWhen: this.isElementContained(this.actual, element),
-      error,
-      invertedError,
-    });
-  }
-
-  private isElementContained(parentElement: ReactTestInstance, childElement: ReactTestInstance): boolean {
-    if (parentElement === null || childElement === null) {
-      return false;
-    }
-
-    return (
-        parentElement.findAll(
-            node =>
-                node.type === childElement.type && node.props === childElement.props,
-        ).length > 0
-      );
-    };
 
     return this.execute({
       assertWhen: isElementContained(this.actual, element),
