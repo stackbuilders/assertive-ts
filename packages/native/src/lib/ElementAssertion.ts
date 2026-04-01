@@ -1,16 +1,12 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
-import { Children } from "react";
 import { ReactTestInstance } from "react-test-renderer";
 
-import {
-  instanceToString,
-  isEmpty,
-  getFlattenedStyle,
-  styleToString,
-  textMatches,
-} from "./helpers/helpers";
-import { AssertiveStyle, TestableTextMatcher, TextContent } from "./helpers/types";
+import { isAncestorDisabled, isElementDisabled, isAncestorNotVisible, isElementVisible } from "./helpers/accesibility";
+import { getFlattenedStyle, styleToString } from "./helpers/styles";
+import { getTextContent, textMatches } from "./helpers/text";
+import { AssertiveStyle, TestableTextMatcher } from "./helpers/types";
+import { isEmpty, instanceToString } from "./helpers/utils";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -42,7 +38,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isElementDisabled(this.actual) || this.isAncestorDisabled(this.actual),
+      assertWhen: isElementDisabled(this.actual) || isAncestorDisabled(this.actual),
       error,
       invertedError,
     });
@@ -68,7 +64,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: !this.isElementDisabled(this.actual) && !this.isAncestorDisabled(this.actual),
+      assertWhen: !isElementDisabled(this.actual) && !isAncestorDisabled(this.actual),
       error,
       invertedError,
     });
@@ -122,7 +118,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isElementVisible(this.actual) && !this.isAncestorNotVisible(this.actual),
+      assertWhen: isElementVisible(this.actual) && !isAncestorNotVisible(this.actual),
       error,
       invertedError,
     });
@@ -264,7 +260,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
    * @returns the assertion instance
    */
   public toHaveTextContent(text: TestableTextMatcher): this {
-    const actualTextContent = this.getTextContent(this.actual);
+    const actualTextContent = getTextContent(this.actual);
     const matchesText = textMatches(actualTextContent, text);
 
     const error = new AssertionError({
@@ -285,89 +281,5 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
       error,
       invertedError,
     });
-  }
-
-  private getTextContent(element: ReactTestInstance): string {
-    if (!element) {
-      return "";
-    }
-
-    if (typeof element === "string") {
-      return element;
-    }
-
-    if (typeof element.props?.value === "string") {
-      return element.props.value;
-    }
-
-    return this.collectText(element).join(" ");
-  }
-
-  private collectText = (element: TextContent): string[] => {
-    if (typeof element === "string") {
-      return [element];
-    }
-
-    if (Array.isArray(element)) {
-      return element.flatMap(child => this.collectText(child));
-    }
-
-    if (element && (typeof element === "object" && "props" in element)) {
-      const value = element.props?.value as TextContent;
-      if (typeof value === "string") {
-        return [value];
-      }
-
-      const children = (element.props?.children as ReactTestInstance[]) ?? element.children;
-      if (!children) {
-        return [];
-      }
-
-      return Array.isArray(children)
-        ? children.flatMap(this.collectText)
-        : this.collectText(children);
-    }
-
-    return [];
-  };
-
-  private isElementDisabled(element: ReactTestInstance): boolean {
-    const { type } = element;
-    const elementType = type.toString();
-    if (elementType === "TextInput" && element?.props?.editable === false) {
-      return true;
-    }
-
-    return (
-      get(element, "props.aria-disabled")
-      || get(element, "props.disabled", false)
-      || get(element, "props.accessibilityState.disabled", false)
-      || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
-    );
-  }
-
-  private isAncestorDisabled(element: ReactTestInstance): boolean {
-    const { parent } = element;
-    return parent !== null && (this.isElementDisabled(element) || this.isAncestorDisabled(parent));
-  }
-
-  private isElementVisible(element: ReactTestInstance): boolean {
-    const { type } = element;
-    const elementType = type.toString();
-    if (elementType === "Modal" && !element?.props?.visible === true) {
-      return false;
-    }
-
-    return (
-      get(element, "props.style.display") !== "none"
-      && get(element, "props.style.opacity") !== 0
-      && get(element, "props.accessibilityElementsHidden") !== true
-      && get(element, "props.importantForAccessibility") !== "no-hide-descendants"
-    );
-  }
-
-  private isAncestorNotVisible(element: ReactTestInstance): boolean {
-    const { parent } = element;
-    return parent !== null && (!this.isElementVisible(element) || this.isAncestorNotVisible(parent));
   }
 }

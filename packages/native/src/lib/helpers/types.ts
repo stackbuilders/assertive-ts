@@ -1,7 +1,7 @@
 import { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
 import { ReactTestInstance } from "react-test-renderer";
 
-export type Style = TextStyle | ViewStyle | ImageStyle;
+type Style = TextStyle | ViewStyle | ImageStyle;
 
 export type AssertiveStyle = StyleProp<Style>;
 
