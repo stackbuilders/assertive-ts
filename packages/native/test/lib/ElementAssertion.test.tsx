@@ -1,6 +1,5 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { fireEvent, render } from "@testing-library/react-native";
-import { useState, useCallback, ReactElement } from "react";
+import { render } from "@testing-library/react-native";
 import {
   View,
   TextInput,
@@ -9,26 +8,6 @@ import {
 } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
-
-function SimpleToggleText(): ReactElement {
-  const [isVisible, setIsVisible] = useState(true);
-
-  const handleToggle = useCallback((): void => {
-    setIsVisible(prev => !prev);
-  }, []);
-
-  return (
-    <View>
-      <Text style={{ display: isVisible ? "flex" : "none" }}>
-        {"Toggle me!"}
-      </Text>
-      <Button
-        title="Toggle Text"
-        onPress={handleToggle}
-      />
-    </View>
-  );
-}
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeDisabled", () => {
