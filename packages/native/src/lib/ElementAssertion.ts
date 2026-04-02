@@ -1,9 +1,12 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
-import { Children } from "react";
 import { ReactTestInstance } from "react-test-renderer";
 
-import { instanceToString } from "./helpers/helpers";
+import { isAncestorDisabled, isElementDisabled, isAncestorNotVisible, isElementVisible } from "./helpers/accesibility";
+import { getFlattenedStyle, styleToString } from "./helpers/styles";
+import { getTextContent, textMatches } from "./helpers/text";
+import { AssertiveStyle, TestableTextMatcher } from "./helpers/types";
+import { isEmpty, instanceToString, isElementContained } from "./helpers/utils";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -35,7 +38,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isElementDisabled(this.actual) || this.isAncestorDisabled(this.actual),
+      assertWhen: isElementDisabled(this.actual) || isAncestorDisabled(this.actual),
       error,
       invertedError,
     });
@@ -61,7 +64,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: !this.isElementDisabled(this.actual) && !this.isAncestorDisabled(this.actual),
+      assertWhen: !isElementDisabled(this.actual) && !isAncestorDisabled(this.actual),
       error,
       invertedError,
     });
@@ -88,7 +91,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: Children.count(this.actual.props.children) === 0,
+      assertWhen: isEmpty(this.actual.children),
       error,
       invertedError,
     });
@@ -115,7 +118,7 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isElementVisible(this.actual) && this.isAncestorVisible(this.actual),
+      assertWhen: isElementVisible(this.actual) && !isAncestorNotVisible(this.actual),
       error,
       invertedError,
     });
@@ -143,62 +146,124 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
     });
 
     return this.execute({
-      assertWhen: this.isElementContained(this.actual, element),
+      assertWhen: isElementContained(this.actual, element),
       error,
       invertedError,
     });
   }
 
-  private isElementContained(parentElement: ReactTestInstance, childElement: ReactTestInstance): boolean {
-    if (parentElement === null || childElement === null) {
-      return false;
-    }
+  /**
+   * Check if the element has a specific property or a specific property value.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveProp("propName");
+   * expect(element).toHaveProp("propName", "propValue");
+   * ```
+   *
+   * @param propName - The name of the prop to check for.
+   * @param value - The value of the prop to check for.
+   * @returns the assertion instance
+   */
+  public toHaveProp(propName: string, value?: unknown): this {
+    const propValue: unknown = get(this.actual, `props.${propName}`, undefined);
+    const hasProp = propValue !== undefined;
+    const isPropEqual = value === undefined || propValue === value;
 
-    return (
-        parentElement.findAll(
-            node =>
-                node.type === childElement.type && node.props === childElement.props,
-        ).length > 0
-    );
+    const errorMessage = value === undefined
+      ? `Expected element ${this.toString()} to have prop '${propName}'.`
+      : `Expected element ${this.toString()} to have prop '${propName}' with value '${String(value)}'.`;
+
+    const invertedErrorMessage = value === undefined
+      ? `Expected element ${this.toString()} NOT to have prop '${propName}'.`
+      : `Expected element ${this.toString()} NOT to have prop '${propName}' with value '${String(value)}'.`;
+
+    const error = new AssertionError({ actual: this.actual, message: errorMessage });
+    const invertedError = new AssertionError({ actual: this.actual, message: invertedErrorMessage });
+
+    return this.execute({
+      assertWhen: hasProp && isPropEqual,
+      error,
+      invertedError,
+    });
   }
 
-  private isElementDisabled(element: ReactTestInstance): boolean {
-    const { type } = element;
-    const elementType = type.toString();
-    if (elementType === "TextInput" && element?.props?.editable === false) {
-      return true;
-    }
+  /**
+   * Asserts that a component has the specified style(s) applied.
+   *
+   * This method supports both single style objects and arrays of style objects.
+   * It checks if all specified style properties match on the target element.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveStyle({ backgroundColor: "red" });
+   * expect(element).toHaveStyle([{ backgroundColor: "red" }]);
+   * ```
+   *
+   * @param style - A style object to check for.
+   * @returns the assertion instance
+   */
+  public toHaveStyle(style: AssertiveStyle): this {
+    const stylesOnElement: AssertiveStyle = get(this.actual, "props.style", {});
 
-    return (
-        get(element, "props.aria-disabled")
-        || get(element, "props.disabled", false)
-        || get(element, "props.accessibilityState.disabled", false)
-        || get<ReactTestInstance, string[]>(element, "props.accessibilityStates", []).includes("disabled")
-    );
+    const flattenedElementStyle = getFlattenedStyle(stylesOnElement);
+    const flattenedStyle = getFlattenedStyle(style);
+
+    const hasStyle = Object.keys(flattenedStyle)
+      .every(key => flattenedElementStyle[key] === flattenedStyle[key]);
+
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to have style: \n${styleToString(flattenedStyle)}`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} NOT to have style: \n${styleToString(flattenedStyle)}`,
+    });
+
+    return this.execute({
+      assertWhen: hasStyle,
+      error,
+      invertedError,
+    });
   }
 
-  private isAncestorDisabled(element: ReactTestInstance): boolean {
-    const { parent } = element;
-    return parent !== null && (this.isElementDisabled(element) || this.isAncestorDisabled(parent));
-  }
+  /**
+   * Check if the element has text content matching the provided string,
+   * RegExp, or function.
+   *
+   * @example
+   * ```
+   * expect(element).toHaveTextContent("Hello World");
+   * expect(element).toHaveTextContent(/Hello/);
+   * expect(element).toHaveTextContent(text => text.startsWith("Hello"));
+   * ```
+   *
+   * @param text - The text to check for.
+   * @returns the assertion instance
+   */
+  public toHaveTextContent(text: TestableTextMatcher): this {
+    const actualTextContent = getTextContent(this.actual);
+    const matchesText = textMatches(actualTextContent, text);
 
-  private isElementVisible(element: ReactTestInstance): boolean {
-    const { type } = element;
+    const error = new AssertionError({
+      actual: this.actual,
+      message: `Expected element ${this.toString()} to have text content matching '` +
+        `${text.toString()}'.`,
+    });
 
-    if (type.toString() === "Modal") {
-      return Boolean(element.props?.visible);
-    }
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message:
+        `Expected element ${this.toString()} NOT to have text content matching '` +
+        `${text.toString()}'.`,
+    });
 
-    return (
-      get(element, "props.style.display") !== "none"
-      && get(element, "props.style.opacity") !== 0
-      && get(element, "props.accessibilityElementsHidden") !== true
-      && get(element, "props.importantForAccessibility") !== "no-hide-descendants"
-    );
-  }
-
-  private isAncestorVisible(element: ReactTestInstance): boolean {
-    const { parent } = element;
-    return parent === null || (this.isElementVisible(parent) && this.isAncestorVisible(parent));
+    return this.execute({
+      assertWhen: matchesText,
+      error,
+      invertedError,
+    });
   }
 }
