@@ -9,6 +9,8 @@ import {
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
 
+import { ContainElementTestComponent } from "./fixtures/containElementTestComponent";
+
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeDisabled", () => {
     context("when the element is TextInput", () => {
@@ -413,26 +415,19 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   });
 
   describe (".toContainElement", () => {
-    const element = render(
-      <View testID="grandParentId">
-        <View testID="parentId">
-          <View testID="childId" />
-        </View>
-        <Text testID="textId" />
-      </View>,
-    );
-
-    const container = element.getByTestId("grandParentId");
-    const containerElementAssertion = new ElementAssertion(container);
-    const parent = element.getByTestId("parentId");
-    const parentElementAssertion = new ElementAssertion(parent);
-    const child = element.getByTestId("childId");
-    const text = element.getByTestId("textId");
-    const textElementAssertion = new ElementAssertion(text);
-
     context("when the element has children", () => {
       context("and the target element is found in the children's element", () => {
         it("returns the assertion instance", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const container = getByTestId("grandParent");
+          const parent = getByTestId("parent");
+          const child = getByText("child");
+          const text = getByText("text");
+
+          const containerElementAssertion = new ElementAssertion(container);
+          const parentElementAssertion = new ElementAssertion(parent);
+
           expect(containerElementAssertion.toContainElement(parent)).toBe(containerElementAssertion);
           expect(containerElementAssertion.toContainElement(child)).toBe(containerElementAssertion);
           expect(containerElementAssertion.toContainElement(text)).toBe(containerElementAssertion);
@@ -440,6 +435,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
 
         it("throws an error for negative assertion", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const container = getByTestId("grandParent");
+          const parent = getByTestId("parent");
+          const text = getByText("text");
+
+          const containerElementAssertion = new ElementAssertion(container);
+
           expect(() => containerElementAssertion.not.toContainElement(parent))
             .toThrowError(AssertionError)
             .toHaveMessage("Expected element <View ... /> NOT to contain element <View ... />.");
@@ -451,12 +454,27 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and the target element is NOT found in the children's element", () => {
         it("throws an error", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const parent = getByTestId("parent");
+          const text = getByText("text");
+
+          const parentElementAssertion = new ElementAssertion(parent);
+
           expect(() => parentElementAssertion.toContainElement(text))
             .toThrowError(AssertionError)
             .toHaveMessage("Expected element <View ... /> to contain element <Text ... />.");
         });
 
         it("returns the assertion instance for negative assertion", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const container = getByTestId("grandParent");
+          const parent = getByTestId("parent");
+          const text = getByText("text");
+
+          const parentElementAssertion = new ElementAssertion(parent);
+
           expect(parentElementAssertion.not.toContainElement(text)).toBeEqual(parentElementAssertion);
           expect(parentElementAssertion.not.toContainElement(container)).toBeEqual(parentElementAssertion);
         });
@@ -464,7 +482,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the element does NOT have children", () => {
+
       it("throws an error", () => {
+        const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+        const parent = getByTestId("parent");
+        const text = getByText("text");
+
+        const textElementAssertion = new ElementAssertion(text);
         expect(() => textElementAssertion.toContainElement(parent))
           .toThrowError(AssertionError)
           .toHaveMessage("Expected element <Text ... /> to contain element <View ... />.");
