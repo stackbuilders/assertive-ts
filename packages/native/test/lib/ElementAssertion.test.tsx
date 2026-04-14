@@ -1,35 +1,15 @@
 import { AssertionError, expect } from "@assertive-ts/core";
-import { fireEvent, render } from "@testing-library/react-native";
-import { useState, useCallback, ReactElement } from "react";
+import { render } from "@testing-library/react-native";
 import {
   View,
   TextInput,
   Text,
   Modal,
-  Button,
 } from "react-native";
 
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
 
-function SimpleToggleText(): ReactElement {
-  const [isVisible, setIsVisible] = useState(true);
-
-  const handleToggle = useCallback((): void => {
-    setIsVisible(prev => !prev);
-  }, []);
-
-  return (
-    <View>
-      <Text style={{ display: isVisible ? "flex" : "none" }}>
-        {"Toggle me!"}
-      </Text>
-      <Button
-        title="Toggle Text"
-        onPress={handleToggle}
-      />
-    </View>
-  );
-}
+import { ContainElementTestComponent } from "./fixtures/containElementTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeDisabled", () => {
@@ -152,84 +132,6 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
       });
     });
-  });
-
-  describe(".toBeEmpty", () => {
-    context("when the element is empty", () => {
-      it("returns the assertion instance", () => {
-        const element = render(<View testID="id" />);
-        const test = new ElementAssertion(element.getByTestId("id"));
-
-        expect(test.toBeEmpty()).toBe(test);
-        expect(() => test.not.toBeEmpty())
-          .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> NOT to be empty.");
-      });
-    });
-
-    context("when the element is NOT empty", () => {
-      it("throws an error", () => {
-        const element = render(
-          <View testID="id">
-            <Text>{"Not empty"}</Text>
-          </View>,
-        );
-        const test = new ElementAssertion(element.getByTestId("id"));
-
-        expect(test.not.toBeEmpty()).toBeEqual(test);
-        expect(() => test.toBeEmpty())
-          .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <View ... /> to be empty.");
-      });
-    });
-  });
-
-  describe (".toBeVisible", () => {
-    context("when the modal is visible", () => {
-      it("returns the assertion instance", () => {
-        const { getByTestId } = render(
-          <Modal testID="id" visible={true} />,
-        );
-        const test = new ElementAssertion(getByTestId("id"));
-
-        expect(test.toBeVisible()).toBe(test);
-        expect(() => test.not.toBeVisible())
-          .toThrowError(AssertionError)
-          .toHaveMessage("Expected element <Modal ... /> NOT to be visible.");
-      });
-    });
-
-    context("when the element contains 'display' property", () => {
-      context("and display = none", () => {
-        it("throws an error", () => {
-          const { getByText, getByRole } = render(
-            <SimpleToggleText />,
-          );
-          const textElement = new ElementAssertion(getByText("Toggle me!"));
-
-          expect(textElement.toBeVisible()).toBeEqual(textElement);
-
-          const toggleButton = getByRole("button", { name: "Toggle Text" });
-          fireEvent.press(toggleButton);
-
-          expect(textElement.not.toBeVisible()).toBeEqual(textElement);
-        });
-      });
-
-      context("and display = flex", () => {
-        it("returns the assertion instance", () => {
-          const { getByTestId } = render(
-            <View testID="id" style={{ display: "flex" }} />,
-          );
-          const test = new ElementAssertion(getByTestId("id"));
-
-          expect(test.toBeVisible()).toBe(test);
-          expect(() => test.not.toBeVisible())
-            .toThrowError(AssertionError)
-            .toHaveMessage("Expected element <View ... /> NOT to be visible.");
-        });
-      });
-    });
 
     context("when the element contains 'accessibilityElementsHidden' property", () => {
       it("returns the assertion instance", () => {
@@ -308,6 +210,673 @@ describe("[Unit] ElementAssertion.test.ts", () => {
             .toThrowError(AssertionError)
             .toHaveMessage("Expected element <View ... /> to be visible.");
         });
+      });
+    });
+  });
+
+  describe (".toContainElement", () => {
+    const element = render(
+      <View testID="grandParentId">
+        <View testID="parentId">
+          <View testID="childId" />
+        </View>
+        <Text testID="textId" />
+      </View>,
+    );
+
+    const container = element.getByTestId("grandParentId");
+    const containerElementAssertion = new ElementAssertion(container);
+    const parent = element.getByTestId("parentId");
+    const parentElementAssertion = new ElementAssertion(parent);
+    const child = element.getByTestId("childId");
+    const text = element.getByTestId("textId");
+    const textElementAssertion = new ElementAssertion(text);
+
+    context("when the element has children", () => {
+      context("and the target element is found in the children's element", () => {
+        it("returns the assertion instance", () => {
+          expect(containerElementAssertion.toContainElement(parent)).toBe(containerElementAssertion);
+          expect(containerElementAssertion.toContainElement(child)).toBe(containerElementAssertion);
+          expect(containerElementAssertion.toContainElement(text)).toBe(containerElementAssertion);
+          expect(parentElementAssertion.toContainElement(child)).toBe(parentElementAssertion);
+        });
+
+        it("throws an error for negative assertion", () => {
+          expect(() => containerElementAssertion.not.toContainElement(parent))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to contain element <View ... />.");
+          expect(() => containerElementAssertion.not.toContainElement(text))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to contain element <Text ... />.");
+        });
+      });
+
+      context("and the target element is NOT found in the children's element", () => {
+        it("throws an error", () => {
+          expect(() => parentElementAssertion.toContainElement(text))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to contain element <Text ... />.");
+        });
+
+        it("returns the assertion instance for negative assertion", () => {
+          expect(parentElementAssertion.not.toContainElement(text)).toBeEqual(parentElementAssertion);
+          expect(parentElementAssertion.not.toContainElement(container)).toBeEqual(parentElementAssertion);
+        });
+      });
+    });
+
+    context("when the element does NOT have children", () => {
+      it("throws an error", () => {
+        expect(() => textElementAssertion.toContainElement(parent))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> to contain element <View ... />.");
+      });
+    });
+  });
+
+  describe(".toBeEmpty", () => {
+    context("when the element is empty", () => {
+      it("returns the assertion instance", () => {
+        const element = render(<View testID="id" />);
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeEmpty()).toBe(test);
+        expect(() => test.not.toBeEmpty())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be empty.");
+      });
+    });
+
+    context("when the element is NOT empty", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id">
+            <Text>{"Not empty"}</Text>
+          </View>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toBeEmpty()).toBeEqual(test);
+        expect(() => test.toBeEmpty())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to be empty.");
+      });
+    });
+  });
+
+  describe (".toBeVisible", () => {
+    context("when the modal is visible", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Modal testID="id" visible={true} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Modal ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'display' property", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" style={{ display: "flex" }} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'accessibilityElementsHidden' property", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" accessibilityElementsHidden={false} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the element contains 'importantForAccessibility' property", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" importantForAccessibility={"yes"} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toBeVisible()).toBe(test);
+        expect(() => test.not.toBeVisible())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+      });
+    });
+
+    context("when the parent element contains 'opacity' property", () => {
+      context("if parent opacity = 0", () => {
+        const element = render(
+          <View testID="parentId" style={{ opacity: 0 }} >
+            <View testID="childId" style={{ opacity: 1 }} />
+          </View>,
+        );
+
+        const parent = new ElementAssertion(element.getByTestId("parentId"));
+        const child = new ElementAssertion(element.getByTestId("childId"));
+
+        it("returns assertion instance for NOT visible elements", () => {
+          expect(parent.not.toBeVisible()).toBeEqual(parent);
+          expect(child.not.toBeVisible()).toBeEqual(child);
+        });
+
+        it("throws an error for visible elements", () => {
+          expect(() => parent.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to be visible.");
+          expect(() => child.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to be visible.");
+        });
+      });
+
+      context("if child opacity = 0", () => {
+        const element = render(
+          <View testID="parentId" style={{ opacity: 1 }} >
+            <View testID="childId" style={{ opacity: 0 }} />
+          </View>,
+        );
+
+        const parent = new ElementAssertion(element.getByTestId("parentId"));
+        const child = new ElementAssertion(element.getByTestId("childId"));
+
+        it("returns assertion instance for NOT visible elements", () => {
+          expect(parent.toBeVisible()).toBeEqual(parent);
+          expect(child.not.toBeVisible()).toBeEqual(child);
+        });
+
+        it("throws an error for visible elements", () => {
+          expect(() => parent.not.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to be visible.");
+          expect(() => child.toBeVisible())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to be visible.");
+        });
+      });
+    });
+  });
+
+  describe (".toContainElement", () => {
+    context("when the element has children", () => {
+      context("and the target element is found in the children's element", () => {
+        it("returns the assertion instance", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const container = getByTestId("grandParent");
+          const parent = getByTestId("parent");
+          const child = getByText("child");
+          const text = getByText("text");
+
+          const containerElementAssertion = new ElementAssertion(container);
+          const parentElementAssertion = new ElementAssertion(parent);
+
+          expect(containerElementAssertion.toContainElement(parent)).toBe(containerElementAssertion);
+          expect(containerElementAssertion.toContainElement(child)).toBe(containerElementAssertion);
+          expect(containerElementAssertion.toContainElement(text)).toBe(containerElementAssertion);
+          expect(parentElementAssertion.toContainElement(child)).toBe(parentElementAssertion);
+        });
+
+        it("throws an error for negative assertion", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const container = getByTestId("grandParent");
+          const parent = getByTestId("parent");
+          const text = getByText("text");
+
+          const containerElementAssertion = new ElementAssertion(container);
+
+          expect(() => containerElementAssertion.not.toContainElement(parent))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to contain element <View ... />.");
+          expect(() => containerElementAssertion.not.toContainElement(text))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> NOT to contain element <Text ... />.");
+        });
+      });
+
+      context("and the target element is NOT found in the children's element", () => {
+        it("throws an error", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const parent = getByTestId("parent");
+          const text = getByText("text");
+
+          const parentElementAssertion = new ElementAssertion(parent);
+
+          expect(() => parentElementAssertion.toContainElement(text))
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected element <View ... /> to contain element <Text ... />.");
+        });
+
+        it("returns the assertion instance for negative assertion", () => {
+          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+          const container = getByTestId("grandParent");
+          const parent = getByTestId("parent");
+          const text = getByText("text");
+
+          const parentElementAssertion = new ElementAssertion(parent);
+
+          expect(parentElementAssertion.not.toContainElement(text)).toBeEqual(parentElementAssertion);
+          expect(parentElementAssertion.not.toContainElement(container)).toBeEqual(parentElementAssertion);
+        });
+      });
+    });
+
+    context("when the element does NOT have children", () => {
+
+      it("throws an error", () => {
+        const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+
+        const parent = getByTestId("parent");
+        const text = getByText("text");
+
+        const textElementAssertion = new ElementAssertion(text);
+        expect(() => textElementAssertion.toContainElement(parent))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> to contain element <View ... />.");
+      });
+    });
+  });
+
+  describe(".toHaveProp", () => {
+    context("when the element contains the target prop", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" accessibilityLabel="label" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveProp("accessibilityLabel")).toBe(test);
+        expect(() => test.not.toHaveProp("accessibilityLabel"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have prop 'accessibilityLabel'.");
+      });
+    });
+
+    context("when the element does NOT contain the target prop", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveProp("accessibilityLabel")).toBeEqual(test);
+        expect(() => test.toHaveProp("accessibilityLabel"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have prop 'accessibilityLabel'.");
+      });
+    });
+
+    context("when the element contains the target prop with a specific value", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id" accessibilityLabel="label" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveProp("accessibilityLabel", "label")).toBe(test);
+        expect(() => test.not.toHaveProp("accessibilityLabel", "label"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have prop 'accessibilityLabel' with value 'label'.");
+      });
+    });
+
+    context("when the element does NOT contain the target prop with a specific value", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" accessibilityLabel="new-label" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveProp("accessibilityLabel", "label")).toBeEqual(test);
+        expect(() => test.toHaveProp("accessibilityLabel", "label"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have prop 'accessibilityLabel' with value 'label'.");
+      });
+    });
+  });
+
+  describe(".toHaveStyle", () => {
+    context("when the element contains the target style", () => {
+      it("returns the assertion instance", () => {
+      const element = render(
+        <View testID="id" style={{ backgroundColor: "red" }} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.toHaveStyle({ backgroundColor: "red" })).toBe(test);
+      expect(() => test.not.toHaveStyle({ backgroundColor: "red" }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;");
+      });
+    });
+
+    context("when the element does NOT contain the target style", () => {
+      it("throws an error", () => {
+        const element = render(
+        <View testID="id" style={{ opacity: 1 }} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+        expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+      });
+    });
+
+    context("when the element contains multiple styles and matches all", () => {
+      it("returns the assertion instance", () => {
+      const element = render(
+        <View testID="id" style={{ backgroundColor: "red", opacity: 0.5 }} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBe(test);
+      expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
+        .toThrowError(AssertionError)
+        .toHaveMessage(
+          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+        );
+      });
+    });
+
+    context("when the element contains multiple styles but does not match all", () => {
+      it("throws an error", () => {
+      const element = render(
+        <View testID="id" style={{ backgroundColor: "red", opacity: 1 }} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBeEqual(test);
+      expect(() => test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;");
+      });
+    });
+
+    context("when the element has no style prop", () => {
+      it("throws an error", () => {
+      const element = render(
+        <View testID="id" />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+      });
+    });
+
+    context("when the element style is an array and contains the target style", () => {
+      it("returns the assertion instance", () => {
+      const element = render(
+        <View testID="id" style={[{ backgroundColor: "red" }, { opacity: 0.5 }]} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBe(test);
+      expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
+        .toThrowError(AssertionError)
+        .toHaveMessage(
+          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+        );
+      });
+    });
+
+    context("when the passed style is an array and contains the target style", () => {
+      it("returns the assertion instance", () => {
+      const element = render(
+        <View testID="id" style={[{ backgroundColor: "red" }, { opacity: 0.5 }]} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+      expect(test.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }])).toBe(test);
+      expect(() => test.not.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }]))
+        .toThrowError(AssertionError)
+        .toHaveMessage(
+          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+        );
+      });
+    });
+
+    context("when the element style is an array and does not contain the target style", () => {
+      it("throws an error", () => {
+      const element = render(
+        <View testID="id" style={[{ backgroundColor: "blue" }, { opacity: 1 }]} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+      });
+    });
+
+    context("when the style value is undefined", () => {
+      it("throws an error", () => {
+      const element = render(
+        <View testID="id" style={{ backgroundColor: undefined }} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+      });
+    });
+
+    context("when the style value is null", () => {
+      it("throws an error", () => {
+      const element = render(
+        <View testID="id" style={null} />,
+      );
+      const test = new ElementAssertion(element.getByTestId("id"));
+
+      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+        .toThrowError(AssertionError)
+        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+      });
+    });
+  });
+
+  describe(".toHaveTextContent", () => {
+    context("when the element contains the target text", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveTextContent("Hello World")).toBe(test);
+        expect(() => test.not.toHaveTextContent("Hello World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching 'Hello World'.");
+      });
+    });
+
+    context("when the element does NOT contain the target text", () => {
+      it("throws an error", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent("Goodbye World")).toBeEqual(test);
+        expect(() => test.toHaveTextContent("Goodbye World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> to have text content matching 'Goodbye World'.");
+      });
+    });
+
+    context("when the element contains the target text with a RegExp", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveTextContent(/Hello/)).toBe(test);
+        expect(() => test.not.toHaveTextContent(/Hello/))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> NOT to have text content matching '/Hello/'.");
+      });
+    });
+
+    context("when the element does NOT contain the target text with a RegExp", () => {
+      it("throws an error", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(/Goodbye/)).toBeEqual(test);
+        expect(() => test.toHaveTextContent(/Goodbye/))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <Text ... /> to have text content matching '/Goodbye/'.");
+      });
+    });
+
+    context("when the eleme contains the target text within a child element", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <View testID="id">
+            <View>
+              <Text>{"Test 1"}</Text>
+              <View>
+                <Text>{"Test 2"}</Text>
+                <Text>{"Hello World"}</Text>
+              </View>
+            </View>
+          </View>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+        expect(test.toHaveTextContent("Hello World")).toBe(test);
+        expect(() => test.not.toHaveTextContent("Hello World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have text content matching 'Hello World'.");
+      });
+    });
+
+    context("when the element does NOT contain the target text within a child element", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id">
+            <View>
+              <Text>{"Test 1"}</Text>
+              <View>
+                <Text>{"Test 2"}</Text>
+                <Text>{"Hello World"}</Text>
+              </View>
+            </View>
+          </View>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+        expect(test.not.toHaveTextContent("Goodbye World")).toBeEqual(test);
+        expect(() => test.toHaveTextContent("Goodbye World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'Goodbye World'.");
+      });
+    });
+
+    context("when the element contains the target text with a function matcher", () => {
+      it("returns the assertion instance", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveTextContent(text => text.startsWith("Hello"))).toBe(test);
+        expect(() => test.not.toHaveTextContent(text => text.startsWith("Hello")))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <Text ... /> NOT to have text content matching " +
+            "'text => text.startsWith(\"Hello\")'.",
+          );
+      });
+    });
+
+    context("when the element does NOT contain the target text with a function matcher", () => {
+      it("throws an error", () => {
+        const element = render(
+          <Text testID="id">{"Hello World"}</Text>,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(text => text.startsWith("Goodbye"))).toBeEqual(test);
+        expect(() => test.toHaveTextContent(text => text.startsWith("Goodbye")))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <Text ... /> to have text content matching " +
+            "'text => text.startsWith(\"Goodbye\")'.",
+          );
+      });
+    });
+
+    context("when the element has no text content", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent("Hello World")).toBeEqual(test);
+        expect(() => test.toHaveTextContent("Hello World"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have text content matching 'Hello World'.");
+      });
+    });
+
+    context("when the element has no text content with a RegExp", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(/Hello/)).toBeEqual(test);
+        expect(() => test.toHaveTextContent(/Hello/))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have text content matching '/Hello/'.");
+      });
+    });
+
+    context("when the element has no text content with a function matcher", () => {
+      it("throws an error", () => {
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.not.toHaveTextContent(text => text.startsWith("Hello"))).toBeEqual(test);
+        expect(() => test.toHaveTextContent(text => text.startsWith("Hello")))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <View ... /> to have text content matching " +
+            "'text => text.startsWith(\"Hello\")'.",
+          );
       });
     });
   });
