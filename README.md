@@ -1,5 +1,5 @@
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-18-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![CI](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/ci.yml)
 [![Release](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml/badge.svg)](https://github.com/stackbuilders/assertive-ts/actions/workflows/release.yml)
@@ -178,6 +178,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/kdquistanchala"><img src="https://avatars.githubusercontent.com/u/51094604?v=4?s=100" width="100px;" alt="Karla Quistanchala"/><br /><sub><b>Karla Quistanchala</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/pulls?q=is%3Apr+reviewed-by%3Akdquistanchala" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://spenc.es"><img src="https://avatars.githubusercontent.com/u/2670813?v=4?s=100" width="100px;" alt="Spencer Scorcelletti"/><br /><sub><b>Spencer Scorcelletti</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=asimpletune" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/JDOM10"><img src="https://avatars.githubusercontent.com/u/152449879?v=4?s=100" width="100px;" alt="Juan Diego Osorio"/><br /><sub><b>Juan Diego Osorio</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=JDOM10" title="Code">💻</a> <a href="https://github.com/stackbuilders/assertive-ts/commits?author=JDOM10" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SbsCruz"><img src="https://avatars.githubusercontent.com/u/129121364?v=4?s=100" width="100px;" alt="Sebastián Cruz"/><br /><sub><b>Sebastián Cruz</b></sub></a><br /><a href="https://github.com/stackbuilders/assertive-ts/commits?author=SbsCruz" title="Code">💻</a> <a href="https://github.com/stackbuilders/assertive-ts/commits?author=SbsCruz" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
