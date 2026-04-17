@@ -45,8 +45,10 @@ function getReceivedStyle(props: string[], received: CSSStyleDeclaration): Style
   }, {} as StyleDeclaration);
 }
 
-// eslint-disable-next-line @stylistic/max-len
-export function getExpectedAndReceivedStyles(actual: Element, expected: Partial<CSSStyleDeclaration>): StyleDeclaration[] {
+export function getExpectedAndReceivedStyles(
+  actual: Element,
+  expected: Partial<CSSStyleDeclaration>,
+): StyleDeclaration[] {
   if (!actual.ownerDocument.defaultView) {
     throw new Error("The element is not attached to a document with a default view.");
   }
