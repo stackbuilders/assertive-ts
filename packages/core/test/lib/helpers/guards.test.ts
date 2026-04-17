@@ -1,11 +1,11 @@
+import assert from "assert";
+
 import {
   isAnyFunction,
-  isStruct,
   isKeyOf,
   isPromise,
+  isStruct,
 } from "../../../src/lib/helpers/guards";
-
-import assert from "assert";
 
 describe("[Unit] guards.test.ts", () => {
   describe(".isStruct", () => {
@@ -17,7 +17,7 @@ describe("[Unit] guards.test.ts", () => {
         ["foo", false],
         [null, false],
         [{ }, true],
-      ];
+      ] as const;
 
       variants.forEach(([value, expected]) => {
         context(`and the value is ${JSON.stringify(value)}`, () => {
@@ -48,13 +48,13 @@ describe("[Unit] guards.test.ts", () => {
         ...Object.keys(target),
         ...Object.getOwnPropertySymbols(target),
       ]
-      .forEach(key => {
-        it(`[${key.toString()}] return true`, () => {
-          const isKey = isKeyOf(target, key);
+        .forEach(key => {
+          it(`[${key.toString()}] return true`, () => {
+            const isKey = isKeyOf(target, key);
 
-          assert.equal(isKey, true);
+            assert.equal(isKey, true);
+          });
         });
-      });
     });
 
     context("when the value is not a key of the target", () => {

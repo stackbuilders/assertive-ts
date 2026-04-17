@@ -1,11 +1,12 @@
-import { ReactElement } from "react";
 import {
-  View,
   Text,
+  View,
 } from "react-native";
 
+import type { ReactElement } from "react";
+
 export function ContainElementTestComponent(): ReactElement {
-return (
+  return (
     <View testID="grandParent">
       <View testID="parent">
         <View>
@@ -14,5 +15,5 @@ return (
       </View>
       <Text>{"text"}</Text>
     </View>
-    );
+  );
 }

@@ -1,6 +1,6 @@
-import { prettify } from "../../../src/lib/helpers/messages";
-
 import assert from "assert";
+
+import { prettify } from "../../../src/lib/helpers/messages";
 
 describe("[Unit] messages.test.ts", () => {
   describe(".prettify", () => {

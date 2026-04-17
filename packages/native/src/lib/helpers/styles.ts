@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 
-import { AssertiveStyle, StyleObject } from "./types";
+import type { AssertiveStyle, StyleObject } from "./types";
 
 export function getFlattenedStyle(style: AssertiveStyle): StyleObject {
-    const flattenedStyle = StyleSheet.flatten(style);
-    return flattenedStyle ? (flattenedStyle as StyleObject) : {};
+  const flattenedStyle = StyleSheet.flatten(style);
+  return flattenedStyle ? (flattenedStyle as StyleObject) : {};
 }
 
 export function styleToString(flattenedStyle: StyleObject): string {

@@ -1,47 +1,46 @@
-import { ReactTestInstance } from "react-test-renderer";
+import type { TestableTextMatcher, TextContent } from "./types";
+import type { ReactTestInstance } from "react-test-renderer";
 
-import { TestableTextMatcher, TextContent } from "./types";
+function collectText(element: TextContent): string[] {
+  if (typeof element === "string") {
+    return [element];
+  }
 
-function collectText (element: TextContent): string[] {
-    if (typeof element === "string") {
-      return [element];
+  if (Array.isArray(element)) {
+    return element.flatMap(child => collectText(child));
+  }
+
+  if (element && (typeof element === "object" && "props" in element)) {
+    const value = element.props?.value as TextContent;
+    if (typeof value === "string") {
+      return [value];
     }
 
-    if (Array.isArray(element)) {
-      return element.flatMap(child => collectText(child));
+    const children = (element.props?.children as ReactTestInstance[]) ?? element.children;
+    if (!children) {
+      return [];
     }
 
-    if (element && (typeof element === "object" && "props" in element)) {
-      const value = element.props?.value as TextContent;
-      if (typeof value === "string") {
-        return [value];
-      }
+    return Array.isArray(children)
+      ? children.flatMap(collectText)
+      : collectText(children);
+  }
 
-      const children = (element.props?.children as ReactTestInstance[]) ?? element.children;
-      if (!children) {
-        return [];
-      }
-
-      return Array.isArray(children)
-        ? children.flatMap(collectText)
-        : collectText(children);
-    }
-
-    return [];
+  return [];
 }
 
 export function getTextContent(element: ReactTestInstance): string {
-    if (!element) {
+  if (!element) {
     return "";
-    }
-    if (typeof element === "string") {
+  }
+  if (typeof element === "string") {
     return element;
-    }
-    if (typeof element.props?.value === "string") {
+  }
+  if (typeof element.props?.value === "string") {
     return element.props.value;
-    }
+  }
 
-    return collectText(element).join(" ");
+  return collectText(element).join(" ");
 }
 
 export function textMatches(

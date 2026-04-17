@@ -11,7 +11,7 @@ export function getAccessibleDescription(actual: Element): string {
 
   const descriptionIds = ariaDescribedBy.split(/\s+/).filter(Boolean);
 
-  const getElementText = (id: string): string | null => {
+  const getElementText = (id: string): null | string => {
     const element = actual.ownerDocument.getElementById(id);
 
     if (!element || !element.textContent) {

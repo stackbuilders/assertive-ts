@@ -1,10 +1,10 @@
+import assert from "assert";
+
 import {
   isHighInclusiveOptions,
   isInclusiveOptions,
   isLowInclusiveOptions,
 } from "../../src/lib/NumberAssertion.helpers";
-
-import assert from "assert";
 
 describe("[Unit] NumberAssertion.helpers.test.ts", () => {
   describe(".isInclusiveOptions", () => {

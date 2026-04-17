@@ -1,12 +1,13 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
-import { ReactTestInstance } from "react-test-renderer";
 
-import { isAncestorDisabled, isElementDisabled, isAncestorNotVisible, isElementVisible } from "./helpers/accesibility";
+import { isAncestorDisabled, isAncestorNotVisible, isElementDisabled, isElementVisible } from "./helpers/accesibility";
 import { getFlattenedStyle, styleToString } from "./helpers/styles";
 import { getTextContent, textMatches } from "./helpers/text";
-import { AssertiveStyle, TestableTextMatcher } from "./helpers/types";
-import { isEmpty, instanceToString, isElementContained } from "./helpers/utils";
+import { instanceToString, isElementContained, isEmpty } from "./helpers/utils";
+
+import type { AssertiveStyle, TestableTextMatcher } from "./helpers/types";
+import type { ReactTestInstance } from "react-test-renderer";
 
 export class ElementAssertion extends Assertion<ReactTestInstance> {
   public constructor(actual: ReactTestInstance) {
@@ -172,10 +173,12 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     const errorMessage = value === undefined
       ? `Expected element ${this.toString()} to have prop '${propName}'.`
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       : `Expected element ${this.toString()} to have prop '${propName}' with value '${String(value)}'.`;
 
     const invertedErrorMessage = value === undefined
       ? `Expected element ${this.toString()} NOT to have prop '${propName}'.`
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
       : `Expected element ${this.toString()} NOT to have prop '${propName}' with value '${String(value)}'.`;
 
     const error = new AssertionError({ actual: this.actual, message: errorMessage });
@@ -249,15 +252,15 @@ export class ElementAssertion extends Assertion<ReactTestInstance> {
 
     const error = new AssertionError({
       actual: this.actual,
-      message: `Expected element ${this.toString()} to have text content matching '` +
-        `${text.toString()}'.`,
+      message: `Expected element ${this.toString()} to have text content matching '`
+        + `${text.toString()}'.`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
       message:
-        `Expected element ${this.toString()} NOT to have text content matching '` +
-        `${text.toString()}'.`,
+        `Expected element ${this.toString()} NOT to have text content matching '`
+        + `${text.toString()}'.`,
     });
 
     return this.execute({

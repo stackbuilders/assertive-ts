@@ -1,3 +1,5 @@
+import assert from "assert";
+
 import { ArrayAssertion } from "../../src/lib/ArrayAssertion";
 import { Assertion } from "../../src/lib/Assertion";
 import { BooleanAssertion } from "../../src/lib/BooleanAssertion";
@@ -10,10 +12,7 @@ import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
 import { StringAssertion } from "../../src/lib/StringAssertion";
 import { expect } from "../../src/main";
 
-import assert from "assert";
-
 class CustomError extends Error {
-
   public constructor(message?: string) {
     super(message);
 
@@ -85,13 +84,13 @@ describe("[Unit] expect.test.ts", () => {
       new Error("classic"),
       new CustomError("custom"),
     ]
-    .forEach(error => {
-      it(`[${error.name}] returns an ErrorAssertion`, () => {
-        const test = expect(error);
+      .forEach(error => {
+        it(`[${error.name}] returns an ErrorAssertion`, () => {
+          const test = expect(error);
 
-        assert(test instanceof ErrorAssertion);
+          assert(test instanceof ErrorAssertion);
+        });
       });
-    });
   });
 
   context("when the actual value is an Object", () => {

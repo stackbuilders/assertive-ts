@@ -1,11 +1,4 @@
 /**
- * Backwards compatibility alias of the `Struct` type.
- *
- * @deprecated in favor of {@link Struct}
- */
-export type JSObject = Struct;
-
-/**
  * Utility type that represents any kind of structured object.
  */
 export type Struct = Record<keyof unknown, unknown>;

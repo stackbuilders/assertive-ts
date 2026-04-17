@@ -1,9 +1,9 @@
+import assert from "assert";
+import { AssertionError } from "assert/strict";
+
 import dedent from "dedent";
 
 import { PromiseAssertion } from "../../src/lib/PromiseAssertion";
-
-import assert from "assert";
-import { AssertionError } from "assert/strict";
 
 describe("[Unit] PromiseAssertion.test.ts", () => {
   describe(".toBeResolved", () => {
