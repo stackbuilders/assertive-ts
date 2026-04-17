@@ -3,13 +3,12 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
-import { DescriptionTestComponent } from "./fixtures/descriptionTestComponent";
-import { FocusTestComponent } from "./fixtures/focusTestComponent";
 import { HaveClassTest } from "./fixtures/HaveClassTest";
 import { NestedElementsTest } from "./fixtures/NestedElementsTest";
 import { SimpleTest } from "./fixtures/SimpleTest";
 import { WithAttributesTest } from "./fixtures/WithAttributesTest";
-
+import { DescriptionTestComponent } from "./fixtures/descriptionTestComponent";
+import { FocusTestComponent } from "./fixtures/focusTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -428,9 +427,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.toBeEmpty()).toBeEqual(test);
 
         expect(() => test.not.toBeEmpty())
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected the element NOT to be empty.");
-
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element NOT to be empty.");
       });
     });
 
@@ -445,9 +443,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(test.toBeEmpty()).toBeEqual(test);
 
         expect(() => test.not.toBeEmpty())
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected the element NOT to be empty.");
-
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element NOT to be empty.");
       });
     });
 
@@ -462,11 +459,10 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const test = new ElementAssertion(divTest);
 
         expect(() => test.toBeEmpty())
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected the element to be empty.");
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be empty.");
 
         expect(test.not.toBeEmpty()).toBeEqual(test);
-
       });
     });
   });
@@ -514,8 +510,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           expect(() => test.not.toHaveDescription("This is a description"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element NOT to have description "This is a description", ' +
-              'but received "This is a description"',
+              'Expected the element NOT to have description "This is a description", '
+              + 'but received "This is a description"',
             );
         });
       });
@@ -531,8 +527,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           expect(() => test.not.toHaveDescription("This is a description Additional info"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element NOT to have description "This is a description Additional info", ' +
-              'but received "This is a description Additional info"',
+              'Expected the element NOT to have description "This is a description Additional info", '
+              + 'but received "This is a description Additional info"',
             );
         });
       });
@@ -566,8 +562,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           expect(() => test.not.toHaveDescription(/description/i))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              "Expected the element NOT to have description matching /description/i, " +
-              'but received "This is a description"',
+              "Expected the element NOT to have description matching /description/i, "
+              + 'but received "This is a description"',
             );
         });
       });
@@ -581,8 +577,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           expect(() => test.toHaveDescription(/wrong pattern/))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              "Expected the element to have description matching /wrong pattern/, " +
-              'but received "This is a description"',
+              "Expected the element to have description matching /wrong pattern/, "
+              + 'but received "This is a description"',
             );
 
           expect(test.not.toHaveDescription(/wrong pattern/)).toBeEqual(test);

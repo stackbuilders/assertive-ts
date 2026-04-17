@@ -1,12 +1,12 @@
-import { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
-import { ReactTestInstance } from "react-test-renderer";
+import type { ImageStyle, StyleProp, TextStyle, ViewStyle } from "react-native";
+import type { ReactTestInstance } from "react-test-renderer";
 
-type Style = TextStyle | ViewStyle | ImageStyle;
+type Style = ImageStyle | TextStyle | ViewStyle;
 
 export type AssertiveStyle = StyleProp<Style>;
 
 export type StyleObject = Record<string, unknown>;
 
-export type TestableTextMatcher = string | RegExp | ((text: string) => boolean);
+export type TestableTextMatcher = ((text: string) => boolean) | RegExp | string;
 
-export type TextContent = string | ReactTestInstance | ReactTestInstance[];
+export type TextContent = ReactTestInstance | ReactTestInstance[] | string;

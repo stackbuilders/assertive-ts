@@ -1,8 +1,6 @@
 import { AssertionError, expect } from "@assertive-ts/core";
 import { fireEvent, render } from "@testing-library/react-native";
-import { type ReactElement, useCallback, useState } from "react";
 import {
-  Button,
   Modal,
   Text,
   TextInput,
@@ -12,6 +10,7 @@ import {
 import { ElementAssertion } from "../../src/lib/ElementAssertion";
 
 import { ContainElementTestComponent } from "./fixtures/containElementTestComponent";
+import { SimpleToggleText } from "./fixtures/simpleToggleText";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeDisabled", () => {
@@ -430,7 +429,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element contains 'importantForAccessibility' property", () => {
       it("returns the assertion instance", () => {
         const element = render(
-          <View testID="id" importantForAccessibility={"yes"} />,
+          <View testID="id" importantForAccessibility="yes" />,
         );
         const test = new ElementAssertion(element.getByTestId("id"));
 
@@ -444,7 +443,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the parent element contains 'opacity' property", () => {
       context("if parent opacity = 0", () => {
         const element = render(
-          <View testID="parentId" style={{ opacity: 0 }} >
+          <View testID="parentId" style={{ opacity: 0 }}>
             <View testID="childId" style={{ opacity: 1 }} />
           </View>,
         );
@@ -469,7 +468,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("if child opacity = 0", () => {
         const element = render(
-          <View testID="parentId" style={{ opacity: 1 }} >
+          <View testID="parentId" style={{ opacity: 1 }}>
             <View testID="childId" style={{ opacity: 0 }} />
           </View>,
         );
@@ -498,7 +497,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     context("when the element has children", () => {
       context("and the target element is found in the children's element", () => {
         it("returns the assertion instance", () => {
-          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+          const { getByTestId, getByText } = render(<ContainElementTestComponent />);
 
           const container = getByTestId("grandParent");
           const parent = getByTestId("parent");
@@ -515,7 +514,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
 
         it("throws an error for negative assertion", () => {
-          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+          const { getByTestId, getByText } = render(<ContainElementTestComponent />);
 
           const container = getByTestId("grandParent");
           const parent = getByTestId("parent");
@@ -534,7 +533,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
       context("and the target element is NOT found in the children's element", () => {
         it("throws an error", () => {
-          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+          const { getByTestId, getByText } = render(<ContainElementTestComponent />);
 
           const parent = getByTestId("parent");
           const text = getByText("text");
@@ -547,7 +546,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         });
 
         it("returns the assertion instance for negative assertion", () => {
-          const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+          const { getByTestId, getByText } = render(<ContainElementTestComponent />);
 
           const container = getByTestId("grandParent");
           const parent = getByTestId("parent");
@@ -562,9 +561,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
 
     context("when the element does NOT have children", () => {
-
       it("throws an error", () => {
-        const { getByText, getByTestId } = render(<ContainElementTestComponent />);
+        const { getByTestId, getByText } = render(<ContainElementTestComponent />);
 
         const parent = getByTestId("parent");
         const text = getByText("text");
@@ -638,146 +636,146 @@ describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toHaveStyle", () => {
     context("when the element contains the target style", () => {
       it("returns the assertion instance", () => {
-      const element = render(
-        <View testID="id" style={{ backgroundColor: "red" }} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
+        const element = render(
+          <View testID="id" style={{ backgroundColor: "red" }} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
 
-      expect(test.toHaveStyle({ backgroundColor: "red" })).toBe(test);
-      expect(() => test.not.toHaveStyle({ backgroundColor: "red" }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;");
+        expect(test.toHaveStyle({ backgroundColor: "red" })).toBe(test);
+        expect(() => test.not.toHaveStyle({ backgroundColor: "red" }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;");
       });
     });
 
     context("when the element does NOT contain the target style", () => {
       it("throws an error", () => {
         const element = render(
-        <View testID="id" style={{ opacity: 1 }} />,
+          <View testID="id" style={{ opacity: 1 }} />,
         );
         const test = new ElementAssertion(element.getByTestId("id"));
 
         expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
         expect(() => test.toHaveStyle({ backgroundColor: "red" }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
     context("when the element contains multiple styles and matches all", () => {
       it("returns the assertion instance", () => {
-      const element = render(
-        <View testID="id" style={{ backgroundColor: "red", opacity: 0.5 }} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
-
-      expect(test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBe(test);
-      expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
-        .toThrowError(AssertionError)
-        .toHaveMessage(
-          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+        const element = render(
+          <View testID="id" style={{ backgroundColor: "red", opacity: 0.5 }} />,
         );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBe(test);
+        expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+          );
       });
     });
 
     context("when the element contains multiple styles but does not match all", () => {
       it("throws an error", () => {
-      const element = render(
-        <View testID="id" style={{ backgroundColor: "red", opacity: 1 }} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
+        const element = render(
+          <View testID="id" style={{ backgroundColor: "red", opacity: 1 }} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
 
-      expect(test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBeEqual(test);
-      expect(() => test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;");
+        expect(test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBeEqual(test);
+        expect(() => test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;");
       });
     });
 
     context("when the element has no style prop", () => {
       it("throws an error", () => {
-      const element = render(
-        <View testID="id" />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
+        const element = render(
+          <View testID="id" />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
 
-      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
-      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+        expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+        expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
     context("when the element style is an array and contains the target style", () => {
       it("returns the assertion instance", () => {
-      const element = render(
-        <View testID="id" style={[{ backgroundColor: "red" }, { opacity: 0.5 }]} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
-
-      expect(test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBe(test);
-      expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
-        .toThrowError(AssertionError)
-        .toHaveMessage(
-          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+        const element = render(
+          <View testID="id" style={[{ backgroundColor: "red" }, { opacity: 0.5 }]} />,
         );
+        const test = new ElementAssertion(element.getByTestId("id"));
+
+        expect(test.toHaveStyle({ backgroundColor: "red", opacity: 0.5 })).toBe(test);
+        expect(() => test.not.toHaveStyle({ backgroundColor: "red", opacity: 0.5 }))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+          );
       });
     });
 
     context("when the passed style is an array and contains the target style", () => {
       it("returns the assertion instance", () => {
-      const element = render(
-        <View testID="id" style={[{ backgroundColor: "red" }, { opacity: 0.5 }]} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
-      expect(test.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }])).toBe(test);
-      expect(() => test.not.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }]))
-        .toThrowError(AssertionError)
-        .toHaveMessage(
-          "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+        const element = render(
+          <View testID="id" style={[{ backgroundColor: "red" }, { opacity: 0.5 }]} />,
         );
+        const test = new ElementAssertion(element.getByTestId("id"));
+        expect(test.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }])).toBe(test);
+        expect(() => test.not.toHaveStyle([{ backgroundColor: "red" }, { opacity: 0.5 }]))
+          .toThrowError(AssertionError)
+          .toHaveMessage(
+            "Expected element <View ... /> NOT to have style: \n\t- backgroundColor: red;\n\t- opacity: 0.5;",
+          );
       });
     });
 
     context("when the element style is an array and does not contain the target style", () => {
       it("throws an error", () => {
-      const element = render(
-        <View testID="id" style={[{ backgroundColor: "blue" }, { opacity: 1 }]} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
+        const element = render(
+          <View testID="id" style={[{ backgroundColor: "blue" }, { opacity: 1 }]} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
 
-      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
-      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+        expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+        expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
     context("when the style value is undefined", () => {
       it("throws an error", () => {
-      const element = render(
-        <View testID="id" style={{ backgroundColor: undefined }} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
+        const element = render(
+          <View testID="id" style={{ backgroundColor: undefined }} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
 
-      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
-      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+        expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+        expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
 
     context("when the style value is null", () => {
       it("throws an error", () => {
-      const element = render(
-        <View testID="id" style={null} />,
-      );
-      const test = new ElementAssertion(element.getByTestId("id"));
+        const element = render(
+          <View testID="id" style={null} />,
+        );
+        const test = new ElementAssertion(element.getByTestId("id"));
 
-      expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
-      expect(() => test.toHaveStyle({ backgroundColor: "red" }))
-        .toThrowError(AssertionError)
-        .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
+        expect(test.not.toHaveStyle({ backgroundColor: "red" })).toBeEqual(test);
+        expect(() => test.toHaveStyle({ backgroundColor: "red" }))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected element <View ... /> to have style: \n\t- backgroundColor: red;");
       });
     });
   });
@@ -892,8 +890,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.not.toHaveTextContent(text => text.startsWith("Hello")))
           .toThrowError(AssertionError)
           .toHaveMessage(
-            "Expected element <Text ... /> NOT to have text content matching " +
-            "'text => text.startsWith(\"Hello\")'.",
+            "Expected element <Text ... /> NOT to have text content matching "
+            + "'text => text.startsWith(\"Hello\")'.",
           );
       });
     });
@@ -909,8 +907,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toHaveTextContent(text => text.startsWith("Goodbye")))
           .toThrowError(AssertionError)
           .toHaveMessage(
-            "Expected element <Text ... /> to have text content matching " +
-            "'text => text.startsWith(\"Goodbye\")'.",
+            "Expected element <Text ... /> to have text content matching "
+            + "'text => text.startsWith(\"Goodbye\")'.",
           );
       });
     });
@@ -954,8 +952,8 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toHaveTextContent(text => text.startsWith("Hello")))
           .toThrowError(AssertionError)
           .toHaveMessage(
-            "Expected element <View ... /> to have text content matching " +
-            "'text => text.startsWith(\"Hello\")'.",
+            "Expected element <View ... /> to have text content matching "
+            + "'text => text.startsWith(\"Hello\")'.",
           );
       });
     });

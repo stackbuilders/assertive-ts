@@ -45,27 +45,27 @@ function getReceivedStyle(props: string[], received: CSSStyleDeclaration): Style
   }, {} as StyleDeclaration);
 }
 
-export function getExpectedAndReceivedStyles
-(actual: Element, expected: Partial<CSSStyleDeclaration>): StyleDeclaration[] {
-    if (!actual.ownerDocument.defaultView) {
-      throw new Error("The element is not attached to a document with a default view.");
-    }
-    if (!(actual instanceof HTMLElement)) {
-      throw new Error("The element is not an HTMLElement.");
-    }
+// eslint-disable-next-line @stylistic/max-len
+export function getExpectedAndReceivedStyles(actual: Element, expected: Partial<CSSStyleDeclaration>): StyleDeclaration[] {
+  if (!actual.ownerDocument.defaultView) {
+    throw new Error("The element is not attached to a document with a default view.");
+  }
+  if (!(actual instanceof HTMLElement)) {
+    throw new Error("The element is not an HTMLElement.");
+  }
 
-    const window = actual.ownerDocument.defaultView;
+  const window = actual.ownerDocument.defaultView;
 
-    const rawElementStyles = window.getComputedStyle(actual);
+  const rawElementStyles = window.getComputedStyle(actual);
 
-    const expectedStyle = normalizeStyles(expected);
+  const expectedStyle = normalizeStyles(expected);
 
-    const styleKeys = Object.keys(expectedStyle);
+  const styleKeys = Object.keys(expectedStyle);
 
-    const elementProcessedStyle = getReceivedStyle(styleKeys, rawElementStyles);
+  const elementProcessedStyle = getReceivedStyle(styleKeys, rawElementStyles);
 
-    return [
-      expectedStyle,
-      elementProcessedStyle,
-    ];
+  return [
+    expectedStyle,
+    elementProcessedStyle,
+  ];
 }

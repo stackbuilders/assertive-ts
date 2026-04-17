@@ -1,5 +1,6 @@
 import { get } from "dot-prop-immutable";
-import { ReactTestInstance } from "react-test-renderer";
+
+import type { ReactTestInstance } from "react-test-renderer";
 
 export function isElementDisabled(element: ReactTestInstance): boolean {
   const { type } = element;

@@ -1,4 +1,4 @@
-import { ReactTestInstance } from "react-test-renderer";
+import type { ReactTestInstance } from "react-test-renderer";
 
 export function isEmpty(value: unknown): boolean {
   if (!value) {
@@ -12,7 +12,7 @@ export function isEmpty(value: unknown): boolean {
   return false;
 }
 
-export function instanceToString(instance: ReactTestInstance | null): string {
+export function instanceToString(instance: null | ReactTestInstance): string {
   if (instance === null) {
     return "null";
   }
@@ -25,9 +25,9 @@ export function isElementContained(parentElement: ReactTestInstance, childElemen
     return false;
   }
   return (
-      parentElement.findAll(
-          node =>
-              node.type === childElement.type && node.props === childElement.props,
-      ).length > 0
+    parentElement.findAll(
+      node =>
+        node.type === childElement.type && node.props === childElement.props,
+    ).length > 0
   );
 }

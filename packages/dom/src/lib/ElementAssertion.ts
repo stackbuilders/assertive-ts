@@ -271,7 +271,6 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    */
 
   public toBeEmpty(): this {
-
     const isEmpty = isElementEmpty(this.actual);
 
     const error = new AssertionError({
@@ -315,7 +314,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    * @returns the assertion instance.
    */
 
-  public toHaveDescription(expectedDescription?: string | RegExp): this {
+  public toHaveDescription(expectedDescription?: RegExp | string): this {
     const description = getAccessibleDescription(this.actual);
     const hasExpectedValue = expectedDescription !== undefined;
 
@@ -335,8 +334,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       actual: description,
       expected: expectedDescription,
       message: hasExpectedValue
-        ? `Expected the element to have description ${formatExpectation(expectedDescription instanceof RegExp)}, ` +
-        `but received "${description}"`
+        ? `Expected the element to have description ${formatExpectation(expectedDescription instanceof RegExp)}, `
+        + `but received "${description}"`
         : "Expected the element to have a description",
     });
 
@@ -344,8 +343,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       actual: description,
       expected: expectedDescription,
       message: hasExpectedValue
-        ? `Expected the element NOT to have description ${formatExpectation(expectedDescription instanceof RegExp)}, ` +
-        `but received "${description}"`
+        ? `Expected the element NOT to have description ${formatExpectation(expectedDescription instanceof RegExp)}, `
+        + `but received "${description}"`
         : `Expected the element NOT to have a description, but received "${description}"`,
     });
 
