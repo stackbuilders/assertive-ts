@@ -172,6 +172,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "JDOM10",
+      "name": "Juan Diego Osorio",
+      "avatar_url": "https://avatars.githubusercontent.com/u/152449879?v=4",
+      "profile": "https://github.com/JDOM10",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
