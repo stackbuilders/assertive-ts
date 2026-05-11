@@ -364,7 +364,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   public toBePressed(): this {
     if (!isButtonElement(this.actual) || !isValidAriaPressed(this.actual)) {
       throw new Error(
-        'Only buttons or inputs with type="button", or elements with role="button" and valid aria-pressed, work with .toBePressed()',
+        '.toBePressed() requires a button, input[type="button"], or role="button" with valid aria-pressed',
       );
     }
 
@@ -399,7 +399,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   public toBePartiallyPressed(): this {
     if (!isButtonElement(this.actual) || !isValidAriaPressed(this.actual)) {
       throw new Error(
-        'Only buttons or inputs with type="button", or elements with role="button" and valid aria-pressed, work with .toBePartiallyPressed()',
+        '.toBePartiallyPressed() requires a button, input[type="button"], or role="button" with valid aria-pressed',
       );
     }
 
