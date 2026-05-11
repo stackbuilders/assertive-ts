@@ -5,11 +5,11 @@ import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
 import { HaveClassTest } from "./fixtures/HaveClassTest";
 import { NestedElementsTest } from "./fixtures/NestedElementsTest";
+import { PressedTestComponent } from "./fixtures/PressedTestComponent";
 import { SimpleTest } from "./fixtures/SimpleTest";
 import { WithAttributesTest } from "./fixtures/WithAttributesTest";
 import { DescriptionTestComponent } from "./fixtures/descriptionTestComponent";
 import { FocusTestComponent } from "./fixtures/focusTestComponent";
-import { PressedTestComponent } from "./fixtures/PressedTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
