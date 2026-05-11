@@ -9,6 +9,7 @@ import { SimpleTest } from "./fixtures/SimpleTest";
 import { WithAttributesTest } from "./fixtures/WithAttributesTest";
 import { DescriptionTestComponent } from "./fixtures/descriptionTestComponent";
 import { FocusTestComponent } from "./fixtures/focusTestComponent";
+import { PressedTestComponent } from "./fixtures/PressedTestComponent";
 
 describe("[Unit] ElementAssertion.test.ts", () => {
   describe(".toBeInTheDocument", () => {
@@ -583,6 +584,242 @@ describe("[Unit] ElementAssertion.test.ts", () => {
 
           expect(test.not.toHaveDescription(/wrong pattern/)).toBeEqual(test);
         });
+      });
+    });
+  });
+
+  describe(".toBePressed", () => {
+    context("when the element is a valid button-like element", () => {
+      context("when aria-pressed is \"true\"", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const button = getByTestId("button-pressed");
+          const test = new ElementAssertion(button);
+
+          expect(test.toBePressed()).toBeEqual(test);
+
+          expect(() => test.not.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to NOT be pressed, but received aria-pressed="true"');
+        });
+      });
+
+      context("when aria-pressed is \"false\"", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const button = getByTestId("button-not-pressed");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be pressed, but received aria-pressed="false"');
+
+          expect(test.not.toBePressed()).toBeEqual(test);
+        });
+      });
+
+      context("when aria-pressed is \"mixed\"", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const button = getByTestId("button-mixed");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be pressed, but received aria-pressed="mixed"');
+
+          expect(test.not.toBePressed()).toBeEqual(test);
+        });
+      });
+
+      context("when the element is an input with type=\"button\"", () => {
+        it("returns the assertion instance when aria-pressed is \"true\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const input = getByTestId("input-button-pressed");
+          const test = new ElementAssertion(input);
+
+          expect(test.toBePressed()).toBeEqual(test);
+
+          expect(() => test.not.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to NOT be pressed, but received aria-pressed="true"');
+        });
+
+        it("throws an assertion error when aria-pressed is \"false\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const input = getByTestId("input-button-not-pressed");
+          const test = new ElementAssertion(input);
+
+          expect(() => test.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be pressed, but received aria-pressed="false"');
+
+          expect(test.not.toBePressed()).toBeEqual(test);
+        });
+      });
+
+      context("when the element has role=\"button\"", () => {
+        it("returns the assertion instance when aria-pressed is \"true\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const div = getByTestId("role-button-pressed");
+          const test = new ElementAssertion(div);
+
+          expect(test.toBePressed()).toBeEqual(test);
+
+          expect(() => test.not.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to NOT be pressed, but received aria-pressed="true"');
+        });
+
+        it("throws an assertion error when aria-pressed is \"false\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const div = getByTestId("role-button-not-pressed");
+          const test = new ElementAssertion(div);
+
+          expect(() => test.toBePressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be pressed, but received aria-pressed="false"');
+
+          expect(test.not.toBePressed()).toBeEqual(test);
+        });
+      });
+    });
+
+    context("when the element is not a valid button-like element", () => {
+      it("throws a plain Error", () => {
+        const { getByTestId } = render(<PressedTestComponent />);
+        const div = getByTestId("non-button-element");
+        const test = new ElementAssertion(div);
+
+        expect(() => test.toBePressed()).toThrowError(Error);
+      });
+    });
+
+    context("when aria-pressed is missing", () => {
+      it("throws a plain Error", () => {
+        const { getByTestId } = render(<PressedTestComponent />);
+        const button = getByTestId("button-no-aria-pressed");
+        const test = new ElementAssertion(button);
+
+        expect(() => test.toBePressed()).toThrowError(Error);
+      });
+    });
+  });
+
+  describe(".toBePartiallyPressed", () => {
+    context("when the element is a valid button-like element", () => {
+      context("when aria-pressed is \"mixed\"", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const button = getByTestId("button-mixed");
+          const test = new ElementAssertion(button);
+
+          expect(test.toBePartiallyPressed()).toBeEqual(test);
+
+          expect(() => test.not.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to NOT be partially pressed, but received aria-pressed="mixed"');
+        });
+      });
+
+      context("when aria-pressed is \"true\"", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const button = getByTestId("button-pressed");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be partially pressed, but received aria-pressed="true"');
+
+          expect(test.not.toBePartiallyPressed()).toBeEqual(test);
+        });
+      });
+
+      context("when aria-pressed is \"false\"", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const button = getByTestId("button-not-pressed");
+          const test = new ElementAssertion(button);
+
+          expect(() => test.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be partially pressed, but received aria-pressed="false"');
+
+          expect(test.not.toBePartiallyPressed()).toBeEqual(test);
+        });
+      });
+
+      context("when the element is an input with type=\"button\"", () => {
+        it("returns the assertion instance when aria-pressed is \"mixed\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const input = getByTestId("input-button-mixed");
+          const test = new ElementAssertion(input);
+
+          expect(test.toBePartiallyPressed()).toBeEqual(test);
+
+          expect(() => test.not.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to NOT be partially pressed, but received aria-pressed="mixed"');
+        });
+
+        it("throws an assertion error when aria-pressed is \"false\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const input = getByTestId("input-button-not-pressed");
+          const test = new ElementAssertion(input);
+
+          expect(() => test.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be partially pressed, but received aria-pressed="false"');
+
+          expect(test.not.toBePartiallyPressed()).toBeEqual(test);
+        });
+      });
+
+      context("when the element has role=\"button\"", () => {
+        it("returns the assertion instance when aria-pressed is \"mixed\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const div = getByTestId("role-button-mixed");
+          const test = new ElementAssertion(div);
+
+          expect(test.toBePartiallyPressed()).toBeEqual(test);
+
+          expect(() => test.not.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to NOT be partially pressed, but received aria-pressed="mixed"');
+        });
+
+        it("throws an assertion error when aria-pressed is \"false\"", () => {
+          const { getByTestId } = render(<PressedTestComponent />);
+          const div = getByTestId("role-button-not-pressed");
+          const test = new ElementAssertion(div);
+
+          expect(() => test.toBePartiallyPressed())
+            .toThrowError(AssertionError)
+            .toHaveMessage('Expected the element to be partially pressed, but received aria-pressed="false"');
+
+          expect(test.not.toBePartiallyPressed()).toBeEqual(test);
+        });
+      });
+    });
+
+    context("when the element is not a valid button-like element", () => {
+      it("throws a plain Error", () => {
+        const { getByTestId } = render(<PressedTestComponent />);
+        const div = getByTestId("non-button-element");
+        const test = new ElementAssertion(div);
+
+        expect(() => test.toBePartiallyPressed()).toThrowError(Error);
+      });
+    });
+
+    context("when aria-pressed is missing", () => {
+      it("throws a plain Error", () => {
+        const { getByTestId } = render(<PressedTestComponent />);
+        const button = getByTestId("button-no-aria-pressed");
+        const test = new ElementAssertion(button);
+
+        expect(() => test.toBePartiallyPressed()).toThrowError(Error);
       });
     });
   });
