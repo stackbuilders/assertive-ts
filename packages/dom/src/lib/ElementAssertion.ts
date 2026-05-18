@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
 import { getAccessibleDescription } from "./helpers/accessibility";
-import { isElementEmpty } from "./helpers/dom";
+import { isButtonElement, isElementEmpty, isValidAriaPressed } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -350,6 +350,75 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: matchesExpectation(description),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is a pressed button.
+   *
+   * @returns the assertion instance.
+   */
+
+  public toBePressed(): this {
+    if (!isButtonElement(this.actual) || !isValidAriaPressed(this.actual)) {
+      throw new Error(
+        '.toBePressed() requires a button, input[type="button"], or role="button" with valid aria-pressed',
+      );
+    }
+
+    const pressedAttribute = this.actual.getAttribute("aria-pressed");
+    const isPressed = pressedAttribute === "true";
+
+    const error = new AssertionError({
+      actual: pressedAttribute,
+      expected: "true",
+      message: `Expected the element to be pressed, but received aria-pressed="${pressedAttribute}"`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: pressedAttribute,
+      expected: "false",
+      message: `Expected the element to NOT be pressed, but received aria-pressed="${pressedAttribute}"`,
+    });
+
+    return this.execute({
+      assertWhen: isPressed,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is a partially pressed button.
+   *
+   * @returns the assertion instance.
+   */
+
+  public toBePartiallyPressed(): this {
+    if (!isButtonElement(this.actual) || !isValidAriaPressed(this.actual)) {
+      throw new Error(
+        '.toBePartiallyPressed() requires a button, input[type="button"], or role="button" with valid aria-pressed',
+      );
+    }
+
+    const pressedAttribute = this.actual.getAttribute("aria-pressed");
+    const isPartiallyPressed = pressedAttribute === "mixed";
+
+    const error = new AssertionError({
+      actual: pressedAttribute,
+      expected: "mixed",
+      message: `Expected the element to be partially pressed, but received aria-pressed="${pressedAttribute}"`,
+    });
+
+    const invertedError = new AssertionError({
+      actual: pressedAttribute,
+      message: `Expected the element to NOT be partially pressed, but received aria-pressed="${pressedAttribute}"`,
+    });
+
+    return this.execute({
+      assertWhen: isPartiallyPressed,
       error,
       invertedError,
     });
