@@ -19,8 +19,3 @@ export function isButtonElement(element: Element): boolean {
     || roles.includes("button")
   );
 }
-
-export function isValidAriaPressed(element: Element): boolean {
-  const pressedAttribute = element.getAttribute("aria-pressed");
-  return pressedAttribute === "true" || pressedAttribute === "false" || pressedAttribute === "mixed";
-}

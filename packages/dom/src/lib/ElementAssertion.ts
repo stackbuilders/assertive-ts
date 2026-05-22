@@ -1,8 +1,8 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getAccessibleDescription } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty, isValidAriaPressed } from "./helpers/dom";
+import { getAccessibleDescription, isValidAriaPressed } from "./helpers/accessibility";
+import { isButtonElement, isElementEmpty } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
