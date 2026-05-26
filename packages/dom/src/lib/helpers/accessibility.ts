@@ -31,5 +31,5 @@ export function getAccessibleDescription(actual: Element): string {
 
 export function isValidAriaPressed(element: Element): boolean {
   const pressedAttribute = element.getAttribute("aria-pressed");
-  return pressedAttribute === "true" || pressedAttribute === "false" || pressedAttribute === "mixed";
+  return ["true", "false", "mixed"].includes(pressedAttribute);
 }
