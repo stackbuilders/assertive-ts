@@ -358,29 +358,34 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element is a pressed button.
    *
+   * @example
+   * const toggleButton = document.querySelector('#toggle');
+   * expect(toggleButton).toBePressed(); // passes if aria-pressed="true"
+   * expect(toggleButton).not.toBePressed(); // fails if aria-pressed="true"
+   *
    * @returns the assertion instance.
    */
 
   public toBePressed(): this {
     if (!isButtonElement(this.actual) || !isValidAriaPressed(this.actual)) {
       throw new Error(
-        '.toBePressed() requires a button, input[type="button"], or role="button" with valid aria-pressed',
+        'Expected a button or button-like control with a valid pressed state: "true", "false", or "mixed".',
       );
     }
 
-    const pressedAttribute = this.actual.getAttribute("aria-pressed");
-    const isPressed = pressedAttribute === "true";
+    const pressedAttributeValue = this.actual.getAttribute("aria-pressed");
+    const isPressed = pressedAttributeValue === "true";
 
     const error = new AssertionError({
-      actual: pressedAttribute,
+      actual: pressedAttributeValue,
       expected: "true",
-      message: `Expected the element to be pressed, but received aria-pressed="${pressedAttribute}"`,
+      message: `Expected the element to be pressed, but received aria-pressed="${pressedAttributeValue}"`,
     });
 
     const invertedError = new AssertionError({
-      actual: pressedAttribute,
+      actual: pressedAttributeValue,
       expected: "false",
-      message: `Expected the element to NOT be pressed, but received aria-pressed="${pressedAttribute}"`,
+      message: `Expected the element to NOT be pressed, but received aria-pressed="${pressedAttributeValue}"`,
     });
 
     return this.execute({
@@ -393,28 +398,35 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element is a partially pressed button.
    *
+   * @example
+   * const toggleButton = document.querySelector('#toggle');
+   * expect(toggleButton).toBePartiallyPressed();
+   *    // passes if aria-pressed="mixed"
+   * expect(toggleButton).not.toBePartiallyPressed();
+   *   // fails if aria-pressed="mixed"
+   *
    * @returns the assertion instance.
    */
 
   public toBePartiallyPressed(): this {
     if (!isButtonElement(this.actual) || !isValidAriaPressed(this.actual)) {
       throw new Error(
-        '.toBePartiallyPressed() requires a button, input[type="button"], or role="button" with valid aria-pressed',
+        'Expected a button or button-like control with a valid pressed state: "true", "false", or "mixed".',
       );
     }
 
-    const pressedAttribute = this.actual.getAttribute("aria-pressed");
-    const isPartiallyPressed = pressedAttribute === "mixed";
+    const pressedAttributeValue = this.actual.getAttribute("aria-pressed");
+    const isPartiallyPressed = pressedAttributeValue === "mixed";
 
     const error = new AssertionError({
-      actual: pressedAttribute,
+      actual: pressedAttributeValue,
       expected: "mixed",
-      message: `Expected the element to be partially pressed, but received aria-pressed="${pressedAttribute}"`,
+      message: `Expected the element to be partially pressed, but received aria-pressed="${pressedAttributeValue}"`,
     });
 
     const invertedError = new AssertionError({
-      actual: pressedAttribute,
-      message: `Expected the element to NOT be partially pressed, but received aria-pressed="${pressedAttribute}"`,
+      actual: pressedAttributeValue,
+      message: `Expected the element to NOT be partially pressed, but received aria-pressed="${pressedAttributeValue}"`,
     });
 
     return this.execute({

@@ -13,9 +13,8 @@ export function isButtonElement(element: Element): boolean {
   const tagName = element.tagName.toLowerCase();
   const type = element.getAttribute("type");
 
-  return (
-    tagName === "button"
-    || (tagName === "input" && type === "button")
-    || roles.includes("button")
-  );
+  const isNativeButton = tagName === "button" || (tagName === "input" && type === "button");
+  const hasButtonRole = roles.includes("button");
+
+  return isNativeButton || hasButtonRole;
 }
