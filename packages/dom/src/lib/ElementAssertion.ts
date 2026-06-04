@@ -359,9 +359,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    * Asserts that the element is a pressed button.
    *
    * @example
-   * const toggleButton = document.querySelector('#toggle');
-   * expect(toggleButton).toBePressed(); // passes if aria-pressed="true"
-   * expect(toggleButton).not.toBePressed(); // fails if aria-pressed="true"
+   * // It takes into account aria-pressed attribute
+   * expect(element).toBePressed();
+   * expect(element).not.toBePressed();
    *
    * @returns the assertion instance.
    */
@@ -399,11 +399,9 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    * Asserts that the element is a partially pressed button.
    *
    * @example
-   * const toggleButton = document.querySelector('#toggle');
-   * expect(toggleButton).toBePartiallyPressed();
-   *    // passes if aria-pressed="mixed"
-   * expect(toggleButton).not.toBePartiallyPressed();
-   *   // fails if aria-pressed="mixed"
+   * // It takes into account aria-pressed attribute
+   * expect(element).toBePartiallyPressed();
+   * expect(element).not.toBePartiallyPressed();
    *
    * @returns the assertion instance.
    */
