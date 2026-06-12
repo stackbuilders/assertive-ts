@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
 import { getAccessibleDescription, isValidAriaPressed } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty} from "./helpers/dom";
+import { isButtonElement, isElementEmpty } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -458,19 +458,19 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     const error = new AssertionError({
       actual: this.actual,
       expected: htmlText,
-      message: `Expected the element to contain HTML: ${htmlText}`
+      message: `Expected the element to contain HTML: ${htmlText}`,
     });
 
     const invertedError = new AssertionError({
       actual: this.actual,
       expected: htmlText,
-      message: `Expected the element NOT to contain HTML: ${htmlText}`
+      message: `Expected the element NOT to contain HTML: ${htmlText}`,
     });
 
     return this.execute({
       assertWhen: this.actual.outerHTML.includes(htmlText),
       error,
-      invertedError
+      invertedError,
     });
   }
 
