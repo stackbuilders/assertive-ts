@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
 import { getAccessibleDescription, isValidAriaPressed } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty } from "./helpers/dom";
+import { isButtonElement, isElementEmpty} from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -431,6 +431,46 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
       assertWhen: isPartiallyPressed,
       error,
       invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element contains the specified HTML.
+   *
+   * @example
+   * ```
+   * expect(container).toContainHTML('<span>Hello</span>');
+   * expect(container).toContainHTML('<div class="foo">Bar</div>');
+   * ```
+   *
+   * @param htmlText The HTML text that should be contained in the element
+   * @returns the assertion instance.
+   */
+  public toContainHTML(htmlText: string): this {
+    if (typeof htmlText !== "string") {
+      throw new Error(`.toContainHTML() expects a string value, got ${typeof htmlText}`);
+    }
+
+    if (htmlText === "") {
+      throw new Error(".toContainHTML() expects a non-empty string");
+    }
+
+    const error = new AssertionError({
+      actual: this.actual,
+      expected: htmlText,
+      message: `Expected the element to contain HTML: ${htmlText}`
+    });
+
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      expected: htmlText,
+      message: `Expected the element NOT to contain HTML: ${htmlText}`
+    });
+
+    return this.execute({
+      assertWhen: this.actual.outerHTML.includes(htmlText),
+      error,
+      invertedError
     });
   }
 
