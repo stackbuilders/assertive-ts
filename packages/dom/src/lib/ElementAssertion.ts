@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
 import { getAccessibleDescription, isValidAriaPressed } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty } from "./helpers/dom";
+import { isButtonElement, isElementEmpty, normalizeHtml } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -437,10 +437,15 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element contains the specified HTML.
    *
+   * The expected HTML is normalized through a detached element before
+   * comparison, so differences in attribute quoting (single vs double quotes),
+   * tag case, and whitespace between attributes are ignored. Attribute ordering
+   * and whitespace within text content are still significant.
+   *
    * @example
    * ```
    * expect(container).toContainHTML('<span>Hello</span>');
-   * expect(container).toContainHTML('<div class="foo">Bar</div>');
+   * expect(container).toContainHTML("<div class='foo'>Bar</div>");
    * ```
    *
    * @param htmlText The HTML text that should be contained in the element
@@ -468,7 +473,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     });
 
     return this.execute({
-      assertWhen: this.actual.outerHTML.includes(htmlText),
+      assertWhen: this.actual.outerHTML.includes(normalizeHtml(htmlText, this.actual.ownerDocument)),
       error,
       invertedError,
     });

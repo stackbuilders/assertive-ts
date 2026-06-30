@@ -854,6 +854,18 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
 
+    context("when the expected HTML differs only in formatting", () => {
+      it("normalizes quotes and tag case before comparing", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(test.toContainHTML("<span data-testid='child-span'>Hello World</span>")).toBeEqual(test);
+        expect(test.toContainHTML('<SPAN data-testid="child-span">Hello World</SPAN>')).toBeEqual(test);
+        expect(test.toContainHTML("<div  class='nested'><p>Nested content</p></div>")).toBeEqual(test);
+      });
+    });
+
     context("when the element does not contain the expected HTML", () => {
       it("throws an assertion error", () => {
         const { getByTestId } = render(<ContainHtmlTestComponent />);
