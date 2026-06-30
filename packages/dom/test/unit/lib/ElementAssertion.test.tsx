@@ -469,7 +469,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
   });
 
-  describe(".toHaveDescription", () => {
+  describe(".toHaveAccessibleDescription", () => {
     context("when checking for any description", () => {
       context("when the element has a description", () => {
         it("returns the assertion instance", () => {
@@ -477,11 +477,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription()).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription()).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription())
+          expect(() => test.not.toHaveAccessibleDescription())
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element NOT to have a description, but received "This is a description"');
+            .toHaveMessage(
+              "Expected the element NOT to have an accessible description, "
+              + 'but received "This is a description"',
+            );
         });
       });
 
@@ -491,11 +494,11 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-no-description");
           const test = new ElementAssertion(button);
 
-          expect(() => test.toHaveDescription())
+          expect(() => test.toHaveAccessibleDescription())
             .toThrowError(AssertionError)
-            .toHaveMessage("Expected the element to have a description");
+            .toHaveMessage("Expected the element to have an accessible description");
 
-          expect(test.not.toHaveDescription()).toBeEqual(test);
+          expect(test.not.toHaveAccessibleDescription()).toBeEqual(test);
         });
       });
     });
@@ -507,12 +510,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription("This is a description")).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription("This is a description")).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription("This is a description"))
+          expect(() => test.not.toHaveAccessibleDescription("This is a description"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element NOT to have description "This is a description", '
+              'Expected the element NOT to have accessible description "This is a description", '
               + 'but received "This is a description"',
             );
         });
@@ -524,12 +527,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-multiple");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription("This is a description Additional info")).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription("This is a description Additional info")).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription("This is a description Additional info"))
+          expect(() => test.not.toHaveAccessibleDescription("This is a description Additional info"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element NOT to have description "This is a description Additional info", '
+              'Expected the element NOT to have accessible description "This is a description Additional info", '
               + 'but received "This is a description Additional info"',
             );
         });
@@ -541,13 +544,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(() => test.toHaveDescription("Wrong description"))
+          expect(() => test.toHaveAccessibleDescription("Wrong description"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element to have description "Wrong description", but received "This is a description"',
+              'Expected the element to have accessible description "Wrong description", '
+              + 'but received "This is a description"',
             );
 
-          expect(test.not.toHaveDescription("Wrong description")).toBeEqual(test);
+          expect(test.not.toHaveAccessibleDescription("Wrong description")).toBeEqual(test);
         });
       });
     });
@@ -559,12 +563,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription(/description/i)).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription(/description/i)).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription(/description/i))
+          expect(() => test.not.toHaveAccessibleDescription(/description/i))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              "Expected the element NOT to have description matching /description/i, "
+              "Expected the element NOT to have accessible description matching /description/i, "
               + 'but received "This is a description"',
             );
         });
@@ -576,14 +580,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(() => test.toHaveDescription(/wrong pattern/))
+          expect(() => test.toHaveAccessibleDescription(/wrong pattern/))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              "Expected the element to have description matching /wrong pattern/, "
+              "Expected the element to have accessible description matching /wrong pattern/, "
               + 'but received "This is a description"',
             );
 
-          expect(test.not.toHaveDescription(/wrong pattern/)).toBeEqual(test);
+          expect(test.not.toHaveAccessibleDescription(/wrong pattern/)).toBeEqual(test);
         });
       });
     });
