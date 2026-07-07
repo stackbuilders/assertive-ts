@@ -2,7 +2,11 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import { computeAccessibleDescription } from "dom-accessibility-api";
 import equal from "fast-deep-equal";
 
-import { isValidAriaPressed, matchesAccessibleExpectation } from "./helpers/accessibility";
+import {
+  describeAccessibleExpectation,
+  isValidAriaPressed,
+  matchesAccessibleExpectation,
+} from "./helpers/accessibility";
 import { isButtonElement, isElementEmpty, normalizeHtml } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
@@ -319,11 +323,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     const description = computeAccessibleDescription(this.actual);
     const hasExpectedValue = expectedDescription !== undefined;
 
-    const expectation = hasExpectedValue
-      ? expectedDescription instanceof RegExp
-        ? `matching ${expectedDescription}`
-        : `"${expectedDescription}"`
-      : "";
+    const expectation = describeAccessibleExpectation(expectedDescription);
 
     const error = new AssertionError({
       actual: description,

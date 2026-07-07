@@ -12,3 +12,13 @@ export function matchesAccessibleExpectation(actual: string, expected?: RegExp |
     ? expected.test(actual)
     : actual === expected;
 }
+
+export function describeAccessibleExpectation(expected?: RegExp | string): string {
+  if (expected === undefined) {
+    return "";
+  }
+
+  return expected instanceof RegExp
+    ? `matching ${expected}`
+    : `"${expected}"`;
+}
