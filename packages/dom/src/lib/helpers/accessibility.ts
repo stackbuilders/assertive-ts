@@ -33,3 +33,8 @@ export function isValidAriaPressed(element: Element): boolean {
   const pressedAttribute = element.getAttribute("aria-pressed");
   return pressedAttribute !== null && ["true", "false", "mixed"].includes(pressedAttribute);
 }
+
+export function isValidAriaChecked(element: Element): boolean {
+  const checkedAttribute = element.getAttribute("aria-checked");
+  return checkedAttribute !== null && ["true", "false", "mixed"].includes(checkedAttribute);
+}

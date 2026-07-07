@@ -1,8 +1,8 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getAccessibleDescription, isValidAriaPressed } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty } from "./helpers/dom";
+import { getAccessibleDescription, isValidAriaChecked, isValidAriaPressed } from "./helpers/accessibility";
+import { isButtonElement, isCheckableInput, isCheckboxInput, isElementEmpty } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -429,6 +429,88 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: isPartiallyPressed,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+  * Asserts that the element is checked.
+  *
+  * Valid for `<input type="checkbox">`, `<input type="radio">`, or elements
+  * with a valid `aria-checked` attribute ("true" or "false").
+  *
+  * @example
+  * // Native checkbox
+  * expect(element).toBeChecked();
+  * expect(element).not.toBeChecked();
+  *
+  * // ARIA checkbox
+  * expect(element).toBeChecked(); // when aria-checked="true"
+  *
+  * @returns the assertion instance.
+  */
+  public toBeChecked(): this {
+    const isNativeCheckable = isCheckableInput(this.actual);
+    const isAriaCheckable = isValidAriaChecked(this.actual)
+      && ["true", "false"].includes(this.actual.getAttribute("aria-checked") ?? "");
+    if (!isNativeCheckable && !isAriaCheckable) {
+      throw new Error(
+        'Only inputs with type="checkbox" or type="radio" or elements with a valid aria-checked attribute can be used with .toBeChecked()',
+      );
+    }
+    const isChecked = isNativeCheckable
+      ? (this.actual as unknown as HTMLInputElement).checked
+      : this.actual.getAttribute("aria-checked") === "true";
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be checked",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be checked",
+    });
+    return this.execute({
+      assertWhen: isChecked,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is partially checked (indeterminate).
+   *
+   * Valid for `<input type="checkbox">` or elements with `role="checkbox"`
+   * and `aria-checked="mixed"`.
+   *
+   * @example
+   * expect(element).toBePartiallyChecked();
+   * expect(element).not.toBePartiallyChecked();
+   *
+   * @returns the assertion instance.
+   */
+  public toBePartiallyChecked(): this {
+    const isNativeCheckbox = isCheckboxInput(this.actual);
+    const isAriaCheckbox = this.actual.getAttribute("role") === "checkbox";
+    if (!isNativeCheckbox && !isAriaCheckbox) {
+      throw new Error(
+        'Only inputs with type="checkbox" or elements with role="checkbox" and a valid aria-checked attribute can be used with .toBePartiallyChecked()',
+      );
+    }
+    const isPartiallyChecked = isNativeCheckbox
+      ? (this.actual as unknown as HTMLInputElement).indeterminate
+      || this.actual.getAttribute("aria-checked") === "mixed"
+      : this.actual.getAttribute("aria-checked") === "mixed";
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be partially checked",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be partially checked",
+    });
+    return this.execute({
+      assertWhen: isPartiallyChecked,
       error,
       invertedError,
     });
