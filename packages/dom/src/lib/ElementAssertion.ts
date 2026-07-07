@@ -435,28 +435,28 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   /**
-  * Asserts that the element is checked.
-  *
-  * Valid for `<input type="checkbox">`, `<input type="radio">`, or elements
-  * with a valid `aria-checked` attribute ("true" or "false").
-  *
-  * @example
-  * // Native checkbox
-  * expect(element).toBeChecked();
-  * expect(element).not.toBeChecked();
-  *
-  * // ARIA checkbox
-  * expect(element).toBeChecked(); // when aria-checked="true"
-  *
-  * @returns the assertion instance.
-  */
+   * Asserts that the element is checked.
+   *
+   * Valid for `<input type="checkbox">`, `<input type="radio">`, or elements
+   * with a valid `aria-checked` attribute ("true" or "false").
+   *
+   * @example
+   * // Native checkbox
+   * expect(element).toBeChecked();
+   * expect(element).not.toBeChecked();
+   *
+   * // ARIA checkbox
+   * expect(element).toBeChecked(); // when aria-checked="true"
+   *
+   * @returns the assertion instance.
+   */
   public toBeChecked(): this {
     const isNativeCheckable = isCheckableInput(this.actual);
     const isAriaCheckable = isValidAriaChecked(this.actual)
       && ["true", "false"].includes(this.actual.getAttribute("aria-checked") ?? "");
     if (!isNativeCheckable && !isAriaCheckable) {
       throw new Error(
-        'Only inputs with type="checkbox" or type="radio" or elements with a valid aria-checked attribute can be used with .toBeChecked()',
+        "Only checkbox/radio inputs or valid aria-checked elements can be used with .toBeChecked()",
       );
     }
     const isChecked = isNativeCheckable
@@ -494,7 +494,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
     const isAriaCheckbox = this.actual.getAttribute("role") === "checkbox";
     if (!isNativeCheckbox && !isAriaCheckbox) {
       throw new Error(
-        'Only inputs with type="checkbox" or elements with role="checkbox" and a valid aria-checked attribute can be used with .toBePartiallyChecked()',
+        "Only checkbox inputs or checkbox-role elements can be used with .toBePartiallyChecked()",
       );
     }
     const isPartiallyChecked = isNativeCheckbox

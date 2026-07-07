@@ -4,11 +4,11 @@ export function CheckedTestComponent(): ReactElement {
   return (
     <div>
       {/* Native checkbox variants */}
-      <input data-testid="checkbox-checked" type="checkbox" defaultChecked />
+      <input data-testid="checkbox-checked" type="checkbox" defaultChecked={true} />
       <input data-testid="checkbox-unchecked" type="checkbox" />
 
       {/* Native radio variants */}
-      <input data-testid="radio-checked" type="radio" defaultChecked />
+      <input data-testid="radio-checked" type="radio" defaultChecked={true} />
       <input data-testid="radio-unchecked" type="radio" />
 
       {/* ARIA checkbox variants */}
