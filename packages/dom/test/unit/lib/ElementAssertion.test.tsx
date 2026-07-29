@@ -8,6 +8,7 @@ import { NestedElementsTest } from "./fixtures/NestedElementsTest";
 import { PressedTestComponent } from "./fixtures/PressedTestComponent";
 import { SimpleTest } from "./fixtures/SimpleTest";
 import { WithAttributesTest } from "./fixtures/WithAttributesTest";
+import { ContainHtmlTestComponent } from "./fixtures/containHtmlTestComponent";
 import { DescriptionTestComponent } from "./fixtures/descriptionTestComponent";
 import { FocusTestComponent } from "./fixtures/focusTestComponent";
 
@@ -820,6 +821,86 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         const test = new ElementAssertion(button);
 
         expect(() => test.toBePartiallyPressed()).toThrowError(Error);
+      });
+    });
+  });
+
+  describe(".toContainHTML", () => {
+    context("when the element contains the expected HTML", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(test.toContainHTML('<span data-testid="child-span">Hello World</span>')).toBeEqual(test);
+
+        expect(() => test.not.toContainHTML('<span data-testid="child-span">Hello World</span>'))
+          .toThrowError(AssertionError)
+          .toHaveMessage('Expected the element NOT to contain HTML: <span data-testid="child-span">Hello World</span>');
+      });
+    });
+
+    context("when the element contains nested HTML", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(test.toContainHTML("<p>Nested content</p>")).toBeEqual(test);
+
+        expect(() => test.not.toContainHTML("<p>Nested content</p>"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element NOT to contain HTML: <p>Nested content</p>");
+      });
+    });
+
+    context("when the expected HTML differs only in formatting", () => {
+      it("normalizes quotes and tag case before comparing", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(test.toContainHTML("<span data-testid='child-span'>Hello World</span>")).toBeEqual(test);
+        expect(test.toContainHTML('<SPAN data-testid="child-span">Hello World</SPAN>')).toBeEqual(test);
+        expect(test.toContainHTML("<div  class='nested'><p>Nested content</p></div>")).toBeEqual(test);
+      });
+    });
+
+    context("when the element does not contain the expected HTML", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(() => test.toContainHTML("<div>Not present</div>"))
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to contain HTML: <div>Not present</div>");
+
+        expect(test.not.toContainHTML("<div>Not present</div>")).toBeEqual(test);
+      });
+    });
+
+    context("when a non-string value is passed", () => {
+      it("throws an error", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(() => test.toContainHTML(123 as unknown as string))
+          .toThrowError(Error)
+          .toHaveMessage(".toContainHTML() expects a string value, got number");
+      });
+    });
+
+    context("when an empty string is passed", () => {
+      it("throws an error", () => {
+        const { getByTestId } = render(<ContainHtmlTestComponent />);
+        const container = getByTestId("container");
+        const test = new ElementAssertion(container);
+
+        expect(() => test.toContainHTML(""))
+          .toThrowError(Error)
+          .toHaveMessage(".toContainHTML() expects a non-empty string");
       });
     });
   });
