@@ -5,6 +5,8 @@ export function isElementEmpty(element: Element): boolean {
   return nonCommentChildNodes.length === 0;
 }
 
+// `htmlText` is not validated here because callers are internal and the public
+// assertions already reject non-string and empty values before reaching this point.
 export function normalizeHtml(htmlText: string, ownerDocument: Document): string {
   const div = ownerDocument.createElement("div");
   div.innerHTML = htmlText;
