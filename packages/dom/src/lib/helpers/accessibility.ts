@@ -34,7 +34,10 @@ export function isValidAriaPressed(element: Element): boolean {
   return pressedAttribute !== null && ["true", "false", "mixed"].includes(pressedAttribute);
 }
 
-export function isValidAriaChecked(element: Element): boolean {
+export function isValidAriaCheckedStrict(element: Element): boolean {
   const checkedAttribute = element.getAttribute("aria-checked");
-  return checkedAttribute !== null && ["true", "false", "mixed"].includes(checkedAttribute);
+  const role = element.getAttribute("role") ?? "";
+  return ["checkbox", "radio", "switch"].includes(role)
+    && checkedAttribute !== null
+    && ["true", "false"].includes(checkedAttribute);
 }

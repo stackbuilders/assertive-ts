@@ -1,7 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
-import { getAccessibleDescription, isValidAriaChecked, isValidAriaPressed } from "./helpers/accessibility";
+import { getAccessibleDescription, isValidAriaCheckedStrict, isValidAriaPressed } from "./helpers/accessibility";
 import { isButtonElement, isCheckableInput, isCheckboxInput, isElementEmpty } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
@@ -438,7 +438,8 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    * Asserts that the element is checked.
    *
    * Valid for `<input type="checkbox">`, `<input type="radio">`, or elements
-   * with a valid `aria-checked` attribute ("true" or "false").
+   * with a valid `aria-checked` attribute ("true" or "false") and
+   * a checkable role (`checkbox`, `radio`, or `switch`).
    *
    * @example
    * // Native checkbox
@@ -452,8 +453,7 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
    */
   public toBeChecked(): this {
     const isNativeCheckable = isCheckableInput(this.actual);
-    const isAriaCheckable = isValidAriaChecked(this.actual)
-      && ["true", "false"].includes(this.actual.getAttribute("aria-checked") ?? "");
+    const isAriaCheckable = isValidAriaCheckedStrict(this.actual);
     if (!isNativeCheckable && !isAriaCheckable) {
       throw new Error(
         "Only checkbox/radio inputs or valid aria-checked elements can be used with .toBeChecked()",

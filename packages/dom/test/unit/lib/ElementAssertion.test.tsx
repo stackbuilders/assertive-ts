@@ -946,6 +946,47 @@ describe("[Unit] ElementAssertion.test.ts", () => {
       });
     });
 
+    context("when the element has role=\"radio\" with aria-checked", () => {
+      context("when aria-checked is \"true\"", () => {
+        it("returns the assertion instance", () => {
+          const { getByTestId } = render(<CheckedTestComponent />);
+          const div = getByTestId("aria-radio-checked");
+          const test = new ElementAssertion(div);
+
+          expect(test.toBeChecked()).toBeEqual(test);
+
+          expect(() => test.not.toBeChecked())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected the element to NOT be checked");
+        });
+      });
+
+      context("when aria-checked is \"false\"", () => {
+        it("throws an assertion error", () => {
+          const { getByTestId } = render(<CheckedTestComponent />);
+          const div = getByTestId("aria-radio-unchecked");
+          const test = new ElementAssertion(div);
+
+          expect(() => test.toBeChecked())
+            .toThrowError(AssertionError)
+            .toHaveMessage("Expected the element to be checked");
+
+          expect(test.not.toBeChecked()).toBeEqual(test);
+        });
+      });
+    });
+
+    context("when the element has aria-checked but no valid checkable role", () => {
+      it("throws a plain Error", () => {
+        const { getByTestId } = render(<CheckedTestComponent />);
+        const div = getByTestId("non-checkable-element");
+        (div).setAttribute("aria-checked", "true");
+        const test = new ElementAssertion(div);
+
+        expect(() => test.toBeChecked()).toThrowError(Error);
+      });
+    });
+
     context("when the element is not a valid checkable element", () => {
       it("throws a plain Error", () => {
         const { getByTestId } = render(<CheckedTestComponent />);
