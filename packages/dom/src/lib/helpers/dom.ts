@@ -5,6 +5,13 @@ export function isElementEmpty(element: Element): boolean {
   return nonCommentChildNodes.length === 0;
 }
 
+export function normalizeHtml(htmlText: string, ownerDocument: Document): string {
+  const div = ownerDocument.createElement("div");
+  div.innerHTML = htmlText;
+
+  return div.innerHTML;
+}
+
 export function isButtonElement(element: Element): boolean {
   const roles = (element.getAttribute("role") || "")
     .split(" ")
