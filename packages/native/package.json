@@ -49,7 +49,7 @@
     "mocha": "^11.8.0",
     "react": "19.2.3",
     "react-native": "0.84.0",
-    "react-native-testing-mocks": "^1.2.0",
+    "react-native-testing-mocks": "^1.7.0",
     "react-test-renderer": "19.2.3",
     "semantic-release": "^23.1.1",
     "semantic-release-yarn": "^3.0.2",
