@@ -25,3 +25,15 @@ export function isButtonElement(element: Element): boolean {
 
   return isNativeButton || hasButtonRole;
 }
+
+export function isCheckableInput(element: Element): boolean {
+  const tagName = element.tagName.toLowerCase();
+  const type = element.getAttribute("type");
+  return tagName === "input" && (type === "checkbox" || type === "radio");
+}
+
+export function isCheckboxInput(element: Element): boolean {
+  const tagName = element.tagName.toLowerCase();
+  const type = element.getAttribute("type");
+  return tagName === "input" && type === "checkbox";
+}
