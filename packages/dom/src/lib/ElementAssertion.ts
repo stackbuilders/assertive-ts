@@ -2,7 +2,7 @@ import { Assertion, AssertionError } from "@assertive-ts/core";
 import equal from "fast-deep-equal";
 
 import { getAccessibleDescription, isValidAriaPressed } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty, normalizeHtml } from "./helpers/dom";
+import { isButtonElement, isElementEmpty, isElementOrAncestorDisabled, normalizeHtml } from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -474,6 +474,58 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: this.actual.outerHTML.includes(normalizeHtml(htmlText, this.actual.ownerDocument)),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is disabled.
+   *
+   * @example
+   * expect(element).toBeDisabled();
+   * expect(element).not.toBeDisabled();
+   *
+   * @returns the assertion instance.
+   */
+  public toBeDisabled(): this {
+    const isDisabled = isElementOrAncestorDisabled(this.actual);
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be disabled",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be disabled",
+    });
+    return this.execute({
+      assertWhen: isDisabled,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is enabled.
+   *
+   * @example
+   * expect(element).toBeEnabled();
+   * expect(element).not.toBeEnabled();
+   *
+   * @returns the assertion instance.
+   */
+  public toBeEnabled(): this {
+    const isEnabled = !isElementOrAncestorDisabled(this.actual);
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be enabled",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be enabled",
+    });
+    return this.execute({
+      assertWhen: isEnabled,
       error,
       invertedError,
     });
