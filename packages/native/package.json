@@ -62,17 +62,13 @@
   },
   "peerDependencies": {
     "@assertive-ts/core": ">=2.0.0",
-    "react": "*",
-    "react-native": "*"
+    "react": "*"
   },
   "peerDependenciesMeta": {
     "@assertive-ts/core": {
       "optional": false
     },
     "react": {
-      "optional": false
-    },
-    "react-native": {
       "optional": false
     }
   },
