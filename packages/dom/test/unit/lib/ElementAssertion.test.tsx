@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
+import { DisabledTestComponent } from "./fixtures/DisabledTestComponent";
 import { HaveClassTest } from "./fixtures/HaveClassTest";
 import { NestedElementsTest } from "./fixtures/NestedElementsTest";
 import { PressedTestComponent } from "./fixtures/PressedTestComponent";
@@ -901,6 +902,89 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toContainHTML(""))
           .toThrowError(Error)
           .toHaveMessage(".toContainHTML() expects a non-empty string");
+      });
+    });
+  });
+
+  describe(".toBeDisabled", () => {
+    context("when the element is disabled", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonDisabled = getByTestId("button-disabled");
+        expect(new ElementAssertion(buttonDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const inputDisabled = getByTestId("input-disabled");
+        expect(new ElementAssertion(inputDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const customDisabled = getByTestId("custom-disabled");
+        expect(new ElementAssertion(customDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetChildDisabled = getByTestId("fieldset-child-disabled");
+        expect(new ElementAssertion(fieldsetChildDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetLegendSecondChildDisabled = getByTestId("fieldset-legend-second-child-disabled");
+        expect(new ElementAssertion(fieldsetLegendSecondChildDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetNestedChildDisabled = getByTestId("fieldset-nested-child-disabled");
+        expect(new ElementAssertion(fieldsetNestedChildDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+      });
+    });
+
+    context("when the element is not disabled", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonEnabled = getByTestId("button-enabled");
+        const test = new ElementAssertion(buttonEnabled);
+
+        expect(() => test.toBeDisabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be disabled");
+        expect(test.not.toBeDisabled()).toBeEqual(test);
+
+        const divDisabled = getByTestId("div-disabled");
+        const testDiv = new ElementAssertion(divDisabled);
+        expect(() => testDiv.toBeDisabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be disabled");
+
+        const fieldsetLegendFirstChild = getByTestId("fieldset-legend-first-child");
+        const testLegendFirstChild = new ElementAssertion(fieldsetLegendFirstChild);
+        expect(() => testLegendFirstChild.toBeDisabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be disabled");
+      });
+    });
+  });
+
+  describe(".toBeEnabled", () => {
+    context("when the element is enabled", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonEnabled = getByTestId("button-enabled");
+        expect(new ElementAssertion(buttonEnabled).toBeEnabled()).toBeInstanceOf(ElementAssertion);
+
+        const divDisabled = getByTestId("div-disabled");
+        expect(new ElementAssertion(divDisabled).toBeEnabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetLegendFirstChild = getByTestId("fieldset-legend-first-child");
+        expect(new ElementAssertion(fieldsetLegendFirstChild).toBeEnabled()).toBeInstanceOf(ElementAssertion);
+      });
+    });
+
+    context("when the element is not enabled", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonDisabled = getByTestId("button-disabled");
+        const test = new ElementAssertion(buttonDisabled);
+
+        expect(() => test.toBeEnabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be enabled");
+        expect(test.not.toBeEnabled()).toBeEqual(test);
       });
     });
   });

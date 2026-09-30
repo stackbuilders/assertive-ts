@@ -25,3 +25,56 @@ export function isButtonElement(element: Element): boolean {
 
   return isNativeButton || hasButtonRole;
 }
+
+const FORM_TAGS = [
+  "fieldset",
+  "input",
+  "select",
+  "optgroup",
+  "option",
+  "button",
+  "textarea",
+];
+
+function isFirstLegendChildOfFieldset(element: Element, parent: Element | null): boolean {
+  return (
+    element.tagName.toLowerCase() === "legend"
+    && parent?.tagName.toLowerCase() === "fieldset"
+    && element === Array.from(parent.children).find(child => child.tagName.toLowerCase() === "legend")
+  );
+}
+
+function isElementDisabledByParent(element: Element, parent: Element | null): boolean {
+  return (
+    parent !== null
+    && isElementDisabled(parent) && !isFirstLegendChildOfFieldset(element, parent)
+  );
+}
+
+function isCustomElement(tag: string): boolean {
+  return tag.includes("-");
+}
+
+function canElementBeDisabled(element: Element): boolean {
+  const tag = element.tagName.toLowerCase();
+  return FORM_TAGS.includes(tag) || isCustomElement(tag);
+}
+
+function isElementDisabled(element: Element): boolean {
+  return canElementBeDisabled(element) && element.hasAttribute("disabled");
+}
+
+function isAncestorDisabled(element: Element): boolean {
+  const parent = element.parentElement;
+  return (
+    parent !== null
+    && (isElementDisabledByParent(element, parent) || isAncestorDisabled(parent))
+  );
+}
+
+export function isElementOrAncestorDisabled(element: Element): boolean {
+  return (
+    canElementBeDisabled(element)
+    && (isElementDisabled(element) || isAncestorDisabled(element))
+  );
+}
