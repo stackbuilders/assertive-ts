@@ -28,7 +28,7 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.5",
     "@react-native-community/cli": "20.1.0",
     "@react-native-community/cli-platform-android": "20.1.0",
     "@react-native-community/cli-platform-ios": "20.1.0",
@@ -38,7 +38,7 @@
     "@react-native/new-app-screen": "0.84.0",
     "@react-native/typescript-config": "0.84.0",
     "@stylistic/eslint-plugin": "^5.6.1",
-    "eslint": "^9.39.1",
+    "eslint": "^9.39.5",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsdoc": "^61.2.1",
