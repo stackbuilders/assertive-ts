@@ -229,6 +229,7 @@ export default defineConfig(
       "react/jsx-no-literals": "error",
       "react/prop-types": "off",
       "sonarjs/cognitive-complexity": "off",
+      "sonarjs/deprecation": "off",
       "sonarjs/different-types-comparison": "off",
       "sonarjs/function-return-type": "off",
       "sonarjs/no-duplicate-string": "off",
