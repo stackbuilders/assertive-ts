@@ -5,6 +5,7 @@ import isDeepEqual from "fast-deep-equal/es6";
 import { Assertion } from "./Assertion";
 import { UnsupportedOperationError } from "./errors/UnsupportedOperationError";
 import { prettify } from "./helpers/messages";
+import { deepEquals } from "./helpers/predicates";
 
 import type { Expect } from "./expect";
 import type { TypeFactory } from "./helpers/TypeFactories";
@@ -233,7 +234,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     return this.execute({
       assertWhen:
         this.actual.length === expected.length
-        && this.actual.every(value => expected.includes(value)),
+        && this.actual.every(item => expected.some(deepEquals(item))),
       error,
       invertedError,
     });
@@ -262,7 +263,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     });
 
     return this.execute({
-      assertWhen: values.every(value => this.actual.includes(value)),
+      assertWhen: values.every(value => this.actual.some(deepEquals(value))),
       error,
       invertedError,
     });
@@ -291,7 +292,7 @@ export class ArrayAssertion<T> extends Assertion<T[]> {
     });
 
     return this.execute({
-      assertWhen: values.some(value => this.actual.includes(value)),
+      assertWhen: values.some(value => this.actual.some(deepEquals(value))),
       error,
       invertedError,
     });
