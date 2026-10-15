@@ -15,6 +15,7 @@
       "outputs": ["build/**"]
     },
     "docs": {
+      "cache": false,
       "dependsOn": ["^build"],
       "inputs": ["src/**", "typings/**"],
       "outputs": ["docs/*/build/**"]
