@@ -6,7 +6,7 @@
   "author": "Stack Builders <info@stackbuilders.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=20"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "packageManager": "yarn@4.1.0",
   "workspaces": [
