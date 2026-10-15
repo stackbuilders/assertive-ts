@@ -55,7 +55,7 @@
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-test-renderer": "19.2.3",
-    "semantic-release": "^23.1.1",
+    "semantic-release": "^25.0.9",
     "semantic-release-yarn": "^3.0.2",
     "ts-node": "^10.9.2",
     "typedoc": "^0.28.20",
