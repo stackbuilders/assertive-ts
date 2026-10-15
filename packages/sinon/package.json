@@ -47,9 +47,9 @@
     "semantic-release-yarn": "^3.0.2",
     "sinon": "^17.0.1",
     "ts-node": "^10.9.2",
-    "typedoc": "^0.25.8",
-    "typedoc-plugin-markdown": "^3.17.1",
-    "typedoc-plugin-merge-modules": "^5.1.0",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.14.0",
+    "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
