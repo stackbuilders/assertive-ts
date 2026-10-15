@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { type ReactElement, useCallback, useState } from "react";
 import { Button, Text, View } from "react-native";
 
-export function SimpleToggleText(): JSX.Element {
+export function SimpleToggleText(): ReactElement {
   const [visible, setVisible] = useState(true);
 
   const toggle = useCallback(() => {
