@@ -18,14 +18,14 @@
     "tar": "7.5.22"
   },
   "scripts": {
-    "check": "turbo check && yarn lint",
+    "check": "turbo run check && yarn lint",
     "clean": "rimraf **/.turbo/ **/build/ **/dist/ **/node_modules/",
     "build": "turbo run build",
     "compile": "turbo run compile",
-    "docs": "turbo docs",
+    "docs": "turbo run docs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "release": "turbo release --concurrency=1",
+    "release": "turbo run release --concurrency=1",
     "test": "turbo run test"
   },
   "devDependencies": {
@@ -49,7 +49,7 @@
     "globals": "^16.5.0",
     "react-native-safe-area-context": "^5.5.2",
     "rimraf": "^6.1.2",
-    "turbo": "^1.12.4",
+    "turbo": "^2.11.8",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0"
   }
