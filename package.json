@@ -15,6 +15,7 @@
   ],
   "resolutions": {
     "eslint-plugin-sonarjs/minimatch": "^10.2.3",
+    "socks": "^2.8.3",
     "tar": "7.5.22"
   },
   "scripts": {
