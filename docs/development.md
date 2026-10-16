@@ -1,6 +1,6 @@
 # Development
 
-To setup your local environment follow the next steps. Coding agents should also read [AGENTS.md](../AGENTS.md), the instruction file for them.
+To setup your local environment follow the next steps. [AGENTS.md](../AGENTS.md) is the instruction file for coding agents.
 
 ## Requirements
 
@@ -40,11 +40,11 @@ The release process is automated by [semantic-release](https://semantic-release.
 
 ### Scopes
 
-Scopes are optional on Conventional Commits, but we take advantange of them to specify the package a change is aimed for. The table below describes the available scopes and what package they affect:
+Scopes are optional on Conventional Commits, but we take advantage of them to specify the package a change is aimed for. The table below describes the available scopes and what package they affect:
 
 | Scope    | Package                | Commit example                     |
 | :------: | :--------------------: | ---------------------------------- |
-| `all`    | All packages           | feat(all): Upadate TypeScript      |
+| `all`    | All packages           | feat(all): Update TypeScript      |
 | `core`   | `@assertive-ts/core`   | fix(core): Boolean assertion bug   |
 | `dom`    | `@assertive-ts/dom`    | fix(dom): Element assertion bug    |
 | `native` | `@assertive-ts/native` | fix(native): Element assertion bug |

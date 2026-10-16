@@ -30,6 +30,9 @@ Build both errors, then pass them to `this.execute`, which handles `.not`. Copy 
  * ```
  * expect(5).toBeGreaterThan(3);
  * ```
+ *
+ * @param value the value that number should be greater than
+ * @returns the assertion instance
  */
 public toBeGreaterThan(value: number): this {
   const error = new AssertionError({
@@ -41,18 +44,30 @@ public toBeGreaterThan(value: number): this {
     message: `Expected <${this.actual}> NOT to be greater than <${value}>`,
   });
 
-  return this.execute({ assertWhen: this.actual > value, error, invertedError });
+  return this.execute({
+    assertWhen: this.actual > value,
+    error,
+    invertedError,
+  });
 }
 ```
 
 Each test case asserts the direct and the `.not` path with exact messages (`packages/core/test/lib/NumberAssertion.test.ts`):
 
 ```ts
+// actual 3: passes directly, throws under .not
 assert.deepStrictEqual(test.toBeGreaterThan(2), test);
 assert.throws(() => test.not.toBeGreaterThan(2), {
   message: "Expected <3> NOT to be greater than <2>",
   name: AssertionError.name,
 });
+
+// actual 1: throws directly, passes under .not
+assert.throws(() => test.toBeGreaterThan(2), {
+  message: "Expected <1> to be greater than <2>",
+  name: AssertionError.name,
+});
+assert.deepStrictEqual(test.not.toBeGreaterThan(2), test);
 ```
 
 ## Test rule
@@ -65,7 +80,7 @@ The repo is squash-merge only: the PR title becomes the commit message and drive
 
 ## Dependency fixes
 
-Add a `resolutions` entry in the root `package.json`, run `yarn dedupe`, then verify with `yarn why <pkg>` and `yarn npm audit --all --recursive --severity high` (exit 0 means clean).
+Add a `resolutions` entry in the root `package.json`, run `yarn dedupe`, then verify with `yarn why <pkg>` and `yarn npm audit --all --recursive --severity high` (the fixed package must no longer appear in the report; exit 0 means no findings at all).
 
 ## Release boundary
 
