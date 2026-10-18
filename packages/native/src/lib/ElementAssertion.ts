@@ -1,7 +1,7 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
 import { get } from "dot-prop-immutable";
 
-import { isAncestorDisabled, isAncestorNotVisible, isElementDisabled, isElementVisible } from "./helpers/accesibility";
+import { isAncestorDisabled, isAncestorNotVisible, isElementDisabled, isElementVisible } from "./helpers/accessibility";
 import { getFlattenedStyle, styleToString } from "./helpers/styles";
 import { getTextContent, textMatches } from "./helpers/text";
 import { instanceToString, isElementContained, isEmpty } from "./helpers/utils";
