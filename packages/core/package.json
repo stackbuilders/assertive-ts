@@ -36,7 +36,7 @@
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^24.10.1",
     "@types/sinon": "^17.0.3",
     "all-contributors-cli": "^6.26.1",

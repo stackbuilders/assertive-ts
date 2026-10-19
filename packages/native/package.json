@@ -41,7 +41,7 @@
   "devDependencies": {
     "@assertive-ts/core": "workspace:^",
     "@testing-library/react-native": "^12.9.0",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.0",
     "@types/react-test-renderer": "^19.1.0",
