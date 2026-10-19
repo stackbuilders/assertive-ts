@@ -23,7 +23,7 @@
     "release": {
       "cache": false,
       "dependsOn": ["^build"],
-      "passThroughEnv": ["CI", "GITHUB_*", "GH_*", "NPM_*", "YARN_*"]
+      "passThroughEnv": ["CI", "GITHUB_*", "GH_*", "NPM_*", "YARN_*", "ACTIONS_*", "RUNNER_*", "GIT_*", "SEMANTIC_RELEASE_*", "DEBUG"]
     },
     "test": {
       "dependsOn": ["^build"],
