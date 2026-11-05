@@ -186,11 +186,15 @@ export class NumberAssertion extends Assertion<number> {
   /**
    * Check if the number is even. That is, when the number is divisible by 2.
    *
+   * Note: Parity applies only to integers. Non-integers (e.g. 1.5), `NaN`,
+   * and `Infinity` are not considered even. Both `0` and `-0` are
+   * considered even.
+   *
    * @example
    * ```
-   * expect(50).toBeEven();
+   * expect(2).toBeEven();
+   * expect(-4).toBeEven();
    * expect(0).toBeEven();
-   * expect(-10).toBeEven();
    * ```
    *
    * @returns the assertion instance
@@ -215,6 +219,9 @@ export class NumberAssertion extends Assertion<number> {
   /**
    * Check if the number is odd. That is, when the number is not divisible by 2.
    *
+   * Note: Parity applies only to integers. Non-integers (e.g. 1.5), `NaN`,
+   * and `Infinity` are not considered odd.
+   *
    * @example
    * ```
    * expect(-13).toBeOdd();
@@ -234,7 +241,7 @@ export class NumberAssertion extends Assertion<number> {
     });
 
     return this.execute({
-      assertWhen: this.actual % 2 === 1,
+      assertWhen: Math.abs(this.actual % 2) === 1,
       error,
       invertedError,
     });
@@ -282,10 +289,12 @@ export class NumberAssertion extends Assertion<number> {
       const inclusiveError = new AssertionError({
         actual: this.actual,
         expected: options,
-        message: `Expected <${this.actual}> to be between ${rangeText} range` });
+        message: `Expected <${this.actual}> to be between ${rangeText} range`,
+      });
       const inclusiveInvertedError = new AssertionError({
         actual: this.actual,
-        message: `Expected <${this.actual}> NOT to be between ${rangeText} range` });
+        message: `Expected <${this.actual}> NOT to be between ${rangeText} range`,
+      });
 
       return this.execute({
         assertWhen: options.inclusive
