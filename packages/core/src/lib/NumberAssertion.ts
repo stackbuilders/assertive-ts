@@ -187,7 +187,7 @@ export class NumberAssertion extends Assertion<number> {
    * Check if the number is even. That is, when the number is divisible by 2.
    *
    * Note: Parity applies only to integers. Non-integers (e.g. 1.5), `NaN`,
-   * and `Infinity` are not considered even. Both `0` and `-0` are
+   * and `±Infinity` are not considered even. Both `0` and `-0` are
    * considered even.
    *
    * @example
@@ -206,11 +206,11 @@ export class NumberAssertion extends Assertion<number> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be even",
+      message: `Expected <${this.actual}> NOT to be even`,
     });
 
     return this.execute({
-      assertWhen: this.actual % 2 === 0,
+      assertWhen: Number.isInteger(this.actual) && this.actual % 2 === 0,
       error,
       invertedError,
     });
@@ -220,7 +220,7 @@ export class NumberAssertion extends Assertion<number> {
    * Check if the number is odd. That is, when the number is not divisible by 2.
    *
    * Note: Parity applies only to integers. Non-integers (e.g. 1.5), `NaN`,
-   * and `Infinity` are not considered odd.
+   * and `±Infinity` are not considered odd.
    *
    * @example
    * ```
@@ -237,11 +237,11 @@ export class NumberAssertion extends Assertion<number> {
     });
     const invertedError = new AssertionError({
       actual: this.actual,
-      message: "Expected the value NOT to be odd",
+      message: `Expected <${this.actual}> NOT to be odd`,
     });
 
     return this.execute({
-      assertWhen: Math.abs(this.actual % 2) === 1,
+      assertWhen: Number.isInteger(this.actual) && Math.abs(this.actual % 2) === 1,
       error,
       invertedError,
     });
