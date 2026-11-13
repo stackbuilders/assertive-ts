@@ -6,7 +6,7 @@
   "author": "Stack Builders <info@stackbuilders.com>",
   "license": "MIT",
   "engines": {
-    "node": ">=20"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "packageManager": "yarn@4.1.0",
   "workspaces": [
@@ -14,21 +14,31 @@
     "examples/*"
   ],
   "resolutions": {
+    "eslint-plugin-sonarjs/minimatch": "^10.2.3",
+    "socks": "^2.8.3",
     "tar": "7.5.22"
   },
   "scripts": {
-    "check": "turbo check && yarn lint",
+    "check": "turbo run check && yarn lint",
     "clean": "rimraf **/.turbo/ **/build/ **/dist/ **/node_modules/",
     "build": "turbo run build",
     "compile": "turbo run compile",
-    "docs": "turbo docs",
+    "docs": "turbo run docs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "release": "turbo release --concurrency=1",
+    "release": "turbo run release --concurrency=1",
     "test": "turbo run test"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@react-native-community/cli": "20.1.0",
+    "@react-native-community/cli-platform-android": "20.1.0",
+    "@react-native-community/cli-platform-ios": "20.1.0",
+    "@react-native/babel-preset": "0.84.0",
+    "@react-native/eslint-config": "0.84.0",
+    "@react-native/metro-config": "0.84.0",
+    "@react-native/new-app-screen": "0.84.0",
+    "@react-native/typescript-config": "0.84.0",
     "@stylistic/eslint-plugin": "^5.6.1",
     "eslint": "^9.39.1",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -36,10 +46,11 @@
     "eslint-plugin-jsdoc": "^61.2.1",
     "eslint-plugin-perfectionist": "^4.15.1",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-sonarjs": "^3.0.5",
+    "eslint-plugin-sonarjs": "3.0.7",
     "globals": "^16.5.0",
+    "react-native-safe-area-context": "^5.5.2",
     "rimraf": "^6.1.2",
-    "turbo": "^1.12.4",
+    "turbo": "^2.11.8",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.47.0"
   }
