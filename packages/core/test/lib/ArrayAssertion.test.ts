@@ -180,11 +180,11 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
   describe(".toHaveSameMembers", () => {
     context("when the array has the same members as the passed array", () => {
       it("returns the assertion instance", () => {
-        const test = new ArrayAssertion([1, 2, 3]);
+        const test = new ArrayAssertion([1, { x: 2 }, "3"]);
 
-        assert.deepStrictEqual(test.toHaveSameMembers([2, 3, 1]), test);
-        assert.throws(() => test.not.toHaveSameMembers([2, 3, 1]), {
-          message: "Expected array NOT to have the same members as <[2,3,1]>",
+        assert.deepStrictEqual(test.toHaveSameMembers([{ x: 2 }, "3", 1]), test);
+        assert.throws(() => test.not.toHaveSameMembers([{ x: 2 }, "3", 1]), {
+          message: 'Expected array NOT to have the same members as <[{"x":2},"3",1]>',
           name: AssertionError.name,
         });
       });
@@ -215,11 +215,11 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
   describe(".toContainAll", () => {
     context("when the array contains the expected values", () => {
       it("returns the assertion instance", () => {
-        const test = new ArrayAssertion([1, 2, 3, 4, 5]);
+        const test = new ArrayAssertion([1, 2, { x: 3 }, 4, "5"]);
 
-        assert.deepStrictEqual(test.toContainAll(1, 3, 5), test);
-        assert.throws(() => test.not.toContainAll(1, 3, 5), {
-          message: "Expected array NOT to contain all the values <1, 3, 5>",
+        assert.deepStrictEqual(test.toContainAll(1, { x: 3 }, "5"), test);
+        assert.throws(() => test.not.toContainAll(1, { x: 3 }, "5"), {
+          message: 'Expected array NOT to contain all the values <1, {"x":3}, "5">',
           name: AssertionError.name,
         });
       });
@@ -241,11 +241,11 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
   describe(".toContainAny", () => {
     context("when the array contains one of the expected values", () => {
       it("returns the assertion instance", () => {
-        const test = new ArrayAssertion([1, 2, 3, 4, 5]);
+        const test = new ArrayAssertion([1, 2, { x: 3 }, 4, 5]);
 
-        assert.deepStrictEqual(test.toContainAny(7, 3, 8), test);
-        assert.throws(() => test.not.toContainAny(7, 3, 8), {
-          message: "Expected array NOT to contain any of the values <7, 3, 8>",
+        assert.deepStrictEqual(test.toContainAny(2, 7, { x: 3 }, 8), test);
+        assert.throws(() => test.not.toContainAny(2, 7, { x: 3 }, 8), {
+          message: 'Expected array NOT to contain any of the values <2, 7, {"x":3}, 8>',
           name: AssertionError.name,
         });
       });
