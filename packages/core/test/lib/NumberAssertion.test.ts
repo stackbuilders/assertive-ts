@@ -136,11 +136,35 @@ describe("[Unit] NumberAssertion.test.ts", () => {
   describe(".toBeEven", () => {
     context("when the value is even", () => {
       it("returns the assertion instance", () => {
-        const test = new NumberAssertion(2);
+        const testPositive = new NumberAssertion(2);
 
-        assert.deepStrictEqual(test.toBeEven(), test);
-        assert.throws(() => test.not.toBeEven(), {
-          message: "Expected the value NOT to be even",
+        assert.deepStrictEqual(testPositive.toBeEven(), testPositive);
+        assert.throws(() => testPositive.not.toBeEven(), {
+          message: "Expected <2> NOT to be even",
+          name: AssertionError.name,
+        });
+
+        const testNegative = new NumberAssertion(-2);
+
+        assert.deepStrictEqual(testNegative.toBeEven(), testNegative);
+        assert.throws(() => testNegative.not.toBeEven(), {
+          message: "Expected <-2> NOT to be even",
+          name: AssertionError.name,
+        });
+
+        const testZero = new NumberAssertion(0);
+
+        assert.deepStrictEqual(testZero.toBeEven(), testZero);
+        assert.throws(() => testZero.not.toBeEven(), {
+          message: "Expected <0> NOT to be even",
+          name: AssertionError.name,
+        });
+
+        const testNegativeZero = new NumberAssertion(-0);
+
+        assert.deepStrictEqual(testNegativeZero.toBeEven(), testNegativeZero);
+        assert.throws(() => testNegativeZero.not.toBeEven(), {
+          message: "Expected <0> NOT to be even",
           name: AssertionError.name,
         });
       });
@@ -148,13 +172,67 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
     context("when the value is NOT even", () => {
       it("throws an assertion error", () => {
-        const test = new NumberAssertion(1);
+        const testOddPositive = new NumberAssertion(1);
 
-        assert.throws(() => test.toBeEven(), {
+        assert.throws(() => testOddPositive.toBeEven(), {
           message: "Expected <1> to be even",
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toBeEven(), test);
+        assert.deepStrictEqual(testOddPositive.not.toBeEven(), testOddPositive);
+
+        const testOddNegative = new NumberAssertion(-1);
+
+        assert.throws(() => testOddNegative.toBeEven(), {
+          message: "Expected <-1> to be even",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testOddNegative.not.toBeEven(), testOddNegative);
+
+        const testFloat = new NumberAssertion(1.5);
+
+        assert.throws(() => testFloat.toBeEven(), {
+          message: "Expected <1.5> to be even",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testFloat.not.toBeEven(), testFloat);
+
+        const testNaN = new NumberAssertion(NaN);
+
+        assert.throws(() => testNaN.toBeEven(), {
+          message: "Expected <NaN> to be even",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testNaN.not.toBeEven(), testNaN);
+
+        const testInfinity = new NumberAssertion(Infinity);
+
+        assert.throws(() => testInfinity.toBeEven(), {
+          message: "Expected <Infinity> to be even",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testInfinity.not.toBeEven(), testInfinity);
+
+        const testNegativeInfinity = new NumberAssertion(-Infinity);
+
+        assert.throws(() => testNegativeInfinity.toBeEven(), {
+          message: "Expected <-Infinity> to be even",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(
+          testNegativeInfinity.not.toBeEven(),
+          testNegativeInfinity,
+        );
+
+        const testNegativeFloat = new NumberAssertion(-1.5);
+
+        assert.throws(() => testNegativeFloat.toBeEven(), {
+          message: "Expected <-1.5> to be even",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(
+          testNegativeFloat.not.toBeEven(),
+          testNegativeFloat,
+        );
       });
     });
   });
@@ -162,11 +240,27 @@ describe("[Unit] NumberAssertion.test.ts", () => {
   describe(".toBeOdd", () => {
     context("when the value is odd", () => {
       it("returns the assertion instance", () => {
-        const test = new NumberAssertion(1);
+        const testPositive = new NumberAssertion(1);
 
-        assert.deepStrictEqual(test.toBeOdd(), test);
-        assert.throws(() => test.not.toBeOdd(), {
-          message: "Expected the value NOT to be odd",
+        assert.deepStrictEqual(testPositive.toBeOdd(), testPositive);
+        assert.throws(() => testPositive.not.toBeOdd(), {
+          message: "Expected <1> NOT to be odd",
+          name: AssertionError.name,
+        });
+
+        const testNegative = new NumberAssertion(-13);
+
+        assert.deepStrictEqual(testNegative.toBeOdd(), testNegative);
+        assert.throws(() => testNegative.not.toBeOdd(), {
+          message: "Expected <-13> NOT to be odd",
+          name: AssertionError.name,
+        });
+
+        const testNegativeOne = new NumberAssertion(-1);
+
+        assert.deepStrictEqual(testNegativeOne.toBeOdd(), testNegativeOne);
+        assert.throws(() => testNegativeOne.not.toBeOdd(), {
+          message: "Expected <-1> NOT to be odd",
           name: AssertionError.name,
         });
       });
@@ -174,13 +268,72 @@ describe("[Unit] NumberAssertion.test.ts", () => {
 
     context("when the value is NOT odd", () => {
       it("throws an assertion error", () => {
-        const test = new NumberAssertion(2);
+        const testEvenPositive = new NumberAssertion(2);
 
-        assert.throws(() => test.toBeOdd(), {
+        assert.throws(() => testEvenPositive.toBeOdd(), {
           message: "Expected <2> to be odd",
           name: AssertionError.name,
         });
-        assert.deepStrictEqual(test.not.toBeOdd(), test);
+        assert.deepStrictEqual(testEvenPositive.not.toBeOdd(), testEvenPositive);
+
+        const testEvenNegative = new NumberAssertion(-2);
+
+        assert.throws(() => testEvenNegative.toBeOdd(), {
+          message: "Expected <-2> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testEvenNegative.not.toBeOdd(), testEvenNegative);
+
+        const testNegativeZero = new NumberAssertion(-0);
+
+        assert.throws(() => testNegativeZero.toBeOdd(), {
+          message: "Expected <0> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testNegativeZero.not.toBeOdd(), testNegativeZero);
+
+        const testFloat = new NumberAssertion(1.5);
+
+        assert.throws(() => testFloat.toBeOdd(), {
+          message: "Expected <1.5> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testFloat.not.toBeOdd(), testFloat);
+
+        const testFloatNegative = new NumberAssertion(-1.5);
+
+        assert.throws(() => testFloatNegative.toBeOdd(), {
+          message: "Expected <-1.5> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testFloatNegative.not.toBeOdd(), testFloatNegative);
+
+        const testNaN = new NumberAssertion(NaN);
+
+        assert.throws(() => testNaN.toBeOdd(), {
+          message: "Expected <NaN> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testNaN.not.toBeOdd(), testNaN);
+
+        const testInfinity = new NumberAssertion(Infinity);
+
+        assert.throws(() => testInfinity.toBeOdd(), {
+          message: "Expected <Infinity> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(testInfinity.not.toBeOdd(), testInfinity);
+
+        const testNegativeInfinity = new NumberAssertion(-Infinity);
+
+        assert.throws(() => testNegativeInfinity.toBeOdd(), {
+          message: "Expected <-Infinity> to be odd",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(
+          testNegativeInfinity.not.toBeOdd(),
+          testNegativeInfinity,
+        );
       });
     });
   });
@@ -467,7 +620,7 @@ describe("[Unit] NumberAssertion.test.ts", () => {
             assert.deepStrictEqual(test.toBeBetween({ highInclusive: true, range: [10, 12] }), test);
             assert.throws(() => test.not.toBeBetween({ highInclusive: true, range: [10, 12] }), {
               message:
-                  "Expected <12> NOT to be between (10, 12] range",
+                "Expected <12> NOT to be between (10, 12] range",
               name: AssertionError.name,
             },
             );
