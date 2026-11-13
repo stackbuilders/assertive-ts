@@ -1,6 +1,6 @@
 {
-  "$schema": "https://turborepo.org/schema.json",
-  "pipeline": {
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["src/**"],
@@ -15,13 +15,15 @@
       "outputs": ["build/**"]
     },
     "docs": {
+      "cache": false,
       "dependsOn": ["^build"],
       "inputs": ["src/**", "typings/**"],
       "outputs": ["docs/*/build/**"]
     },
     "release": {
       "cache": false,
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "passThroughEnv": ["CI", "GITHUB_*", "GH_*", "NPM_*", "YARN_*", "ACTIONS_*", "RUNNER_*", "GIT_*", "SEMANTIC_RELEASE_*", "DEBUG"]
     },
     "test": {
       "dependsOn": ["^build"],

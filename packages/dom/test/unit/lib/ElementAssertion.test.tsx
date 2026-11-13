@@ -4,6 +4,7 @@ import { render } from "@testing-library/react";
 import { ElementAssertion } from "../../../src/lib/ElementAssertion";
 
 import { CheckedTestComponent } from "./fixtures/CheckedTestComponent";
+import { DisabledTestComponent } from "./fixtures/DisabledTestComponent";
 import { HaveClassTest } from "./fixtures/HaveClassTest";
 import { NestedElementsTest } from "./fixtures/NestedElementsTest";
 import { PressedTestComponent } from "./fixtures/PressedTestComponent";
@@ -470,7 +471,7 @@ describe("[Unit] ElementAssertion.test.ts", () => {
     });
   });
 
-  describe(".toHaveDescription", () => {
+  describe(".toHaveAccessibleDescription", () => {
     context("when checking for any description", () => {
       context("when the element has a description", () => {
         it("returns the assertion instance", () => {
@@ -478,11 +479,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription()).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription()).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription())
+          expect(() => test.not.toHaveAccessibleDescription())
             .toThrowError(AssertionError)
-            .toHaveMessage('Expected the element NOT to have a description, but received "This is a description"');
+            .toHaveMessage(
+              "Expected the element NOT to have an accessible description, "
+              + 'but received "This is a description"',
+            );
         });
       });
 
@@ -492,11 +496,11 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-no-description");
           const test = new ElementAssertion(button);
 
-          expect(() => test.toHaveDescription())
+          expect(() => test.toHaveAccessibleDescription())
             .toThrowError(AssertionError)
-            .toHaveMessage("Expected the element to have a description");
+            .toHaveMessage("Expected the element to have an accessible description");
 
-          expect(test.not.toHaveDescription()).toBeEqual(test);
+          expect(test.not.toHaveAccessibleDescription()).toBeEqual(test);
         });
       });
     });
@@ -508,12 +512,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription("This is a description")).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription("This is a description")).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription("This is a description"))
+          expect(() => test.not.toHaveAccessibleDescription("This is a description"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element NOT to have description "This is a description", '
+              'Expected the element NOT to have accessible description "This is a description", '
               + 'but received "This is a description"',
             );
         });
@@ -525,12 +529,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-multiple");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription("This is a description Additional info")).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription("This is a description Additional info")).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription("This is a description Additional info"))
+          expect(() => test.not.toHaveAccessibleDescription("This is a description Additional info"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element NOT to have description "This is a description Additional info", '
+              'Expected the element NOT to have accessible description "This is a description Additional info", '
               + 'but received "This is a description Additional info"',
             );
         });
@@ -542,13 +546,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(() => test.toHaveDescription("Wrong description"))
+          expect(() => test.toHaveAccessibleDescription("Wrong description"))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              'Expected the element to have description "Wrong description", but received "This is a description"',
+              'Expected the element to have accessible description "Wrong description", '
+              + 'but received "This is a description"',
             );
 
-          expect(test.not.toHaveDescription("Wrong description")).toBeEqual(test);
+          expect(test.not.toHaveAccessibleDescription("Wrong description")).toBeEqual(test);
         });
       });
     });
@@ -560,12 +565,12 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(test.toHaveDescription(/description/i)).toBeEqual(test);
+          expect(test.toHaveAccessibleDescription(/description/i)).toBeEqual(test);
 
-          expect(() => test.not.toHaveDescription(/description/i))
+          expect(() => test.not.toHaveAccessibleDescription(/description/i))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              "Expected the element NOT to have description matching /description/i, "
+              "Expected the element NOT to have accessible description matching /description/i, "
               + 'but received "This is a description"',
             );
         });
@@ -577,14 +582,14 @@ describe("[Unit] ElementAssertion.test.ts", () => {
           const button = getByTestId("button-single");
           const test = new ElementAssertion(button);
 
-          expect(() => test.toHaveDescription(/wrong pattern/))
+          expect(() => test.toHaveAccessibleDescription(/wrong pattern/))
             .toThrowError(AssertionError)
             .toHaveMessage(
-              "Expected the element to have description matching /wrong pattern/, "
+              "Expected the element to have accessible description matching /wrong pattern/, "
               + 'but received "This is a description"',
             );
 
-          expect(test.not.toHaveDescription(/wrong pattern/)).toBeEqual(test);
+          expect(test.not.toHaveAccessibleDescription(/wrong pattern/)).toBeEqual(test);
         });
       });
     });
@@ -1170,6 +1175,89 @@ describe("[Unit] ElementAssertion.test.ts", () => {
         expect(() => test.toContainHTML(""))
           .toThrowError(Error)
           .toHaveMessage(".toContainHTML() expects a non-empty string");
+      });
+    });
+  });
+
+  describe(".toBeDisabled", () => {
+    context("when the element is disabled", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonDisabled = getByTestId("button-disabled");
+        expect(new ElementAssertion(buttonDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const inputDisabled = getByTestId("input-disabled");
+        expect(new ElementAssertion(inputDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const customDisabled = getByTestId("custom-disabled");
+        expect(new ElementAssertion(customDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetChildDisabled = getByTestId("fieldset-child-disabled");
+        expect(new ElementAssertion(fieldsetChildDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetLegendSecondChildDisabled = getByTestId("fieldset-legend-second-child-disabled");
+        expect(new ElementAssertion(fieldsetLegendSecondChildDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetNestedChildDisabled = getByTestId("fieldset-nested-child-disabled");
+        expect(new ElementAssertion(fieldsetNestedChildDisabled).toBeDisabled()).toBeInstanceOf(ElementAssertion);
+      });
+    });
+
+    context("when the element is not disabled", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonEnabled = getByTestId("button-enabled");
+        const test = new ElementAssertion(buttonEnabled);
+
+        expect(() => test.toBeDisabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be disabled");
+        expect(test.not.toBeDisabled()).toBeEqual(test);
+
+        const divDisabled = getByTestId("div-disabled");
+        const testDiv = new ElementAssertion(divDisabled);
+        expect(() => testDiv.toBeDisabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be disabled");
+
+        const fieldsetLegendFirstChild = getByTestId("fieldset-legend-first-child");
+        const testLegendFirstChild = new ElementAssertion(fieldsetLegendFirstChild);
+        expect(() => testLegendFirstChild.toBeDisabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be disabled");
+      });
+    });
+  });
+
+  describe(".toBeEnabled", () => {
+    context("when the element is enabled", () => {
+      it("returns the assertion instance", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonEnabled = getByTestId("button-enabled");
+        expect(new ElementAssertion(buttonEnabled).toBeEnabled()).toBeInstanceOf(ElementAssertion);
+
+        const divDisabled = getByTestId("div-disabled");
+        expect(new ElementAssertion(divDisabled).toBeEnabled()).toBeInstanceOf(ElementAssertion);
+
+        const fieldsetLegendFirstChild = getByTestId("fieldset-legend-first-child");
+        expect(new ElementAssertion(fieldsetLegendFirstChild).toBeEnabled()).toBeInstanceOf(ElementAssertion);
+      });
+    });
+
+    context("when the element is not enabled", () => {
+      it("throws an assertion error", () => {
+        const { getByTestId } = render(<DisabledTestComponent />);
+
+        const buttonDisabled = getByTestId("button-disabled");
+        const test = new ElementAssertion(buttonDisabled);
+
+        expect(() => test.toBeEnabled())
+          .toThrowError(AssertionError)
+          .toHaveMessage("Expected the element to be enabled");
+        expect(test.not.toBeEnabled()).toBeEqual(test);
       });
     });
   });

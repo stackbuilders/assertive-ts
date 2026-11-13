@@ -5,6 +5,8 @@ export function isElementEmpty(element: Element): boolean {
   return nonCommentChildNodes.length === 0;
 }
 
+// Callers are internal: the public assertions already reject non-string
+// and empty `htmlText` values before reaching here.
 export function normalizeHtml(htmlText: string, ownerDocument: Document): string {
   const div = ownerDocument.createElement("div");
   div.innerHTML = htmlText;
@@ -36,4 +38,57 @@ export function isCheckboxInput(element: Element): boolean {
   const tagName = element.tagName.toLowerCase();
   const type = element.getAttribute("type");
   return tagName === "input" && type === "checkbox";
+}
+
+const FORM_TAGS = [
+  "fieldset",
+  "input",
+  "select",
+  "optgroup",
+  "option",
+  "button",
+  "textarea",
+];
+
+function isFirstLegendChildOfFieldset(element: Element, parent: Element | null): boolean {
+  return (
+    element.tagName.toLowerCase() === "legend"
+    && parent?.tagName.toLowerCase() === "fieldset"
+    && element === Array.from(parent.children).find(child => child.tagName.toLowerCase() === "legend")
+  );
+}
+
+function isElementDisabledByParent(element: Element, parent: Element | null): boolean {
+  return (
+    parent !== null
+    && isElementDisabled(parent) && !isFirstLegendChildOfFieldset(element, parent)
+  );
+}
+
+function isCustomElement(tag: string): boolean {
+  return tag.includes("-");
+}
+
+function canElementBeDisabled(element: Element): boolean {
+  const tag = element.tagName.toLowerCase();
+  return FORM_TAGS.includes(tag) || isCustomElement(tag);
+}
+
+function isElementDisabled(element: Element): boolean {
+  return canElementBeDisabled(element) && element.hasAttribute("disabled");
+}
+
+function isAncestorDisabled(element: Element): boolean {
+  const parent = element.parentElement;
+  return (
+    parent !== null
+    && (isElementDisabledByParent(element, parent) || isAncestorDisabled(parent))
+  );
+}
+
+export function isElementOrAncestorDisabled(element: Element): boolean {
+  return (
+    canElementBeDisabled(element)
+    && (isElementDisabled(element) || isAncestorDisabled(element))
+  );
 }

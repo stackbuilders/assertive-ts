@@ -1,8 +1,21 @@
 import { Assertion, AssertionError } from "@assertive-ts/core";
+import { computeAccessibleDescription } from "dom-accessibility-api";
 import equal from "fast-deep-equal";
 
-import { getAccessibleDescription, isValidAriaCheckedStrict, isValidAriaPressed } from "./helpers/accessibility";
-import { isButtonElement, isCheckableInput, isCheckboxInput, isElementEmpty, normalizeHtml } from "./helpers/dom";
+import {
+  describeAccessibleExpectation,
+  isValidAriaCheckedStrict,
+  isValidAriaPressed,
+  matchesAccessibleExpectation,
+} from "./helpers/accessibility";
+import {
+  isButtonElement,
+  isCheckableInput,
+  isCheckboxInput,
+  isElementEmpty,
+  isElementOrAncestorDisabled,
+  normalizeHtml,
+} from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -293,63 +306,51 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   /**
    * Asserts that the element has an accessible description.
    *
-   * The accessible description is computed from the `aria-describedby`
-   * attribute, which references one or more elements by ID. The text
-   * content of those elements is combined to form the description.
+   * The accessible description is computed following the
+   * [accname](https://www.w3.org/TR/accname/) specification, taking
+   * into account `aria-describedby`, `aria-description`, and `title`,
+   * among others.
    *
    * @example
    * ```
    * // Check if element has any description
-   * expect(element).toHaveDescription();
+   * expect(element).toHaveAccessibleDescription();
    *
    * // Check if element has specific description text
-   * expect(element).toHaveDescription('Expected description text');
+   * expect(element).toHaveAccessibleDescription("Expected description text");
    *
    * // Check if element description matches a regex pattern
-   * expect(element).toHaveDescription(/description pattern/i);
+   * expect(element).toHaveAccessibleDescription(/description pattern/i);
    * ```
    *
    * @param expectedDescription
    * - Optional expected description (string or RegExp).
    * @returns the assertion instance.
    */
-
-  public toHaveDescription(expectedDescription?: RegExp | string): this {
-    const description = getAccessibleDescription(this.actual);
+  public toHaveAccessibleDescription(expectedDescription?: RegExp | string): this {
+    const description = computeAccessibleDescription(this.actual);
     const hasExpectedValue = expectedDescription !== undefined;
 
-    const matchesExpectation = (desc: string): boolean => {
-      if (!hasExpectedValue) {
-        return Boolean(desc);
-      }
-      return expectedDescription instanceof RegExp
-        ? expectedDescription.test(desc)
-        : desc === expectedDescription;
-    };
-
-    const formatExpectation = (isRegExp: boolean): string =>
-      isRegExp ? `matching ${expectedDescription}` : `"${expectedDescription}"`;
+    const expectation = describeAccessibleExpectation(expectedDescription);
 
     const error = new AssertionError({
       actual: description,
       expected: expectedDescription,
       message: hasExpectedValue
-        ? `Expected the element to have description ${formatExpectation(expectedDescription instanceof RegExp)}, `
-        + `but received "${description}"`
-        : "Expected the element to have a description",
+        ? `Expected the element to have accessible description ${expectation}, but received "${description}"`
+        : "Expected the element to have an accessible description",
     });
 
     const invertedError = new AssertionError({
       actual: description,
       expected: expectedDescription,
       message: hasExpectedValue
-        ? `Expected the element NOT to have description ${formatExpectation(expectedDescription instanceof RegExp)}, `
-        + `but received "${description}"`
-        : `Expected the element NOT to have a description, but received "${description}"`,
+        ? `Expected the element NOT to have accessible description ${expectation}, but received "${description}"`
+        : `Expected the element NOT to have an accessible description, but received "${description}"`,
     });
 
     return this.execute({
-      assertWhen: matchesExpectation(description),
+      assertWhen: matchesAccessibleExpectation(description, expectedDescription),
       error,
       invertedError,
     });
@@ -556,6 +557,58 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: this.actual.outerHTML.includes(normalizeHtml(htmlText, this.actual.ownerDocument)),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is disabled.
+   *
+   * @example
+   * expect(element).toBeDisabled();
+   * expect(element).not.toBeDisabled();
+   *
+   * @returns the assertion instance.
+   */
+  public toBeDisabled(): this {
+    const isDisabled = isElementOrAncestorDisabled(this.actual);
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be disabled",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be disabled",
+    });
+    return this.execute({
+      assertWhen: isDisabled,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is enabled.
+   *
+   * @example
+   * expect(element).toBeEnabled();
+   * expect(element).not.toBeEnabled();
+   *
+   * @returns the assertion instance.
+   */
+  public toBeEnabled(): this {
+    const isEnabled = !isElementOrAncestorDisabled(this.actual);
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be enabled",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be enabled",
+    });
+    return this.execute({
+      assertWhen: isEnabled,
       error,
       invertedError,
     });
