@@ -4,10 +4,18 @@ import equal from "fast-deep-equal";
 
 import {
   describeAccessibleExpectation,
+  isValidAriaCheckedStrict,
   isValidAriaPressed,
   matchesAccessibleExpectation,
 } from "./helpers/accessibility";
-import { isButtonElement, isElementEmpty, normalizeHtml } from "./helpers/dom";
+import {
+  isButtonElement,
+  isCheckableInput,
+  isCheckboxInput,
+  isElementEmpty,
+  isElementOrAncestorDisabled,
+  normalizeHtml,
+} from "./helpers/dom";
 import { getExpectedAndReceivedStyles } from "./helpers/styles";
 
 export class ElementAssertion<T extends Element> extends Assertion<T> {
@@ -428,6 +436,88 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
   }
 
   /**
+   * Asserts that the element is checked.
+   *
+   * Valid for `<input type="checkbox">`, `<input type="radio">`, or elements
+   * with a valid `aria-checked` attribute ("true" or "false") and
+   * a checkable role (`checkbox`, `radio`, or `switch`).
+   *
+   * @example
+   * // Native checkbox
+   * expect(element).toBeChecked();
+   * expect(element).not.toBeChecked();
+   *
+   * // ARIA checkbox
+   * expect(element).toBeChecked(); // when aria-checked="true"
+   *
+   * @returns the assertion instance.
+   */
+  public toBeChecked(): this {
+    const isNativeCheckable = isCheckableInput(this.actual);
+    const isAriaCheckable = isValidAriaCheckedStrict(this.actual);
+    if (!isNativeCheckable && !isAriaCheckable) {
+      throw new Error(
+        "Only checkbox/radio inputs or valid aria-checked elements can be used with .toBeChecked()",
+      );
+    }
+    const isChecked = isNativeCheckable
+      ? (this.actual as unknown as HTMLInputElement).checked
+      : this.actual.getAttribute("aria-checked") === "true";
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be checked",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be checked",
+    });
+    return this.execute({
+      assertWhen: isChecked,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is partially checked (indeterminate).
+   *
+   * Valid for `<input type="checkbox">` or elements with `role="checkbox"`
+   * and `aria-checked="mixed"`.
+   *
+   * @example
+   * expect(element).toBePartiallyChecked();
+   * expect(element).not.toBePartiallyChecked();
+   *
+   * @returns the assertion instance.
+   */
+  public toBePartiallyChecked(): this {
+    const isNativeCheckbox = isCheckboxInput(this.actual);
+    const isAriaCheckbox = this.actual.getAttribute("role") === "checkbox";
+    if (!isNativeCheckbox && !isAriaCheckbox) {
+      throw new Error(
+        "Only checkbox inputs or checkbox-role elements can be used with .toBePartiallyChecked()",
+      );
+    }
+    const isPartiallyChecked = isNativeCheckbox
+      ? (this.actual as unknown as HTMLInputElement).indeterminate
+      || this.actual.getAttribute("aria-checked") === "mixed"
+      : this.actual.getAttribute("aria-checked") === "mixed";
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be partially checked",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be partially checked",
+    });
+    return this.execute({
+      assertWhen: isPartiallyChecked,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
    * Asserts that the element contains the specified HTML.
    *
    * The expected HTML is normalized through a detached element before
@@ -467,6 +557,58 @@ export class ElementAssertion<T extends Element> extends Assertion<T> {
 
     return this.execute({
       assertWhen: this.actual.outerHTML.includes(normalizeHtml(htmlText, this.actual.ownerDocument)),
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is disabled.
+   *
+   * @example
+   * expect(element).toBeDisabled();
+   * expect(element).not.toBeDisabled();
+   *
+   * @returns the assertion instance.
+   */
+  public toBeDisabled(): this {
+    const isDisabled = isElementOrAncestorDisabled(this.actual);
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be disabled",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be disabled",
+    });
+    return this.execute({
+      assertWhen: isDisabled,
+      error,
+      invertedError,
+    });
+  }
+
+  /**
+   * Asserts that the element is enabled.
+   *
+   * @example
+   * expect(element).toBeEnabled();
+   * expect(element).not.toBeEnabled();
+   *
+   * @returns the assertion instance.
+   */
+  public toBeEnabled(): this {
+    const isEnabled = !isElementOrAncestorDisabled(this.actual);
+    const error = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to be enabled",
+    });
+    const invertedError = new AssertionError({
+      actual: this.actual,
+      message: "Expected the element to NOT be enabled",
+    });
+    return this.execute({
+      assertWhen: isEnabled,
       error,
       invertedError,
     });
