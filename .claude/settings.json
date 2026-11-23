@@ -25,10 +25,10 @@
       "Bash(yarn npm publish:*)",
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
-      "Edit(.github/workflows/release.yml)",
-      "Write(.github/workflows/release.yml)",
-      "Edit(.yarn/releases/**)",
-      "Write(.yarn/releases/**)"
+      "Edit(/.github/workflows/release.yml)",
+      "Write(/.github/workflows/release.yml)",
+      "Edit(/.yarn/releases/**)",
+      "Write(/.yarn/releases/**)"
     ]
   }
 }
