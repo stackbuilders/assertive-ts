@@ -48,6 +48,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-sonarjs": "3.0.7",
     "globals": "^16.5.0",
+    "lefthook": "^2.2.2",
     "react-native-safe-area-context": "^5.5.2",
     "rimraf": "^6.1.2",
     "turbo": "^2.11.8",

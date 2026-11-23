@@ -1,0 +1,17 @@
+# Git hooks, installed by `yarn install` (lefthook's postinstall). Docs: https://lefthook.dev/configuration/
+# Skip once with LEFTHOOK=0 git commit ...; CI never runs these (it runs `yarn lint` and `yarn test`).
+pre-commit:
+  parallel: true
+  jobs:
+    - name: eslint
+      glob: "*.{js,jsx,mjs,cjs,ts,tsx}"
+      run: yarn eslint --fix --no-warn-ignored --cache --cache-location node_modules/.cache/eslint/ {staged_files}
+      stage_fixed: true
+
+    - name: no-focused-tests
+      glob: "*.test.{js,jsx,ts,tsx}"
+      run: |
+        if grep -nE '\.only\(' {staged_files}; then
+          echo "Remove .only( from the staged test files above before committing."
+          exit 1
+        fi

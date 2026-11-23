@@ -34,6 +34,14 @@ yarn lint
 yarn test
 ```
 
+### Git hooks
+
+`yarn install` installs a [lefthook](https://lefthook.dev) pre-commit hook (see `lefthook.yml`). It runs `eslint --fix` on the staged files and rejects staged test files that contain `.only(`. Skip it once with `LEFTHOOK=0 git commit ...`.
+
+### Agent permissions
+
+`.claude/settings.json` allows the commands above and read-only `git` without a prompt, and denies `yarn release`, `npm publish`, force pushes and edits to `.github/workflows/release.yml`.
+
 ## Release process
 
 The release process is automated by [semantic-release](https://semantic-release.gitbook.io/semantic-release/), so please make sure that the first commit of any PR follows the [Conventional Commits standard](https://www.conventionalcommits.org/). Take a look at semantic-release documentation if you're not sure what type of commit you should use.
