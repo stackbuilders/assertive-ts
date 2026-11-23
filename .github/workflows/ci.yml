@@ -27,6 +27,17 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: yarn
       - run: yarn install --immutable
-      - run: yarn compile
-      - run: yarn lint
-      - run: yarn test
+      - run: yarn check
+
+  audit:
+    runs-on: ubuntu-latest
+    # Advisory until the open high-severity alerts are resolved (T-04); then drop this line.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+      - run: yarn install --immutable
+      - run: yarn npm audit --all --recursive --severity high
