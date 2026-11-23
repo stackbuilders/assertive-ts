@@ -175,6 +175,35 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.deepStrictEqual(test.not.toHaveSize(5), test);
       });
     });
+
+    context("when the expected size is one less or one more than the array's size", () => {
+      it("throws an assertion error", () => {
+        const test = new ArrayAssertion([1, 2, 3]);
+
+        assert.throws(() => test.toHaveSize(2), {
+          message: "Expected array to contain 2 elements, but it has 3",
+          name: AssertionError.name,
+        });
+        assert.throws(() => test.toHaveSize(4), {
+          message: "Expected array to contain 4 elements, but it has 3",
+          name: AssertionError.name,
+        });
+        assert.deepStrictEqual(test.not.toHaveSize(2), test);
+        assert.deepStrictEqual(test.not.toHaveSize(4), test);
+      });
+    });
+
+    context("when the array is empty and the expected size is zero", () => {
+      it("returns the assertion instance", () => {
+        const test = new ArrayAssertion<number>([]);
+
+        assert.deepStrictEqual(test.toHaveSize(0), test);
+        assert.throws(() => test.not.toHaveSize(0), {
+          message: "Expected array NOT to contain 0 elements, but it does",
+          name: AssertionError.name,
+        });
+      });
+    });
   });
 
   describe(".toHaveSameMembers", () => {
@@ -342,6 +371,17 @@ describe("[Unit] ArrayAssertion.test.ts", () => {
         assert.throws(() => test.not.extracting(1, TypeFactories.Number), {
           message: "Unsupported operation. The `.not` modifier is not allowed on `.extracting(..)` method",
           name: UnsupportedOperationError.name,
+        });
+      });
+    });
+
+    context("when the array is empty and the extracting index is zero", () => {
+      it("throws an assertion error", () => {
+        const test = new ArrayAssertion<number>([]);
+
+        assert.throws(() => test.extracting(0, TypeFactories.Number), {
+          message: "Out of bounds! Cannot extract index 0 from an array of 0 elements",
+          name: AssertionError.name,
         });
       });
     });
