@@ -1,0 +1,8 @@
+{
+  "check-coverage": true,
+  "include": ["src/**"],
+  "lines": 93,
+  "branches": 75,
+  "reporter": ["text"],
+  "skip-full": true
+}

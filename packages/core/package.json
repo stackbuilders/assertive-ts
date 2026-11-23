@@ -24,7 +24,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.prod.json",
-    "check": "yarn compile && yarn test --forbid-only",
+    "check": "yarn compile && yarn coverage --forbid-only",
+    "coverage": "yarn run -T c8 yarn test",
     "compile": "tsc -p tsconfig.json",
     "docs": "typedoc",
     "release": "semantic-release",
